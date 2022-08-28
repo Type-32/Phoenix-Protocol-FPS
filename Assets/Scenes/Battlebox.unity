@@ -21589,14 +21589,13 @@ GameObject:
   - component: {fileID: 1780381172}
   - component: {fileID: 1780381175}
   - component: {fileID: 1780381174}
-  - component: {fileID: 1780381176}
   m_Layer: 5
   m_Name: SelectMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1780381171
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21702,19 +21701,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1780381176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1780381170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
 --- !u!1 &1783643435
 GameObject:
   m_ObjectHideFlags: 0
@@ -25887,6 +25873,7 @@ GameObject:
   - component: {fileID: 1967911740}
   - component: {fileID: 1967911741}
   - component: {fileID: 1967911742}
+  - component: {fileID: 1967911743}
   m_Layer: 5
   m_Name: ChoiceHolder
   m_TagString: Untagged
@@ -25913,7 +25900,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00048828125}
-  m_SizeDelta: {x: -30, y: -15.442947}
+  m_SizeDelta: {x: -30, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1967911740
 MonoBehaviour:
@@ -25969,6 +25956,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
+--- !u!114 &1967911743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967911738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1977879989
 GameObject:
   m_ObjectHideFlags: 0
