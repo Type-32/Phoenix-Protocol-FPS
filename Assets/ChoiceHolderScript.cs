@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ChoiceHolderScript : MonoBehaviour
+{
+    public LoadoutMenu loadoutMenu;
+    public GameObject slotPrefab;
+    public List<LoadoutSelectionSlot> slotScripts = new List<LoadoutSelectionSlot>();
+    public void InstantiateChoiceSlot(WeaponData data, int index)
+    {
+        LoadoutSelectionSlot temp = Instantiate(slotPrefab, transform).GetComponent<LoadoutSelectionSlot>();
+        temp.SetSelectionInfo(data, index);
+        slotScripts.Add(temp);
+    }
+    public void InstantiateAllChoiceSlots(int index)
+    {
+        for(int i = 0; i < GlobalDatabase.globalDatabase.allWeaponDatas.Count; i++)
+        {
+            InstantiateChoiceSlot(GlobalDatabase.globalDatabase.allWeaponDatas[i], index);
+        }
+    }
+    public void ClearChoiceSlot()
+    {
+        for(int i = 0; i < slotScripts.Count; i++)
+        {
+            Destroy(slotScripts[i].gameObject);
+        }
+        slotScripts.Clear();
+    }
+    public void RefreshChoices(int index)
+    {
+        ClearChoiceSlot();
+        InstantiateAllChoiceSlots(index);
+    }
+    public Button FindElementInSelection(WeaponData data)
+    {
+        for(int i = 0; i < slotScripts.Count; i++)
+        {
+            if(data == slotScripts[i].weaponData)
+            {
+                return slotScripts[i].gameObject.GetComponent<Button>();
+            }
+        }
+        return null;
+    }
+}
