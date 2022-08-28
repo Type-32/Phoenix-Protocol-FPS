@@ -10,11 +10,14 @@ public class SpawnpointHolder : MonoBehaviour
     public Camera spawnpointCamera;
     public GameObject spawnpointUIPrefab;
     public GameObject spawnpointUIHolder;
+    public GameObject setSpawnpoint;
 
     private void Start()
     {
         GetAllSpawnpoints();
         InstantiateSpawnpointUI();
+        ClearAllSpawnpointSelection();
+        SetRandomSpawnpoint();
     }
     public void GetAllSpawnpoints()
     {
@@ -45,5 +48,26 @@ public class SpawnpointHolder : MonoBehaviour
     {
         ui.spawnpointRef = obj.gameObject;
         ui.spawnpointText.text = index.ToString();
+    }
+    public void SetRandomSpawnpoint()
+    {
+        int randomIndex = Random.Range(0, spawnpointUIPoints.Count - 1);
+        spawnpointUIPoints[randomIndex].SetPlayerSpawnpoint();
+    }
+    public void SetSpecificSpawnpoint(GameObject obj)
+    {
+        if (obj != null) setSpawnpoint = obj;
+        else ClearSpawnpoint();
+    }
+    public void ClearSpawnpoint()
+    {
+        setSpawnpoint = null;
+    }
+    public void ClearAllSpawnpointSelection()
+    {
+        for(int i = 0; i < spawnpointUIPoints.Count; i++)
+        {
+            spawnpointUIPoints[i].OffselectPlayerSpawnpoint();
+        }
     }
 }

@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
     public PlayerSounds sfx;
     public UIManager ui;
     public MouseLookScript cam;
-    //public HolderManager gunHolder;
+    public EquipmentHolder holder;
     //public GadgetUsageScript gadgetFunc;
 
     [Space]
@@ -52,6 +52,11 @@ public class PlayerManager : MonoBehaviour
     {
         recoilScript = FindObjectOfType<Recoil>();
         DerivePlayerStatsToHUDInitialize();
+
+        for(int i = 0; i < ui.loadoutMenu.slotHolderScript.slotWeaponData.Length; i++)
+        {
+            holder.InstantiateWeapon(ui.loadoutMenu.slotHolderScript.slotWeaponData[i]);
+        }
     }
     private void Update()
     {
@@ -123,7 +128,6 @@ public class PlayerManager : MonoBehaviour
         stats.totalAbsorbedDamage += amount;
         if (stats.health <= 0f)
         {
-            Cursor.lockState = CursorLockMode.None;
             Die();
             return;
         }
@@ -134,16 +138,15 @@ public class PlayerManager : MonoBehaviour
     {
 
     }
-    private void Die()
+    public void Die()
     {
-        //Cursor.lockState = CursorLockMode.None;
         Debug.Log("Death Here ");
         GameObject tmp = Instantiate(deathCam, fpsCam.transform.position, fpsCam.transform.rotation);
         tmp.gameObject.GetComponentInChildren<Camera>().fieldOfView = fpsCam.GetComponent<Camera>().fieldOfView;
         //tmp.gameObject.GetComponent<Rigidbody>().velocity = body.velocity;
         //ui.anim.SetTrigger("PlayerKilled");
-        Destroy(gameObject);
         Cursor.lockState = CursorLockMode.None;
+        GameManager.instance.RemovePlayer(gameObject);
         return;
     }
     private void DerivePlayerStatsToHUD()

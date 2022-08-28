@@ -96,4 +96,18 @@ public class EquipmentHolder : MonoBehaviour
         }
         
     }
+    public bool InstantiateWeapon(WeaponData data)
+    {
+        if (equipmentInHolder.Count > 2) return false;
+        GameObject temp = Instantiate(data.weaponPrefab, transform);
+        equipmentInHolder.Add(temp.GetComponent<GunManager>());
+        return true;
+    }
+    public bool InstantiateEquipment(ThrowablesData data)
+    {
+        if (deployablesInHolder.Count > 2) return false;
+        GameObject temp = Instantiate(data.throwablesPrefab, transform);
+        deployablesInHolder.Add(temp.GetComponent<ThrowablesManager>());
+        return true;
+    }
 }

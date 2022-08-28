@@ -35,4 +35,8 @@ public class LoadoutMenu : MonoBehaviour
         }
         selectionMenu.SetActive(false);
     }
+    public void AssignPlayerWeapon()
+    {
+
+    }
 }

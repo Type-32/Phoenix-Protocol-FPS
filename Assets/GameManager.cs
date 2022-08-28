@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public GameObject playerPrefab;
+    //public GameObject playerHolder;
+    public List<GameObject> playerList = new List<GameObject>();
     private UIManager ui;
     public enum Gamemode
     {
@@ -100,5 +103,16 @@ public class GameManager : MonoBehaviour
             gameStarted = true;
             Debug.Log("Game is Starting... ");
         }
+    }
+    public void SpawnPlayer(Transform spawnPosition)
+    {
+        GameObject temp = Instantiate(playerPrefab, Vector3.zero, spawnPosition.rotation);
+        temp.transform.position = spawnPosition.position;
+        playerList.Add(temp);
+    }
+    public void RemovePlayer(GameObject player)
+    {
+        playerList.Remove(player);
+        Destroy(player);
     }
 }
