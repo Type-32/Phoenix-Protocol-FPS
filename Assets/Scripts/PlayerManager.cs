@@ -112,8 +112,16 @@ public class PlayerManager : MonoBehaviour
             {
                 if(hasArmor) sfx.InvokeArmorDamagedAudio();
                 hasArmor = false;
-                stats.armor = 0f;
-                stats.health -= amount;
+                if(stats.armor - amount < 0)
+                {
+                    float temp = stats.armor - amount;
+                    stats.armor = 0f;
+                    stats.health += temp;
+                }
+                else
+                {
+                    stats.armor = 0f;
+                }
                 playerHurtEffect.weight = 1f;
             }
             else
