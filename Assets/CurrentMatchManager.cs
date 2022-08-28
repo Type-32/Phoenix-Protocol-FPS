@@ -16,4 +16,9 @@ public class CurrentMatchManager : MonoBehaviour
     {
         
     }
+    public void PlayerSpawnDistribution()
+    {
+
+    }
+
 }

@@ -33,6 +33,10 @@ public class UIManager : MonoBehaviour
     public LoadoutMenu loadoutMenu;
 
     [Space]
+    [Header("RespawnUI")]
+    public RespawningUI respawnUI;
+
+    [Space]
     [Header("Options Elements")]
     public GameObject optionsUI;
     public GameObject deathMenu;

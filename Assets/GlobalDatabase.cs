@@ -6,10 +6,11 @@ public class GlobalDatabase : MonoBehaviour
 {
     
     public List<WeaponData> allWeaponDatas = new List<WeaponData>();
-    public static GlobalDatabase globalDatabase;
+    public static GlobalDatabase singleton;
+    public CurrentMatchManager matchManager;
     private void Awake()
     {
-        globalDatabase = this;
+        singleton = this;
+        matchManager = FindObjectOfType<CurrentMatchManager>();
     }
-
 }

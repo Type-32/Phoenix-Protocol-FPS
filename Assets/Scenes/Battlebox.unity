@@ -5133,6 +5133,7 @@ MonoBehaviour:
   inventory: {fileID: 0}
   loadout: {fileID: 1863946861}
   loadoutMenu: {fileID: 1863946863}
+  respawnUI: {fileID: 0}
   optionsUI: {fileID: 457643523}
   deathMenu: {fileID: 1216566523}
   mouseSensitivitySlider: {fileID: 0}
@@ -7742,7 +7743,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f67e5a6188afc244c8dba08db0959a30, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8658,6 +8659,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 853664210}
+  - component: {fileID: 853664211}
   m_Layer: 5
   m_Name: RespawnUI
   m_TagString: Untagged
@@ -8688,6 +8690,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &853664211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853664209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77edd3ac0aa84ef40af70dabbf3c8076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnButton: {fileID: 1127222477}
+  redeployButton: {fileID: 701190447}
 --- !u!1 &854433671
 GameObject:
   m_ObjectHideFlags: 0
@@ -13052,7 +13068,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f67e5a6188afc244c8dba08db0959a30, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13853,6 +13869,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: edce6c1336ad7144da0ab37051831c80, type: 2}
   - {fileID: 11400000, guid: 7f49a863aad779340afcc27c226aa5a3, type: 2}
   - {fileID: 11400000, guid: e5e88d2db5a0b5a4990ad3155c28b75c, type: 2}
+  matchManager: {fileID: 0}
 --- !u!4 &1266322256
 Transform:
   m_ObjectHideFlags: 0

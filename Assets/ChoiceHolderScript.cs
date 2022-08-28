@@ -16,9 +16,9 @@ public class ChoiceHolderScript : MonoBehaviour
     }
     public void InstantiateAllChoiceSlots(int index)
     {
-        for(int i = 0; i < GlobalDatabase.globalDatabase.allWeaponDatas.Count; i++)
+        for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
-            InstantiateChoiceSlot(GlobalDatabase.globalDatabase.allWeaponDatas[i], index);
+            InstantiateChoiceSlot(GlobalDatabase.singleton.allWeaponDatas[i], index);
         }
     }
     public void ClearChoiceSlot()

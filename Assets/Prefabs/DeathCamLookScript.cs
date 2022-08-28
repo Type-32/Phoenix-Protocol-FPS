@@ -34,7 +34,7 @@ public class DeathCamLookScript : MonoBehaviour
             temp = 0f;
             respawnDelay--;
         }
-        if(Input.GetKeyDown("f")) RespawnPlayer();
+        //if(Input.GetKeyDown("f")) RespawnPlayer();
     }
     public void RespawnPlayer()
     {
