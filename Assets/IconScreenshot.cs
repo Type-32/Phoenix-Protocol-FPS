@@ -37,12 +37,12 @@ public class IconScreenshot : MonoBehaviour
             yield return null;
             obj.gameObject.SetActive(false);
 
-            Sprite s = AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/{pathFolder}/{data.weaponName}_Icon.png");
+            /*Sprite s = AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/{pathFolder}/{data.weaponName}_Icon.png");  Commented out for Game Building
             if (s != null)
             {
                 data.weaponIcon = s;
-                EditorUtility.SetDirty(data);
-            }
+                EditorUtility.SetDirty(data);   Commented out for Game Building
+            }*/
             yield return null;
         }
     }
@@ -63,6 +63,7 @@ public class IconScreenshot : MonoBehaviour
         cam.targetTexture = null;
         RenderTexture.active = null;
 
+        /* Commented out for Game Build
         if (Application.isEditor)
         {
             DestroyImmediate(rt);
@@ -71,11 +72,12 @@ public class IconScreenshot : MonoBehaviour
         {
             Destroy(rt);
         }
+        */
 
         byte[] bytes = screenShot.EncodeToPNG();
         System.IO.File.WriteAllBytes(fullPath, bytes);
 #if UNITY_EDITOR
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
 #endif
 
     }//
