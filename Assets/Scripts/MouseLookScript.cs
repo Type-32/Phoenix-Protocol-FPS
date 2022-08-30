@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MouseLookScript : MonoBehaviour
 {
+
     public PlayerManager player;
     private Vector2 MouseInput;
     private float mouseX;

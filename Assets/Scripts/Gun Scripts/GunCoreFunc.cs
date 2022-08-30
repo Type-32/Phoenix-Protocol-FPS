@@ -19,12 +19,19 @@ public class GunCoreFunc : MonoBehaviour
 
     private void Start()
     {
+        recoilScript = FindObjectOfType<Recoil>();
+        SightFOVInitialize();
+        FiremodeInitialize();
+    }
+    void SightFOVInitialize()
+    {
         originFOV = gun.player.stats.cameraFieldOfView;
         originMultiplierFOV = originFOV / gun.stats.FOVMultiplier;
         sightFOV = originMultiplierFOV;
+    }
+    void FiremodeInitialize()
+    {
         if (gun.stats.weaponData.enableAutomatic) stats.fireMode = QuantityStatsHUD.FireMode.Automatic;
-        recoilScript = FindObjectOfType<Recoil>();
-
         if (stats.weaponData.enableAutomatic) fmList.Add(QuantityStatsHUD.FireMode.Automatic);
         if (stats.weaponData.enableBurst) fmList.Add(QuantityStatsHUD.FireMode.Burst);
         if (stats.weaponData.enableSingle) fmList.Add(QuantityStatsHUD.FireMode.Single);
@@ -34,33 +41,28 @@ public class GunCoreFunc : MonoBehaviour
             fmList.Add(QuantityStatsHUD.FireMode.SniperSingle);
         }
     }
-    void Awake()
-    {
-        //originFOV = gun.fpsCam.GetComponent<Camera>().fieldOfView;
-        //originMultiplierFOV = originFOV / gun.stats.FOVMultiplier;
-        //sightFOV = originMultiplierFOV;
-    }
-
-    private void OnEnable()
+    void StateInitalize()
     {
         gun.stats.isReloading = false;
         gun.animate.animate.SetBool("isReloading", false);
         gun.animate.animate.SetBool("isAiming", false);
         gun.animate.animate.SetBool("isSprinting", false);
-        //gun.animate.animate.SetBool("isSliding", false);
+    }
+    private void OnEnable()
+    {
+        StateInitalize();
     }
 
     void Update()
     {
+        //if (!IsOwner) return;
         if (!gun.stats.gunInteractionEnabled) return;
 
         #region Firemodes
         //Switching Firemodes
         if (Input.GetKeyDown("b"))
         {
-            firemodeIndex++;
-            if (firemodeIndex >= fmList.Count) firemodeIndex = 0;
-            stats.fireMode = fmList[firemodeIndex];
+            ChangeFiremode();
         }
         #endregion
 
@@ -68,20 +70,18 @@ public class GunCoreFunc : MonoBehaviour
         #region GetGunPickup
         if (Input.GetKeyDown("f") && !gun.stats.isAttaching)
         {
-            gun.GetPickupsForGun();
-            if(gun.holder.equipmentInHolder.Count >= 2) gun.PickGun();
+            PickingGunUp();
         }
         #endregion
 
         #region AimingMechanics
         if (gun.stats.isAiming)
         {
-            if(gun.stats.selectedSightIndex != 0) gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, sightFOV, gun.stats.aimSpeed * Time.deltaTime);
-            else gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, originMultiplierFOV, gun.stats.aimSpeed * Time.deltaTime);
+            EnterAiming(true);
         }
         else
         {
-            gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, originFOV, gun.stats.aimSpeed * Time.deltaTime);
+            EnterAiming(false);
         }
         #endregion
 
@@ -106,33 +106,77 @@ public class GunCoreFunc : MonoBehaviour
         {
             if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
             {
-                nextTimeToFire = Time.time + 1f / gun.stats.fireRate;
-                Shoot();
+                ShootUnderRestriction();
             }
         }else if (stats.fireMode == QuantityStatsHUD.FireMode.SniperSingle)
         {
-            if(stats.fireMode != QuantityStatsHUD.FireMode.SniperSingle) stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
-            if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
-            if (Input.GetButtonDown("Fire1") && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
-            {
-                Shoot();
-                timePassedUntillNextShot = 0f;
-            }
-        }else if(stats.fireMode == QuantityStatsHUD.FireMode.Single)
+            ShootWithSniperSingle();
+        }
+        else if(stats.fireMode == QuantityStatsHUD.FireMode.Single)
         {
             if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
             {
-                nextTimeToFire = Time.time + 1f / gun.stats.fireRate;
-                Shoot();
+                ShootUnderRestriction();
             }
         }
         #endregion
+    }
+    private void RequestShootServerRpc(float range, float damage)
+    {
+        FireClientRpc(range, damage);
+    }
+
+    private void FireClientRpc(float range, float damage)
+    {
+        Shoot(range, damage);
+    }
+
+    void ShootUnderRestriction()
+    {
+        nextTimeToFire = Time.time + 1f / gun.stats.fireRate;
+        Shoot(gun.stats.range, gun.stats.damage);
+        //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
+    }
+    void ShootWithSniperSingle()
+    {
+        if (stats.fireMode != QuantityStatsHUD.FireMode.SniperSingle) stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
+        if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
+        if (Input.GetButtonDown("Fire1") && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+        {
+            Shoot(gun.stats.range, gun.stats.damage);
+            //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
+            timePassedUntillNextShot = 0f;
+        }
+    }
+    void EnterAiming(bool check)
+    {
+        if (check)
+        {
+            if (gun.stats.selectedSightIndex != 0) gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, sightFOV, gun.stats.aimSpeed * Time.deltaTime);
+            else gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, originMultiplierFOV, gun.stats.aimSpeed * Time.deltaTime);
+        }
+        else
+        {
+            gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, originFOV, gun.stats.aimSpeed * Time.deltaTime);
+        }
+    }
+    void ChangeFiremode()
+    {
+        firemodeIndex++;
+        if (firemodeIndex >= fmList.Count) firemodeIndex = 0;
+        stats.fireMode = fmList[firemodeIndex];
+    }
+    void PickingGunUp()
+    {
+        gun.GetPickupsForGun();
+        if (gun.holder.equipmentInHolder.Count >= 2) gun.PickGun();
     }
     public void TriggerCameraRecoil(float verticalRecoil, float horizontalRecoil, float sphericalShake, float positionRecoilRetaliation, float positionRecoilVertical, float positionTransitionalSnappiness, float positionRecoilReturnSpeed, float transitionalSnappiness, float recoilReturnSpeed)
     {
         gun.camRecoil.RecoilFire(verticalRecoil, horizontalRecoil, sphericalShake, positionRecoilRetaliation, positionRecoilVertical, positionTransitionalSnappiness, positionRecoilReturnSpeed, transitionalSnappiness, recoilReturnSpeed);
     }
-    void Shoot()
+
+    void Shoot(float range, float damage)
     {
         if(gun.stats.ammo <= 0 || stats.isSprinting) return;
         if(gun.shellEject != null){
@@ -150,13 +194,13 @@ public class GunCoreFunc : MonoBehaviour
         gun.stats.ammo--;
         gun.muzzleFire.Play();
         RaycastHit hit;
-        if(Physics.Raycast(gun.fpsCam.transform.position, gun.fpsCam.transform.forward, out hit, gun.stats.range)){
+        if(Physics.Raycast(gun.fpsCam.transform.position, gun.fpsCam.transform.forward, out hit, range)){
             bool flag = false;
             Debug.Log(hit.transform.name);
             PlayerManager player = hit.transform.GetComponent<PlayerManager>();
             if (player != null && player != gun.player)
             {
-                player.TakeDamageFromPlayer(gun.stats.damage, false);
+                player.TakeDamageFromPlayer(damage, false);
 
             }
             //Target target = hit.transform.GetComponent<Target>();

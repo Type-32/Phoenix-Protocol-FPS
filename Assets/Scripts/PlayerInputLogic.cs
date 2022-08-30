@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerInputLogic : MonoBehaviour
+public class PlayerInputLogic : NetworkBehaviour
 {
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) Destroy(this);
+    }
     public PlayerManager player;
     public PlayerStats stats;
     public enum MovementState

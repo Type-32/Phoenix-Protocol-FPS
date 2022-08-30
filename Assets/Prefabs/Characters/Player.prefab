@@ -521,7 +521,7 @@ MonoBehaviour:
   crouchSpeed: 2.4
   jumpForce: 0.7
   gravity: -10
-  groundDist: 0.3
+  groundDist: 0.29
   crouchYScale: 0
   toggleAiming: 0
   invertedMouse: 0
@@ -581,13 +581,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.3
-  m_Radius: 0.35
+  m_Height: 1.4
+  m_Radius: 0.32
   m_SlopeLimit: 40
   m_StepOffset: 0.4
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.99, z: 0.01}
+  m_Center: {x: 0, y: 1.03, z: 0.04}
 --- !u!114 &4497721760704412606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -886,7 +886,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6481941744596831354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.536, z: 0}
+  m_LocalPosition: {x: 0, y: 0.536, z: 0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1387,7 +1387,7 @@ Camera:
   m_Depth: 5
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 31
+    m_Bits: 159
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1482,8 +1482,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9008259371746491072}
   m_LocalRotation: {x: 0.07097517, y: 0, z: 0, w: 0.9974781}
-  m_LocalPosition: {x: -0, y: 0.937, z: -0.017}
-  m_LocalScale: {x: 0.4, y: 0.36635056, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0.8411, z: -0.0306}
+  m_LocalScale: {x: 0.4, y: 0.26953903, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3903453720574524760}
