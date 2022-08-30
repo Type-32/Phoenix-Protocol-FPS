@@ -60,13 +60,11 @@ public class MainMenuUIManager : MonoBehaviour
     #region Multiplayer Menus
     public void OpenMultiplayerMenu()
     {
-        CloseMainMenu();
         openedMultiplayerMenu = true;
         multiplayerMenu.SetActive(openedMultiplayerMenu);
     }
     public void CloseMultiplayerMenu()
     {
-        OpenMainMenu();
         openedMultiplayerMenu = false;
         multiplayerMenu.SetActive(openedMultiplayerMenu);
     }
@@ -86,13 +84,11 @@ public class MainMenuUIManager : MonoBehaviour
     #region Room Menus
     public void OpenRoomMenu()
     {
-        CloseMultiplayerMenu();
         openedRoomMenu = true;
         roomMenu.SetActive(openedRoomMenu);
     }
     public void CloseRoomMenu()
     {
-        OpenMultiplayerMenu();
         openedRoomMenu = false;
         roomMenu.SetActive(openedRoomMenu);
     }

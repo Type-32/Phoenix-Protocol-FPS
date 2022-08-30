@@ -45,5 +45,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connected to Room");
         MainMenuUIManager.instance.OpenRoomMenu();
+        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MainMenuUIManager.instance.CloseMainMenu();
     }
 }
