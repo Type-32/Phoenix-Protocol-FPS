@@ -38,6 +38,7 @@ public class MainMenuUIManager : MonoBehaviour
         JoiningMasterLobby(false);
         SetCreateRoomInputField(false);
         SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");
+        MainMenuUIManager.instance.SetInvalidInputFieldText(" ", Color.red);
         CloseRoomMenu();
         CloseMultiplayerMenu();
         OpenMainMenu();
@@ -140,9 +141,12 @@ public class MainMenuUIManager : MonoBehaviour
         else return connectionIndicator.text;
         return null;
     }
-    public string RoomInputFieldText(string content)
+    public void RoomInputFieldText(string content)
     {
-        if(content != null) roomInputField.text = content;
+        roomInputField.text = content;
+    }
+    public string GetRoomInputFieldText()
+    {
         return roomInputField.text;
     }
     public void SetInvalidInputFieldText(string content, Color color)

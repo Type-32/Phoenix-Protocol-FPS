@@ -25,14 +25,16 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public void CreateRoom()
     {
-        if (string.IsNullOrEmpty(MainMenuUIManager.instance.RoomInputFieldText(null)))
+        if (string.IsNullOrEmpty(MainMenuUIManager.instance.GetRoomInputFieldText()))
         {
             Debug.LogWarning("Cannot Create a room with a null Input Field! ");
             MainMenuUIManager.instance.SetInvalidInputFieldText("Invalid Name: Input Field Cannot be Null", Color.red);
             MainMenuUIManager.instance.RoomInputFieldText("InvalidName");
             return;
         }
-        PhotonNetwork.CreateRoom(MainMenuUIManager.instance.RoomInputFieldText(null));
+        PhotonNetwork.CreateRoom(MainMenuUIManager.instance.GetRoomInputFieldText());
+        Debug.Log("Trying to create a room with the name " + MainMenuUIManager.instance.GetRoomInputFieldText());
+        MainMenuUIManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
