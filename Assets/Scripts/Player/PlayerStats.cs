@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    public PlayerControllerManager player;
     [Header("Player Attributes")]
     public string playerName = "";
     public int xpLevel = 1;
@@ -74,6 +75,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        if (!player.pv.IsMine) return;
         if (stress < 0) stress = 0f;
         if (health < 0) health = 0f;
         if (armor < 0) armor = 0f;

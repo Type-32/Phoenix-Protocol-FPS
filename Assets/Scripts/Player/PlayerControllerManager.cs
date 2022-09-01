@@ -40,10 +40,15 @@ public class PlayerControllerManager : MonoBehaviour
     [Header("Volume Effects")]
     [SerializeField] Volume playerVolumeEffect, playerHurtEffect, armorHurtEffect;
 
+    [Space]
+    [Header("Multiplayer")]
+    public PhotonView pv;
+
     private bool hasArmor = false;
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
         ui = FindObjectOfType<UIManager>();
         //if(playerHeadMat != null) gameObject.GetComponent<MeshRenderer>playerHeadMat
     }
@@ -59,6 +64,7 @@ public class PlayerControllerManager : MonoBehaviour
     }
     private void Update()
     {
+        if (!pv.IsMine) return;
         if (transform.position.y < -35 || Input.GetKeyDown("i")) TakeDamageFromPlayer(20, false);
         DerivePlayerStatsToHUD();
         PlayerGUIReference();

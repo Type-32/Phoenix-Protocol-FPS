@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class MouseLookScript : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class MouseLookScript : MonoBehaviour
 
     void Update()
     {
+        if (!player.pv.IsMine) return;
         CameraInput();
         CameraMovement();
     }

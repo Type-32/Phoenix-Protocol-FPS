@@ -31,15 +31,9 @@ public class PlayerSounds : MonoBehaviour
     private float footstepTimer = 0f;
     private float GetCurrentOffset => stats.isCrouching ? stats.baseStepSpeed * stats.crouchStepMultiplier : stats.isSprinting ? stats.baseStepSpeed * stats.sprintStepMultiplier : stats.baseStepSpeed;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
+        if (!player.pv.IsMine) return;
         FootstepHandler();
     }
     

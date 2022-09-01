@@ -20,21 +20,15 @@ public class PlayerControls : MonoBehaviour
     private MouseLookScript mouseLook;
     [SerializeField] Vector3 velocity;
     InteractionIndicatorScript interactionIndicator;
-
-    [Space]
-    [Header("Multiplayer")]
-    [SerializeField] PhotonView pv;
-
     float x,z;
     private void Awake()
     {
-        pv = GetComponent<PhotonView>();
         normalFOV = player.stats.cameraFieldOfView;
         sprintFOV = player.stats.sprintFOVMultiplier * player.stats.cameraFieldOfView;
     }
     private void Start()
     {
-        if (!pv.IsMine)
+        if (!player.pv.IsMine)
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
         }
@@ -50,15 +44,16 @@ public class PlayerControls : MonoBehaviour
     }
     void Update()
     {
-        if (!pv.IsMine) return;
+
+        if (!player.pv.IsMine) return;
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
         Logics();
 
         GroundCheck();
+        Gravity();
         Movement();
         CameraFOV();
-        Gravity();
         InteractIndicatorCheck();
         KeybindedActions();
     }
