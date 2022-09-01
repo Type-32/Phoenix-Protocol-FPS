@@ -7,7 +7,7 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [Header("Script and Function References")]
-    public PlayerManager player;
+    [SerializeField] PlayerControllerManager player;
     public Animator anim;
     public GameObject gui;
     public GameObject hud;

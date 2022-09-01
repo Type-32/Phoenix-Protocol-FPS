@@ -5,7 +5,7 @@ using UnityEngine;
 public class GunManager : MonoBehaviour
 {
     [Header("Scripts")]
-    public PlayerManager player;
+    public PlayerControllerManager player;
     public EquipmentHolder holder;
     public GunCoreFunc core;
     public GunStats stats;
@@ -45,13 +45,13 @@ public class GunManager : MonoBehaviour
     private void Awake()
     {
         fpsCam = FindObjectOfType<MouseLookScript>().gameObject;
-        player = FindObjectOfType<PlayerManager>();
+        player = FindObjectOfType<PlayerControllerManager>();
         camRecoil = FindObjectOfType<Recoil>();
     }
     void Start()
     {
         fpsCam = FindObjectOfType<MouseLookScript>().gameObject;
-        player = FindObjectOfType<PlayerManager>();
+        player = FindObjectOfType<PlayerControllerManager>();
         camRecoil = FindObjectOfType<Recoil>();
         //gadgetFunc = FindObjectOfType<GadgetUsageScript>();
         holder = FindObjectOfType<EquipmentHolder>();

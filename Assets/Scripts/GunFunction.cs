@@ -5,7 +5,7 @@ using UnityEngine;
 public class GunFunction : MonoBehaviour
 {
     public ItemManager item;
-    public PlayerManager player;
+    public PlayerControllerManager player;
     private float aimAlpha = 0f;
     private float fireAlpha = 0f;
     private float runAlpha = 0f;
@@ -16,7 +16,7 @@ public class GunFunction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<PlayerManager>();
+        player = FindObjectOfType<PlayerControllerManager>();
         ammo = item.stats.itemData.maxAmmoPerMag;
         maxAmmo = item.stats.itemData.maxAmmoPerMag;
         magCount = item.stats.itemData.magazineCount;

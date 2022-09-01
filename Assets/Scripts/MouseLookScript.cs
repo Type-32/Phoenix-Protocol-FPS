@@ -5,12 +5,12 @@ using UnityEngine;
 public class MouseLookScript : MonoBehaviour
 {
 
-    public PlayerManager player;
+    [SerializeField] PlayerControllerManager player;
     private Vector2 MouseInput;
     private float mouseX;
     private float mouseY;
     public float mouseSensitivityValve;
-    public Camera itemLayerCamera;
+    [SerializeField] Camera itemLayerCamera;
     float xRot = 0f;
 
     void Start()
@@ -24,6 +24,11 @@ public class MouseLookScript : MonoBehaviour
 
     void Update()
     {
+        CameraInput();
+        CameraMovement();
+    }
+    void CameraInput()
+    {
         if (player.stats.mouseMovementEnabled)
         {
             mouseX = Input.GetAxis("Mouse X") * mouseSensitivityValve * Time.deltaTime;
@@ -31,7 +36,9 @@ public class MouseLookScript : MonoBehaviour
         }
         xRot -= mouseY;
         xRot = Mathf.Clamp(xRot, player.stats.ClampCamRotX, player.stats.ClampCamRotZ);
-
+    }
+    void CameraMovement()
+    {
         if (player.stats.mouseMovementEnabled)
         {
             transform.localRotation = Quaternion.Euler(xRot, 0f, 0f);
@@ -39,8 +46,7 @@ public class MouseLookScript : MonoBehaviour
             //itemLayerCamera.transform.localRotation = transform.localRotation;
         }
     }
-
-    private void CameraRotationClamp(float y, float x, float z)
+    void CameraRotationClamp(float y, float x, float z)
     {
         mouseY = Mathf.Clamp(y, x, z);
     }

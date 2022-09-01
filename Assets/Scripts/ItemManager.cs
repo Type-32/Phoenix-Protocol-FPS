@@ -6,10 +6,10 @@ public class ItemManager : MonoBehaviour
 {
     public ItemAnimation anim;
     public ItemStats stats;
-    public PlayerManager player;
+    public PlayerControllerManager player;
     private void Start()
     {
-        player = FindObjectOfType<PlayerManager>();
+        player = FindObjectOfType<PlayerControllerManager>();
     }
     // Start is called before the first frame update
 

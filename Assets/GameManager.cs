@@ -46,10 +46,10 @@ public class GameManager : MonoBehaviour
     };
     public struct DZTeamsDataPackage
     {
-        public List<PlayerManager> playersInTeam;
+        public List<PlayerControllerManager> playersInTeam;
         [Range(1, 4)] public int maxPlayerCountPerTeam;
         public int teamIndex;
-        bool AddPlayerToTeam(PlayerManager plr)
+        bool AddPlayerToTeam(PlayerControllerManager plr)
         {
             if(maxPlayerCountPerTeam >= playersInTeam.Count)
             {
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         public FFADataPackage freeForAllData;
         public DZDataPackage dropZonesData;
         public ZombiesDataPackage zombiesData;
-        public List<PlayerManager> matchPlayers;
+        public List<PlayerControllerManager> matchPlayers;
     };
     // Start is called before the first frame update
     void Awake()

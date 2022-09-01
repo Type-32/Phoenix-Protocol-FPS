@@ -197,7 +197,7 @@ public class GunCoreFunc : MonoBehaviour
         if(Physics.Raycast(gun.fpsCam.transform.position, gun.fpsCam.transform.forward, out hit, range)){
             bool flag = false;
             Debug.Log(hit.transform.name);
-            PlayerManager player = hit.transform.GetComponent<PlayerManager>();
+            PlayerControllerManager player = hit.transform.GetComponent<PlayerControllerManager>();
             if (player != null && player != gun.player)
             {
                 player.TakeDamageFromPlayer(damage, false);
@@ -235,7 +235,7 @@ public class GunCoreFunc : MonoBehaviour
             if (!flag)
             {
                 GameObject temp = Instantiate(gun.bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
-                if (hit.transform.GetComponent<PlayerManager>() == null)
+                if (hit.transform.GetComponent<PlayerControllerManager>() == null)
                 {
                     temp.GetComponent<Renderer>().material = hit.transform.GetComponent<Renderer>().material;
                     

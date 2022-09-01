@@ -9,7 +9,7 @@ public class Bobbing : MonoBehaviour
     public float walkBobSpeed = 14f;
     public float sprintBobSpeed = 16f;
     public float returnDuration = 5f;
-    public PlayerManager player;
+    public PlayerControllerManager player;
 
     private float defaultYPos = 0f;
     private float defaultXPos = 0f;
