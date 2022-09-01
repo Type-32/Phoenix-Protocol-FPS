@@ -33,7 +33,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Joined Lobby");
         MainMenuUIManager.instance.JoiningMasterLobby(true);
-        if (string.IsNullOrEmpty(MainMenuUIManager.instance.GetPlayerFieldName())) PhotonNetwork.NickName = "Player " + Random.Range(1000, 9999).ToString("0000");
+        if (MainMenuUIManager.instance.GetPlayerFieldName() == "") PhotonNetwork.NickName = "Player " + Random.Range(1000, 9999).ToString("0000");
         else PhotonNetwork.NickName = MainMenuUIManager.instance.GetPlayerFieldName();
     }
     public void CreateRoom()
@@ -124,5 +124,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void StartGame()
     {
         PhotonNetwork.LoadLevel(1);
+    }
+    public void SetPlayerName()
+    {
+        PhotonNetwork.NickName = MainMenuUIManager.instance.GetPlayerFieldName();
     }
 }

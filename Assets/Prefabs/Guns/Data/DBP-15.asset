@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec236da174a09f2468714c004e0f7581, type: 3}
   m_Name: DBP-15
   m_EditorClassIdentifier: 
+  itemName: DBP-15
+  itemDescription: Assault Rifle
+  itemIcon: {fileID: 21300000, guid: 6297da1e72cf0fd4eb3a4d4ff3d4260b, type: 3}
+  equippedByDefault: 0
+  unlockingLevel: 1
+  requiresPurchase: 0
+  purchasePrice: 100
   weaponPrefab: {fileID: 6788626819295025767, guid: 68efe89b7a2114e11a88b23cd6ab6d20,
     type: 3}
-  weaponName: DBP-15
-  weaponDescription: Double Barrel Plasma Blaster Rifle
   weaponType: 0
-  weaponIcon: {fileID: 21300000, guid: 6297da1e72cf0fd4eb3a4d4ff3d4260b, type: 3}
   weaponProjectile: {fileID: 0}
   maxAmmoPerMag: 40
   magazineCount: 4
@@ -39,9 +43,6 @@ MonoBehaviour:
   enableAutomatic: 1
   enableBurst: 0
   enableSingle: 1
-  unlockingLevel: 1
-  requiresPurchase: 0
-  purchasePrice: 100
   bassClips:
   - {fileID: 8300000, guid: 190fefe7f16ec45fc91a231f93167679, type: 3}
   fireClips:

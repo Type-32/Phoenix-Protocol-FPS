@@ -12,8 +12,8 @@ public class LoadoutSlotHolder : MonoBehaviour
     public void SetLoadoutSlotInfo(WeaponData data, int index)
     {
         slotWeaponData[index] = data;
-        slotIcons[index].sprite = data.weaponIcon;
-        slotNames[index].text = (index == 0 ? "PRIMARY - " : "SECONDARY - ") + data.weaponName;
+        slotIcons[index].sprite = data.itemIcon;
+        slotNames[index].text = (index == 0 ? "PRIMARY - " : "SECONDARY - ") + data.itemName;
     }
     public void RefreshLoadoutSlotInfo()
     {

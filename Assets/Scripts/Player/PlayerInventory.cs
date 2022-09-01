@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public PlayerControllerManager player;
+    [SerializeField] PlayerControllerManager player;
     public int space = 8;
     public List<ItemData> items = new List<ItemData>();
     public delegate void OnItemChanged();

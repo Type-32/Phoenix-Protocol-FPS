@@ -17,7 +17,7 @@ public class GunManager : MonoBehaviour
 
     [Space]
     [Header("References")]
-    public GameObject fpsCam;
+    public MouseLookScript fpsCam;
     //public GadgetUsageScript gadgetFunc;
     public ParticleSystem muzzleFire;
     public GameObject shellEject;
@@ -40,17 +40,17 @@ public class GunManager : MonoBehaviour
 
     private void OnEnable()
     {
-        fpsCam = FindObjectOfType<MouseLookScript>().gameObject;
+        fpsCam = FindObjectOfType<MouseLookScript>();
     }
     private void Awake()
     {
-        fpsCam = FindObjectOfType<MouseLookScript>().gameObject;
+        fpsCam = FindObjectOfType<MouseLookScript>();
         player = FindObjectOfType<PlayerControllerManager>();
         camRecoil = FindObjectOfType<Recoil>();
     }
     void Start()
     {
-        fpsCam = FindObjectOfType<MouseLookScript>().gameObject;
+        //fpsCam = FindObjectOfType<MouseLookScript>();
         player = FindObjectOfType<PlayerControllerManager>();
         camRecoil = FindObjectOfType<Recoil>();
         //gadgetFunc = FindObjectOfType<GadgetUsageScript>();

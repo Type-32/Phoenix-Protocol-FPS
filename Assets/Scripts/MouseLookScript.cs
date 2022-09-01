@@ -11,11 +11,13 @@ public class MouseLookScript : MonoBehaviour
     private float mouseY;
     public float mouseSensitivityValve;
     [SerializeField] Camera itemLayerCamera;
+    public Camera playerMainCamera;
+    [SerializeField] GameObject cameraHolder;
     float xRot = 0f;
 
     void Start()
     {
-        transform.GetComponent<Camera>().fieldOfView = player.stats.cameraFieldOfView;
+        playerMainCamera.fieldOfView = player.stats.cameraFieldOfView;
         Cursor.lockState = CursorLockMode.Locked;
         mouseSensitivityValve = player.stats.mouseSensitivity;
         mouseX = 0f;
@@ -31,17 +33,18 @@ public class MouseLookScript : MonoBehaviour
     {
         if (player.stats.mouseMovementEnabled)
         {
-            mouseX = Input.GetAxis("Mouse X") * mouseSensitivityValve * Time.deltaTime;
-            mouseY = Input.GetAxis("Mouse Y") * mouseSensitivityValve * Time.deltaTime;
+            mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivityValve * Time.deltaTime;
+            mouseY += Input.GetAxisRaw("Mouse Y") * mouseSensitivityValve * Time.deltaTime;
         }
-        xRot -= mouseY;
-        xRot = Mathf.Clamp(xRot, player.stats.ClampCamRotX, player.stats.ClampCamRotZ);
+        mouseY = Mathf.Clamp(mouseY, player.stats.ClampCamRotX, player.stats.ClampCamRotZ);
+        //xRot -= mouseY;
+        //xRot = Mathf.Clamp(xRot, player.stats.ClampCamRotX, player.stats.ClampCamRotZ);
     }
     void CameraMovement()
     {
         if (player.stats.mouseMovementEnabled)
         {
-            transform.localRotation = Quaternion.Euler(xRot, 0f, 0f);
+            transform.localRotation = Quaternion.Euler(-mouseY, 0, 0);
             player.transform.Rotate(Vector3.up * mouseX);
             //itemLayerCamera.transform.localRotation = transform.localRotation;
         }

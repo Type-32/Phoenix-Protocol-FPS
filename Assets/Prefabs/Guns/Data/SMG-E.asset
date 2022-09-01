@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec236da174a09f2468714c004e0f7581, type: 3}
   m_Name: SMG-E
   m_EditorClassIdentifier: 
+  itemName: SMG-E
+  itemDescription: SMG
+  itemIcon: {fileID: 21300000, guid: 917d7241937abc74abff5fe03f948a31, type: 3}
+  equippedByDefault: 0
+  unlockingLevel: 1
+  requiresPurchase: 0
+  purchasePrice: 100
   weaponPrefab: {fileID: 6788626819295025767, guid: a148d336cf1bd5b4e9d95428308d7ee3,
     type: 3}
-  weaponName: SMG-E
-  weaponDescription: Electric SMG
   weaponType: 0
-  weaponIcon: {fileID: 21300000, guid: 917d7241937abc74abff5fe03f948a31, type: 3}
   weaponProjectile: {fileID: 0}
   maxAmmoPerMag: 20
   magazineCount: 6
@@ -39,9 +43,6 @@ MonoBehaviour:
   enableAutomatic: 1
   enableBurst: 0
   enableSingle: 1
-  unlockingLevel: 1
-  requiresPurchase: 0
-  purchasePrice: 100
   bassClips:
   - {fileID: 8300000, guid: 664fd6f28989ae34bb13b18cfe09aa81, type: 3}
   fireClips:

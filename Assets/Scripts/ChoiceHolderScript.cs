@@ -11,7 +11,7 @@ public class ChoiceHolderScript : MonoBehaviour
     public void InstantiateChoiceSlot(WeaponData data, int index)
     {
         LoadoutSelectionSlot temp = Instantiate(slotPrefab, transform).GetComponent<LoadoutSelectionSlot>();
-        temp.SetSelectionInfo(data, index);
+        temp.SetWeaponSelectionInfo(data, index);
         slotScripts.Add(temp);
     }
     public void InstantiateAllChoiceSlots(int index)

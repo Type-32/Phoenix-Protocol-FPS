@@ -9,7 +9,7 @@ public class IconScreenshot : MonoBehaviour
     public string pathFolder;
 
     public List<GameObject> sceneObjects;
-    public List<WeaponData> dataObjects;
+    public List<ItemData> dataObjects;
 
     private void Awake()
     {
@@ -27,12 +27,12 @@ public class IconScreenshot : MonoBehaviour
         for (int i = 0; i < sceneObjects.Count; i++)
         {
             GameObject obj = sceneObjects[i];
-            WeaponData data = dataObjects[i];
+            ItemData data = dataObjects[i];
 
             obj.gameObject.SetActive(true);
             yield return null;
 
-            TakeShot($"{Application.dataPath}/{pathFolder}/{data.weaponName}_Icon.png");
+            TakeShot($"{Application.dataPath}/{pathFolder}/{data.itemName}_Icon.png");
 
             yield return null;
             obj.gameObject.SetActive(false);

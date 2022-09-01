@@ -87,7 +87,7 @@ public class EquipmentHolder : MonoBehaviour
         equipmentInHolder.Clear();
         for(int i = 0; i < transform.childCount; i++)
         {
-            if(transform.GetChild(i).gameObject.GetComponent<ItemManager>() != null)
+            if(transform.GetChild(i).gameObject.GetComponent<GunManager>() != null)
             {
                 equipmentInHolder.Add(transform.GetChild(i).GetComponent<GunManager>());
                 //uiManager.equipmentHUDColumnList[i].hasReference = true;

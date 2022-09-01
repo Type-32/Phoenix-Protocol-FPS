@@ -15,11 +15,11 @@ public class LoadoutSelectionSlot : MonoBehaviour
     {
         loadoutMenu = FindObjectOfType<LoadoutMenu>();
     }
-    public void SetSelectionInfo(WeaponData data, int index)
+    public void SetWeaponSelectionInfo(WeaponData data, int index)
     {
-        weaponName.text = data.weaponName;
+        weaponName.text = data.itemName;
         weaponType.text = data.weaponType.ToString();
-        weaponIcon.sprite = data.weaponIcon;
+        weaponIcon.sprite = data.itemIcon;
         weaponData = data;
         mode = index;
     }

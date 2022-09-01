@@ -4,13 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Weapon Data", menuName = "New Weapon Data", order = 1)]
-public class WeaponData : ScriptableObject
+public class WeaponData : ItemData
 {
     public GameObject weaponPrefab;
-    public string weaponName;
-    public string weaponDescription;
     public QuantityStatsHUD.WeaponType weaponType;
-    public Sprite weaponIcon;
     public GameObject weaponProjectile;
 
     [Space]
@@ -38,12 +35,6 @@ public class WeaponData : ScriptableObject
     public bool enableAutomatic = true;
     public bool enableBurst = true;
     public bool enableSingle = true;
-
-    [Space]
-    [Header("Inventorial Data")]
-    public int unlockingLevel = 1;
-    public bool requiresPurchase = false;
-    public int purchasePrice = 100;
 
     [Space]
     [Header("Audio Clips")]

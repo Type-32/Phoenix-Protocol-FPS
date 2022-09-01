@@ -152,12 +152,12 @@ public class GunCoreFunc : MonoBehaviour
     {
         if (check)
         {
-            if (gun.stats.selectedSightIndex != 0) gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, sightFOV, gun.stats.aimSpeed * Time.deltaTime);
-            else gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, originMultiplierFOV, gun.stats.aimSpeed * Time.deltaTime);
+            if (gun.stats.selectedSightIndex != 0) gun.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.fpsCam.playerMainCamera.fieldOfView, sightFOV, gun.stats.aimSpeed * Time.deltaTime);
+            else gun.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.fpsCam.playerMainCamera.fieldOfView, originMultiplierFOV, gun.stats.aimSpeed * Time.deltaTime);
         }
         else
         {
-            gun.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(gun.fpsCam.GetComponent<Camera>().fieldOfView, originFOV, gun.stats.aimSpeed * Time.deltaTime);
+            gun.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.fpsCam.playerMainCamera.fieldOfView, originFOV, gun.stats.aimSpeed * Time.deltaTime);
         }
     }
     void ChangeFiremode()

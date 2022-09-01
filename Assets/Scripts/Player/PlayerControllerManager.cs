@@ -26,7 +26,7 @@ public class PlayerControllerManager : MonoBehaviour
     [Header("References")]
     public CharacterController body;
     public CapsuleCollider capsuleCollider;
-    public GameObject fpsCam;
+    public MouseLookScript fpsCam;
     public GameObject deathCam;
     public Animator cameraAnim;
     public Recoil recoilScript;

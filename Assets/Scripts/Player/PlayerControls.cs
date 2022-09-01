@@ -107,7 +107,7 @@ public class PlayerControls : MonoBehaviour
     }
     void CameraFOV()
     {
-        player.fpsCam.GetComponent<Camera>().fieldOfView = player.stats.isSprinting ? Mathf.Lerp(player.fpsCam.GetComponent<Camera>().fieldOfView, sprintFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime) : player.fpsCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(player.fpsCam.GetComponent<Camera>().fieldOfView, normalFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime);
+        player.fpsCam.playerMainCamera.fieldOfView = player.stats.isSprinting ? Mathf.Lerp(player.fpsCam.playerMainCamera.fieldOfView, sprintFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime) : player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(player.fpsCam.playerMainCamera.fieldOfView, normalFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime);
     }
     void KeybindedActions()
     {
