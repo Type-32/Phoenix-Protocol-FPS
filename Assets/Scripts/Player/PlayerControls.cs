@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -20,16 +21,24 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] Vector3 velocity;
     InteractionIndicatorScript interactionIndicator;
 
+    [Space]
+    [Header("Multiplayer")]
+    [SerializeField] PhotonView pv;
+
     float x,z;
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
         normalFOV = player.stats.cameraFieldOfView;
         sprintFOV = player.stats.sprintFOVMultiplier * player.stats.cameraFieldOfView;
     }
     private void Start()
     {
+        if (!pv.IsMine)
+        {
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+        }
         mouseLook = player.fpsCam.GetComponent<MouseLookScript>();
-
         capsuleColliderInitHeight = player.capsuleCollider.height;
         capsuleColliderCrouchHeight = player.capsuleCollider.height / 2;
         cameraInitPos = player.fpsCam.transform.position;
@@ -41,6 +50,7 @@ public class PlayerControls : MonoBehaviour
     }
     void Update()
     {
+        if (!pv.IsMine) return;
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
         Logics();
