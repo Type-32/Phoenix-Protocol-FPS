@@ -9,17 +9,17 @@ public class GunUI : MonoBehaviour
     public UIManager ui;
     private QuantityStatsHUD.AmmoHUDStats temp;
     // Start is called before the first frame update
-    void Start()
-    {
-        ui = FindObjectOfType<UIManager>();
-    }
-    void Awake()
+    public void GunUIAwake()
     {
         ui = FindObjectOfType<UIManager>();
     }
 
     // Update is called once per frame
+    /*
     void Update()
+    {
+    }*/
+    public void UIFunctions()
     {
         temp.currentAmmo = gun.stats.ammo;
         temp.ammoPool = gun.stats.ammoPool;
@@ -34,6 +34,5 @@ public class GunUI : MonoBehaviour
         {
             gun.ui.ui.crosshair.SetActive(true);
         }
-        
     }
 }

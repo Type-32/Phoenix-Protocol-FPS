@@ -4,13 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Throwables Data", menuName = "New Throwables Data", order = 1)]
-public class ThrowablesData : ScriptableObject
+public class ThrowablesData : ItemData
 {
     public GameObject throwablesPrefab;
-    public string throwablesName;
-    public string throwablesDescription;
     public QuantityStatsHUD.WeaponType weaponType;
-    public Sprite throwablesIcon;
 
     [Space]
     [Header("Stats")]

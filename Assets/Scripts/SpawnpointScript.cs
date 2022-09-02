@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class SpawnpointScript : MonoBehaviour
 {
-    public SpawnpointData spData;
+    [SerializeField] GameObject visuals;
+    private void Awake()
+    {
+        visuals.SetActive(false);
+    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class GunCoreFunc : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class GunCoreFunc : MonoBehaviour
     [SerializeField] private int firemodeIndex = 0;
 
     private void Start()
+    {
+        CoreInitialize();
+    }
+    public void CoreInitialize()
     {
         recoilScript = FindObjectOfType<Recoil>();
         SightFOVInitialize();
@@ -56,25 +61,40 @@ public class GunCoreFunc : MonoBehaviour
     void Update()
     {
         //if (!IsOwner) return;
-        if (!gun.stats.gunInteractionEnabled) return;
+        
 
         #region Firemodes
         //Switching Firemodes
-        if (Input.GetKeyDown("b"))
-        {
-            ChangeFiremode();
-        }
         #endregion
 
-        if (!enableGunCoreFunc) return;
+        
         #region GetGunPickup
+        /*
         if (Input.GetKeyDown("f") && !gun.stats.isAttaching)
         {
             PickingGunUp();
-        }
+        }*/
         #endregion
 
         #region AimingMechanics
+        #endregion
+
+        #region DropWeapon
+        /*
+        if (Input.GetKeyDown("g")) {
+            SpawnPickup();
+        }*/
+        #endregion
+
+        #region ReloadMechanics
+        #endregion
+
+        #region GunShooting
+        //Shooting
+        #endregion
+    }
+    public void AimingMechanics()
+    {
         if (gun.stats.isAiming)
         {
             EnterAiming(true);
@@ -83,43 +103,24 @@ public class GunCoreFunc : MonoBehaviour
         {
             EnterAiming(false);
         }
-        #endregion
-
-        #region DropWeapon
-        if (Input.GetKeyDown("g")){
-            SpawnPickup();
-        }
-        #endregion
-
-        #region ReloadMechanics
-        if (gun.stats.isReloading) return;
-        if (!gun.stats.autoReload){
-            if(Input.GetKeyDown("r") && !gun.stats.isReloading) StartCoroutine(Reload());
-        }else{
-            if(gun.stats.ammo <= 0 && !gun.stats.isReloading) StartCoroutine(Reload());
-        }
-        #endregion
-
-        #region GunShooting
-        //Shooting
-        if (stats.fireMode == QuantityStatsHUD.FireMode.Automatic)
+    }
+    public void FiremodeSwitchMechanics()
+    {
+        if (Input.GetKeyDown("b"))
         {
-            if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
-            {
-                ShootUnderRestriction();
-            }
-        }else if (stats.fireMode == QuantityStatsHUD.FireMode.SniperSingle)
-        {
-            ShootWithSniperSingle();
+            ChangeFiremode();
         }
-        else if(stats.fireMode == QuantityStatsHUD.FireMode.Single)
+    }
+    public void ReloadMechanics()
+    {
+        if (!gun.stats.autoReload)
         {
-            if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
-            {
-                ShootUnderRestriction();
-            }
+            if (Input.GetKeyDown("r") && !gun.stats.isReloading) StartCoroutine(Reload());
         }
-        #endregion
+        else
+        {
+            if (gun.stats.ammo <= 0 && !gun.stats.isReloading) StartCoroutine(Reload());
+        }
     }
     private void RequestShootServerRpc(float range, float damage)
     {
@@ -131,13 +132,35 @@ public class GunCoreFunc : MonoBehaviour
         Shoot(range, damage);
     }
 
-    void ShootUnderRestriction()
+    public void ShootUnderRestriction()
     {
         nextTimeToFire = Time.time + 1f / gun.stats.fireRate;
         Shoot(gun.stats.range, gun.stats.damage);
         //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
     }
-    void ShootWithSniperSingle()
+    public void ShootUnderFiremode()
+    {
+        if (!gun.stats.gunInteractionEnabled) return;
+        if (stats.fireMode == QuantityStatsHUD.FireMode.Automatic)
+        {
+            if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
+            {
+                ShootUnderRestriction();
+            }
+        }
+        else if (stats.fireMode == QuantityStatsHUD.FireMode.SniperSingle)
+        {
+            ShootWithSniperSingle();
+        }
+        else if (stats.fireMode == QuantityStatsHUD.FireMode.Single)
+        {
+            if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
+            {
+                ShootUnderRestriction();
+            }
+        }
+    }
+    public void ShootWithSniperSingle()
     {
         if (stats.fireMode != QuantityStatsHUD.FireMode.SniperSingle) stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
         if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
@@ -148,8 +171,9 @@ public class GunCoreFunc : MonoBehaviour
             timePassedUntillNextShot = 0f;
         }
     }
-    void EnterAiming(bool check)
+    public void EnterAiming(bool check)
     {
+        if (gun.fpsCam.playerMainCamera == null) return;
         if (check)
         {
             if (gun.stats.selectedSightIndex != 0) gun.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.fpsCam.playerMainCamera.fieldOfView, sightFOV, gun.stats.aimSpeed * Time.deltaTime);
@@ -160,7 +184,7 @@ public class GunCoreFunc : MonoBehaviour
             gun.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.fpsCam.playerMainCamera.fieldOfView, originFOV, gun.stats.aimSpeed * Time.deltaTime);
         }
     }
-    void ChangeFiremode()
+    public void ChangeFiremode()
     {
         firemodeIndex++;
         if (firemodeIndex >= fmList.Count) firemodeIndex = 0;
@@ -169,7 +193,6 @@ public class GunCoreFunc : MonoBehaviour
     void PickingGunUp()
     {
         gun.GetPickupsForGun();
-        if (gun.holder.equipmentInHolder.Count >= 2) gun.PickGun();
     }
     public void TriggerCameraRecoil(float verticalRecoil, float horizontalRecoil, float sphericalShake, float positionRecoilRetaliation, float positionRecoilVertical, float positionTransitionalSnappiness, float positionRecoilReturnSpeed, float transitionalSnappiness, float recoilReturnSpeed)
     {
@@ -179,69 +202,35 @@ public class GunCoreFunc : MonoBehaviour
     void Shoot(float range, float damage)
     {
         if(gun.stats.ammo <= 0 || stats.isSprinting) return;
-        if(gun.shellEject != null){
-            //GameObject cachedShell = Instantiate(gun.shellEject, gun.shellEjectPos.position, gun.shellEjectPos.rotation);
-            //cachedShell.GetComponent<Rigidbody>().AddForce(transform.right * 1.1f, ForceMode.Impulse);
-            gun.shellEject.GetComponent<ParticleSystem>().Play();
-        }
+        if(gun.shellEject != null) gun.shellEject.GetComponent<ParticleSystem>().Play();
         anim.TriggerWeaponRecoil(stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
-        //gun.animate.TriggerWeaponRecoil();
-        //anim.animate.Play("Fire");
-        //if (gun.stats.selectedBarrelIndex != 0 && gun.attachment.barrelAttachments[gun.stats.selectedBarrelIndex].GetComponent<AttachmentScript>().attachmentSO.changesMuzzleSound) gun.gunFireSFXSource.clip = gun.attachment.barrelAttachments[gun.stats.selectedBarrelIndex].GetComponent<AttachmentScript>().attachmentSO.overrideMuzzleSound;
-        //else gun.gunFireSFXSource.clip = gun.defaultFireSFXClip;
         gun.audio.PlayGunSound();
         gun.stats.ammo--;
         gun.muzzleFire.Play();
         RaycastHit hit;
-        if(Physics.Raycast(gun.fpsCam.transform.position, gun.fpsCam.transform.forward, out hit, range)){
+        Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        ray.origin = gun.fpsCam.transform.position;
+        if (Physics.Raycast(ray, out hit, range)){
             bool flag = false;
             Debug.Log(hit.transform.name);
-            PlayerControllerManager player = hit.transform.GetComponent<PlayerControllerManager>();
-            if (player != null && player != gun.player)
-            {
-                player.TakeDamageFromPlayer(damage, false);
-
-            }
-            //Target target = hit.transform.GetComponent<Target>();
-            //EnemyAI enemy = hit.transform.GetComponent<EnemyAI>();
-            //if (target != null || enemy != null) gun.ui.ui.EnforceHitmarker(0.5f);
+            //IDamagable player = hit.transform.GetComponent<IDamagable>();
+            hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false);
+            gun.gunPV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
             /*
-            if(target != null){
-                target.TakeDamage(gun.stats.damage);
-            }
-            if(enemy != null)
-            {
-                flag = true;
-                gun.ui.ui.hitmarkerTimePassed = 0f;
-                gun.ui.ui.anim.Play("Hitmarker");
-                int xptmp = enemy.TakeDamage(gun.stats.damage);
-                gun.player.totalDealtDamage += (int)gun.stats.damage;
-                //gun.ui.ui.fileManager.JSONplayerdata.xp += xptmp;
-                gun.player.totalGainedXP += xptmp;
-                if (enemy.health <= 0)
-                {
-                    //gun.ui.ui.KilledEnemy();
-                    gun.player.totalKilledEnemies++;
-                }
-                GameObject impactCache = Instantiate(gun.bulletImpactBlood, hit.point, Quaternion.LookRotation(hit.normal));
-                Destroy(impactCache, 1f);
-            }
-            */
-            if(hit.transform.GetComponent<Rigidbody>() != null){
+            if (hit.transform.GetComponent<Rigidbody>() != null){
                 flag = true;
                 hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * gun.stats.impactForce);
             }
             if (!flag)
             {
                 GameObject temp = Instantiate(gun.bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
-                if (hit.transform.GetComponent<PlayerControllerManager>() == null)
+                if (hit.transform.GetComponent<Renderer>() == null)
                 {
                     temp.GetComponent<Renderer>().material = hit.transform.GetComponent<Renderer>().material;
-                    
                 }
                 Destroy(temp, 2f);
-            }
+            }*/
         }
     }
 
@@ -294,7 +283,6 @@ public class GunCoreFunc : MonoBehaviour
     }
 
     public void SpawnPickup(){
-        gun.holder.equipmentInHolder.Remove(this.GetComponent<GunManager>());
         GameObject temp = Instantiate(gun.pickup, gameObject.transform.position, gameObject.transform.rotation);
         Debug.Log("Gun Dropped From Control ");
         temp.GetComponent<GunStats>().weaponData = gun.stats.weaponData;
@@ -330,5 +318,16 @@ public class GunCoreFunc : MonoBehaviour
         //if(gun.holder.selectedWeapon == 1) gun.holder.selectedWeapon = 1;
         //gun.holder.SelectWeapon();
         gun.SelfDestruct();
+    }
+    [PunRPC]
+    void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
+    {
+        Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
+        if(colliders.Length != 0)
+        {
+            GameObject bulletImpactObject = Instantiate(gun.bulletImpactPrefab, hitPosition + hitNormal * 0.01f, Quaternion.LookRotation(hitNormal, Vector3.up));
+            Destroy(bulletImpactObject, 5f);
+            bulletImpactObject.transform.SetParent(colliders[0].transform);
+        }
     }
 }

@@ -61,7 +61,11 @@ public class GunAnimation : MonoBehaviour
     private float timer;
 
     private float xPosDelay = 0f;
+    /*
     private void Start()
+    {
+    }*/
+    public void InitializeValues()
     {
         slideSwayIntensity = stats.swayIntensity * 1.5f;
         maxSlideSwayIntensity = stats.maxSwayIntensity * 1.5f;
@@ -73,11 +77,13 @@ public class GunAnimation : MonoBehaviour
         defaultYPos = gunModel.transform.localPosition.y;
         gunInitialPosition = gunRecoilModel.transform.localPosition;
     }
-
-
+    /*
     void Update()
     {
-        if (gun.ui.ui.openedOptions) return;
+    }*/
+    public void CoreAnimations()
+    {
+        //if (gun.ui.ui.openedOptions) return;
         WeaponBob();
         if (gun.player.stats.isSliding || gun.player.stats.isSprinting)
         {
@@ -107,7 +113,6 @@ public class GunAnimation : MonoBehaviour
         //animate.SetBool("isSliding", gun.player.stats.isSliding);
         //animate.SetBool("isAttaching", gun.stats.isAttaching);
     }
-
     private void CalculateSway()
     {
         mouseInputX = -Input.GetAxis("Mouse X") - (gun.stats.isAiming ? Input.GetAxis("Horizontal") * 0.8f : Input.GetAxis("Horizontal") * 1.8f);

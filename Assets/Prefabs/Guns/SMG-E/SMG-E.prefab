@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: 3022590338956811405}
   - component: {fileID: 5183655109247484720}
   - component: {fileID: 6173563475319394978}
+  - component: {fileID: 8877032320332109802}
   m_Layer: 6
   m_Name: SMG-E
   m_TagString: Untagged
@@ -706,6 +707,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fcf06b5439f59d439e2106e0b04ae43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 2cfa3c9554235b0419358080ec934ce1, type: 2}
+  item: {fileID: 6788626819295025767}
+  gun: {fileID: 4852457880753245286}
+  bulletImpactPrefab: {fileID: 4867200395551333757, guid: a621f7e3952136e44a4fe8f1d344ee0c,
+    type: 3}
   player: {fileID: 0}
   holder: {fileID: 0}
   core: {fileID: 5573869017911023091}
@@ -715,6 +721,7 @@ MonoBehaviour:
   attachment: {fileID: 6142865428349537592}
   logic: {fileID: 5434608657159475275}
   audio: {fileID: 6173563475319394978}
+  gunPV: {fileID: 0}
   fpsCam: {fileID: 0}
   muzzleFire: {fileID: 8398219046918890642}
   shellEject: {fileID: 4373295011416958526}
@@ -757,6 +764,7 @@ MonoBehaviour:
   fireRate: 15
   boltRecoveryDuration: 1.5
   fireMode: 0
+  gunInteractionEnabled: 1
   swayIntensity: 0.02
   maxSwayIntensity: 0.06
   smoothness: 5
@@ -838,6 +846,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 4852457880753245286}
+--- !u!114 &8877032320332109802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6788626819295025767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &9210119060149595884
 GameObject:
   m_ObjectHideFlags: 0

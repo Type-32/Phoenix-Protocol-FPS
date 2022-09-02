@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class GunManager : MonoBehaviour
+public class GunManager : Gun
 {
     [Header("Scripts")]
     public PlayerControllerManager player;
@@ -14,6 +15,7 @@ public class GunManager : MonoBehaviour
     public GunAttachments attachment;
     public GunLogic logic;
     public new GunAudio audio;
+    public PhotonView gunPV;
 
     [Space]
     [Header("References")]
@@ -44,19 +46,26 @@ public class GunManager : MonoBehaviour
     }
     private void Awake()
     {
-        fpsCam = FindObjectOfType<MouseLookScript>();
-        player = FindObjectOfType<PlayerControllerManager>();
-        camRecoil = FindObjectOfType<Recoil>();
+        gunPV = GetComponent<PhotonView>();
+        InitializeAwake();
+        //player = FindObjectOfType<PlayerControllerManager>();
     }
     void Start()
     {
+        InitializeStart();
         //fpsCam = FindObjectOfType<MouseLookScript>();
-        player = FindObjectOfType<PlayerControllerManager>();
+        //player = FindObjectOfType<PlayerControllerManager>();
         camRecoil = FindObjectOfType<Recoil>();
         //gadgetFunc = FindObjectOfType<GadgetUsageScript>();
         holder = FindObjectOfType<EquipmentHolder>();
     }
+    /*
     private void Update()
+    {
+        if (!player.pv.IsMine) return;
+
+    }*/
+    public void DeterminatesFunction()
     {
         if (ui.ui.openedLoadoutMenu)
         {
@@ -70,9 +79,7 @@ public class GunManager : MonoBehaviour
         {
             stats.gunInteractionEnabled = true;
         }
-
     }
-
     public void SelfDestruct(){
         //ui.ui.currentAmmo.text = "??";
         //ui.ui.ammoPool.text = "??";
@@ -121,5 +128,36 @@ public class GunManager : MonoBehaviour
                 SelfDestruct();
             }
         }
+    }
+    public override void Use()
+    {
+        DeterminatesFunction();
+        if (!stats.gunInteractionEnabled) return;
+        ui.UIFunctions();
+        animate.CoreAnimations();
+        logic.GunGeneralLogic();
+        if (!core.enableGunCoreFunc) return;
+        //Debug.Log("Using Weapon " + stats.weaponData.itemName);
+        core.FiremodeSwitchMechanics();
+        core.AimingMechanics();
+
+        if (gun.stats.isReloading) return;
+        core.ReloadMechanics();
+        core.ShootUnderFiremode();
+    }
+    void FindingReferences()
+    {
+        fpsCam = FindObjectOfType<MouseLookScript>();
+        camRecoil = FindObjectOfType<Recoil>();
+        ui.GunUIAwake();
+    }
+    public override void InitializeStart()
+    {
+        core.CoreInitialize();
+        animate.InitializeValues();
+    }
+    public override void InitializeAwake()
+    {
+        FindingReferences();
     }
 }

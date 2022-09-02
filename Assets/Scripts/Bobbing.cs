@@ -18,6 +18,7 @@ public class Bobbing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!player.pv.IsMine) return;
         if (!player.stats.playerMovementEnabled) return;
         transform.localPosition = new Vector3(Mathf.Lerp(transform.localPosition.x, defaultXPos, Time.deltaTime * 3), Mathf.Lerp(transform.localPosition.y, defaultYPos, Time.deltaTime * 3), transform.localPosition.z);
         CameraBob();

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class PlayerControllerManager : MonoBehaviour
+public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 {
 
     [Header("Script Control")]
@@ -14,6 +15,7 @@ public class PlayerControllerManager : MonoBehaviour
     public UIManager ui;
     public MouseLookScript cam;
     public EquipmentHolder holder;
+    public IDamagable damagable;
     //public GadgetUsageScript gadgetFunc;
 
     [Space]
@@ -43,29 +45,33 @@ public class PlayerControllerManager : MonoBehaviour
     [Space]
     [Header("Multiplayer")]
     public PhotonView pv;
+    PlayerManager playerManager;
 
     private bool hasArmor = false;
 
     private void Awake()
     {
+        playerManager = PhotonView.Find((int)pv.InstantiationData[0]).GetComponent<PlayerManager>();
         pv = GetComponent<PhotonView>();
-        ui = FindObjectOfType<UIManager>();
+        //ui = FindObjectOfType<UIManager>();
         //if(playerHeadMat != null) gameObject.GetComponent<MeshRenderer>playerHeadMat
     }
     private void Start()
     {
-        recoilScript = FindObjectOfType<Recoil>();
-        DerivePlayerStatsToHUDInitialize();
-
-        for(int i = 0; i < ui.loadoutMenu.slotHolderScript.slotWeaponData.Length; i++)
+        if (pv.IsMine)
         {
-            holder.InstantiateWeapon(ui.loadoutMenu.slotHolderScript.slotWeaponData[i]);
+            recoilScript = FindObjectOfType<Recoil>();
+            DerivePlayerStatsToHUDInitialize();
+        }
+        else
+        {
+            Destroy(ui.gameObject);
         }
     }
     private void Update()
     {
         if (!pv.IsMine) return;
-        if (transform.position.y < -35 || Input.GetKeyDown("i")) TakeDamageFromPlayer(20, false);
+        if (transform.position.y < -35) Die();
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
 
@@ -101,9 +107,69 @@ public class PlayerControllerManager : MonoBehaviour
         stats.mouseSensitivity = value;
         controls.aimingMouseSensitivity = stats.mouseSensitivity * 0.8f;
     }
-    public void TakeDamageFromPlayer(float amount, bool bypassArmor)
+    public void TakeDamage(float amount, bool bypassArmor)
     {
+        pv.RPC("RPC_TakeDamage", RpcTarget.All, amount, bypassArmor);//Running the function on everyone's computer
         //ui.ShowHealthBar(2f);
+        
+    }
+    
+    #region Body Materials
+    public void SetBodyMaterialColor(Color color)
+    {
+        playerBodyMaterial.color = color;
+    }
+    public void SetFeetMaterialColor(Color color)
+    {
+        playerFeetMaterial.color = color;
+    }
+    public void SetHeadMaterialColor(Color color)
+    {
+        playerHeadMaterial.color = color;
+    }
+    #endregion
+    
+    private void TakeHitEffect()
+    {
+
+    }
+    private void DerivePlayerStatsToHUD()
+    {
+        if (ui == null) return;
+        ui.healthBar.value = Mathf.Lerp(ui.healthBar.value, stats.health, 8 * Time.deltaTime);
+        //ui.healthBarFill.color = Color.Lerp(ui.healthBarFill.color, (stats.health >= 50f) ? Color.green : (stats.health < 50f && stats.health >= 30f) ? Color.yellow : Color.red, 5 * Time.deltaTime);
+        //ui.healthText.text = ((int)stats.health).ToString();
+        ui.armorBar.value = Mathf.Lerp(ui.armorBar.value, stats.armor, 8 * Time.deltaTime);
+        playerVolumeEffect.weight = 1f - (stats.health / 100f);
+        playerHurtEffect.weight = Mathf.Lerp(playerHurtEffect.weight, 0f, 8 * Time.deltaTime);
+        armorHurtEffect.weight = Mathf.Lerp(armorHurtEffect.weight, 0f, 8 * Time.deltaTime);
+    }
+    private void DerivePlayerStatsToHUDInitialize()
+    {
+        if (ui == null) return;
+        ui.healthBar.maxValue = stats.healthLimit;
+        ui.armorBar.maxValue = stats.armorLimit;
+        stats.stress = 0;
+    }
+    private void PlayerGUIReference()
+    {
+        if (ui == null) return;
+        if (ui.openedInventory) { stats.mouseMovementEnabled = false; stats.playerMovementEnabled = false; }
+        else { stats.mouseMovementEnabled = true; stats.playerMovementEnabled = true; }
+    }
+    public void Die()
+    {
+        playerManager.Die();
+        Debug.Log("Player " + stats.playerName + " was Killed");
+        return;
+    }
+    [PunRPC]
+    void RPC_TakeDamage(float amount, bool bypassArmor)
+    {
+        if(!pv.IsMine) return; //PV Check to make sure it only runs on victim's computer
+        Debug.Log("Took Damage " + amount);
+
+        //Core Take Damage Functions
         recoilScript.RecoilFire(0.4f, 0.8f, 4, 0.12f, 0, 5, 12, 5, 12);
         if (bypassArmor)
         {
@@ -115,9 +181,9 @@ public class PlayerControllerManager : MonoBehaviour
         {
             if (stats.armor - amount <= 0)
             {
-                if(hasArmor) sfx.InvokeArmorDamagedAudio();
+                if (hasArmor) sfx.InvokeArmorDamagedAudio();
                 hasArmor = false;
-                if(stats.armor - amount < 0)
+                if (stats.armor - amount < 0)
                 {
                     float temp = stats.armor - amount;
                     stats.armor = 0f;
@@ -144,61 +210,5 @@ public class PlayerControllerManager : MonoBehaviour
             Die();
             return;
         }
-        
-    }
-    
-    #region Body Materials
-    public void SetBodyMaterialColor(Color color)
-    {
-        playerBodyMaterial.color = color;
-    }
-    public void SetFeetMaterialColor(Color color)
-    {
-        playerFeetMaterial.color = color;
-    }
-    public void SetHeadMaterialColor(Color color)
-    {
-        playerHeadMaterial.color = color;
-    }
-    #endregion
-    
-    private void TakeHitEffect()
-    {
-
-    }
-    public void Die()
-    {
-        Debug.Log("Death Here ");
-        GameObject tmp = Instantiate(deathCam, fpsCam.transform.position, fpsCam.transform.rotation);
-        tmp.gameObject.GetComponentInChildren<Camera>().fieldOfView = fpsCam.GetComponent<Camera>().fieldOfView;
-        //tmp.gameObject.GetComponent<Rigidbody>().velocity = body.velocity;
-        //ui.anim.SetTrigger("PlayerKilled");
-        Cursor.lockState = CursorLockMode.None;
-        GameManager.instance.RemovePlayer(gameObject);
-        return;
-    }
-    private void DerivePlayerStatsToHUD()
-    {
-        if (ui == null) return;
-        ui.healthBar.value = Mathf.Lerp(ui.healthBar.value, stats.health, 8 * Time.deltaTime);
-        //ui.healthBarFill.color = Color.Lerp(ui.healthBarFill.color, (stats.health >= 50f) ? Color.green : (stats.health < 50f && stats.health >= 30f) ? Color.yellow : Color.red, 5 * Time.deltaTime);
-        //ui.healthText.text = ((int)stats.health).ToString();
-        ui.armorBar.value = Mathf.Lerp(ui.armorBar.value, stats.armor, 8 * Time.deltaTime);
-        playerVolumeEffect.weight = 1f - (stats.health / 100f);
-        playerHurtEffect.weight = Mathf.Lerp(playerHurtEffect.weight, 0f, 8 * Time.deltaTime);
-        armorHurtEffect.weight = Mathf.Lerp(armorHurtEffect.weight, 0f, 8 * Time.deltaTime);
-    }
-    private void DerivePlayerStatsToHUDInitialize()
-    {
-        if (ui == null) return;
-        ui.healthBar.maxValue = stats.healthLimit;
-        ui.armorBar.maxValue = stats.armorLimit;
-        stats.stress = 0;
-    }
-    private void PlayerGUIReference()
-    {
-        if (ui == null) return;
-        if (ui.openedInventory) { stats.mouseMovementEnabled = false; stats.playerMovementEnabled = false; }
-        else { stats.mouseMovementEnabled = true; stats.playerMovementEnabled = true; }
     }
 }

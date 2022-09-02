@@ -8,19 +8,32 @@ public class GunLogic : MonoBehaviour
     public bool isAiming = false;
     public bool isSprinting = false;
     // Update is called once per frame
+    /*
     void Update()
     {
         if (!gun.stats.gunInteractionEnabled) return;
-
+    }*/
+    public void GunGeneralLogic()
+    {
+        AimingLogic();
+        GunMovementLogic();
+        AttachmentLogic();
+    }
+    void AimingLogic()
+    {
         if (Input.GetButton("Fire2")) gun.stats.isAiming = true;
         else gun.stats.isAiming = false;
-
+    }
+    void GunMovementLogic()
+    {
         if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)) gun.stats.isWalking = true;
         else gun.stats.isWalking = false;
 
         if (Input.GetKey("left shift") && !gun.stats.isAiming && !gun.player.stats.isCrouching && gun.stats.isWalking) gun.stats.isSprinting = true;
         else gun.stats.isSprinting = false;
-
+    }
+    void AttachmentLogic()
+    {
         if (Input.GetKeyDown("h"))
         {
             if (gun.stats.isAttaching)

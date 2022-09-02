@@ -31,6 +31,7 @@ public class PlayerControls : MonoBehaviour
         if (!player.pv.IsMine)
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
+            return;
         }
         mouseLook = player.fpsCam.GetComponent<MouseLookScript>();
         capsuleColliderInitHeight = player.capsuleCollider.height;
@@ -44,14 +45,15 @@ public class PlayerControls : MonoBehaviour
     }
     void Update()
     {
-
         if (!player.pv.IsMine) return;
+        player.holder.WeaponFunction();
+        if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
         Logics();
-
         GroundCheck();
         Gravity();
+
         Movement();
         CameraFOV();
         InteractIndicatorCheck();
@@ -107,7 +109,7 @@ public class PlayerControls : MonoBehaviour
     void KeybindedActions()
     {
         if (Input.GetKeyDown("f")) player.GetPickupsForPlayer();
-        if (Input.GetKeyDown("k")) player.TakeDamageFromPlayer(100f, false);
+        if (Input.GetKeyDown("k")) player.TakeDamage(100f, true);
     }
     void Logics()
     {
@@ -172,4 +174,5 @@ public class PlayerControls : MonoBehaviour
         else player.stats.isWalking = false;
     }
     #endregion
+    
 }

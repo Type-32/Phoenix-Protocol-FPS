@@ -16,7 +16,6 @@ public class GunPickup : MonoBehaviour
     }
     public void PickupGun(){
         GameObject cachedObj = Instantiate(mainGunObject, parent);
-        holder.equipmentInHolder.Add(cachedObj.GetComponent<GunManager>());
         Debug.Log("Gun Picked From Pickup ");
         cachedObj.GetComponent<GunStats>().weaponData = stats.weaponData;
         cachedObj.GetComponent<GunStats>().damage = stats.damage;

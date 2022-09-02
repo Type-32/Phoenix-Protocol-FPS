@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Recoil : MonoBehaviour
 {
+    [SerializeField] PlayerControllerManager player;
     private Vector3 currentRotation;
     private Vector3 targetRotation;
     private Vector3 currentPosition;
@@ -17,6 +18,7 @@ public class Recoil : MonoBehaviour
     public float positionReturnSpeed;
     void Update()
     {
+        if (!player.pv.IsMine) return;
         targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, returnSpeed * Time.deltaTime);
         currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.fixedDeltaTime);
         targetPosition = Vector3.Lerp(targetPosition, Vector3.zero, positionReturnSpeed * Time.deltaTime);

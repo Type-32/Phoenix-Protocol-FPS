@@ -7,6 +7,7 @@ using Photon.Pun;
 public class PlayerManager : MonoBehaviour
 {
     PhotonView pv;
+    GameObject controller;
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -21,7 +22,13 @@ public class PlayerManager : MonoBehaviour
     }
     void CreateController()
     {
+        Transform spawnpoint = SpawnManager.Instance.GetRandomSpawnpoint();
         Debug.Log("Instantiating Player Controller");
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), Vector3.zero, Quaternion.identity);
+        controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), spawnpoint.position, spawnpoint.rotation, 0, new object[] {pv.ViewID});
+    }
+    public void Die()
+    {
+        PhotonNetwork.Destroy(controller);
+        CreateController();
     }
 }
