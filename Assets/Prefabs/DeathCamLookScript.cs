@@ -14,7 +14,7 @@ public class DeathCamLookScript : MonoBehaviour
     private void Awake()
     {
         ui = FindObjectOfType<UIManager>();
-        ui.deathMenu.SetActive(true);
+        //ui.deathMenu.SetActive(true);
         dmc = FindObjectOfType<DeathMenuController>();
         spUI = FindObjectOfType<RespawningUI>();
         respawnDelay = maxRespawnDelay;

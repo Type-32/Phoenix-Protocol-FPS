@@ -33,6 +33,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public Animator cameraAnim;
     public Recoil recoilScript;
     public Transform groundCheck;
+    public GameObject playerDeathEffect;
 
     [Space]
     [Header("Ground Masks")]
@@ -45,7 +46,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [Space]
     [Header("Multiplayer")]
     public PhotonView pv;
-    PlayerManager playerManager;
+    public PlayerManager playerManager;
 
     private bool hasArmor = false;
 
@@ -75,11 +76,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
 
-        if (ui.openedLoadoutMenu)
+        if (playerManager.openedLoadoutMenu)
         {
             stats.playerMovementEnabled = false;
             stats.mouseMovementEnabled = false;
-        }else if (ui.openedOptions)
+        }else if (playerManager.openedOptions)
         {
             stats.playerMovementEnabled = false;
             stats.mouseMovementEnabled = false;
@@ -107,9 +108,13 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         stats.mouseSensitivity = value;
         controls.aimingMouseSensitivity = stats.mouseSensitivity * 0.8f;
     }
-    public void TakeDamage(float amount, bool bypassArmor)
+
+    public bool TakeDamage(float amount, bool bypassArmor)
     {
-        pv.RPC("RPC_TakeDamage", RpcTarget.All, amount, bypassArmor);//Running the function on everyone's computer
+        bool tempflag = false;
+        if (stats.health - amount <= 0) tempflag = true;
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor);//Running the function on everyone's computer
+        return tempflag;
         //ui.ShowHealthBar(2f);
         
     }
@@ -154,19 +159,19 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     private void PlayerGUIReference()
     {
         if (ui == null) return;
-        if (ui.openedInventory) { stats.mouseMovementEnabled = false; stats.playerMovementEnabled = false; }
+        if (playerManager.openedInventory) { stats.mouseMovementEnabled = false; stats.playerMovementEnabled = false; }
         else { stats.mouseMovementEnabled = true; stats.playerMovementEnabled = true; }
     }
     public void Die()
     {
+        InvokePlayerDeathEffects();
         playerManager.Die();
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;
     }
     [PunRPC]
-    void RPC_TakeDamage(float amount, bool bypassArmor)
+    void RPC_TakeDamage(float amount, bool bypassArmor, PhotonMessageInfo info)
     {
-        if(!pv.IsMine) return; //PV Check to make sure it only runs on victim's computer
         Debug.Log("Took Damage " + amount);
 
         //Core Take Damage Functions
@@ -208,7 +213,49 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             Die();
-            return;
+            PlayerManager.Find(info.Sender).GetKill();
         }
+        return;
+    }
+    public void CallShootRPCDecals(RaycastHit hit)
+    {
+        Debug.LogWarning("Invoking Shoot RPC...");
+        pv.RPC(nameof(RPC_Shoot), RpcTarget.All, hit.point, hit.normal);
+    }
+    public void InvokeGunEffects()
+    {
+        Debug.LogWarning("Invoking Gun Effects RPC...");
+        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All);
+    }
+    public void InvokePlayerDeathEffects()
+    {
+        Debug.LogWarning("Invoking PLayer Death Effects RPC...");
+        pv.RPC(nameof(RPC_InvokePlayerDeathEffects), RpcTarget.All);
+    }
+    [PunRPC]
+    public void RPC_InvokePlayerDeathEffects()
+    {
+        GameObject obj = Instantiate(playerDeathEffect, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.rotation);
+        Destroy(obj, 5f);
+    }
+    [PunRPC]
+    public void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
+    {
+        Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
+        Debug.LogWarning("Finding Colliders...");
+        if (colliders.Length != 0)
+        {
+            Debug.LogWarning("Colliders Found");
+            GameObject bulletImpactObject = Instantiate(holder.weaponSlots[holder.weaponIndex].bulletImpactPrefab, hitPosition + hitNormal * 0.01f, Quaternion.LookRotation(-hitNormal, Vector3.up));
+            Destroy(bulletImpactObject, 5f);
+            bulletImpactObject.transform.SetParent(colliders[0].transform);
+            //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
+        }
+    }
+    [PunRPC]
+    public void RPC_InvokeGunEffects()
+    {
+        holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound();
+        holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
     }
 }

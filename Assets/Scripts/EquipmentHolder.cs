@@ -9,38 +9,50 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class EquipmentHolder : MonoBehaviourPunCallbacks
 {
     [SerializeField] PlayerControllerManager player;
-    private int weaponIndex = 0;
-    private int previousWeaponIndex = -1;
+    public int weaponIndex = 0;
+    public int previousWeaponIndex = -1;
     [SerializeField] private UIManager uiManager;
     //[SerializeField] WeaponData[] weapons;
     //[SerializeField] ThrowablesData[] equipments;
     public bool inversedScrollWheel = true;
-    [SerializeField] Gun[] weaponSlots;
-    [SerializeField] Item[] equipmentSlots;
+    public Gun[] weaponSlots;
+    public Item[] equipmentSlots;
     // Start is called before the first frame update
     private void Awake()
     {
-        uiManager = FindObjectOfType<UIManager>();
-        for (int i = 0; i < 2; i++)
-        {
-            InstantiateWeapon(uiManager.loadoutMenu.slotHolderScript.slotWeaponData[i], i);
-            weaponSlots[i].InitializeAwake();
-            weaponSlots[i].InitializeStart();
-            //weaponSlots[i].InitializeAwake();
-        }
-        if (!player.pv.IsMine) return;
+        uiManager = player.GetComponentInChildren<UIManager>();
     }
     void Start()
     {
+        for (int i = 0; i < 2; i++)
+        {
+            InstantiateWeapon(player.playerManager.slotHolderScript.slotWeaponData[i], i);
+            weaponSlots[i].InitializeAwake();
+            weaponSlots[i].InitializeStart();
+        }
         if (player.pv.IsMine)
         {
-            EquipWeapon(0);
+            EquipWeapon(weaponIndex);
         }
         else
         {
             Camera[] temp = GetComponentsInChildren<Camera>();
             for (int i = 0; i < temp.Length; i++)
             Destroy(temp[i].gameObject);
+        }
+        if (!player.pv.IsMine)
+        {
+            Transform[] list1 = weaponSlots[0].gun.gunVisual.GetComponentsInChildren<Transform>();
+            Transform[] list2 = weaponSlots[1].gun.gunVisual.GetComponentsInChildren<Transform>();
+            EquipWeapon(0);
+            for (int i = 0; i < list1.Length; i++)
+            {
+                list1[i].gameObject.layer = LayerMask.NameToLayer("Default");
+            }
+            for (int i = 0; i < list2.Length; i++)
+            {
+                list2[i].gameObject.layer = LayerMask.NameToLayer("Default");
+            }
         }
         //SelectWeapon();
     }
@@ -50,7 +62,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     {
         if (!player.pv.IsMine) return;
 
-        if (uiManager.openedOptions || uiManager.openedLoadoutMenu) return;
+        if (player.playerManager.openedOptions || player.playerManager.openedLoadoutMenu) return;
         KeySwitchWeapon();
         ScrollWheelSwitchWeapon();
     }
@@ -133,6 +145,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         weaponSlots[index] = temp.GetComponent<GunManager>();
         weaponSlots[index].item = temp;
         weaponSlots[index].itemData = data;
+        weaponSlots[index].InitializeAwake();
+        weaponSlots[index].InitializeStart();
         weaponSlots[index].item.SetActive(false);
         //EquipWeapon(index);
         return true;
@@ -146,9 +160,10 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if(!player.pv.IsMine && targetPlayer == player.pv.Owner)
+        if(!player.pv.IsMine && targetPlayer == player.pv.Owner && changedProps.ContainsKey("weaponIndex"))
         {
             EquipWeapon((int)changedProps["weaponIndex"]);
+            //player.playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
         }
     }
     public void WeaponFunction()

@@ -15,7 +15,7 @@ public class GunManager : Gun
     public GunAttachments attachment;
     public GunLogic logic;
     public new GunAudio audio;
-    public PhotonView gunPV;
+    //public PhotonView gunPV;
 
     [Space]
     [Header("References")]
@@ -27,6 +27,7 @@ public class GunManager : Gun
     public GameObject bulletImpact;
     public GameObject bulletImpactBlood;
     public GameObject pickup;
+    public GameObject gunVisual;
     public Recoil camRecoil;
 
     [Space]
@@ -42,22 +43,22 @@ public class GunManager : Gun
 
     private void OnEnable()
     {
-        fpsCam = FindObjectOfType<MouseLookScript>();
+        fpsCam = GetComponentInParent<MouseLookScript>();
     }
     private void Awake()
     {
-        gunPV = GetComponent<PhotonView>();
-        InitializeAwake();
+        //gunPV = GetComponent<PhotonView>();
+        //InitializeAwake();
         //player = FindObjectOfType<PlayerControllerManager>();
     }
     void Start()
     {
-        InitializeStart();
+        //InitializeStart();
         //fpsCam = FindObjectOfType<MouseLookScript>();
         //player = FindObjectOfType<PlayerControllerManager>();
-        camRecoil = FindObjectOfType<Recoil>();
+        camRecoil = GetComponentInParent<Recoil>();
         //gadgetFunc = FindObjectOfType<GadgetUsageScript>();
-        holder = FindObjectOfType<EquipmentHolder>();
+        holder = GetComponentInParent<EquipmentHolder>();
     }
     /*
     private void Update()
@@ -67,11 +68,11 @@ public class GunManager : Gun
     }*/
     public void DeterminatesFunction()
     {
-        if (ui.ui.openedLoadoutMenu)
+        if (ui.ui.player.playerManager.openedLoadoutMenu)
         {
             stats.gunInteractionEnabled = false;
         }
-        else if (ui.ui.openedOptions)
+        else if (ui.ui.player.playerManager.openedOptions)
         {
             stats.gunInteractionEnabled = false;
         }
@@ -147,8 +148,8 @@ public class GunManager : Gun
     }
     void FindingReferences()
     {
-        fpsCam = FindObjectOfType<MouseLookScript>();
-        camRecoil = FindObjectOfType<Recoil>();
+        fpsCam = GetComponentInParent<MouseLookScript>();
+        camRecoil = GetComponentInParent<Recoil>();
         ui.GunUIAwake();
     }
     public override void InitializeStart()

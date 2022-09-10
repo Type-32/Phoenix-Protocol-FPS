@@ -19,7 +19,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: jp
     Server: 
     Port: 0
     ProxyServer: 
@@ -41,6 +41,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - RPC_TakeDamage
   - RPC_Shoot
+  - RPC_GetKill
+  - RPC_InvokeGunEffects
+  - RPC_InvokePlayerDeathEffects
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

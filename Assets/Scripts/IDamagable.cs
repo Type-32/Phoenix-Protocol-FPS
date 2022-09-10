@@ -1,4 +1,4 @@
 public interface IDamagable
 {
-    void TakeDamage(float amount, bool bypassArmor);
+    bool TakeDamage(float amount, bool bypassArmor);
 }

@@ -7,10 +7,12 @@ public class ChoiceHolderScript : MonoBehaviour
 {
     public LoadoutMenu loadoutMenu;
     public GameObject slotPrefab;
+    public Transform choiceHolder;
     public List<LoadoutSelectionSlot> slotScripts = new List<LoadoutSelectionSlot>();
     public void InstantiateChoiceSlot(WeaponData data, int index)
     {
-        LoadoutSelectionSlot temp = Instantiate(slotPrefab, transform).GetComponent<LoadoutSelectionSlot>();
+        LoadoutSelectionSlot temp = Instantiate(slotPrefab, choiceHolder).GetComponent<LoadoutSelectionSlot>();
+        temp.loadoutMenu = loadoutMenu;
         temp.SetWeaponSelectionInfo(data, index);
         slotScripts.Add(temp);
     }

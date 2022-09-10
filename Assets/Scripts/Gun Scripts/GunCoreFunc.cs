@@ -17,14 +17,19 @@ public class GunCoreFunc : MonoBehaviour
     private float timePassedUntillNextShot = 0f;
     [SerializeField] private List<QuantityStatsHUD.FireMode> fmList = new List<QuantityStatsHUD.FireMode>();
     [SerializeField] private int firemodeIndex = 0;
+    //[SerializeField] PhotonView pv;
 
+    private void Awake()
+    {
+        //pv = GetComponent<PhotonView>();
+    }
     private void Start()
     {
         CoreInitialize();
     }
     public void CoreInitialize()
     {
-        recoilScript = FindObjectOfType<Recoil>();
+        recoilScript = GetComponentInParent<Recoil>();
         SightFOVInitialize();
         FiremodeInitialize();
     }
@@ -57,7 +62,7 @@ public class GunCoreFunc : MonoBehaviour
     {
         StateInitalize();
     }
-
+    /*
     void Update()
     {
         //if (!IsOwner) return;
@@ -69,21 +74,21 @@ public class GunCoreFunc : MonoBehaviour
 
         
         #region GetGunPickup
-        /*
+        
         if (Input.GetKeyDown("f") && !gun.stats.isAttaching)
         {
             PickingGunUp();
-        }*/
+        }
         #endregion
 
         #region AimingMechanics
         #endregion
 
         #region DropWeapon
-        /*
+        
         if (Input.GetKeyDown("g")) {
             SpawnPickup();
-        }*/
+        }
         #endregion
 
         #region ReloadMechanics
@@ -92,7 +97,7 @@ public class GunCoreFunc : MonoBehaviour
         #region GunShooting
         //Shooting
         #endregion
-    }
+    }*/
     public void AimingMechanics()
     {
         if (gun.stats.isAiming)
@@ -205,18 +210,33 @@ public class GunCoreFunc : MonoBehaviour
         if(gun.shellEject != null) gun.shellEject.GetComponent<ParticleSystem>().Play();
         anim.TriggerWeaponRecoil(stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
-        gun.audio.PlayGunSound();
+        //gun.audio.PlayGunSound();
         gun.stats.ammo--;
-        gun.muzzleFire.Play();
+        //gun.muzzleFire.Play();
+        gun.player.InvokeGunEffects();
         RaycastHit hit;
         Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = gun.fpsCam.transform.position;
         if (Physics.Raycast(ray, out hit, range)){
-            bool flag = false;
+            gun.player.CallShootRPCDecals(hit);
             Debug.Log(hit.transform.name);
+            
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
-            hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false);
-            gun.gunPV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
+            if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
+            {
+                bool hitmarkerFlag = false;
+                hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false);
+                if (!hitmarkerFlag)
+                {
+                    gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
+                    gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Hitmarker);
+                }
+                else if (hitmarkerFlag)
+                {
+                    gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
+                    gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
+                }
+            }
             /*
             if (hit.transform.GetComponent<Rigidbody>() != null){
                 flag = true;
@@ -318,16 +338,5 @@ public class GunCoreFunc : MonoBehaviour
         //if(gun.holder.selectedWeapon == 1) gun.holder.selectedWeapon = 1;
         //gun.holder.SelectWeapon();
         gun.SelfDestruct();
-    }
-    [PunRPC]
-    void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
-    {
-        Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
-        if(colliders.Length != 0)
-        {
-            GameObject bulletImpactObject = Instantiate(gun.bulletImpactPrefab, hitPosition + hitNormal * 0.01f, Quaternion.LookRotation(hitNormal, Vector3.up));
-            Destroy(bulletImpactObject, 5f);
-            bulletImpactObject.transform.SetParent(colliders[0].transform);
-        }
     }
 }

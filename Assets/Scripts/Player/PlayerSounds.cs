@@ -50,7 +50,7 @@ public class PlayerSounds : MonoBehaviour
     }
     public void InvokePlayerFootsteps()
     {
-        if (Physics.Raycast(player.fpsCam.transform.position, Vector3.down, out RaycastHit hit, 3))
+        if (Physics.Raycast(player.fpsCam.transform.position, Vector3.down, out RaycastHit hit, 4))
         {
             switch (hit.collider.tag)
             {

@@ -41,7 +41,8 @@ AudioSource:
   m_GameObject: {fileID: 821498017820926183}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: eb340d2398b893645bd337264408b30b,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -52,7 +53,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.10660428
+  MinDistance: 0
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -356,7 +357,8 @@ AudioSource:
   m_GameObject: {fileID: 5126643361136743226}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: eb340d2398b893645bd337264408b30b,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -367,7 +369,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.10660428
+  MinDistance: 0
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -484,7 +486,8 @@ AudioSource:
   m_GameObject: {fileID: 5398986893427080417}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: eb340d2398b893645bd337264408b30b,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -495,7 +498,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.10660428
+  MinDistance: 0
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -589,7 +592,6 @@ GameObject:
   - component: {fileID: 3022590338956811405}
   - component: {fileID: 5183655109247484720}
   - component: {fileID: 6173563475319394978}
-  - component: {fileID: 9169112762265949880}
   m_Layer: 6
   m_Name: CBR-27
   m_TagString: Untagged
@@ -732,6 +734,7 @@ MonoBehaviour:
     type: 3}
   bulletImpactBlood: {fileID: 0}
   pickup: {fileID: 0}
+  gunVisual: {fileID: 0}
   camRecoil: {fileID: 0}
   swayModel: {fileID: 2849126101163745364}
   recoilModel: {fileID: 973158713076937611}
@@ -848,28 +851,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 4852457880753245286}
---- !u!114 &9169112762265949880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6788626819295025767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1001 &1733582739444398717
 PrefabInstance:
   m_ObjectHideFlags: 0

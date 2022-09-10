@@ -16,6 +16,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject roomMenu;
     public GameObject findRoomMenu;
     public GameObject loadingMenu;
+    public GameObject cosmeticsMenu;
 
     [Space]
     [Header("Misc Components")]
@@ -23,11 +24,12 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Text invalidInputField;
     [SerializeField] private Text roomTitle;
     [SerializeField] private InputField roomInputField;
-    [SerializeField] private InputField playerNameInputField;
+    public InputField playerNameInputField;
 
     [Space]
     [Header("Menu States")]
     public bool openedMainMenu = false;
+    public bool openedCosmeticsMenu = false;
     public bool openedMultiplayerMenu = false;
     public bool openedRoomMenu = false;
     public bool openedFindRoomMenu = false;
@@ -38,9 +40,12 @@ public class MainMenuUIManager : MonoBehaviour
     [Header("Menu Online States")]
     [SerializeField] private bool joinedMasterLobby = false;
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         instance = this;
+    }
+    void Start()
+    {
         JoiningMasterLobby(false);
         SetCreateRoomInputField(false);
         SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");
@@ -49,6 +54,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseMultiplayerMenu();
         CloseLoadingMenu();
         CloseFindRoomMenu();
+        CloseCosmeticsMenu();
         OpenMainMenu();
     }
 
@@ -77,6 +83,30 @@ public class MainMenuUIManager : MonoBehaviour
         multiplayerMenu.SetActive(openedMultiplayerMenu);
     }
     public void ToggleMultiplayerMenu()
+    {
+        if (openedMultiplayerMenu)
+        {
+            CloseMultiplayerMenu();
+        }
+        else
+        {
+            OpenMultiplayerMenu();
+        }
+    }
+    #endregion
+
+    #region Cosmetics Menu
+    public void OpenCosmeticsMenu()
+    {
+        openedCosmeticsMenu = true;
+        cosmeticsMenu.SetActive(openedCosmeticsMenu);
+    }
+    public void CloseCosmeticsMenu()
+    {
+        openedCosmeticsMenu = false;
+        cosmeticsMenu.SetActive(openedCosmeticsMenu);
+    }
+    public void ToggleCosmeticsMenu()
     {
         if (openedMultiplayerMenu)
         {
@@ -213,9 +243,5 @@ public class MainMenuUIManager : MonoBehaviour
     public string GetRoomTitle()
     {
         return roomTitle.text;
-    }
-    public string GetPlayerFieldName()
-    {
-        return playerNameInputField.text;
     }
 }

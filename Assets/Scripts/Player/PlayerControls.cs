@@ -20,7 +20,15 @@ public class PlayerControls : MonoBehaviour
     private MouseLookScript mouseLook;
     [SerializeField] Vector3 velocity;
     InteractionIndicatorScript interactionIndicator;
+    Vector3 smoothedPlayerInput;
+    Vector3 smoothMoveVelocity;
+    public float smoothTime = 1.5f;
     float x,z;
+    Vector3 posTemp;
+    Quaternion rotTemp;
+
+    [Space]
+    [SerializeField] Vector3 velocityDebug;
     private void Awake()
     {
         normalFOV = player.stats.cameraFieldOfView;
@@ -33,6 +41,8 @@ public class PlayerControls : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
             return;
         }
+        posTemp = transform.position;
+        rotTemp = transform.rotation;
         mouseLook = player.fpsCam.GetComponent<MouseLookScript>();
         capsuleColliderInitHeight = player.capsuleCollider.height;
         capsuleColliderCrouchHeight = player.capsuleCollider.height / 2;
@@ -45,19 +55,26 @@ public class PlayerControls : MonoBehaviour
     }
     void Update()
     {
-        if (!player.pv.IsMine) return;
-        player.holder.WeaponFunction();
-        if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
+        velocityDebug = player.body.velocity;
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
-        Logics();
-        GroundCheck();
-        Gravity();
+        if (!player.pv.IsMine)
+        {
+            //transform.position = Vector3.Lerp(transform.position, transform.position, 0.1f);
+        }
+        else
+        {
+            player.holder.WeaponFunction();
+            if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
+            Logics();
+            GroundCheck();
+            Gravity();
 
-        Movement();
-        CameraFOV();
-        InteractIndicatorCheck();
-        KeybindedActions();
+            Movement();
+            CameraFOV();
+            InteractIndicatorCheck();
+            KeybindedActions();
+        }
     }
     public void InteractIndicatorCheck()
     {
@@ -86,11 +103,16 @@ public class PlayerControls : MonoBehaviour
         if (player.stats.playerMovementEnabled)
         {
             playerInput = player.transform.right * x + transform.forward * z;
+            //smoothedPlayerInput = Vector3.SmoothDamp(smoothedPlayerInput, playerInput * speedValve * Time.deltaTime, ref smoothMoveVelocity, smoothTime);
             player.body.Move(playerInput * speedValve * Time.deltaTime);
             //player.body.velocity = MoveVec;
         }
         if (player.stats.onGround && player.stats.isJumping) velocity.y = Mathf.Sqrt(player.stats.jumpForce * -2f * player.stats.gravity);
         player.capsuleCollider.height = player.stats.isCrouching ? capsuleColliderCrouchHeight : capsuleColliderInitHeight;
+    }
+    void FixedMovement()
+    {
+        //transform.position
     }
     void Gravity()
     {

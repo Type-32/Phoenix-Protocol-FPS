@@ -12,11 +12,11 @@ public class SpawnpointUIPoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnpointHolder = FindObjectOfType<SpawnpointHolder>();
+        //spawnpointHolder = FindObjectOfType<SpawnpointHolder>();
     }
     void Awake()
     {
-        spawnpointHolder = FindObjectOfType<SpawnpointHolder>();
+        //spawnpointHolder = FindObjectOfType<SpawnpointHolder>();
     }
     private void Test()
     {

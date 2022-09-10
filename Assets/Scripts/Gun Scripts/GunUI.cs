@@ -11,7 +11,8 @@ public class GunUI : MonoBehaviour
     // Start is called before the first frame update
     public void GunUIAwake()
     {
-        ui = FindObjectOfType<UIManager>();
+        PlayerControllerManager playerTemp = GetComponentInParent<PlayerControllerManager>();
+        ui = playerTemp.GetComponentInChildren<UIManager>();
     }
 
     // Update is called once per frame

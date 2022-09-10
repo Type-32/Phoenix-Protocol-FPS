@@ -13,16 +13,25 @@ public class MouseLookScript : MonoBehaviour
     public float mouseSensitivityValve;
     [SerializeField] Camera itemLayerCamera;
     public Camera playerMainCamera;
+    public Camera minimapCamera;
     [SerializeField] GameObject cameraHolder;
     float xRot = 0f;
 
     void Start()
     {
-        playerMainCamera.fieldOfView = player.stats.cameraFieldOfView;
-        Cursor.lockState = CursorLockMode.Locked;
-        mouseSensitivityValve = player.stats.mouseSensitivity;
-        mouseX = 0f;
-        mouseY = 0f;
+        if (!player.pv.IsMine)
+        {
+            minimapCamera.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            playerMainCamera.fieldOfView = player.stats.cameraFieldOfView;
+            Cursor.lockState = CursorLockMode.Locked;
+            mouseSensitivityValve = player.stats.mouseSensitivity;
+            mouseX = 0f;
+            mouseY = 0f;
+        }
     }
 
     void Update()
