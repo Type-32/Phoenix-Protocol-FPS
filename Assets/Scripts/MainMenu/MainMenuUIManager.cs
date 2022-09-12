@@ -16,6 +16,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject roomMenu;
     public GameObject findRoomMenu;
     public GameObject loadingMenu;
+    public GameObject settingsMenu;
     public GameObject cosmeticsMenu;
 
     [Space]
@@ -34,6 +35,7 @@ public class MainMenuUIManager : MonoBehaviour
     public bool openedRoomMenu = false;
     public bool openedFindRoomMenu = false;
     public bool openedLoadingMenu = false;
+    public bool openedSettingsMenu = false;
     public bool usingCreateRooomInputField = false;
 
     [Space]
@@ -49,12 +51,13 @@ public class MainMenuUIManager : MonoBehaviour
         JoiningMasterLobby(false);
         SetCreateRoomInputField(false);
         SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");
-        MainMenuUIManager.instance.SetInvalidInputFieldText(" ", Color.red);
+        SetInvalidInputFieldText(" ", Color.red);
         CloseRoomMenu();
         CloseMultiplayerMenu();
         CloseLoadingMenu();
         CloseFindRoomMenu();
         CloseCosmeticsMenu();
+        CloseSettingsMenu();
         OpenMainMenu();
     }
 
@@ -187,6 +190,30 @@ public class MainMenuUIManager : MonoBehaviour
         else
         {
             OpenLoadingMenu();
+        }
+    }
+    #endregion
+
+    #region Settings Menus
+    public void OpenSettingsMenu()
+    {
+        openedSettingsMenu = true;
+        settingsMenu.SetActive(openedSettingsMenu);
+    }
+    public void CloseSettingsMenu()
+    {
+        openedSettingsMenu = false;
+        settingsMenu.SetActive(openedSettingsMenu);
+    }
+    public void ToggleSettingsMenu()
+    {
+        if (openedLoadingMenu)
+        {
+            CloseSettingsMenu();
+        }
+        else
+        {
+            OpenSettingsMenu();
         }
     }
     #endregion

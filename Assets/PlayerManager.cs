@@ -205,6 +205,7 @@ public class PlayerManager : MonoBehaviour
     #region Menus
     public void OpenLoadoutMenu()
     {
+        //if (!pv.IsMine) return;
         Debug.Log("Opened Loadout UI ");
         Cursor.lockState = CursorLockMode.None;
         openedLoadoutMenu = true;
@@ -213,6 +214,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void CloseLoadoutMenu()
     {
+        //if (!pv.IsMine) return;
         Debug.Log("Closed Loadout UI ");
         Cursor.lockState = CursorLockMode.Locked;
         openedLoadoutMenu = false;
@@ -220,6 +222,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void ToggleButtonHolder(bool value)
     {
+        // (!pv.IsMine) return;
         Debug.Log("Toggled Button Holder ");
         //Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
         enabledButtonHolder = value;
@@ -227,6 +230,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void ToggleSettingsMenu(bool value)
     {
+        //if (!pv.IsMine) return;
         Debug.Log("Toggled Settings Menu ");
         //Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
         openedSettingsSection = value;
@@ -234,6 +238,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void OpenMenu()
     {
+        //if (!pv.IsMine) return;
         openedOptions = true;
         Debug.Log("Opened Options UI ");
         Cursor.lockState = CursorLockMode.None;
@@ -243,6 +248,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void CloseMenu()
     {
+        //if (!pv.IsMine) return;
         openedOptions = false;
         Debug.Log("Closed Options UI ");
         Cursor.lockState = CursorLockMode.Locked;

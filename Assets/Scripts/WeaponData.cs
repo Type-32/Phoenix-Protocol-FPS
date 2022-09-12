@@ -19,7 +19,7 @@ public class WeaponData : ItemData
     public float reloadTime = 3f;
     public float impactForce = 10f;
     public float fireRate = 15f;
-    [Range(1f, 1.5f)] public float FOVMultiplier = 1.1f;
+    [Range(1f, 3f)] public float FOVMultiplier = 1.1f;
     public float boltRecoveryDuration = 1.5f;
     public float aimSpeed = 3f;
     [Range(0f, 50f)] public float damagePerPellet = 10f;

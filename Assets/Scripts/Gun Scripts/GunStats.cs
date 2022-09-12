@@ -71,7 +71,7 @@ public class GunStats : MonoBehaviour
     [HideInInspector] public bool isShooting = false;
     [HideInInspector] public bool isAttaching = false;
 
-    private void Start()
+    private void Awake()
     {
         InitializeGunStats();
     }

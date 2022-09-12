@@ -591,8 +591,8 @@ MonoBehaviour:
   healthLimit: 100
   stressLimit: 100
   armorLimit: 300
-  speed: 3.5
-  sprintSpeed: 6
+  speed: 3.3
+  sprintSpeed: 5.8
   crouchSpeed: 2.4
   jumpForce: 0.7
   gravity: -10
@@ -617,7 +617,7 @@ MonoBehaviour:
   ClampCamRotX: -85
   ClampCamRotZ: 85
   sprintFOVMultiplier: 1.1
-  sprintFOVChangeDuration: 10
+  sprintFOVChangeDuration: 7.5
   baseStepSpeed: 0.52
   crouchStepMultiplier: 1.5
   sprintStepMultiplier: 0.58
@@ -942,11 +942,11 @@ Camera:
   far clip plane: 50
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 15.000004
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 63
+    m_Bits: 191
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8600000, guid: 14d21a3cadc0c4043a255b9e0a21bbae, type: 2}
   m_TargetDisplay: 0
@@ -1946,6 +1946,11 @@ PrefabInstance:
     - target: {fileID: 224737925335464938, guid: 6065880057579b44fb72d8661f07ef35,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 442195863905092342, guid: 6065880057579b44fb72d8661f07ef35,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1000150117812242961, guid: 6065880057579b44fb72d8661f07ef35,

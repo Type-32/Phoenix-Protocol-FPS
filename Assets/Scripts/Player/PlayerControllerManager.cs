@@ -63,10 +63,18 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             recoilScript = FindObjectOfType<Recoil>();
             DerivePlayerStatsToHUDInitialize();
+            playerHead.SetActive(false);
+            playerBody.SetActive(false);
+            playerFeet1.SetActive(false);
+            playerFeet2.SetActive(false);
         }
         else
         {
             Destroy(ui.gameObject);
+            playerHead.SetActive(true);
+            playerBody.SetActive(true);
+            playerFeet1.SetActive(true);
+            playerFeet2.SetActive(true);
         }
     }
     private void Update()

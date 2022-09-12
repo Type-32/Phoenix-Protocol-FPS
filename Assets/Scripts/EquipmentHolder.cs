@@ -42,6 +42,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         }
         if (!player.pv.IsMine)
         {
+            weaponSlots[0].gun.muzzleFire.gameObject.layer = LayerMask.NameToLayer("Default");
+            weaponSlots[1].gun.muzzleFire.gameObject.layer = LayerMask.NameToLayer("Default");
             Transform[] list1 = weaponSlots[0].gun.gunVisual.GetComponentsInChildren<Transform>();
             Transform[] list2 = weaponSlots[1].gun.gunVisual.GetComponentsInChildren<Transform>();
             EquipWeapon(0);
