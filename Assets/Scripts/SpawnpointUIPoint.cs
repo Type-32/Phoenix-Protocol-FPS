@@ -45,6 +45,6 @@ public class SpawnpointUIPoint : MonoBehaviour
     public void OffselectPlayerSpawnpoint()
     {
         selectionBox.enabled = false;
-        spawnpointHolder.SetSpecificSpawnpoint(null);
+        //spawnpointHolder.SetSpecificSpawnpoint(null);
     }
 }

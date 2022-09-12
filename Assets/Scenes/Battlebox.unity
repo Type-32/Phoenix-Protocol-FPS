@@ -22772,6 +22772,7 @@ GameObject:
   - component: {fileID: 1231047553}
   - component: {fileID: 1231047556}
   - component: {fileID: 1231047554}
+  - component: {fileID: 1231047557}
   m_Layer: 0
   m_Name: SpawnpointCamera
   m_TagString: Untagged
@@ -22787,7 +22788,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231047552}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 1.9999998, y: 40, z: -6.14}
+  m_LocalPosition: {x: 1.9999998, y: 81.5, z: -6.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22851,7 +22852,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: -10.8
-  far clip plane: 961.78
+  far clip plane: 100
   field of view: 60
   orthographic: 1
   orthographic size: 46.22
@@ -22870,6 +22871,18 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1231047557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231047552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a93d09b1e77b74e45b183a6cd5c0bf70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1235907246
 PrefabInstance:
   m_ObjectHideFlags: 0

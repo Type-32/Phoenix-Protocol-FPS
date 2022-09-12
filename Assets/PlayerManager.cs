@@ -19,11 +19,16 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] UIManager playerUI;
     [SerializeField] PlayerControllerManager player;
     [SerializeField] GameObject skipCountdownIndicator;
+    [SerializeField] GameObject spawnpointUISelection;
     public LoadoutSlotHolder slotHolderScript;
     public ChoiceHolderScript choiceHolderScript;
-    bool hasRespawned = false;
-    float temp;
-    int respawnCountdown = 10;
+    [SerializeField] bool hasRespawned = false;
+    [SerializeField] bool respawning = false;
+    [SerializeField] float temp;
+    [SerializeField] float secondFill = 0f;
+    [SerializeField] float secondCount = 0f;
+    [SerializeField] float returnTemp = 2f;
+    [SerializeField] int respawnCountdown = 8;
 
     [Space]
     [Header("UI")]
@@ -40,6 +45,7 @@ public class PlayerManager : MonoBehaviour
     [Space]
     [Header("RespawnUI")]
     public RespawningUI respawnUI;
+    public Transform spawnpoint;
 
     [Space]
     [Header("Settings Related")]
@@ -49,6 +55,7 @@ public class PlayerManager : MonoBehaviour
     [Space]
     [Header("Options Elements")]
     public GameObject optionsUI;
+    public SpawnpointCamera spawnpointCamera;
 
     [Space]
     [Header("Player Infos")]
@@ -58,6 +65,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+        spawnpointCamera = FindObjectOfType<SpawnpointCamera>();
         if (pv.IsMine)
         {
             CreateController();
@@ -78,27 +86,32 @@ public class PlayerManager : MonoBehaviour
         openedInventory = false;
         CloseMenu();
         CloseLoadoutMenu();
-        deathCountdown.text = "Waiting for Respawn...";
+        deathCountdown.text = "Waiting for Respawn";
 
-        respawnCountdown = 10;
+        respawnCountdown = 8;
         hasRespawned = true;
         deathUI.SetActive(false);
     }
     void CreateController()
     {
+        respawning = true;
         respawnUI.respawnButton.interactable = false;
         respawnUI.redeployButton.interactable = true;
         deathUI.SetActive(false);
-        Transform spawnpoint = SpawnManager.Instance.GetRandomSpawnpoint();
+        spawnpoint = SpawnManager.Instance.GetRandomSpawnpoint();
         Debug.Log("Instantiating Player Controller");
         controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), spawnpoint.position, spawnpoint.rotation, 0, new object[] {pv.ViewID});
         controller.GetComponent<PlayerControllerManager>().playerManager = this;
         playerUI = controller.GetComponent<UIManager>();
         player = controller.GetComponent<PlayerControllerManager>();
         loadoutMenu.ui = controller.GetComponent<UIManager>();
+        returnTemp = 2;
     }
     public void Die()
     {
+        respawning = true;
+        secondCount = 0;
+
         transform.position = controller.transform.position;
         transform.rotation = controller.transform.rotation;
 
@@ -111,11 +124,12 @@ public class PlayerManager : MonoBehaviour
         respawnUI.respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
-        respawnCountdown = 10;
+        respawnCountdown = 8;
         hasRespawned = false;
         temp = 0;
+        returnTemp = 0f;
         deathUI.SetActive(true);
-        deathCountdown.text = "Waiting for Respawn...";
+        deathCountdown.text = "Waiting for Respawn";
     }
     public void RedeployPlayer()
     {
@@ -134,24 +148,33 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         if (!pv.IsMine) return;
+        if (secondFill < 1f)
+        {
+            secondFill += Time.deltaTime;
+        }
+        else
+        {
+            secondFill = 0f;
+            secondCount++;
+        }
         if ((Input.GetKeyDown(KeyCode.Escape)))
         {
-            if (openedOptions)
+            if (loadoutMenu.openedSelectionMenu)
             {
-                CloseMenu();
+                loadoutMenu.CloseSelectionMenu();
             }
             else if (openedLoadoutMenu)
             {
-                player.playerManager.CloseLoadoutMenu();
-            }
-            else if (loadoutMenu.openedSelectionMenu)
-            {
-                loadoutMenu.CloseSelectionMenu();
+                CloseLoadoutMenu();
             }
             else if (openedSettingsSection)
             {
                 ToggleSettingsMenu(false);
                 ToggleButtonHolder(true);
+            }
+            else if (openedOptions)
+            {
+                CloseMenu();
             }
             else
             {
@@ -172,7 +195,44 @@ public class PlayerManager : MonoBehaviour
                 OpenLoadoutMenu();
             }
         }
+        if(returnTemp <= 0f && hasRespawned && !respawning)
+        {
+            CreateController();
+        }
+        if (respawning)
+        {
+            if (returnTemp >= 2f)
+            {
+                if (!hasRespawned)
+                {
+                    transform.position = Vector3.Slerp(transform.position, spawnpointCamera.transform.position, Time.deltaTime * 3);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, spawnpointCamera.transform.rotation, Time.deltaTime * 3);
+                }
+            }
+            else
+            {
+                returnTemp += secondCount;
+                secondCount = 0;
+            }
+        }
+        else
+        {
+            if (returnTemp > 0f)
+            {
+                returnTemp -= secondCount;
+                secondCount = 0;
+            }
+            else
+            {
+                if (hasRespawned)
+                {
+                    transform.position = Vector3.Slerp(transform.position, spawnpoint.position, Time.deltaTime * 3);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, spawnpoint.rotation, Time.deltaTime * 3);
+                }
+            }
+        }
         if (hasRespawned) return;
+        if (openedLoadoutMenu) return;
         temp += Time.deltaTime;
         if (Input.GetKeyDown("f"))
         {
@@ -190,7 +250,7 @@ public class PlayerManager : MonoBehaviour
             {
                 skipCountdownIndicator.SetActive(true);
             }
-            deathCountdown.text = "Respawning in " + respawnCountdown.ToString() + "...";
+            deathCountdown.text = "Respawning in " + respawnCountdown.ToString();
             respawnCountdown--;
             temp = 0;
         }
@@ -199,8 +259,10 @@ public class PlayerManager : MonoBehaviour
     {
         respawnCountdown = 0;
         temp = 0;
+        secondCount = 0;
         hasRespawned = true;
-        deathCountdown.text = "Waiting for Respawn...";
+        respawning = false;
+        deathCountdown.text = "Waiting for Respawn";
         skipCountdownIndicator.SetActive(false);
         CloseLoadoutMenu();
         CreateController();
@@ -210,18 +272,18 @@ public class PlayerManager : MonoBehaviour
     {
         //if (!pv.IsMine) return;
         Debug.Log("Opened Loadout UI ");
-        Cursor.lockState = CursorLockMode.None;
         openedLoadoutMenu = true;
         loadoutMenu.gameObject.SetActive(true);
         slotHolderScript.RefreshLoadoutSlotInfo();
+        Cursor.lockState = CursorLockMode.None;
     }
     public void CloseLoadoutMenu()
     {
         //if (!pv.IsMine) return;
         Debug.Log("Closed Loadout UI ");
-        Cursor.lockState = CursorLockMode.Locked;
         openedLoadoutMenu = false;
         loadoutMenu.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public void ToggleButtonHolder(bool value)
     {
@@ -244,10 +306,10 @@ public class PlayerManager : MonoBehaviour
         //if (!pv.IsMine) return;
         openedOptions = true;
         Debug.Log("Opened Options UI ");
-        Cursor.lockState = CursorLockMode.None;
         optionsUI.SetActive(openedOptions);
         ToggleButtonHolder(openedOptions);
         ToggleSettingsMenu(!openedOptions);
+        Cursor.lockState = CursorLockMode.None;
     }
     public void CloseMenu()
     {
@@ -258,6 +320,7 @@ public class PlayerManager : MonoBehaviour
         optionsUI.SetActive(openedOptions);
         ToggleButtonHolder(openedOptions);
         ToggleSettingsMenu(openedOptions);
+        Cursor.lockState = CursorLockMode.Locked;
     }
     #endregion
     public void LeaveGame()
@@ -267,7 +330,7 @@ public class PlayerManager : MonoBehaviour
         player.playerManager.CloseLoadoutMenu();
         player.playerManager.ToggleButtonHolder(true);
         player.playerManager.ToggleSettingsMenu(false);
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
         Launcher.Instance.LeaveRoom();
         //PhotonNetwork.LoadLevel(0);
         PhotonNetwork.Destroy(gameObject);
