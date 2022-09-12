@@ -140,13 +140,13 @@ public class PlayerManager : MonoBehaviour
             {
                 CloseMenu();
             }
-            else if (player.playerManager.openedLoadoutMenu)
+            else if (openedLoadoutMenu)
             {
                 player.playerManager.CloseLoadoutMenu();
             }
-            else if (player.playerManager.loadoutMenu.openedSelectionMenu)
+            else if (loadoutMenu.openedSelectionMenu)
             {
-                player.playerManager.loadoutMenu.CloseSelectionMenu();
+                loadoutMenu.CloseSelectionMenu();
             }
             else if (openedSettingsSection)
             {
@@ -163,6 +163,9 @@ public class PlayerManager : MonoBehaviour
             if (openedLoadoutMenu)
             {
                 CloseLoadoutMenu();
+            }else if (loadoutMenu.openedSelectionMenu)
+            {
+                loadoutMenu.CloseSelectionMenu();
             }
             else
             {
