@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class MainMenuUIManager : MonoBehaviour
 {
@@ -18,13 +21,13 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject loadingMenu;
     public GameObject settingsMenu;
     public GameObject cosmeticsMenu;
+    public GameObject createRoomMenu;
 
     [Space]
     [Header("Misc Components")]
     [SerializeField] private Text connectionIndicator;
     [SerializeField] private Text invalidInputField;
     [SerializeField] private Text roomTitle;
-    [SerializeField] private InputField roomInputField;
     public InputField playerNameInputField;
 
     [Space]
@@ -36,12 +39,40 @@ public class MainMenuUIManager : MonoBehaviour
     public bool openedFindRoomMenu = false;
     public bool openedLoadingMenu = false;
     public bool openedSettingsMenu = false;
+    public bool openedCreateRoomMenu = false;
     public bool usingCreateRooomInputField = false;
 
     [Space]
     [Header("Menu Online States")]
     [SerializeField] private bool joinedMasterLobby = false;
-    // Start is called before the first frame update
+
+    [Space]
+    [Header("Room Creation")]
+    [SerializeField] private InputField roomInputField;
+    [SerializeField] private int roomMapSelectionIndex;
+    [SerializeField] private Gamemodes selectedGamemodes = Gamemodes.FFA;
+    [SerializeField] private int maxPlayerCount = 8;
+
+    [Header("Room Visual")]
+    [SerializeField] Text maxPlayers;
+    [SerializeField] Text gamemodes;
+
+    [Header("Room Preview")]
+    [SerializeField] Text selectedRoomName;
+    [SerializeField] Text selectedMap;
+    [SerializeField] Text selectedGamemode;
+    [SerializeField] Text selectedMaxPlayers;
+
+
+    public enum Gamemodes
+    {
+        FFA = 1,
+        TDM = 2,
+        KOTH = 3,
+        DZ = 4
+    }
+
+
     private void Awake()
     {
         instance = this;
@@ -49,7 +80,7 @@ public class MainMenuUIManager : MonoBehaviour
     void Start()
     {
         JoiningMasterLobby(false);
-        SetCreateRoomInputField(false);
+        SetCreateRoomInputField(true);
         SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");
         SetInvalidInputFieldText(" ", Color.red);
         CloseRoomMenu();
@@ -57,6 +88,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseLoadingMenu();
         CloseFindRoomMenu();
         CloseCosmeticsMenu();
+        CloseCreateRoomMenu();
         CloseSettingsMenu();
         OpenMainMenu();
     }
@@ -218,6 +250,35 @@ public class MainMenuUIManager : MonoBehaviour
     }
     #endregion
 
+    #region Create Room Menu
+    public void OpenCreateRoomMenu()
+    {
+        openedCreateRoomMenu = true;
+        createRoomMenu.SetActive(openedCreateRoomMenu);
+        OnChangedMaxPlayers(int.Parse(maxPlayers.text));
+        OnSelectedGamemode(selectedGamemodes);
+        OnSelectedGamemode(selectedGamemodes);
+    }
+    public void CloseCreateRoomMenu()
+    {
+        openedCreateRoomMenu = false;
+        createRoomMenu.SetActive(openedCreateRoomMenu);
+    }
+    public void ToggleCreateRoomMenu()
+    {
+        if (openedLoadingMenu)
+        {
+            CloseCreateRoomMenu();
+        }
+        else
+        {
+            OpenCreateRoomMenu();
+        }
+    }
+    #endregion
+
+
+    #region Main
     public void UseCreateRoomInputField()
     {
         if (usingCreateRooomInputField)
@@ -233,8 +294,8 @@ public class MainMenuUIManager : MonoBehaviour
     {
         usingCreateRooomInputField = value;
         roomInputField.gameObject.SetActive(value);
-        if (value) createRoomButton.interactable = false;
-        else createRoomButton.interactable = true;
+        //if (value) createRoomButton.interactable = false;
+        //else createRoomButton.interactable = true;
     }
 
     public void JoiningMasterLobby(bool value)
@@ -271,4 +332,144 @@ public class MainMenuUIManager : MonoBehaviour
     {
         return roomTitle.text;
     }
+    #endregion
+
+
+    #region Room Creation
+    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer)
+    {
+        RoomOptions roomOptions = new RoomOptions();
+        long roomCode = Random.Range(10000000, 99999999);
+        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "roomMode", "roomCode" }; //Expose values to main lobby
+        roomOptions.CustomRoomPropertiesForLobby = tempValues;
+        roomOptions.CustomRoomProperties = new Hashtable();
+        roomOptions.CustomRoomProperties.Add("roomName", roomName);
+        roomOptions.CustomRoomProperties.Add("roomHostName", roomHostName);
+        roomOptions.CustomRoomProperties.Add("mapInfoIndex", mapInfoIndex);
+        roomOptions.CustomRoomProperties.Add("maxPlayer", maxPlayer);
+        roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
+        switch (roomGamemodes)
+        {
+            case Gamemodes.FFA:
+                roomOptions.CustomRoomProperties.Add("roomMode", "Free For All");
+                break;
+            case Gamemodes.TDM:
+                roomOptions.CustomRoomProperties.Add("roomMode", "Team Deathmatch");
+                break;
+            case Gamemodes.KOTH:
+                roomOptions.CustomRoomProperties.Add("roomMode", "King of the Hills");
+                break;
+            case Gamemodes.DZ:
+                roomOptions.CustomRoomProperties.Add("roomMode", "Drop Zones");
+                break;
+        }
+        roomOptions.MaxPlayers = (byte)maxPlayer;
+        return roomOptions;
+    }
+    public RoomOptions GetGeneratedRoomOptions()
+    {
+        RoomOptions roomOptionsTemp = new RoomOptions();
+        roomOptionsTemp.CustomRoomProperties = new Hashtable();
+        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount);
+        return roomOptionsTemp;
+    }
+    public void OnCreateRoomInputSubmit(string roomInput)
+    {
+        selectedRoomName.text = "Room Name: " + roomInput;
+    }
+    public void OnSelectedMap(string mapNameInput)
+    {
+        selectedMap.text = "Selected Map: " + mapNameInput;
+    }
+    public void OnSelectedGamemode(Gamemodes gmInput)
+    {
+        string temp = "None";
+        switch (gmInput)
+        {
+            case Gamemodes.TDM:
+                temp = "Team Deathmatch";
+                break;
+            case Gamemodes.KOTH:
+                temp = "King of the Hills";
+                break;
+            case Gamemodes.DZ:
+                temp = "Drop Zones";
+                break;
+            case Gamemodes.FFA:
+                temp = "Free For All";
+                break;
+        }
+        selectedGamemode.text = "Selected Gamemode: " + temp;
+    }
+    public void OnChangedMaxPlayers(int maxPlayersInput)
+    {
+        selectedMaxPlayers.text = "Max Players: " + maxPlayersInput.ToString();
+    }
+
+
+    public void DecreasePlayerCount()
+    {
+        int temp = int.Parse(maxPlayers.text);
+        if (temp - 1 < 2) return;
+        maxPlayerCount = temp - 1;
+        maxPlayers.text = (temp - 1).ToString();
+        OnChangedMaxPlayers(temp - 1);
+    }
+    public void IncreasePlayerCount()
+    {
+        int temp = int.Parse(maxPlayers.text);
+        if (temp + 1 > 12) return;
+        maxPlayerCount = temp + 1;
+        maxPlayers.text = (temp + 1).ToString();
+        OnChangedMaxPlayers(temp + 1);
+    }
+
+
+    public void NextGamemodeSelect()
+    {
+        switch (selectedGamemodes)
+        {
+            case Gamemodes.FFA:
+                gamemodes.text = "TDM";
+                selectedGamemodes = Gamemodes.TDM;
+                break;
+            case Gamemodes.TDM:
+                gamemodes.text = "KOTH";
+                selectedGamemodes = Gamemodes.KOTH;
+                break;
+            case Gamemodes.KOTH:
+                gamemodes.text = "DZ";
+                selectedGamemodes = Gamemodes.DZ;
+                break;
+            case Gamemodes.DZ:
+                gamemodes.text = "FFA";
+                selectedGamemodes = Gamemodes.FFA;
+                break;
+        }
+        OnSelectedGamemode(selectedGamemodes);
+    }
+    public void PreviousGamemodeSelect()
+    {
+        switch (selectedGamemodes)
+        {
+            case Gamemodes.FFA:
+                gamemodes.text = "DZ";
+                selectedGamemodes = Gamemodes.DZ;
+                break;
+            case Gamemodes.DZ:
+                gamemodes.text = "KOTH";
+                selectedGamemodes = Gamemodes.KOTH;
+                break;
+            case Gamemodes.KOTH:
+                gamemodes.text = "TDM";
+                selectedGamemodes = Gamemodes.TDM;
+                break;
+            case Gamemodes.TDM:
+                gamemodes.text = "FFA";
+                selectedGamemodes = Gamemodes.FFA;
+                break;
+        }
+        OnSelectedGamemode(selectedGamemodes);
+    }
+    #endregion
 }

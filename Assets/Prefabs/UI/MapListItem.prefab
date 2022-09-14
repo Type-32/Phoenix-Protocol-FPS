@@ -172,7 +172,6 @@ GameObject:
   - component: {fileID: 3594243385374465787}
   - component: {fileID: 3594243385374465780}
   - component: {fileID: 3807829474010307435}
-  - component: {fileID: 4632529787594659189}
   - component: {fileID: 1634429736260868349}
   m_Layer: 5
   m_Name: MapListItem
@@ -287,8 +286,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4632529787594659189}
-        m_TargetAssemblyTypeName: RoomListItem, Assembly-CSharp
+      - m_Target: {fileID: 1634429736260868349}
+        m_TargetAssemblyTypeName: MapListItem, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -299,22 +298,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4632529787594659189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3594243385374465782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdbd61434ca4e5f469770a20871ece28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomName: {fileID: 3594243384095786058}
-  roomIcon: {fileID: 3594243385756937465}
-  roomMode: {fileID: 3594243383863899687}
-  roomHostName: {fileID: 3594243385612543740}
 --- !u!114 &1634429736260868349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,6 +310,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac11334c8546fc540ab49d2cfdaad6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapName: {fileID: 3594243384095786058}
+  mapIcon: {fileID: 3594243385756937465}
+  mapPlayers: {fileID: 3594243385612543740}
+  mapVersion: {fileID: 3594243383863899687}
+  mapIndex: 0
 --- !u!1 &3594243385612543742
 GameObject:
   m_ObjectHideFlags: 0

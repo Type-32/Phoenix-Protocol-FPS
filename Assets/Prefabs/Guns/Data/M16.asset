@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec236da174a09f2468714c004e0f7581, type: 3}
+  m_Name: M16
+  m_EditorClassIdentifier: 
+  itemName: M-16
+  itemDescription: Assault Rifle
+  itemIcon: {fileID: 21300000, guid: bcdd03b4426f2b24598230bd3ad7636d, type: 3}
+  equippedByDefault: 0
+  unlockingLevel: 1
+  requiresPurchase: 0
+  purchasePrice: 100
+  weaponPrefab: {fileID: 6788626819295025767, guid: 1ab44881012e74c569c4022e44f50f78,
+    type: 3}
+  weaponType: 0
+  weaponProjectile: {fileID: 0}
+  maxAmmoPerMag: 30
+  magazineCount: 5
+  damage: 37
+  range: 200
+  reloadTime: 3
+  impactForce: 12
+  fireRate: 12.4
+  FOVMultiplier: 2.5
+  boltRecoveryDuration: 1.5
+  aimSpeed: 1
+  damagePerPellet: 10
+  pelletsPerFire: 1
+  isEnabled: 1
+  isMelee: 0
+  isExplosive: 0
+  isArmorPenetrative: 0
+  isSniperProperties: 0
+  enableAutomatic: 1
+  enableBurst: 0
+  enableSingle: 1
+  bassClips:
+  - {fileID: 8300000, guid: 44703936307ccf4438a47ae585fb90a4, type: 3}
+  fireClips:
+  - {fileID: 8300000, guid: 172829b7d655f3f4b96e6fd4b315f579, type: 3}
+  - {fileID: 8300000, guid: 6a8d9d1d242cc7249bcef9bd4485777e, type: 3}
+  - {fileID: 8300000, guid: d7d6b67833dbe9c428472cbe0033248c, type: 3}
+  - {fileID: 8300000, guid: 9423b2ad7a948c74bafec0e440ae51bc, type: 3}
+  - {fileID: 8300000, guid: 13b18d19572e4f8469e44400a53e35c8, type: 3}
+  - {fileID: 8300000, guid: 59b1f4052a908eb41a9521156c4096da, type: 3}
+  mechClips:
+  - {fileID: 8300000, guid: dfd30bf14500a15468c7abebab88b9da, type: 3}
+  - {fileID: 8300000, guid: 4933a4883af8e1b4c8ecf13b52ad7ada, type: 3}
+  - {fileID: 8300000, guid: 4aa1eb38ec615784d94fb96adf3cc648, type: 3}
+  - {fileID: 8300000, guid: 12efe608d987e0542aac8894ebcb8f1b, type: 3}
+  - {fileID: 8300000, guid: 485897cb62e770541b00389643a8ce3e, type: 3}
+  - {fileID: 8300000, guid: 8e128a52e8be7b1458a3e1b2e076ea46, type: 3}

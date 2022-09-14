@@ -208,19 +208,17 @@ public class GunCoreFunc : MonoBehaviour
     {
         if(gun.stats.ammo <= 0 || stats.isSprinting) return;
         if(gun.shellEject != null) gun.shellEject.GetComponent<ParticleSystem>().Play();
-        anim.TriggerWeaponRecoil(stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
+        anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
-        //gun.audio.PlayGunSound();
+
+        anim.animate.SetTrigger("isFiring");
         gun.stats.ammo--;
-        //gun.muzzleFire.Play();
         gun.player.InvokeGunEffects();
         RaycastHit hit;
         Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = gun.fpsCam.transform.position;
         if (Physics.Raycast(ray, out hit, range)){
-            gun.player.CallShootRPCDecals(hit);
-            Debug.Log(hit.transform.name);
-            
+            //Debug.Log(hit.transform.name);
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
             if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
             {
@@ -236,6 +234,10 @@ public class GunCoreFunc : MonoBehaviour
                     gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
                     gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
                 }
+            }
+            else
+            {
+                gun.player.CallShootRPCDecals(hit);
             }
             /*
             if (hit.transform.GetComponent<Rigidbody>() != null){

@@ -5,7 +5,7 @@ using Photon.Pun;
 
 using Photon.Realtime;
 
-public class NetworkPlayer : MonoBehaviour
+public class NetworkPlayer : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] PlayerControllerManager player;
     Vector3 realPosition = Vector3.zero;
@@ -19,17 +19,18 @@ public class NetworkPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player.pv.IsMine)
+        if (player.pv.IsMine) return;
+        var lagDistance = realPosition - transform.position;
+        if(lagDistance.magnitude > 5f)
         {
+            //transform.position = realPosition;
+            lagDistance = Vector3.zero;
+        }
 
-        }
-        else
-        {
-            transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
-        }
+        transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
     }
-    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {

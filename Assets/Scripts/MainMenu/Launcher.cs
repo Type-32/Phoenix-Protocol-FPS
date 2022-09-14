@@ -7,6 +7,7 @@ using Photon.Realtime;
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher Instance;
+    public List<MapItemInfo> mapItemInfo = new List<MapItemInfo>();
     [SerializeField] private Transform roomListContent;
     [SerializeField] private GameObject roomListItemPrefab;
     [SerializeField] private Transform playerListContent;
@@ -43,12 +44,27 @@ public class Launcher : MonoBehaviourPunCallbacks
             MainMenuUIManager.instance.RoomInputFieldText(" ");
             return;
         }
-        PhotonNetwork.CreateRoom(MainMenuUIManager.instance.GetRoomInputFieldText());
+        //roomInfo.CustomProperties.Add("roomIcon", roomIcon.sprite);
+        //roomInfo.CustomProperties.Add("roomMode", roomMode.text);
+        //roomInfo.CustomProperties.Add("roomHostName", roomHostName.text);
+        PhotonNetwork.CreateRoom(MainMenuUIManager.instance.GetRoomInputFieldText(), MainMenuUIManager.instance.GetGeneratedRoomOptions());
         Debug.Log("Trying to create a room with the name " + MainMenuUIManager.instance.GetRoomInputFieldText());
         MainMenuUIManager.instance.SetRoomTitle(MainMenuUIManager.instance.GetRoomInputFieldText());
         MainMenuUIManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
-        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MainMenuUIManager.instance.CloseCreateRoomMenu();
         MainMenuUIManager.instance.OpenLoadingMenu();
+    }
+    public void QuickMatch()
+    {
+        MainMenuUIManager.instance.OpenLoadingMenu();
+        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        PhotonNetwork.JoinRandomRoom();
+    }
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MainMenuUIManager.instance.OpenCreateRoomMenu();
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -56,6 +72,10 @@ public class Launcher : MonoBehaviourPunCallbacks
         MainMenuUIManager.instance.OpenMultiplayerMenu();
         Debug.Log("Failed to create room, Message: " + message);
         MainMenuUIManager.instance.SetInvalidInputFieldText("Invalid Session, returned with message: " + message, Color.red);
+    }
+    public override void OnCreatedRoom()
+    {
+        PhotonNetwork.CurrentRoom.SetCustomProperties(MainMenuUIManager.instance.GetGeneratedRoomOptions().CustomRoomProperties);
     }
     public override void OnJoinedRoom()
     {

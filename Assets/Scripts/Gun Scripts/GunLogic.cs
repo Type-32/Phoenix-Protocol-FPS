@@ -21,7 +21,7 @@ public class GunLogic : MonoBehaviour
     }
     void AimingLogic()
     {
-        if (Input.GetButton("Fire2")) gun.stats.isAiming = true;
+        if (Input.GetButton("Fire2") && !gun.stats.isReloading) gun.stats.isAiming = true;
         else gun.stats.isAiming = false;
     }
     void GunMovementLogic()

@@ -99,7 +99,7 @@ public class PlayerControls : MonoBehaviour
     }
     void Movement()
     {
-        speedValve = player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
+        if(player.stats.onGround) speedValve = player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
         if (player.stats.playerMovementEnabled)
         {
             playerInput = player.transform.right * x + transform.forward * z;

@@ -15,7 +15,7 @@ public class MouseLookScript : MonoBehaviour
     public Camera playerMainCamera;
     public Camera minimapCamera;
     [SerializeField] GameObject cameraHolder;
-    float xRot = 0f;
+    //float xRot = 0f;
 
     void Start()
     {

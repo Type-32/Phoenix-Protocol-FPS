@@ -121,7 +121,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         bool tempflag = false;
         if (stats.health - amount <= 0) tempflag = true;
-        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor);//Running the function on everyone's computer
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor);
+        if (stats.health - amount <= 0) Destroy(gameObject);
         return tempflag;
         //ui.ShowHealthBar(2f);
         
@@ -233,7 +234,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void InvokeGunEffects()
     {
         Debug.LogWarning("Invoking Gun Effects RPC...");
-        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All);
+        pv.RPC(nameof(RPC_InvokeGunEffects), pv.Owner);
     }
     public void InvokePlayerDeathEffects()
     {
@@ -263,6 +264,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [PunRPC]
     public void RPC_InvokeGunEffects()
     {
+        if (!pv.IsMine) return;
         holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound();
         holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
     }

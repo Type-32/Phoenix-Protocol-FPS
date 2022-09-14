@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour
     public float armor = 0f;
     [Range(1f, 200f)] public float healthLimit = 100f;
     [Range(50f, 100f)] public float stressLimit = 100f;
-    [Range(0f, 300f)] public float armorLimit = 300f;
+    [Range(0f, 150f)] public float armorLimit = 150f;
     public float speed = 4f;
     public float sprintSpeed = 8f;
     public float crouchSpeed = 2.8f;

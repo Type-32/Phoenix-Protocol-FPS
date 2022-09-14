@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 8054581112490276648}
   - component: {fileID: 4497721760704412606}
   - component: {fileID: 5570005655546994519}
-  - component: {fileID: 8543753044053575352}
+  - component: {fileID: 5414326240294490456}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -587,10 +587,10 @@ MonoBehaviour:
   xp: 0
   health: 100
   stress: 0
-  armor: 100
+  armor: 50
   healthLimit: 100
   stressLimit: 100
-  armorLimit: 300
+  armorLimit: 150
   speed: 3.3
   sprintSpeed: 5.8
   crouchSpeed: 2.4
@@ -743,11 +743,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 8543753044053575352}
+  - {fileID: 5414326240294490456}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8543753044053575352
+--- !u!114 &5414326240294490456
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1183,6 +1183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2294350712558867777}
   - component: {fileID: 3557355358055512487}
+  - component: {fileID: 3909534088332230210}
   m_Layer: 0
   m_Name: CamHolder
   m_TagString: Untagged
@@ -1225,6 +1226,22 @@ MonoBehaviour:
   playerMainCamera: {fileID: 4211953126289164711}
   minimapCamera: {fileID: 7998613358881787289}
   cameraHolder: {fileID: 6832327901216121144}
+--- !u!114 &3909534088332230210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6832327901216121144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &6910218226894319766
 GameObject:
   m_ObjectHideFlags: 0

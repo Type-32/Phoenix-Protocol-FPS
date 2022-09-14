@@ -54,6 +54,7 @@ public class GunStats : MonoBehaviour
     [Space]
     [Header("Gun Body Recoil Stats")]
     public float recoilX = 2f;
+    public float aimingRecoilX = 0.15f;
     public float recoilY = 2f;
     public float recoilZ = 4f;
     public float kickBackZ = 0.2f;
