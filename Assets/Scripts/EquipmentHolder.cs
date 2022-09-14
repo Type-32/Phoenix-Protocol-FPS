@@ -32,6 +32,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         }
         if (player.pv.IsMine)
         {
+            Debug.Log("Init Start Line 36");
             EquipWeapon(weaponIndex);
         }
         else
@@ -46,6 +47,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             weaponSlots[1].gun.muzzleFire.gameObject.layer = LayerMask.NameToLayer("Default");
             Transform[] list1 = weaponSlots[0].gun.gunVisual.GetComponentsInChildren<Transform>();
             Transform[] list2 = weaponSlots[1].gun.gunVisual.GetComponentsInChildren<Transform>();
+            Debug.Log("Init Start Line 51");
             EquipWeapon(0);
             for (int i = 0; i < list1.Length; i++)
             {
@@ -150,7 +152,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         weaponSlots[index].InitializeAwake();
         weaponSlots[index].InitializeStart();
         weaponSlots[index].item.SetActive(false);
-        //EquipWeapon(index);
+        EquipWeapon(index);
         return true;
     }
     public bool InstantiateEquipment(ThrowablesData data, int index)

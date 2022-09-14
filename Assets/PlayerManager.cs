@@ -106,6 +106,9 @@ public class PlayerManager : MonoBehaviour
         player = controller.GetComponent<PlayerControllerManager>();
         loadoutMenu.ui = controller.GetComponent<UIManager>();
         returnTemp = 2;
+
+        //Player Related Settings
+        player.stats.mouseSensitivity = PlayerPrefs.GetFloat("Mouse Sensitivity");
     }
     public void Die()
     {
@@ -300,6 +303,9 @@ public class PlayerManager : MonoBehaviour
         //Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
         openedSettingsSection = value;
         settingsMenu.gameObject.SetActive(value);
+
+        //Set Local Player Properties According to Settings Menu
+        player.stats.mouseSensitivity = PlayerPrefs.GetFloat("Mouse Sensitivity");
     }
     public void OpenMenu()
     {

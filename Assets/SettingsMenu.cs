@@ -10,12 +10,19 @@ public class SettingsMenu : MonoBehaviour
     public Dropdown resolutionDropdown;
     public Dropdown qualityDropdown;
     public Slider volumeSlider;
+    public Slider sensitivitySlider;
     public Toggle fullscreenToggle;
     public void SetVolume(float volume)
     {
         volumeSlider.value = volume;
         audioMixer.SetFloat("MasterVolume",volume);
         PlayerPrefs.SetFloat("Master Volume", volume);
+    }
+
+    public void SetSensitivity(float sensitivity)
+    {
+        sensitivitySlider.value = sensitivity;
+        PlayerPrefs.SetFloat("Mouse Sensitivity", sensitivity);
     }
     public void SetQuality(int qualityIndex)
     {
@@ -44,6 +51,8 @@ public class SettingsMenu : MonoBehaviour
     {
         volumeSlider.minValue = -80;
         volumeSlider.maxValue = 0;
+        sensitivitySlider.minValue = 0f;
+        sensitivitySlider.maxValue = 200f;
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> resOptions = new List<string>();
@@ -70,6 +79,7 @@ public class SettingsMenu : MonoBehaviour
         {
             SetVolume(PlayerPrefs.GetFloat("Master Volume"));
         }
+
         if (!PlayerPrefs.HasKey("Quality Index"))
         {
             SetQuality(1);
@@ -80,6 +90,7 @@ public class SettingsMenu : MonoBehaviour
             SetQuality(PlayerPrefs.GetInt("Quality Index"));
             qualityDropdown.RefreshShownValue();
         }
+
         if (!PlayerPrefs.HasKey("Master Volume"))
         {
             SetVolume(0);
@@ -88,6 +99,7 @@ public class SettingsMenu : MonoBehaviour
         {
             SetVolume(PlayerPrefs.GetFloat("Master Volume"));
         }
+
         if (!PlayerPrefs.HasKey("Fullscreen Enabled"))
         {
             SetFullscreen(true);
@@ -96,6 +108,7 @@ public class SettingsMenu : MonoBehaviour
         {
             SetFullscreen(PlayerPrefs.GetInt("Fullscreen Enabled") == 1 ? true : false);
         }
+
         if (!PlayerPrefs.HasKey("Resolution Index"))
         {
             SetResolution(resolutions.Length - 1);
@@ -105,6 +118,15 @@ public class SettingsMenu : MonoBehaviour
         {
             SetQuality(PlayerPrefs.GetInt("Resolution Index"));
             resolutionDropdown.RefreshShownValue();
+        }
+
+        if(!PlayerPrefs.HasKey("Mouse Sensitivity"))
+        {
+            SetSensitivity(100f);
+        }
+        else
+        {
+            SetSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
         }
     }
 }
