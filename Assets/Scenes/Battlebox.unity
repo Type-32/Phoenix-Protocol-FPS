@@ -9904,13 +9904,6 @@ MonoBehaviour:
   ammoPool: {fileID: 248527461}
   firemodeIndicator: {fileID: 1144883008}
   weaponTypeIcon: {fileID: 839762012}
-  assaultRifleIcon: {fileID: 0}
-  marksmanRifleIcon: {fileID: 0}
-  pistolIcon: {fileID: 0}
-  shotgunIcon: {fileID: 0}
-  equipmentIcon: {fileID: 0}
-  meleeIcon: {fileID: 0}
-  nullIcon: {fileID: 0}
 --- !u!43 &363915758
 Mesh:
   m_ObjectHideFlags: 0
@@ -10201,7 +10194,10 @@ MonoBehaviour:
   interactionIndicator: {fileID: 853222480}
   healthBar: {fileID: 355656823}
   armorBar: {fileID: 555922766}
+  healthText: {fileID: 0}
+  armorText: {fileID: 0}
   quantityHUD: {fileID: 360557192}
+  healthBarAlpha: {fileID: 0}
   inventory: {fileID: 0}
   hitmarkerTimePassed: 0
 --- !u!95 &391801174
@@ -16467,8 +16463,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManager: {fileID: 0}
-  sp: {fileID: 1923147339}
-  respawnButton: {fileID: 1127222477}
   redeployButton: {fileID: 0}
 --- !u!1 &854433671
 GameObject:
@@ -18978,7 +18972,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1029261506}
-  - component: {fileID: 1029261507}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -19001,18 +18994,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1029261507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029261504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!43 &1032585028
 Mesh:
   m_ObjectHideFlags: 0
@@ -23401,6 +23382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 395fad5f5e8a90f48986a5f4b6dabe1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnpoints: []
 --- !u!1 &1262322692
 GameObject:
   m_ObjectHideFlags: 0
@@ -39941,7 +39923,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1923147338}
-  - component: {fileID: 1923147339}
   m_Layer: 0
   m_Name: SpawnpointHolder
   m_TagString: Untagged
@@ -39972,25 +39953,6 @@ Transform:
   m_Father: {fileID: 1261404565}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1923147339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1923147337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d6eafde2fdf0d14e9979c22d2441b49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnpoints: []
-  spawnpointUIPoints: []
-  spawnpointCamera: {fileID: 1231047556}
-  spawnpointUIPrefab: {fileID: 1682296959103928403, guid: 6c40d032859b393498eb06f4565a5aba,
-    type: 3}
-  spawnpointUIHolder: {fileID: 1021751375}
-  setSpawnpoint: {fileID: 0}
 --- !u!1 &1937652638
 GameObject:
   m_ObjectHideFlags: 0

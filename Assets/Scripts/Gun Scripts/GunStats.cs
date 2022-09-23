@@ -63,6 +63,9 @@ public class GunStats : MonoBehaviour
 
     [HideInInspector] public int selectedBarrelIndex = 0;
     [HideInInspector] public int selectedUnderbarrelIndex = 0;
+    [HideInInspector] public int selectedSightbarrelLeftIndex = 0;
+    [HideInInspector] public int selectedSightbarrelRightIndex = 0;
+    [HideInInspector] public int selectedSightbarrelUpIndex = 0;
     [HideInInspector] public int selectedSightIndex = 0;
 
     [HideInInspector] public bool isWalking = false;

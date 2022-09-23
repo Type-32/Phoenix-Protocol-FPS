@@ -21,7 +21,8 @@ public class MouseLookScript : MonoBehaviour
     {
         if (!player.pv.IsMine)
         {
-            minimapCamera.gameObject.SetActive(false);
+            Destroy(minimapCamera.gameObject);
+            Destroy(itemLayerCamera.gameObject);
             return;
         }
         else

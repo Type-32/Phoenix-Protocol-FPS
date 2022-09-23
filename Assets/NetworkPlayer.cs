@@ -17,18 +17,13 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (player.pv.IsMine) return;
-        var lagDistance = realPosition - transform.position;
-        if(lagDistance.magnitude > 5f)
+        if (!player.pv.IsMine)
         {
-            //transform.position = realPosition;
-            lagDistance = Vector3.zero;
+            transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
         }
-
-        transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

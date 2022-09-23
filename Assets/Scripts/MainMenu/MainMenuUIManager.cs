@@ -22,6 +22,7 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject settingsMenu;
     public GameObject cosmeticsMenu;
     public GameObject createRoomMenu;
+    public GameObject loadoutSelectionMenu;
 
     [Space]
     [Header("Misc Components")]
@@ -40,6 +41,7 @@ public class MainMenuUIManager : MonoBehaviour
     public bool openedLoadingMenu = false;
     public bool openedSettingsMenu = false;
     public bool openedCreateRoomMenu = false;
+    public bool openedLoadoutSelectionMenu = false;
     public bool usingCreateRooomInputField = false;
 
     [Space]
@@ -90,6 +92,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseCosmeticsMenu();
         CloseCreateRoomMenu();
         CloseSettingsMenu();
+        CloseLoadoutSelectionMenu();
         OpenMainMenu();
     }
 
@@ -273,6 +276,30 @@ public class MainMenuUIManager : MonoBehaviour
         else
         {
             OpenCreateRoomMenu();
+        }
+    }
+    #endregion
+
+    #region Loadout Selection Menu
+    public void OpenLoadoutSelectionMenu()
+    {
+        openedLoadoutSelectionMenu = true;
+        loadoutSelectionMenu.SetActive(openedLoadoutSelectionMenu);
+    }
+    public void CloseLoadoutSelectionMenu()
+    {
+        openedLoadoutSelectionMenu = false;
+        loadoutSelectionMenu.SetActive(openedLoadoutSelectionMenu);
+    }
+    public void ToggleLoadoutSelectionMenu()
+    {
+        if (openedLoadingMenu)
+        {
+            CloseLoadoutSelectionMenu();
+        }
+        else
+        {
+            OpenLoadoutSelectionMenu();
         }
     }
     #endregion

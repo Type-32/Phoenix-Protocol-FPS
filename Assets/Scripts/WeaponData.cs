@@ -42,4 +42,13 @@ public class WeaponData : ItemData
     public List<AudioClip> fireClips = new List<AudioClip>();
     public List<AudioClip> mechClips = new List<AudioClip>();
 
+    [Space]
+    [Header("Customizations")]
+    public List<WeaponAppearanceData> applicableVariants = new List<WeaponAppearanceData>();
+    public List<WeaponAttachmentData> applicableAttachments = new List<WeaponAttachmentData>();
+
+    //[Space]
+    //[Header("Appearances")]
+
+
 }

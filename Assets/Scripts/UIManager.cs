@@ -21,7 +21,10 @@ public class UIManager : MonoBehaviour
     [Header("HUD Stats")]
     public Slider healthBar;
     public Slider armorBar;
+    public Text healthText;
+    public Text armorText;
     public QuantityStatsHUD quantityHUD;
+    public CanvasGroup healthBarAlpha;
 
     [Space]
     [Header("Inventory")]
@@ -48,6 +51,7 @@ public class UIManager : MonoBehaviour
     };
     void Start()
     {
+        if (!player.pv.IsMine) return;
         Cursor.lockState = CursorLockMode.Locked;
         
         //interactionIndicator = FindObjectOfType<InteractionIndicatorScript>().gameObject;
@@ -55,16 +59,18 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        if (!player.pv.IsMine) return;
+        /*
         passedTime += Time.deltaTime;
         if (healthAlphaDuration <= 0f)
         {
-            healthBar.gameObject.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(healthBar.gameObject.GetComponent<CanvasGroup>().alpha, 0.3f, 5 * Time.deltaTime);
+            healthBarAlpha.alpha = Mathf.Lerp(healthBarAlpha.alpha, 0.6f, 5 * Time.deltaTime);
         }
         else
         {
-            healthBar.gameObject.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(healthBar.gameObject.GetComponent<CanvasGroup>().alpha, 1f, 5 * Time.deltaTime);
+            healthBarAlpha.alpha = Mathf.Lerp(healthBarAlpha.alpha, 1f, 5 * Time.deltaTime);
             if (passedTime >= 1) { healthAlphaDuration -= 1; passedTime = 0; }
-        }
+        }*/
 
     }
     public enum HitmarkerType

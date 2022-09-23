@@ -25,6 +25,7 @@ public class GunUI : MonoBehaviour
         temp.currentAmmo = gun.stats.ammo;
         temp.ammoPool = gun.stats.ammoPool;
         temp.firemode = gun.stats.fireMode;
+        temp.weaponIcon = gun.stats.weaponData.itemIcon;
         ui.quantityHUD.SetAmmoHUDStats(temp, true);
 
         if (gun.stats.isAiming)

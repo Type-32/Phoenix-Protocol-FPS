@@ -46,8 +46,20 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
     }
 
+    object returner;
+    public object GetValue(string key)
+    {
+        switch (key)
+        {
+            case "Mouse Sensitivity":
+                returner = sensitivitySlider.value;
+                break;
+        }
+        return returner;
+    }
+
     Resolution[] resolutions;
-    private void Start()
+    private void Awake()
     {
         volumeSlider.minValue = -80;
         volumeSlider.maxValue = 0;
@@ -70,7 +82,10 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.value = currentResIndex;
         resolutionDropdown.RefreshShownValue();
         qualityDropdown.RefreshShownValue();
-
+        SetDefaultOptionValues();
+    }
+    public void SetDefaultOptionValues()
+    {
         if (!PlayerPrefs.HasKey("Master Volume"))
         {
             SetVolume(0);
@@ -120,7 +135,7 @@ public class SettingsMenu : MonoBehaviour
             resolutionDropdown.RefreshShownValue();
         }
 
-        if(!PlayerPrefs.HasKey("Mouse Sensitivity"))
+        if (!PlayerPrefs.HasKey("Mouse Sensitivity"))
         {
             SetSensitivity(100f);
         }

@@ -14,22 +14,13 @@ public class QuantityStatsHUD : MonoBehaviour
     public Text ammoPool;
     public Text firemodeIndicator;
     public Image weaponTypeIcon;
-
-    [Space]
-    [Header("Weapon Type Icons")]
-    [SerializeField] private Sprite assaultRifleIcon;
-    [SerializeField] private Sprite marksmanRifleIcon;
-    [SerializeField] private Sprite pistolIcon;
-    [SerializeField] private Sprite shotgunIcon;
-    [SerializeField] private Sprite equipmentIcon;
-    [SerializeField] private Sprite meleeIcon;
-    [SerializeField] private Sprite nullIcon;
     public enum FireMode
     {
         Automatic,
         Single,
         Burst,
         SniperSingle,
+        Projectile,
         None
     }
     public enum WeaponType
@@ -42,6 +33,7 @@ public class QuantityStatsHUD : MonoBehaviour
         Melee,
         GrenadeLauncher,
         SniperRifle,
+        Projectile,
         None
     }
 
@@ -50,7 +42,7 @@ public class QuantityStatsHUD : MonoBehaviour
         public int currentAmmo;
         public int ammoPool;
         public FireMode firemode;
-        public WeaponType weaponType;
+        public Sprite weaponIcon;
     };
     public void SetAmmoHUDStats(AmmoHUDStats stat, bool doubleStat)
     {
@@ -63,7 +55,7 @@ public class QuantityStatsHUD : MonoBehaviour
             ammoPool.text = stat.ammoPool.ToString();
             firemodeIndicator.text = stat.firemode == FireMode.Automatic ? "bbb" : stat.firemode == FireMode.Burst ? "bb" : "b";
             //firemodeIndicator.color = stat.firemode == FireMode.Automatic ? Color.yellow : stat.firemode == FireMode.Burst ? Color.cyan : Color.green;
-            weaponTypeIcon.sprite = stat.weaponType == WeaponType.AssaultRifle ? assaultRifleIcon : stat.weaponType == WeaponType.MarksmanRifle ? marksmanRifleIcon : stat.weaponType == WeaponType.Pistol ? pistolIcon : stat.weaponType == WeaponType.Shotgun ? shotgunIcon : stat.weaponType == WeaponType.Melee ? meleeIcon : null;
+            weaponTypeIcon.sprite = stat.weaponIcon;
             if (weaponTypeIcon.sprite == null) weaponTypeIcon.enabled = false;
             else weaponTypeIcon.enabled = true;
         }
@@ -73,7 +65,7 @@ public class QuantityStatsHUD : MonoBehaviour
             firemodeIndicator.enabled = false;
 
             currentAmmo.text = stat.currentAmmo.ToString();
-            weaponTypeIcon.sprite = stat.weaponType == WeaponType.AssaultRifle ? assaultRifleIcon : stat.weaponType == WeaponType.MarksmanRifle ? marksmanRifleIcon : stat.weaponType == WeaponType.Pistol ? pistolIcon : stat.weaponType == WeaponType.Shotgun ? shotgunIcon : stat.weaponType == WeaponType.Melee ? meleeIcon : null;
+            //weaponTypeIcon.sprite = stat.weaponType == WeaponType.AssaultRifle ? assaultRifleIcon : stat.weaponType == WeaponType.MarksmanRifle ? marksmanRifleIcon : stat.weaponType == WeaponType.Pistol ? pistolIcon : stat.weaponType == WeaponType.Shotgun ? shotgunIcon : stat.weaponType == WeaponType.Melee ? meleeIcon : null;
             if (weaponTypeIcon.sprite == null) weaponTypeIcon.enabled = false;
             else weaponTypeIcon.enabled = true;
         }

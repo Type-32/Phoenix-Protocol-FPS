@@ -17,6 +17,18 @@ public class GunAttachments : MonoBehaviour
     public List<GameObject> underbarrelAttachments = new List<GameObject>();
     public List<GameObject> sightAttachments = new List<GameObject>();
     private GameObject nullAttachment = null;
+
+    public enum AttachmentTypes
+    {
+        Sight,
+        Underbarrel,
+        Barrel,
+        Sidebarrel_Left,
+        Sidebarrel_Right,
+        Sidebarrel_Up,
+        None
+    }
+
     void Start()
     {
         //barrelAttachments[0] = nullAttachment;

@@ -56,7 +56,6 @@ public class DeathCamLookScript : MonoBehaviour
         dmc.respawnDeathIndicator.GetComponent<CanvasGroup>().alpha = 0f;
         dmc.loadoutDeathIndicator.GetComponent<CanvasGroup>().alpha = 0f;
         dmc.deathCam = null;
-        GameManager.instance.SpawnPlayer(spUI.sp.setSpawnpoint.transform);
         Destroy(gameObject);
     }
 }

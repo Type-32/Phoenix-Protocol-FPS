@@ -49,6 +49,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public PlayerManager playerManager;
 
     private bool hasArmor = false;
+    private float timePassedAfterDamageTaken = 5f;
 
     private void Awake()
     {
@@ -83,6 +84,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (transform.position.y < -35) Die();
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
+
+        if(timePassedAfterDamageTaken < 5f) timePassedAfterDamageTaken += Time.deltaTime;
+        else
+        {
+            if(stats.health < stats.healthLimit) stats.health += 1f;
+        }
 
         if (playerManager.openedLoadoutMenu)
         {
@@ -154,6 +161,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         //ui.healthBarFill.color = Color.Lerp(ui.healthBarFill.color, (stats.health >= 50f) ? Color.green : (stats.health < 50f && stats.health >= 30f) ? Color.yellow : Color.red, 5 * Time.deltaTime);
         //ui.healthText.text = ((int)stats.health).ToString();
         ui.armorBar.value = Mathf.Lerp(ui.armorBar.value, stats.armor, 8 * Time.deltaTime);
+        ui.healthText.text = ((int)stats.health).ToString();
+        ui.armorText.text = ((int)stats.armor).ToString();
         playerVolumeEffect.weight = 1f - (stats.health / 100f);
         playerHurtEffect.weight = Mathf.Lerp(playerHurtEffect.weight, 0f, 8 * Time.deltaTime);
         armorHurtEffect.weight = Mathf.Lerp(armorHurtEffect.weight, 0f, 8 * Time.deltaTime);
@@ -188,6 +197,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (bypassArmor)
         {
             stats.health -= amount;
+            timePassedAfterDamageTaken = 0f;
             playerHurtEffect.weight = 1f;
             sfx.InvokePlayerHurtAudio();
         }
@@ -202,6 +212,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                     float temp = stats.armor - amount;
                     stats.armor = 0f;
                     stats.health += temp;
+                    timePassedAfterDamageTaken = 0f;
                 }
                 else
                 {

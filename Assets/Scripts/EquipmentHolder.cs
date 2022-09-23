@@ -24,6 +24,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     }
     void Start()
     {
+
         for (int i = 0; i < 2; i++)
         {
             InstantiateWeapon(player.playerManager.slotHolderScript.slotWeaponData[i], i);
@@ -33,7 +34,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         if (player.pv.IsMine)
         {
             Debug.Log("Init Start Line 36");
-            EquipWeapon(weaponIndex);
+            EquipWeapon(0);
         }
         else
         {

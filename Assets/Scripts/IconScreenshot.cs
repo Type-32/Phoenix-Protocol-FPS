@@ -27,12 +27,11 @@ public class IconScreenshot : MonoBehaviour
         for (int i = 0; i < sceneObjects.Count; i++)
         {
             GameObject obj = sceneObjects[i];
-            ItemData data = dataObjects[i];
 
             obj.gameObject.SetActive(true);
             yield return null;
 
-            TakeShot($"{Application.dataPath}/{pathFolder}/{data.itemName}_Icon.png");
+            TakeShot($"{Application.dataPath}/{pathFolder}/{obj.name}_Icon.png");
 
             yield return null;
             obj.gameObject.SetActive(false);

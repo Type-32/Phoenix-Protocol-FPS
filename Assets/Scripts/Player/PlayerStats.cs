@@ -80,4 +80,10 @@ public class PlayerStats : MonoBehaviour
         if (health < 0) health = 0f;
         if (armor < 0) armor = 0f;
     }
+
+    public void SetPlayerSensitivity(float sensitivity)
+    {
+        mouseSensitivity = sensitivity;
+        player.fpsCam.mouseSensitivityValve = sensitivity;
+    }
 }
