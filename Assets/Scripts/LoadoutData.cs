@@ -8,13 +8,24 @@ public class LoadoutData : ScriptableObject
     public string loadoutName = "Custom Loadout";
     public int loadoutIndex = 0;
     public WeaponData[] weaponData;
+
     public WeaponAttachmentData[] selectedBarrel;
+    public int[] selectedBarrelIndex = { 0, 0 };
+
     public WeaponAttachmentData[] selectedSight;
+    public int[] selectedSightIndex = { 0, 0 };
+
     public WeaponAttachmentData[] selectedUnderbarrel;
+    public int[] selectedUnderbarrelIndex = { 0, 0 };
+
     public WeaponAttachmentData[] selectedSidebarrelLeft;
-    public WeaponAttachmentData[] selectedSidebarrelUp;
+    public int[] selectedSidebarrelLeftIndex = { 0, 0 };
+
     public WeaponAttachmentData[] selectedSidebarrelRight;
+    public int[] selectedSidebarrelRightIndex = { 0, 0 };
+
     public WeaponAppearanceData[] selectedAppearanceData;
+    public int[] selectedAppearanceDataIndex = { 0, 0 };
 
     public struct BarrelSelection
     {
@@ -103,7 +114,6 @@ public class LoadoutData : ScriptableObject
     {
         WeaponAttachmentData left;
         WeaponAttachmentData right;
-        WeaponAttachmentData up;
         public bool CheckExistence(int index)
         {
             switch (index)
@@ -113,9 +123,6 @@ public class LoadoutData : ScriptableObject
                     break;
                 case 1:
                     if (right == null) return false;
-                    break;
-                case 2:
-                    if (up == null) return false;
                     break;
             }
             return true;
@@ -133,9 +140,16 @@ public class LoadoutData : ScriptableObject
             selectedSight.SetValue(null, i);
             selectedUnderbarrel.SetValue(null, i);
             selectedSidebarrelLeft.SetValue(null, i);
-            selectedSidebarrelUp.SetValue(null, i);
             selectedSidebarrelRight.SetValue(null, i);
             selectedAppearanceData.SetValue(null, i);
+
+            selectedBarrelIndex.SetValue(-1, i);
+            selectedSightIndex.SetValue(-1, i);
+            selectedUnderbarrelIndex.SetValue(-1, i);
+            selectedSidebarrelLeftIndex.SetValue(-1, i);
+            selectedSidebarrelRightIndex.SetValue(-1, i);
+            selectedAppearanceDataIndex.SetValue(-1, i);
+
             weaponData.SetValue(null, i);
         }
     }
@@ -151,23 +165,36 @@ public class LoadoutData : ScriptableObject
         {
             case GunAttachments.AttachmentTypes.Sight:
                 selectedSight[slotIndex] = data;
+                selectedSightIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
             case GunAttachments.AttachmentTypes.Barrel:
                 selectedBarrel[slotIndex] = data;
+                selectedBarrelIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
             case GunAttachments.AttachmentTypes.Underbarrel:
                 selectedUnderbarrel[slotIndex] = data;
+                selectedUnderbarrelIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
             case GunAttachments.AttachmentTypes.Sidebarrel_Right:
                 selectedSidebarrelRight[slotIndex] = data;
-                break;
-            case GunAttachments.AttachmentTypes.Sidebarrel_Up:
-                selectedSidebarrelUp[slotIndex] = data;
+                selectedSidebarrelRightIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
             case GunAttachments.AttachmentTypes.Sidebarrel_Left:
                 selectedSidebarrelLeft[slotIndex] = data;
+                selectedSidebarrelLeftIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
         }
+    }
+    public int FindAttachmentGlobalIndex(WeaponAttachmentData data)
+    {
+        for(int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        {
+            if(data == GlobalDatabase.singleton.allWeaponAttachmentDatas[i])
+            {
+                return i;
+            }
+        }
+        return -1;
     }
     public void SetAppearance(WeaponAppearanceData data, int slotIndex)
     {

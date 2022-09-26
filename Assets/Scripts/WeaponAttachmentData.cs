@@ -11,10 +11,4 @@ public class WeaponAttachmentData : ScriptableObject
     public Sprite attachmentIcon;
     public GunAttachments.AttachmentTypes attachmentType;
     [HideInInspector] public int attachmentIndex;
-
-    [Space]
-    [Header("Barrel Options")]
-    public int barrelColorIndex = 0;
-    public List<GameObject> barrelColorPrefabs = new List<GameObject>();
-
 }

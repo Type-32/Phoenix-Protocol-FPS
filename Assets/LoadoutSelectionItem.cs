@@ -30,7 +30,20 @@ public class LoadoutSelectionItem : MonoBehaviour
     }
     public void SelectLoadout()
     {
-        loadoutSelection.OnSelectLoadoutCallback(loadoutIndex);
+        int tempIndex1 = 0;
+        int tempIndex2 = 0;
+        for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        {
+            if (GlobalDatabase.singleton.allWeaponDatas[i] == itemLoadoutData.weaponData[0])
+            {
+                tempIndex1 = i;
+            }
+            if (GlobalDatabase.singleton.allWeaponDatas[i] == itemLoadoutData.weaponData[1])
+            {
+                tempIndex2 = i;
+            }
+        }
+        loadoutSelection.OnSelectLoadoutCallback(loadoutIndex, tempIndex1, tempIndex2, 0, 0);
         selectionVisual.SetActive(true);
     }
     public void SetLoadoutName(string content)
