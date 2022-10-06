@@ -26,7 +26,7 @@ public class GunUI : MonoBehaviour
         temp.ammoPool = gun.stats.ammoPool;
         temp.firemode = gun.stats.fireMode;
         temp.weaponIcon = gun.stats.weaponData.itemIcon;
-        ui.quantityHUD.SetAmmoHUDStats(temp, true);
+        ui.quantityHUD.SetAmmoHUDStats(temp, gun.stats.isReloading, gun.stats.weaponData.reloadTime, true);
 
         if (gun.stats.isAiming)
         {

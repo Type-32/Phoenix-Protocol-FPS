@@ -33,7 +33,7 @@ public class LoadoutCustomization : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AttachmentUIItemInstantiation();
+        //AttachmentUIItemInstantiation();
         ToggleAllAttachmentUI(false);
     }
     public void ToggleAllAttachmentUI(bool value)

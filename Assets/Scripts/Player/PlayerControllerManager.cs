@@ -233,7 +233,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             Die();
-            PlayerManager.Find(info.Sender).GetKill();
+            PlayerManager.Find(info.Sender).GetKill(PlayerPrefs.GetString("Username"), (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]);
         }
         return;
     }
@@ -275,8 +275,21 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [PunRPC]
     public void RPC_InvokeGunEffects()
     {
-        if (!pv.IsMine) return;
-        holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound();
-        holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+        if (!pv.AmOwner) return;
+        if (holder.weaponIndex == 0)
+        {
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+        }
+        else
+        {
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+        }
+
+        if (holder.weaponIndex == 0)
+            if((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+        else
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
     }
 }

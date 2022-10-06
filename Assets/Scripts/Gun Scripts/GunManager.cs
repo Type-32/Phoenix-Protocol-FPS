@@ -133,8 +133,8 @@ public class GunManager : Gun
     public override void Use()
     {
         DeterminatesFunction();
-        if (!stats.gunInteractionEnabled) return;
         ui.UIFunctions();
+        if (!stats.gunInteractionEnabled) return;
         animate.CoreAnimations();
         logic.GunGeneralLogic();
         if (!core.enableGunCoreFunc) return;

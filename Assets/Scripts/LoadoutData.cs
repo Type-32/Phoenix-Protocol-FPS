@@ -185,6 +185,27 @@ public class LoadoutData : ScriptableObject
                 break;
         }
     }
+    public void SetNullAttachment(GunAttachments.AttachmentTypes type, int slotIndex)
+    {
+        switch (type)
+        {
+            case GunAttachments.AttachmentTypes.Sight:
+                selectedSightIndex[slotIndex] = -1;
+                break;
+            case GunAttachments.AttachmentTypes.Barrel:
+                selectedBarrelIndex[slotIndex] = -1;
+                break;
+            case GunAttachments.AttachmentTypes.Underbarrel:
+                selectedUnderbarrelIndex[slotIndex] = -1;
+                break;
+            case GunAttachments.AttachmentTypes.Sidebarrel_Right:
+                selectedSidebarrelRightIndex[slotIndex] = -1;
+                break;
+            case GunAttachments.AttachmentTypes.Sidebarrel_Left:
+                selectedSidebarrelLeftIndex[slotIndex] = -1;
+                break;
+        }
+    }
     public int FindAttachmentGlobalIndex(WeaponAttachmentData data)
     {
         for(int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)

@@ -63,4 +63,18 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
         loadoutSelection.loadoutCustomization.AttachmentSelectionUIToggler(index, true);
         //SetAllIcons(loadoutSelection.forSelectedSlot);
     }
+    public void OnClickClearButton()
+    {
+        SetIcon(0, nullIcon);
+        SetIcon(1, nullIcon);
+        SetIcon(2, nullIcon);
+        SetIcon(3, nullIcon);
+        SetIcon(4, nullIcon);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sight, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Barrel, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Right, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Left, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Up, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Underbarrel, loadoutSelection.forSelectedSlot);
+    }
 }

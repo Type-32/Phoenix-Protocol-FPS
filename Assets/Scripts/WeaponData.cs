@@ -40,6 +40,7 @@ public class WeaponData : ItemData
     [Header("Audio Clips")]
     public List<AudioClip> bassClips = new List<AudioClip>();
     public List<AudioClip> fireClips = new List<AudioClip>();
+    public List<AudioClip> silencedFireClips = new List<AudioClip>();
     public List<AudioClip> mechClips = new List<AudioClip>();
 
     [Space]

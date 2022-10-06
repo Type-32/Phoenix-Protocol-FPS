@@ -208,7 +208,26 @@ public class GunCoreFunc : MonoBehaviour
     {
         if(gun.stats.ammo <= 0 || stats.isSprinting) return;
         if(gun.shellEject != null) gun.shellEject.GetComponent<ParticleSystem>().Play();
-        anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
+
+        float decreasedKickback = 0f;
+        if(gun.player.holder.weaponIndex == 0)
+        {
+            if((int)PhotonNetwork.LocalPlayer.CustomProperties["SMWA_UnderbarrelIndex1"] != -1)
+            {
+                float temp = stats.kickBackZ;
+                decreasedKickback = temp - (temp * 0.4f);
+                anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ - (stats.recoilZ * 0.35f), decreasedKickback);
+            }else anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
+        }
+        else
+        {
+            if ((int)PhotonNetwork.LocalPlayer.CustomProperties["SMWA_UnderbarrelIndex2"] != -1)
+            {
+                float temp = stats.kickBackZ;
+                decreasedKickback = temp - (temp * 0.4f);
+                anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ - (stats.recoilZ * 0.35f), decreasedKickback);
+            }else anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
+        }
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
 
         anim.animate.SetTrigger("isFiring");

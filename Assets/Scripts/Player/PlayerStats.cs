@@ -80,7 +80,10 @@ public class PlayerStats : MonoBehaviour
         if (health < 0) health = 0f;
         if (armor < 0) armor = 0f;
     }
-
+    private void Start()
+    {
+        SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
+    }
     public void SetPlayerSensitivity(float sensitivity)
     {
         mouseSensitivity = sensitivity;

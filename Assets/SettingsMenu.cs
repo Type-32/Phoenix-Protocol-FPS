@@ -46,14 +46,18 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
     }
 
-    object returner;
+    
     public object GetValue(string key)
     {
+        object returner = new object();
         switch (key)
         {
             case "Mouse Sensitivity":
                 returner = sensitivitySlider.value;
+                Debug.Log("Set Player Sensitivity Value on Spawn ");
                 break;
+            default:
+                return null;
         }
         return returner;
     }

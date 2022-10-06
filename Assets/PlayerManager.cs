@@ -50,6 +50,8 @@ public class PlayerManager : MonoBehaviour
     public Transform spawnpoint;
     public GameObject spawnpointSelectionUI;
     public SpawnpointUI spawnpointUI;
+    public KillStatsHUD killStatsHUD;
+    public KillMessagesHUD killMessagesHUD;
 
     [Space]
     [Header("Settings Related")]
@@ -70,6 +72,14 @@ public class PlayerManager : MonoBehaviour
     int selectedSPIndex = 0;
     Vector3 tempVelocity;
 
+    public WeaponData FindWeaponDataFromIndex(int index)
+    {
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        {
+            if (index == i) return GlobalDatabase.singleton.allWeaponDatas[i];
+        }
+        return null;
+    }
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -90,9 +100,19 @@ public class PlayerManager : MonoBehaviour
         if (!pv.IsMine)
         {
             cameraObject.gameObject.SetActive(false);
+            PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
+            Debug.Log(selectedMainWeaponIndex);
+            Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
+            slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]);
+            slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
         }
         else
         {
+            PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
+            Debug.Log(selectedMainWeaponIndex);
+            Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
+            slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]);
+            slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
             CreateController();
         }
         //if (!pv.IsMine) return;
@@ -127,7 +147,7 @@ public class PlayerManager : MonoBehaviour
         deathGUICanvas.gameObject.SetActive(false);
 
         //Player Related Settings
-        controller.GetComponent<PlayerStats>().SetPlayerSensitivity((float)settingsMenu.GetValue("Mouse Sensitivity"));
+        controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
     }
     public void Die()
     {
@@ -391,12 +411,23 @@ public class PlayerManager : MonoBehaviour
         Launcher.Instance.QuitApplication();
     }
 
-    public void GetKill()
+    public void GetKill(string killedPlayerName, int withWeaponIndex)
     {
-        pv.RPC(nameof(RPC_GetKill), pv.Owner);
+        pv.RPC(nameof(RPC_GetKill), pv.Owner, killedPlayerName, withWeaponIndex);
+        killStatsHUD.InstantiateOnKill(false, killedPlayerName, 120);
+        pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, PhotonNetwork.LocalPlayer.NickName, withWeaponIndex);
+
     }
     [PunRPC]
-    void RPC_GetKill()
+    public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex)
+    {
+        GameObject temp = Instantiate(killMessagesHUD.killMessagesItemPrefab, killMessagesHUD.killMessagesHolder);
+        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, killMessagesHUD.FindWeaponIcon(weaponIndex));
+        Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
+    }
+
+    [PunRPC]
+    void RPC_GetKill(string killedPlayerName, int withWeaponIndex)
     {
         kills++;
         Hashtable hash = new Hashtable();
@@ -404,7 +435,9 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
+        //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
     }
+
     public static PlayerManager Find(Player player)
     {
         return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.pv.Owner == player);

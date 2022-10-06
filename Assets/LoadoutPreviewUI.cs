@@ -9,6 +9,8 @@ public class LoadoutPreviewUI : MonoBehaviour
     [SerializeField] LoadoutSelectionScript loadoutSelection;
     public Text[] texts;
     public Image[] images;
+    public Button[] buttons;
+    public Sprite nullWeaponIcon;
 
     public void SetWeaponSlotInfo(int index, WeaponData weaponData)
     {
@@ -22,9 +24,20 @@ public class LoadoutPreviewUI : MonoBehaviour
                 temp = "SECONDARY - ";
                 break;
         }
-        texts[index <= 1 ? index : 0].text = temp + weaponData.itemName;
-        images[index <= 1 ? index : 0].sprite = weaponData.itemIcon;
-        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = weaponData;
+        if(weaponData != null)
+        {
+            texts[index <= 1 ? index : 0].text = temp + weaponData.itemName;
+            images[index <= 1 ? index : 0].sprite = weaponData.itemIcon;
+            buttons[index <= 1 ? index : 0].gameObject.SetActive(true);
+            loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = weaponData;
+        }
+        else
+        {
+            texts[index <= 1 ? index : 0].text = temp + "None";
+            images[index <= 1 ? index : 0].sprite = nullWeaponIcon;
+            buttons[index <= 1 ? index : 0].gameObject.SetActive(false);
+            loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = null;
+        }
     }
     public void SetPreviewInfo(LoadoutData data)
     {

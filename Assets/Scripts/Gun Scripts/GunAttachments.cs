@@ -6,17 +6,17 @@ using UnityEngine.UI;
 public class GunAttachments : MonoBehaviour
 {
     public GunManager gun;
-    public GameObject attachmentsUI;
-    [SerializeField] private Text barrelText;
-    [SerializeField] private Text underbarrelText;
-    [SerializeField] private Text sightText;
+    public GameObject attachmentHolder;
 
     [Space]
-    public GameObject[] attachmentsArray;
-    public List<GameObject> barrelAttachments = new List<GameObject>();
-    public List<GameObject> underbarrelAttachments = new List<GameObject>();
-    public List<GameObject> sightAttachments = new List<GameObject>();
-    private GameObject nullAttachment = null;
+    public GunAttachmentItem[] attachmentsArray;
+    private Camera[] cameras;
+    private RawImage[] images;
+    //private List<GameObject> barrelAttachments = new List<GameObject>();
+    //private List<GameObject> underbarrelAttachments = new List<GameObject>();
+    //private List<GameObject> leftbarrelAttachments = new List<GameObject>();
+    //private List<GameObject> rightbarrelAttachments = new List<GameObject>();
+    //private List<GameObject> sightAttachments = new List<GameObject>();
 
     public enum AttachmentTypes
     {
@@ -31,126 +31,76 @@ public class GunAttachments : MonoBehaviour
 
     void Start()
     {
-        //barrelAttachments[0] = nullAttachment;
-        //underbarrelAttachments[0] = nullAttachment;
-        //sightAttachments[0] = nullAttachment;
-        UpdateDistributedAttachments();
-        SelectBarrelAttachment();
-        SelectUnderbarrelAttachment();
-        SelectSightAttachment();
-    }
-    void Update()
-    {
-        if (!gun.stats.isAttaching)
+        attachmentsArray = attachmentHolder.GetComponentsInChildren<GunAttachmentItem>();
+        if (!gun.player.pv.IsMine)
         {
-            if (attachmentsUI.activeSelf)
-            {
-                attachmentsUI.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
-                gun.core.enableGunCoreFunc = true;
-            }
-            return;
+            cameras = attachmentHolder.GetComponentsInChildren<Camera>();
+            images = attachmentHolder.GetComponentsInChildren<RawImage>();
+            for (int i = 0; i < cameras.Length; i++) Destroy(cameras[i].gameObject);
+            for (int i = 0; i < images.Length; i++) Destroy(images[i].gameObject);
         }
-        if (!attachmentsUI.activeSelf)
+        for (int i = 0; i < attachmentsArray.Length; i++) attachmentsArray[i].gameObject.SetActive(false);
+        EnableGunAttachments(gun.player.holder.weaponIndex);
+        CheckEnabledSightAimingPosition(gun.player.holder.weaponIndex);
+    }
+    public void CheckEnabledSightAimingPosition(int index)
+    {
+        if(index == 0)
         {
-            attachmentsUI.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            gun.core.enableGunCoreFunc = false;
-        }
-    }
-    public void BarrelIndexIncrement()
-    {
-        if (gun.stats.selectedBarrelIndex >= barrelAttachments.Count - 1) gun.stats.selectedBarrelIndex = 0;
-        else gun.stats.selectedBarrelIndex++;
-        SelectBarrelAttachment();
-    }
-    public void UnderbarrelIndexIncrement()
-    {
-        if (gun.stats.selectedUnderbarrelIndex >= underbarrelAttachments.Count - 1) gun.stats.selectedUnderbarrelIndex = 0;
-        else gun.stats.selectedUnderbarrelIndex++;
-        SelectUnderbarrelAttachment();
-    }
-    public void SightIndexIncrement()
-    {
-        if (gun.stats.selectedSightIndex >= sightAttachments.Count - 1) gun.stats.selectedSightIndex = 0;
-        else gun.stats.selectedSightIndex++;
-        SelectSightAttachment();
-    }
-    void UpdateDistributedAttachments()
-    {
-        int tempBarrelIndex = 1, tempUnderbarrelIndex = 1, tempSightIndex = 1;
-        for(int i = 0; i < attachmentsArray.Length; i++)
-        {/*
-            if (attachmentsArray[i].GetComponent<AttachmentScript>().attachmentSO.attachmentType == WeaponAttachmentSO.WeaponAttachmentTypes.Barrel)
+            for (int i = 0; i < attachmentsArray.Length; i++)
             {
-                barrelAttachments.Add(attachmentsArray[i].gameObject);
-                tempBarrelIndex++;
-            }else if(attachmentsArray[i].GetComponent<AttachmentScript>().attachmentSO.attachmentType == WeaponAttachmentSO.WeaponAttachmentTypes.Underbarrel)
-            {
-                underbarrelAttachments.Add(attachmentsArray[i].gameObject);
-                tempUnderbarrelIndex++;
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_SightIndex1"])
+                {
+                    gun.animate.animate.SetFloat("Blend", attachmentsArray[i].dataGlobalIndex == -1f ? 0f : attachmentsArray[i].dataGlobalIndex);
+                    //gun.animate.animate.SetInteger("Blend", attachmentsArray[i].dataGlobalIndex == -1 ? 0 : attachmentsArray[i].dataGlobalIndex);
+                }
             }
-            else if (attachmentsArray[i].GetComponent<AttachmentScript>().attachmentSO.attachmentType == WeaponAttachmentSO.WeaponAttachmentTypes.Sight)
-            {
-                sightAttachments.Add(attachmentsArray[i].gameObject);
-                tempSightIndex++;
-            }
-            */
         }
-    }
-    void SelectBarrelAttachment()
-    {
-        int tmpIndex = 0;
-        foreach (GameObject attachment in barrelAttachments)
+        else
         {
-            if (tmpIndex == gun.stats.selectedBarrelIndex)
+            for (int i = 0; i < attachmentsArray.Length; i++)
             {
-                barrelAttachments[tmpIndex].gameObject.SetActive(true);
-                //Debug.Log(barrelAttachments[tmpIndex].GetComponent<AttachmentScript>().attachmentSO.attachmentName + " attachment is enabled\n" + "Index " + tmpIndex + "\n");
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_SightIndex2"])
+                {
+                    gun.animate.animate.SetFloat("Blend", attachmentsArray[i].dataGlobalIndex == -1f ? 0f : attachmentsArray[i].dataGlobalIndex);
+                    //gun.animate.animate.SetInteger("Blend", attachmentsArray[i].dataGlobalIndex == -1 ? 0 : attachmentsArray[i].dataGlobalIndex);
+                }
             }
-            else
-            {
-                barrelAttachments[tmpIndex].gameObject.SetActive(false);
-                //Debug.Log(barrelAttachments[tmpIndex].GetComponent<AttachmentScript>().attachmentSO.attachmentName + " attachment is disabled\n" + "Index" + tmpIndex + "\n");
-            }
-            tmpIndex++;
         }
     }
-    void SelectUnderbarrelAttachment()
+    public void EnableGunAttachments(int selectedWeaponSlot)
     {
-        int tmpIndex = 0;
-        foreach (GameObject attachment in underbarrelAttachments)
+        if(selectedWeaponSlot == 0)
         {
-            if (tmpIndex == gun.stats.selectedUnderbarrelIndex)
+            for (int i = 0; i < attachmentsArray.Length; i++)
             {
-                underbarrelAttachments[tmpIndex].gameObject.SetActive(true);
-                //Debug.Log(underbarrelAttachments[tmpIndex].GetComponent<AttachmentScript>().attachmentSO.attachmentName + " attachment is enabled\n" + "Index" + tmpIndex + "\n");
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_BarrelIndex1"]) attachmentsArray[i].gameObject.SetActive(true);
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_SightIndex1"])
+                {
+                    attachmentsArray[i].gameObject.SetActive(true);
+                    gun.animate.animate.SetFloat("Blend", (float)attachmentsArray[i].dataGlobalIndex == -1f ? 0f : (float)attachmentsArray[i].dataGlobalIndex);
+                    //gun.animate.animate.SetInteger("Blend", attachmentsArray[i].dataGlobalIndex == -1 ? 0 : attachmentsArray[i].dataGlobalIndex);
+                }
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_UnderbarrelIndex1"]) attachmentsArray[i].gameObject.SetActive(true);
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_LeftbarrelIndex1"]) attachmentsArray[i].gameObject.SetActive(true);
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_RightbarrelIndex1"]) attachmentsArray[i].gameObject.SetActive(true);
             }
-            else
-            {
-                underbarrelAttachments[tmpIndex].gameObject.SetActive(false);
-                //Debug.Log(underbarrelAttachments[tmpIndex].GetComponent<AttachmentScript>().attachmentSO.attachmentName + " attachment is disabled\n" + "Index" + tmpIndex + "\n");
-            }
-            tmpIndex++;
         }
-    }
-    void SelectSightAttachment()
-    {
-        int tmpIndex = 0;
-        foreach (GameObject attachment in sightAttachments)
+        else
         {
-            if (tmpIndex == gun.stats.selectedSightIndex)
+            for (int i = 0; i < attachmentsArray.Length; i++)
             {
-                sightAttachments[tmpIndex].gameObject.SetActive(true);
-                //Debug.Log(sightAttachments[tmpIndex].GetComponent<AttachmentScript>().attachmentSO.attachmentName + " attachment is enabled\n" + "Index" + tmpIndex + "\n");
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_BarrelIndex2"]) attachmentsArray[i].gameObject.SetActive(true);
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_SightIndex2"])
+                {
+                    attachmentsArray[i].gameObject.SetActive(true);
+                    gun.animate.animate.SetFloat("Blend", (float)attachmentsArray[i].dataGlobalIndex == -1f ? 0f : (float)attachmentsArray[i].dataGlobalIndex);
+                    //gun.animate.animate.SetInteger("Blend", attachmentsArray[i].dataGlobalIndex == -1 ? 0 : attachmentsArray[i].dataGlobalIndex);
+                }
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_UnderbarrelIndex2"]) attachmentsArray[i].gameObject.SetActive(true);
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_LeftbarrelIndex2"]) attachmentsArray[i].gameObject.SetActive(true);
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_RightbarrelIndex2"]) attachmentsArray[i].gameObject.SetActive(true);
             }
-            else
-            {
-                sightAttachments[tmpIndex].gameObject.SetActive(false);
-                //Debug.Log(sightAttachments[tmpIndex].GetComponent<AttachmentScript>().attachmentSO.attachmentName + " attachment is disabled\n" + "Index" + tmpIndex + "\n");
-            }
-            tmpIndex++;
         }
-        gun.core.UpdateSightFOV();
     }
 }
