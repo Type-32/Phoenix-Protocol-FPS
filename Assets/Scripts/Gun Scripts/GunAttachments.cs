@@ -41,7 +41,6 @@ public class GunAttachments : MonoBehaviour
         }
         for (int i = 0; i < attachmentsArray.Length; i++) attachmentsArray[i].gameObject.SetActive(false);
         EnableGunAttachments(gun.player.holder.weaponIndex);
-        CheckEnabledSightAimingPosition(gun.player.holder.weaponIndex);
     }
     public void CheckEnabledSightAimingPosition(int index)
     {

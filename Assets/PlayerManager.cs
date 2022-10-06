@@ -414,9 +414,11 @@ public class PlayerManager : MonoBehaviour
     public void GetKill(string killedPlayerName, int withWeaponIndex)
     {
         pv.RPC(nameof(RPC_GetKill), pv.Owner, killedPlayerName, withWeaponIndex);
-        killStatsHUD.InstantiateOnKill(false, killedPlayerName, 120);
-        pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, PhotonNetwork.LocalPlayer.NickName, withWeaponIndex);
 
+    }
+    public void CallKillMessageInstantiation(string killedName, string killerName, int weaponIndex)
+    {
+        pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedName, killerName, weaponIndex);
     }
     [PunRPC]
     public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex)
@@ -436,7 +438,27 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
+        InstantiateKillIcon(false, killedPlayerName, 120);
+        CallKillMessageInstantiation(killedPlayerName, PhotonNetwork.LocalPlayer.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
+    }
+    public void InstantiateKillIcon(bool isSpecialKill, string killedPlayerName, int killedPoints)
+    {
+        Debug.Log("Invoking Kill Icon ");
+        GameObject temp1 = Instantiate(killStatsHUD.killIconItemPrefab, killStatsHUD.killIconHolder);
+        GameObject temp2 = Instantiate(killStatsHUD.statsCounterItemPrefab, killStatsHUD.statsCounterHolder);
+        if (isSpecialKill)
+        {
+            temp1.GetComponent<KillIconItem>().SetInfo(killStatsHUD.killIconSkull, killStatsHUD.specialKillColor, killStatsHUD.specialKillColorCross);
+            temp2.GetComponent<TextStatItem>().SetInfo("Killed " + killedPlayerName, killedPoints + 50);
+        }
+        else
+        {
+            temp1.GetComponent<KillIconItem>().SetInfo(killStatsHUD.killIconSkull, killStatsHUD.normalKillColor, killStatsHUD.normalKillColorCross);
+            temp2.GetComponent<TextStatItem>().SetInfo("Killed " + killedPlayerName, killedPoints);
+        }
+        //Destroy(temp1, 2f);
+        Destroy(temp2, 2f);
     }
 
     public static PlayerManager Find(Player player)

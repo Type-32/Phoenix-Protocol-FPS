@@ -35,11 +35,8 @@ public class LoadoutSelectionScript : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-    }
-    void Start()
-    {
         LoadoutSelectionItem[] tempItems = loadoutPreviewUI.GetComponentsInChildren<LoadoutSelectionItem>();
-        for(int i = 0; i < tempItems.Length; i++)
+        for (int i = 0; i < tempItems.Length; i++)
         {
             loadoutItems.Add(tempItems[i]);
         }
@@ -51,6 +48,9 @@ public class LoadoutSelectionScript : MonoBehaviour
         DisablePreview();
         DisableWeaponSelection();
         loadoutPreviewUI.QuitCustomizationUI();
+    }
+    void Start()
+    {
     }
     public void SetLoadoutDataToPreferences()
     {

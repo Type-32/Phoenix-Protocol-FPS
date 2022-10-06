@@ -13,10 +13,10 @@ public class KillStatsHUD : MonoBehaviour
 
     [Space]
     [Header("Colors")]
-    [SerializeField] Color specialKillColor;
-    [SerializeField] Color specialKillColorCross;
-    [SerializeField] Color normalKillColor;
-    [SerializeField] Color normalKillColorCross;
+    public Color specialKillColor;
+    public Color specialKillColorCross;
+    public Color normalKillColor;
+    public Color normalKillColorCross;
 
     [Space]
     [Header("Icons")]
@@ -26,21 +26,4 @@ public class KillStatsHUD : MonoBehaviour
         if (!manager.pv.IsMine) gameObject.SetActive(false);
     }
 
-    public void InstantiateOnKill(bool isSpecialKill, string killedPlayerName, int killedPoints)
-    {
-        GameObject temp1 = Instantiate(killIconItemPrefab, killIconHolder);
-        GameObject temp2 = Instantiate(statsCounterItemPrefab, statsCounterHolder);
-        if (isSpecialKill)
-        {
-            temp1.GetComponent<KillIconItem>().SetInfo(killIconSkull, specialKillColor, specialKillColorCross);
-            temp2.GetComponent<TextStatItem>().SetInfo("Killed " + killedPlayerName, killedPoints + 50);
-        }
-        else
-        {
-            temp1.GetComponent<KillIconItem>().SetInfo(killIconSkull, normalKillColor, normalKillColorCross);
-            temp2.GetComponent<TextStatItem>().SetInfo("Killed " + killedPlayerName, killedPoints);
-        }
-        Destroy(temp1, 2f);
-        Destroy(temp2, 2f);
-    }
 }

@@ -233,7 +233,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             Die();
-            PlayerManager.Find(info.Sender).GetKill(PhotonNetwork.LocalPlayer.NickName, (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]);
+            PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]);
         }
         return;
     }
@@ -245,7 +245,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void InvokeGunEffects()
     {
         Debug.LogWarning("Invoking Gun Effects RPC...");
-        pv.RPC(nameof(RPC_InvokeGunEffects), pv.Owner);
+        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All);
     }
     public void InvokePlayerDeathEffects()
     {
@@ -275,7 +275,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [PunRPC]
     public void RPC_InvokeGunEffects()
     {
-        if (!pv.AmOwner) return;
+        if (!pv.IsMine) return;
         if (holder.weaponIndex == 0)
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
