@@ -28,6 +28,7 @@ public class GunManager : Gun
     public GameObject bulletImpactBlood;
     public GameObject pickup;
     public GameObject gunVisual;
+    public GameObject handsVisual;
     public Recoil camRecoil;
 
     [Space]
@@ -59,6 +60,10 @@ public class GunManager : Gun
         camRecoil = GetComponentInParent<Recoil>();
         //gadgetFunc = FindObjectOfType<GadgetUsageScript>();
         holder = GetComponentInParent<EquipmentHolder>();
+        if (!player.pv.IsMine)
+        {
+            Destroy(handsVisual);
+        }
     }
     /*
     private void Update()

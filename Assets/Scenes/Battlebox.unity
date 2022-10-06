@@ -9904,6 +9904,10 @@ MonoBehaviour:
   ammoPool: {fileID: 248527461}
   firemodeIndicator: {fileID: 1144883008}
   weaponTypeIcon: {fileID: 839762012}
+  weaponReloadSlider: {fileID: 0}
+  weaponReloadSliderFill: {fileID: 0}
+  reloadGradient: {r: 0, g: 0, b: 0, a: 0}
+  fullGradient: {r: 0, g: 0, b: 0, a: 0}
 --- !u!43 &363915758
 Mesh:
   m_ObjectHideFlags: 0
@@ -10472,6 +10476,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: M16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6788626819295025767, guid: 1ab44881012e74c569c4022e44f50f78,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7295304239924751658, guid: 1ab44881012e74c569c4022e44f50f78,
         type: 3}
@@ -21515,7 +21524,7 @@ PrefabInstance:
     - target: {fileID: 6788626819295025767, guid: 68efe89b7a2114e11a88b23cd6ab6d20,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6904872729462842355, guid: 68efe89b7a2114e11a88b23cd6ab6d20,
         type: 3}
@@ -30659,7 +30668,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh122694
+  m_Name: pb_Mesh487778
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -32281,6 +32290,16 @@ PrefabInstance:
       value: 0.893
       objectReference: {fileID: 0}
     - target: {fileID: 7038836127769047065, guid: 21c056333e7958c429e4ed3fa45ae69d,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928817234292680676, guid: 21c056333e7958c429e4ed3fa45ae69d,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928817234292680676, guid: 21c056333e7958c429e4ed3fa45ae69d,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

@@ -362,7 +362,7 @@ public class PlayerManager : MonoBehaviour
     {
         if(controller != null)
         {
-            controller.GetComponent<PlayerStats>().SetPlayerSensitivity((float)settingsMenu.GetValue("Mouse Sensitivity"));
+            controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
             settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
         }
         //if (!pv.IsMine) return;
@@ -457,7 +457,7 @@ public class PlayerManager : MonoBehaviour
             temp1.GetComponent<KillIconItem>().SetInfo(killStatsHUD.killIconSkull, killStatsHUD.normalKillColor, killStatsHUD.normalKillColorCross);
             temp2.GetComponent<TextStatItem>().SetInfo("Killed " + killedPlayerName, killedPoints);
         }
-        //Destroy(temp1, 2f);
+        Destroy(temp1, 2f);
         Destroy(temp2, 2f);
     }
 

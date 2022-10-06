@@ -288,8 +288,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
 
         if (holder.weaponIndex == 0)
-            if((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+        {
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+        }
         else
+        {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+        }
     }
 }
