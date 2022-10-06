@@ -11,7 +11,7 @@ public class KillMessagesHUD : MonoBehaviour
     public GameObject killMessagesItemPrefab;
     private void Start()
     {
-        //if(!playerManager.pv.IsMine) gameObject.SetActive(false);
+        if(!playerManager.pv.IsMine) gameObject.SetActive(false);
     }
     public Sprite FindWeaponIcon(int index)
     {

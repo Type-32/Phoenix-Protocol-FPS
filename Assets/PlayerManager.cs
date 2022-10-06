@@ -439,7 +439,7 @@ public class PlayerManager : MonoBehaviour
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 120);
-        CallKillMessageInstantiation(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
+        pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
     }
     public void InstantiateKillIcon(bool isSpecialKill, string killedPlayerName, int killedPoints)

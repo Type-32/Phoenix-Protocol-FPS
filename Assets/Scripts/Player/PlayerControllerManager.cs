@@ -127,13 +127,16 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public bool TakeDamage(float amount, bool bypassArmor)
     {
         bool tempflag = false;
-        if (stats.health - amount <= 0)
-        { 
+        stats.health -= amount;
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor);
+        /*
+        if (stats.health <= 0)//Lag compensation here for visual player death lag, but it didn't work
+        {
             tempflag = true;
             ClientFakeDeath();
-        }
-        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor);
-        if (stats.health - amount <= 0) Destroy(gameObject);
+            InvokePlayerDeathEffects();
+        }*/
+        //if (stats.health - amount <= 0) Destroy(gameObject);
         return tempflag;
         //ui.ShowHealthBar(2f);
         
@@ -191,6 +194,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         playerBody.SetActive(false);
         playerFeet1.SetActive(false);
         playerFeet2.SetActive(false);
+        gameObject.SetActive(false);
     }
     public void Die()
     {
