@@ -127,7 +127,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public bool TakeDamage(float amount, bool bypassArmor)
     {
         bool tempflag = false;
-        if (stats.health - amount <= 0) tempflag = true;
+        if (stats.health - amount <= 0)
+        { 
+            tempflag = true;
+            ClientFakeDeath();
+        }
         pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor);
         if (stats.health - amount <= 0) Destroy(gameObject);
         return tempflag;
@@ -179,6 +183,14 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (ui == null) return;
         if (playerManager.openedInventory) { stats.mouseMovementEnabled = false; stats.playerMovementEnabled = false; }
         else { stats.mouseMovementEnabled = true; stats.playerMovementEnabled = true; }
+    }
+    public void ClientFakeDeath()
+    {
+        capsuleCollider.enabled = false;
+        playerHead.SetActive(false);
+        playerBody.SetActive(false);
+        playerFeet1.SetActive(false);
+        playerFeet2.SetActive(false);
     }
     public void Die()
     {

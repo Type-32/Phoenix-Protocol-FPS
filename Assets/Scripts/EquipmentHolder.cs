@@ -59,6 +59,12 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             for (int i = 0; i < list2.Length; i++) list2[i].gameObject.layer = LayerMask.NameToLayer("Default");
             for (int i = 0; i < list3.Length; i++) list3[i].gameObject.layer = LayerMask.NameToLayer("Default");
             for (int i = 0; i < list4.Length; i++) list4[i].gameObject.layer = LayerMask.NameToLayer("Default");
+            Transform[] obj1 = weaponSlots[0].gun.handsVisual.GetComponentsInChildren<Transform>();
+            Transform[] obj2 = weaponSlots[1].gun.handsVisual.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < obj1.Length; i++) Destroy(obj1[i].gameObject);
+            for (int i = 0; i < obj2.Length; i++) Destroy(obj2[i].gameObject);
+            Destroy(weaponSlots[0].gun.handsVisual);
+            Destroy(weaponSlots[1].gun.handsVisual);
         }
         //SelectWeapon();
     }

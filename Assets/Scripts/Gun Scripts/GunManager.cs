@@ -161,9 +161,5 @@ public class GunManager : Gun
     public override void InitializeAwake()
     {
         FindingReferences();
-        if (!player.pv.IsMine)
-        {
-            Destroy(handsVisual);
-        }
     }
 }

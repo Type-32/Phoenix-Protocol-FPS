@@ -426,7 +426,7 @@ public class PlayerManager : MonoBehaviour
         GameObject temp = Instantiate(killMessagesHUD.killMessagesItemPrefab, killMessagesHUD.killMessagesHolder);
         temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, killMessagesHUD.FindWeaponIcon(weaponIndex));
         Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
-        Destroy(temp, 5f);
+        Destroy(temp, 10f);
     }
 
     [PunRPC]
@@ -439,7 +439,7 @@ public class PlayerManager : MonoBehaviour
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 120);
-        CallKillMessageInstantiation(killedPlayerName, PhotonNetwork.LocalPlayer.NickName, withWeaponIndex);
+        CallKillMessageInstantiation(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
     }
     public void InstantiateKillIcon(bool isSpecialKill, string killedPlayerName, int killedPoints)
