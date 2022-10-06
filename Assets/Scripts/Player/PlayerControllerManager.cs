@@ -233,7 +233,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             Die();
-            PlayerManager.Find(info.Sender).GetKill(PlayerPrefs.GetString("Username"), (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]);
+            PlayerManager.Find(info.Sender).GetKill(PhotonNetwork.LocalPlayer.NickName, (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]);
         }
         return;
     }

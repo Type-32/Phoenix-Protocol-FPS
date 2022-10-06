@@ -424,6 +424,7 @@ public class PlayerManager : MonoBehaviour
         GameObject temp = Instantiate(killMessagesHUD.killMessagesItemPrefab, killMessagesHUD.killMessagesHolder);
         temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, killMessagesHUD.FindWeaponIcon(weaponIndex));
         Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
+        Destroy(temp, 5f);
     }
 
     [PunRPC]
