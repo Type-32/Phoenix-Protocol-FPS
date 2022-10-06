@@ -60,10 +60,6 @@ public class GunManager : Gun
         camRecoil = GetComponentInParent<Recoil>();
         //gadgetFunc = FindObjectOfType<GadgetUsageScript>();
         holder = GetComponentInParent<EquipmentHolder>();
-        if (!player.pv.IsMine)
-        {
-            Destroy(handsVisual);
-        }
     }
     /*
     private void Update()
@@ -165,5 +161,9 @@ public class GunManager : Gun
     public override void InitializeAwake()
     {
         FindingReferences();
+        if (!player.pv.IsMine)
+        {
+            Destroy(handsVisual);
+        }
     }
 }
