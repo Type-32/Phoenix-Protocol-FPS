@@ -20,6 +20,7 @@ public class WeaponData : ItemData
     public float impactForce = 10f;
     public float fireRate = 15f;
     [Range(1f, 3f)] public float FOVMultiplier = 1.1f;
+    [Range(0.01f, 1f)] public float hipfireSpread = 1f;
     public float boltRecoveryDuration = 1.5f;
     public float aimSpeed = 3f;
     [Range(0f, 50f)] public float damagePerPellet = 10f;
@@ -35,6 +36,7 @@ public class WeaponData : ItemData
     public bool enableAutomatic = true;
     public bool enableBurst = true;
     public bool enableSingle = true;
+    public bool hasHipfireInaccuracy = true;
 
     [Space]
     [Header("Audio Clips")]

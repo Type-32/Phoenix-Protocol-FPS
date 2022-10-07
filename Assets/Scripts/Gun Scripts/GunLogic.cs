@@ -7,6 +7,7 @@ public class GunLogic : MonoBehaviour
     public GunManager gun;
     public bool isAiming = false;
     public bool isSprinting = false;
+    [HideInInspector] public float spreadConstant = 1f;
     // Update is called once per frame
     /*
     void Update()
@@ -18,6 +19,18 @@ public class GunLogic : MonoBehaviour
         AimingLogic();
         GunMovementLogic();
         AttachmentLogic();
+        HipfireSpreadConstantLogic();
+    }
+    void HipfireSpreadConstantLogic()
+    {
+        if (gun.stats.isAiming)
+        {
+            spreadConstant = Mathf.Lerp(spreadConstant, 0f, gun.stats.weaponData.aimSpeed);
+        }
+        else
+        {
+            spreadConstant = Mathf.Lerp(spreadConstant, 1f, gun.stats.weaponData.aimSpeed);
+        }
     }
     void AimingLogic()
     {

@@ -235,7 +235,19 @@ public class GunCoreFunc : MonoBehaviour
         gun.player.InvokeGunEffects();
         RaycastHit hit;
         Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        Vector3 shootDirection = gun.fpsCam.transform.forward;
+        if (gun.stats.weaponData.hasHipfireInaccuracy)
+        {
+            float spreadX = 0f, spreadY = 0f;
+            spreadX = Random.Range(-gun.logic.spreadConstant, gun.logic.spreadConstant);
+            spreadY = Random.Range(-gun.logic.spreadConstant, gun.logic.spreadConstant);
+            spreadX *= gun.stats.weaponData.hipfireSpread;
+            spreadY *= gun.stats.weaponData.hipfireSpread;
+            shootDirection.x += spreadX;
+            shootDirection.y += spreadY;
+        }
         ray.origin = gun.fpsCam.transform.position;
+        ray.direction = shootDirection;
         if (Physics.Raycast(ray, out hit, range)){
             //Debug.Log(hit.transform.name);
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
