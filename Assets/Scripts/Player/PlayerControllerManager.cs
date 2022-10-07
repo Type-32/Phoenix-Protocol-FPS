@@ -255,17 +255,17 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void CallShootRPCDecals(RaycastHit hit)
     {
-        Debug.LogWarning("Invoking Shoot RPC...");
+        //Debug.LogWarning("Invoking Shoot RPC...");
         pv.RPC(nameof(RPC_Shoot), RpcTarget.All, hit.point, hit.normal);
     }
     public void InvokeGunEffects()
     {
-        Debug.LogWarning("Invoking Gun Effects RPC...");
-        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All);
+        //Debug.LogWarning("Invoking Gun Effects RPC...");
+        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, pv.ViewID);
     }
     public void InvokePlayerDeathEffects()
     {
-        Debug.LogWarning("Invoking PLayer Death Effects RPC...");
+        //Debug.LogWarning("Invoking PLayer Death Effects RPC...");
         pv.RPC(nameof(RPC_InvokePlayerDeathEffects), RpcTarget.All);
     }
     [PunRPC]
@@ -278,20 +278,21 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
     {
         Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
-        Debug.LogWarning("Finding Colliders...");
+        //Debug.LogWarning("Finding Colliders...");
         if (colliders.Length != 0)
         {
-            Debug.LogWarning("Colliders Found");
+            //Debug.LogWarning("Colliders Found");
             GameObject bulletImpactObject = Instantiate(holder.weaponSlots[holder.weaponIndex].bulletImpactPrefab, hitPosition + hitNormal * 0.01f, Quaternion.LookRotation(-hitNormal, Vector3.up));
             Destroy(bulletImpactObject, 5f);
             bulletImpactObject.transform.SetParent(colliders[0].transform);
+            if (colliders[0].GetComponent<PlayerControllerManager>() != null) Destroy(bulletImpactObject);
             //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
         }
     }
     [PunRPC]
-    public void RPC_InvokeGunEffects()
+    public void RPC_InvokeGunEffects(int viewID)
     {
-        if (!pv.IsMine) return;
+        if (pv.ViewID != viewID) return;
         if (holder.weaponIndex == 0)
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);

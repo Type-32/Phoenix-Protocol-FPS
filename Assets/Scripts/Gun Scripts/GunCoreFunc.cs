@@ -243,8 +243,8 @@ public class GunCoreFunc : MonoBehaviour
             spreadY = Random.Range(-gun.logic.spreadConstant, gun.logic.spreadConstant);
             spreadX *= gun.stats.weaponData.hipfireSpread;
             spreadY *= gun.stats.weaponData.hipfireSpread;
-            shootDirection.x += spreadX;
-            shootDirection.y += spreadY;
+            shootDirection.x += spreadX * 0.1f;
+            shootDirection.y += spreadY * 0.1f;
         }
         ray.origin = gun.fpsCam.transform.position;
         ray.direction = shootDirection;
