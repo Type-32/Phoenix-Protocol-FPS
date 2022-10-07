@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec236da174a09f2468714c004e0f7581, type: 3}
+  m_Name: HK-MP5
+  m_EditorClassIdentifier: 
+  itemName: HK-MP5
+  itemDescription: SMG
+  itemIcon: {fileID: 21300000, guid: 3da20a1418c395b489031412c56ae658, type: 3}
+  equippedByDefault: 0
+  unlockingLevel: 1
+  requiresPurchase: 0
+  purchasePrice: 100
+  weaponPrefab: {fileID: 6788626819295025767, guid: 8f46c01ba4f6dea478793faef678e55e,
+    type: 3}
+  weaponType: 0
+  weaponProjectile: {fileID: 0}
+  maxAmmoPerMag: 30
+  magazineCount: 5
+  damage: 22
+  range: 150
+  reloadTime: 2.8
+  impactForce: 7
+  fireRate: 15
+  FOVMultiplier: 1.5
+  boltRecoveryDuration: 1.5
+  aimSpeed: 1
+  damagePerPellet: 10
+  pelletsPerFire: 1
+  isEnabled: 1
+  isMelee: 0
+  isExplosive: 0
+  isArmorPenetrative: 0
+  isSniperProperties: 0
+  enableAutomatic: 1
+  enableBurst: 0
+  enableSingle: 1
+  bassClips:
+  - {fileID: 8300000, guid: 20406628726af2d44b8d8f122378728b, type: 3}
+  fireClips:
+  - {fileID: 8300000, guid: ea0305229e0d5e845801e179d4db171b, type: 3}
+  - {fileID: 8300000, guid: 64aa7abe439bd7a40915e65e0cd70300, type: 3}
+  - {fileID: 8300000, guid: ad9c9eee9c922dd43af1fe3b27b31652, type: 3}
+  - {fileID: 8300000, guid: 864c899348c799a43b863f5129176f2e, type: 3}
+  - {fileID: 8300000, guid: 0c9f6098a261230438f3c9b5acc0c741, type: 3}
+  - {fileID: 8300000, guid: ed98f3bfc94f42149b8c34f6dfbfc4e1, type: 3}
+  silencedFireClips: []
+  mechClips:
+  - {fileID: 8300000, guid: 20babc5b60ed4c44da4e6ce8205c3a9f, type: 3}
+  - {fileID: 8300000, guid: 8086db080e408984faf07cfea3706239, type: 3}
+  - {fileID: 8300000, guid: 64c7ead1940c7e445a547a93912143af, type: 3}
+  - {fileID: 8300000, guid: b038906fc9ebd8747b8a4293e86bc74d, type: 3}
+  - {fileID: 8300000, guid: 083274485575d9347a09cb9547393dbd, type: 3}
+  - {fileID: 8300000, guid: f6a96862c12ab8543b240b38775044c0, type: 3}
+  applicableVariants: []
+  applicableAttachments:
+  - {fileID: 11400000, guid: 3757cbdc14ffd6d4c91b9b2d37b34d73, type: 2}
+  - {fileID: 11400000, guid: 86643a13bae856049889c6151d4d574d, type: 2}
+  - {fileID: 11400000, guid: 8fcd0292106c55f4d876bd2db0c1b8ac, type: 2}
+  - {fileID: 11400000, guid: 40f4c67b7e568b9449ed65d37ab095e3, type: 2}
+  - {fileID: 11400000, guid: ad8463e9fe5f6094c8249b9ad91b59da, type: 2}
+  - {fileID: 11400000, guid: 18c69c5a9f561a04eb7b4cf7de51fda1, type: 2}
+  - {fileID: 11400000, guid: 5d4ea03721058124f90295b220f740d0, type: 2}
+  - {fileID: 11400000, guid: 8eb85bee56b46524fb589d5f002ebe45, type: 2}
+  - {fileID: 11400000, guid: 225d51ca4adcac94db10119d44493e89, type: 2}
