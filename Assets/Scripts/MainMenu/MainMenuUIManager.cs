@@ -15,6 +15,7 @@ public class MainMenuUIManager : MonoBehaviour
     [Space]
     [Header("Menus")]
     public GameObject mainMenu;
+    public GameObject updateLogsMenu;
     public GameObject multiplayerMenu;
     public GameObject roomMenu;
     public GameObject findRoomMenu;
@@ -34,6 +35,7 @@ public class MainMenuUIManager : MonoBehaviour
     [Space]
     [Header("Menu States")]
     public bool openedMainMenu = false;
+    public bool openedUpdateLogsMenu = false;
     public bool openedCosmeticsMenu = false;
     public bool openedMultiplayerMenu = false;
     public bool openedRoomMenu = false;
@@ -92,6 +94,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseCosmeticsMenu();
         CloseCreateRoomMenu();
         CloseSettingsMenu();
+        CloseUpdateLogsMenu();
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
     }
@@ -130,6 +133,24 @@ public class MainMenuUIManager : MonoBehaviour
         {
             OpenMultiplayerMenu();
         }
+    }
+    #endregion
+
+    #region Update Logs Menus
+    public void OpenUpdateLogsMenu()
+    {
+        openedUpdateLogsMenu = true;
+        updateLogsMenu.SetActive(openedUpdateLogsMenu);
+    }
+    public void CloseUpdateLogsMenu()
+    {
+        openedUpdateLogsMenu = false;
+        updateLogsMenu.SetActive(openedUpdateLogsMenu);
+    }
+    public void ToggleUpdateLogsMenu(bool toggle)
+    {
+        openedUpdateLogsMenu = toggle;
+        updateLogsMenu.SetActive(toggle);
     }
     #endregion
 
@@ -304,7 +325,6 @@ public class MainMenuUIManager : MonoBehaviour
     }
     #endregion
 
-
     #region Main
     public void UseCreateRoomInputField()
     {
@@ -360,7 +380,6 @@ public class MainMenuUIManager : MonoBehaviour
         return roomTitle.text;
     }
     #endregion
-
 
     #region Room Creation
     public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer, int mapIndex)

@@ -174,7 +174,6 @@ public class LoadoutSelectionScript : MonoBehaviour
         if (PlayerPrefs.HasKey("SMWA_AppearanceIndex1")) loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[0] = GetLoadoutDataFromPreferences("SMWA_AppearanceIndex1");
         if (PlayerPrefs.HasKey("SMWA_AppearanceIndex2")) loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[1] = GetLoadoutDataFromPreferences("SMWA_AppearanceIndex2");
 
-        loadoutItems[selectedLoadoutIndex].SelectLoadout();
         loadoutDataList[selectedLoadoutIndex].weaponData[0] = FindWeaponDataFromIndex(selectedMainWeaponIndex);
         loadoutDataList[selectedLoadoutIndex].weaponData[1] = FindWeaponDataFromIndex(selectedSecondWeaponIndex);
         loadoutDataList[selectedLoadoutIndex].selectedSight[0] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSightIndex[0]);
@@ -206,6 +205,7 @@ public class LoadoutSelectionScript : MonoBehaviour
                 temp.ToggleSelectVisual(true);
             }
         }
+        loadoutItems[selectedLoadoutIndex].SelectLoadout();
     }
     public void InstantiateLoadoutWeaponSelections()
     {
