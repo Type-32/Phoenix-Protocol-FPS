@@ -51,6 +51,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     private bool hasArmor = false;
     private float timePassedAfterDamageTaken = 5f;
 
+    [SerializeField] int weaponIndex1;
+    [SerializeField] int weaponIndex2;
+
     private void Awake()
     {
         playerManager = PhotonView.Find((int)pv.InstantiationData[0]).GetComponent<PlayerManager>();
@@ -62,6 +65,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         if (pv.IsMine)
         {
+            weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
+            weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
             recoilScript = FindObjectOfType<Recoil>();
             DerivePlayerStatsToHUDInitialize();
             playerHead.SetActive(false);
@@ -71,6 +76,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         else
         {
+            weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
+            weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
             Destroy(ui.gameObject);
             playerHead.SetActive(true);
             playerBody.SetActive(true);
@@ -206,7 +213,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [PunRPC]
     void RPC_TakeDamage(float amount, bool bypassArmor, PhotonMessageInfo info)
     {
-        Debug.Log("Took Damage " + amount);
+        Debug.Log("Took Damage " + amount + " from " + info.Sender.NickName + " using " + ((int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]).ToString());
 
         //Core Take Damage Functions
         recoilScript.RecoilFire(0.4f, 0.8f, 4, 0.12f, 0, 5, 12, 5, 12);
@@ -248,8 +255,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         stats.totalAbsorbedDamage += amount;
         if (stats.health <= 0f)
         {
+            int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
+            PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, tm);
             Die();
-            PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]);
         }
         return;
     }
@@ -261,7 +269,26 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void InvokeGunEffects()
     {
         //Debug.LogWarning("Invoking Gun Effects RPC...");
-        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, pv.ViewID);
+        if (holder.weaponIndex == 0)
+        {
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+        }
+        else
+        {
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+        }
+
+        if (holder.weaponIndex == 0)
+        {
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+        }
+        else
+        {
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+        }
+        //pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, pv.ViewID);
     }
     public void InvokePlayerDeathEffects()
     {

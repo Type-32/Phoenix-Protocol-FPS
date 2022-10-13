@@ -32,6 +32,7 @@ public class GunCoreFunc : MonoBehaviour
         recoilScript = GetComponentInParent<Recoil>();
         SightFOVInitialize();
         FiremodeInitialize();
+        timePassedUntillNextShot = gun.stats.boltRecoveryDuration;
     }
     void SightFOVInitialize()
     {
@@ -45,10 +46,11 @@ public class GunCoreFunc : MonoBehaviour
         if (stats.weaponData.enableAutomatic) fmList.Add(QuantityStatsHUD.FireMode.Automatic);
         if (stats.weaponData.enableBurst) fmList.Add(QuantityStatsHUD.FireMode.Burst);
         if (stats.weaponData.enableSingle) fmList.Add(QuantityStatsHUD.FireMode.Single);
-        if (stats.weaponData.isSniperProperties)
+        if (stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || stats.weaponData.isSniperProperties)
         {
             fmList.Clear();
             fmList.Add(QuantityStatsHUD.FireMode.SniperSingle);
+            stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
         }
     }
     void StateInitalize()
@@ -65,38 +67,8 @@ public class GunCoreFunc : MonoBehaviour
     /*
     void Update()
     {
-        //if (!IsOwner) return;
-        
+        if (!gun.player.pv.IsMine) return;
 
-        #region Firemodes
-        //Switching Firemodes
-        #endregion
-
-        
-        #region GetGunPickup
-        
-        if (Input.GetKeyDown("f") && !gun.stats.isAttaching)
-        {
-            PickingGunUp();
-        }
-        #endregion
-
-        #region AimingMechanics
-        #endregion
-
-        #region DropWeapon
-        
-        if (Input.GetKeyDown("g")) {
-            SpawnPickup();
-        }
-        #endregion
-
-        #region ReloadMechanics
-        #endregion
-
-        #region GunShooting
-        //Shooting
-        #endregion
     }*/
     public void AimingMechanics()
     {
@@ -207,7 +179,8 @@ public class GunCoreFunc : MonoBehaviour
     void Shoot(float range, float damage)
     {
         if(gun.stats.ammo <= 0 || stats.isSprinting) return;
-        if(gun.shellEject != null) gun.shellEject.GetComponent<ParticleSystem>().Play();
+        if(gun.shellEject != null && !gun.stats.weaponData.ejectCasingAfterRechamber) gun.shellEject.GetComponent<ParticleSystem>().Play();
+        if (gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle) StartCoroutine(Rechamber());
 
         float decreasedKickback = 0f;
         if(gun.player.holder.weaponIndex == 0)
@@ -245,6 +218,7 @@ public class GunCoreFunc : MonoBehaviour
             spreadY *= gun.stats.weaponData.hipfireSpread;
             shootDirection.x += spreadX * 0.1f;
             shootDirection.y += spreadY * 0.1f;
+            shootDirection.z += spreadX * 0.1f;
         }
         ray.origin = gun.fpsCam.transform.position;
         ray.direction = shootDirection;
@@ -308,13 +282,21 @@ public class GunCoreFunc : MonoBehaviour
         }*/
     }
 
+    IEnumerator Rechamber()
+    {
+        Debug.Log("Rechambering!");
+        yield return new WaitForSeconds(gun.stats.weaponData.rechamberDelay);
+        anim.animate.SetTrigger("rechamberAnim");
+        gun.audio.PlayRechamberSound();
+        gun.shellEject.GetComponent<ParticleSystem>().Play();
+    }
     IEnumerator Reload()
     {
         int storeRes = 0;
         gun.stats.isReloading = true;
         Debug.Log("Reloading... ");
-        anim.animate.Play("Reload"); 
-        yield return new WaitForSeconds(gun.stats.reloadTime);
+        //anim.animate.Play("Reload"); 
+        yield return new WaitForSeconds(gun.stats.weaponData.reloadTime);
 
         gun.stats.ammoPool += gun.stats.ammo;
         if(gun.stats.ammoPool >= gun.stats.maxAmmo){

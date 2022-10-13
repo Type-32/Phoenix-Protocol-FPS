@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -15,6 +16,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject playerListItemPrefab;
     [SerializeField] private GameObject startGameButton;
     public LoadoutSelectionScript loadoutSelection;
+    public string startKey = "103274803";
     // Start is called before the first frame update
     void Start()
     {
@@ -103,11 +105,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
         }
-        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        startGameButton.SetActive(CheckIfStartAllowed());
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        startGameButton.SetActive(CheckIfStartAllowed());
     }
     public override void OnLeftRoom()
     {
@@ -143,9 +145,25 @@ public class Launcher : MonoBehaviourPunCallbacks
         MainMenuUIManager.instance.CloseRoomMenu();
         MainMenuUIManager.instance.OpenLoadingMenu();
     }
+
+    public bool CheckIfStartAllowed()
+    {
+        bool flag = false;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            flag = true;
+            if (flag)
+            {
+                if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
+                else startGameButton.GetComponent<Button>().interactable = false;
+            }
+        }
+        return flag;
+    }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+        startGameButton.SetActive(CheckIfStartAllowed());
     }
 
     public int FindGlobalWeaponIndex(WeaponData data)
@@ -167,11 +185,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void SetLoadoutValuesToPlayer()
     {
         Hashtable temp = new Hashtable();
-        PhotonNetwork.LocalPlayer.CustomProperties = new Hashtable();
-        int selectedMainWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[0]);
-        int selectedSecondWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1]);
-        Debug.Log(selectedMainWeaponIndex);
-        Debug.Log(selectedSecondWeaponIndex);
+        //PhotonNetwork.LocalPlayer.CustomProperties = new Hashtable();
+        int selectedMainWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[PlayerPrefs.GetInt("selectedLoadoutIndex")].weaponData[0]);
+        int selectedSecondWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[PlayerPrefs.GetInt("selectedLoadoutIndex")].weaponData[1]);
+        Debug.LogWarning(selectedMainWeaponIndex);
+        Debug.LogWarning(selectedSecondWeaponIndex);
         temp.Add("selectedMainWeaponIndex", selectedMainWeaponIndex);
         temp.Add("selectedSecondWeaponIndex", selectedSecondWeaponIndex);
 
@@ -200,12 +218,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         temp.Add("SMWA_AppearanceIndex1", SMWA_AppearanceIndex1);
         temp.Add("SMWA_AppearanceIndex2", SMWA_AppearanceIndex2);
 
-        PhotonNetwork.LocalPlayer.CustomProperties = temp;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(temp);
     }
     public void StartGame()
     {
         SetLoadoutValuesToPlayer();
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"]);
     }
     public void QuitApplication()
     {

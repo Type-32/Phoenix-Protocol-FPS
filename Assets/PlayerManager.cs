@@ -68,9 +68,16 @@ public class PlayerManager : MonoBehaviour
     public int kills = 0;
     public int deaths = 0;
     public bool randomSpawnpoint = false;
+    [HideInInspector] public int streakKills = 0;
+
+    [Space]
+    [Header("Kill Messages")]
+    public Transform killMSGHolder;
+    public GameObject killMSGPrefab;
 
     int selectedSPIndex = 0;
     Vector3 tempVelocity;
+    float fov = 60f;
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
@@ -99,31 +106,56 @@ public class PlayerManager : MonoBehaviour
     {
         if (!pv.IsMine)
         {
-            cameraObject.gameObject.SetActive(false);
-            PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
-            Debug.Log(selectedMainWeaponIndex);
+            //cameraObject.gameObject.SetActive(false);
+            //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
+            //Debug.Log(selectedMainWeaponIndex);
             Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
             slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]);
             slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
+            deathUI.SetActive(false);
+            hasRespawned = true;
+            CloseMenu();
+            CloseLoadoutMenu();
         }
         else
         {
-            PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
-            Debug.Log(selectedMainWeaponIndex);
-            Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
-            slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]);
-            slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
-            CreateController();
+            //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
+            //Debug.Log(selectedMainWeaponIndex);
+            //Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
+            slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedMainWeaponIndex"]);
+            slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
+            //CreateController();
+            OnJoiningOngoingRoom();
         }
         //if (!pv.IsMine) return;
         openedInventory = false;
         CloseMenu();
         CloseLoadoutMenu();
-        deathCountdown.text = "Waiting for Respawn";
 
-        respawnCountdown = 8;
-        hasRespawned = true;
-        deathUI.SetActive(false);
+        //respawnCountdown = 8;
+    }
+    void OnJoiningOngoingRoom()
+    {
+        cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
+        respawning = true;
+        secondCount = 0;
+        deathGUICanvas.alpha = 0f;
+        deathGUICanvas.gameObject.SetActive(true);
+
+        respawnButton.interactable = true;
+        respawnUI.redeployButton.interactable = false;
+        respawnCountdown = 6;
+        hasRespawned = false;
+        temp = 0;
+        returnTemp = 0f;
+        deathUI.SetActive(true);
+        deathCountdown.text = "Waiting for Respawn";
+        Cursor.lockState = CursorLockMode.None;
+        if (randomSpawnpoint || spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
+        spawnpointUI.ChooseSpawnpoint(selectedSPIndex);
+        
+        transform.position = spawnpoint.position;
+        transform.rotation = spawnpoint.rotation;
     }
     void CreateController()
     {
@@ -148,9 +180,11 @@ public class PlayerManager : MonoBehaviour
 
         //Player Related Settings
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
+        controller.GetComponent<PlayerStats>().SetPlayerFOV(PlayerPrefs.GetFloat("Field Of View"));
     }
     public void Die()
     {
+        cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
         respawning = true;
         secondCount = 0;
         deathGUICanvas.alpha = 0f;
@@ -178,6 +212,19 @@ public class PlayerManager : MonoBehaviour
         if (randomSpawnpoint || spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
         spawnpointUI.ChooseSpawnpoint(selectedSPIndex);
     }
+    IEnumerator DelayedCompleteCountdown(float duration)
+    {
+        respawnCountdown = 0;
+        temp = 0;
+        secondCount = 0;
+        hasRespawned = true;
+        respawning = false;
+        deathCountdown.text = "Waiting for Respawn";
+        skipCountdownIndicator.SetActive(false);
+        CloseLoadoutMenu();
+        yield return new WaitForSeconds(duration);
+        CompleteCountdown();
+    }
     public void RedeployPlayer()
     {
         if (!pv.IsMine) return;
@@ -190,7 +237,8 @@ public class PlayerManager : MonoBehaviour
         if (!pv.IsMine) return;
         respawnButton.interactable = false;
         hasRespawned = false;
-        CompleteCountdown();
+        //CompleteCountdown();
+        StartCoroutine(DelayedCompleteCountdown(2f));
     }
 
     public void SetSpawnPositionReference(Transform obj, int index)
@@ -199,10 +247,29 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Spawnpoint Setted to " + obj.name);
         selectedSPIndex = index;
     }
-
+    public void DisconnectPlayer()
+    {
+        StartCoroutine(DisconnectAndLoad());
+    }
+    IEnumerator DisconnectAndLoad()
+    {
+        //PhotonNetwork.Disconnect();
+        PhotonNetwork.LeaveRoom();
+        //while (PhotonNetwork.IsConnected)
+        while (PhotonNetwork.InRoom)
+            yield return null;
+        SceneManager.LoadScene(0);
+        MainMenuUIManager.instance.OpenLoadingMenu();
+        MainMenuUIManager.instance.CloseMainMenu();
+    }
     private void Update()
     {
         if (!pv.IsMine) return;
+        //Developer Console
+        if (Launcher.Instance.startKey == PhotonNetwork.LocalPlayer.NickName)
+        {
+
+        }
         if (secondFill < 1f)
         {
             secondFill += Time.deltaTime;
@@ -252,10 +319,11 @@ public class PlayerManager : MonoBehaviour
         }
         if(returnTemp <= 0f && hasRespawned && !respawning)
         {
-            CreateController();
+            //CreateController();
         }
         if (respawning)
         {
+            cameraObject.fieldOfView = Mathf.Lerp(cameraObject.fieldOfView, 60f, Time.deltaTime * 2);
             if (returnTemp >= 2f)
             {
                 if (!hasRespawned)
@@ -273,18 +341,16 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            if (hasRespawned)
+            {
+                deathGUICanvas.alpha = Mathf.Lerp(deathGUICanvas.alpha, 0f, Time.deltaTime * 5);
+                transform.position = Vector3.Slerp(transform.position, spawnpoint.position, Time.deltaTime * 3);
+                transform.rotation = Quaternion.Slerp(transform.rotation, spawnpoint.rotation, Time.deltaTime * 3);
+            }
             if (returnTemp > 0f)
             {
                 returnTemp -= secondCount;
                 secondCount = 0;
-            }
-            else
-            {
-                if (hasRespawned)
-                {
-                    transform.position = Vector3.Slerp(transform.position, spawnpoint.position, Time.deltaTime * 3);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, spawnpoint.rotation, Time.deltaTime * 3);
-                }
             }
         }
         if (hasRespawned) return;
@@ -336,7 +402,7 @@ public class PlayerManager : MonoBehaviour
     public void OpenLoadoutMenu()
     {
         //if (!pv.IsMine) return;
-        Debug.Log("Opened Loadout UI ");
+        //Debug.Log("Opened Loadout UI ");
         openedLoadoutMenu = true;
         loadoutMenu.gameObject.SetActive(true);
         slotHolderScript.RefreshLoadoutSlotInfo();
@@ -345,7 +411,7 @@ public class PlayerManager : MonoBehaviour
     public void CloseLoadoutMenu()
     {
         //if (!pv.IsMine) return;
-        Debug.Log("Closed Loadout UI ");
+        //Debug.Log("Closed Loadout UI ");
         openedLoadoutMenu = false;
         loadoutMenu.gameObject.SetActive(false);
         if (controller != null) Cursor.lockState = CursorLockMode.Locked;
@@ -353,7 +419,7 @@ public class PlayerManager : MonoBehaviour
     public void ToggleButtonHolder(bool value)
     {
         // (!pv.IsMine) return;
-        Debug.Log("Toggled Button Holder ");
+        //Debug.Log("Toggled Button Holder ");
         //Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
         enabledButtonHolder = value;
         buttonHolder.SetActive(value);
@@ -366,7 +432,7 @@ public class PlayerManager : MonoBehaviour
             settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
         }
         //if (!pv.IsMine) return;
-        Debug.Log("Toggled Settings Menu ");
+        //Debug.Log("Toggled Settings Menu ");
         //Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
         openedSettingsSection = value;
         settingsMenu.gameObject.SetActive(value);
@@ -377,7 +443,7 @@ public class PlayerManager : MonoBehaviour
     {
         //if (!pv.IsMine) return;
         openedOptions = true;
-        Debug.Log("Opened Options UI ");
+        //Debug.Log("Opened Options UI ");
         optionsUI.SetActive(openedOptions);
         ToggleButtonHolder(openedOptions);
         ToggleSettingsMenu(!openedOptions);
@@ -387,7 +453,7 @@ public class PlayerManager : MonoBehaviour
     {
         //if (!pv.IsMine) return;
         openedOptions = false;
-        Debug.Log("Closed Options UI ");
+        //Debug.Log("Closed Options UI ");
         optionsUI.SetActive(openedOptions);
         ToggleButtonHolder(openedOptions);
         ToggleSettingsMenu(openedOptions);
@@ -413,20 +479,8 @@ public class PlayerManager : MonoBehaviour
 
     public void GetKill(string killedPlayerName, int withWeaponIndex)
     {
+        //if (!pv.IsMine) return;
         pv.RPC(nameof(RPC_GetKill), pv.Owner, killedPlayerName, withWeaponIndex);
-
-    }
-    public void CallKillMessageInstantiation(string killedName, string killerName, int weaponIndex)
-    {
-        pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedName, killerName, weaponIndex);
-    }
-    [PunRPC]
-    public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex)
-    {
-        GameObject temp = Instantiate(killMessagesHUD.killMessagesItemPrefab, killMessagesHUD.killMessagesHolder);
-        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, killMessagesHUD.FindWeaponIcon(weaponIndex));
-        Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
-        Destroy(temp, 10f);
     }
 
     [PunRPC]
@@ -439,9 +493,24 @@ public class PlayerManager : MonoBehaviour
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 120);
-        pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
+        InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
+        //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
     }
+    public void InstantiateKillMSG(string killedName, string killerName, int weaponIndex)
+    {
+        pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedName, killerName, weaponIndex);
+    }
+    [PunRPC]
+    public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex)
+    {
+        Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
+        GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
+        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, InGameUI.instance.FindWeaponIcon(weaponIndex));
+        Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
+        Destroy(temp, 15f);
+    }
+
     public void InstantiateKillIcon(bool isSpecialKill, string killedPlayerName, int killedPoints)
     {
         Debug.Log("Invoking Kill Icon ");
@@ -458,7 +527,7 @@ public class PlayerManager : MonoBehaviour
             temp2.GetComponent<TextStatItem>().SetInfo("Killed " + killedPlayerName, killedPoints);
         }
         Destroy(temp1, 2f);
-        Destroy(temp2, 2f);
+        Destroy(temp2, 3f);
     }
 
     public static PlayerManager Find(Player player)

@@ -31,9 +31,25 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
-        if(scene.buildIndex == 1)//Inside game Scene
+        if (scene.buildIndex == 1)//Inside game Scene
         {
+            PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+        }else if (scene.buildIndex == 2)
+        {
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+        }
+        else
+        {
+            MainMenuUIManager.instance.CloseCosmeticsMenu();
+            MainMenuUIManager.instance.CloseCreateRoomMenu();
+            MainMenuUIManager.instance.CloseMainMenu();
+            MainMenuUIManager.instance.CloseRoomMenu();
+            MainMenuUIManager.instance.CloseSettingsMenu();
+            MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+            MainMenuUIManager.instance.CloseLoadingMenu();
+            MainMenuUIManager.instance.OpenMultiplayerMenu();
         }
     }
 }

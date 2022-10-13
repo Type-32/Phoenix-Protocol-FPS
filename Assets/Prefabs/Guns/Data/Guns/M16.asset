@@ -25,12 +25,14 @@ MonoBehaviour:
   weaponProjectile: {fileID: 0}
   maxAmmoPerMag: 30
   magazineCount: 5
-  damage: 28
+  damage: 32
   range: 200
   reloadTime: 3
   impactForce: 12
   fireRate: 12.4
   FOVMultiplier: 2.5
+  hipfireSpread: 1
+  rechamberDelay: 0.1
   boltRecoveryDuration: 1.5
   aimSpeed: 1
   damagePerPellet: 10
@@ -43,23 +45,32 @@ MonoBehaviour:
   enableAutomatic: 1
   enableBurst: 0
   enableSingle: 1
+  hasHipfireInaccuracy: 1
+  ejectCasingAfterRechamber: 0
   bassClips:
-  - {fileID: 8300000, guid: 44703936307ccf4438a47ae585fb90a4, type: 3}
+  - {fileID: 8300000, guid: 31517f8c7e8b5cd4b9046790ddbee2fc, type: 3}
   fireClips:
-  - {fileID: 8300000, guid: 172829b7d655f3f4b96e6fd4b315f579, type: 3}
-  - {fileID: 8300000, guid: 6a8d9d1d242cc7249bcef9bd4485777e, type: 3}
-  - {fileID: 8300000, guid: d7d6b67833dbe9c428472cbe0033248c, type: 3}
-  - {fileID: 8300000, guid: 9423b2ad7a948c74bafec0e440ae51bc, type: 3}
-  - {fileID: 8300000, guid: 13b18d19572e4f8469e44400a53e35c8, type: 3}
-  - {fileID: 8300000, guid: 59b1f4052a908eb41a9521156c4096da, type: 3}
-  silencedFireClips: []
+  - {fileID: 8300000, guid: d56d4ee170356d34285d0391b34cf01d, type: 3}
+  - {fileID: 8300000, guid: 36324a7e02e2aa64abf33398b5e205c3, type: 3}
+  - {fileID: 8300000, guid: 7888b3c6c14db674fb6e816e38ec79bc, type: 3}
+  - {fileID: 8300000, guid: f440d0de38c84bd4a98384951bab5ecc, type: 3}
+  - {fileID: 8300000, guid: 2f4f0630177707d4fbdd26f09de1f862, type: 3}
+  - {fileID: 8300000, guid: 3b4aeef74e0de3d48bb865e5eefa411e, type: 3}
+  silencedFireClips:
+  - {fileID: 8300000, guid: f12b5b8106832a048851fa14ff5b3ebf, type: 3}
+  - {fileID: 8300000, guid: 603508e8d4506884f9e08d7b309999e4, type: 3}
+  - {fileID: 8300000, guid: 5e3ac9e343d7cd24f88e43e418c369df, type: 3}
+  - {fileID: 8300000, guid: 1f2619f82d6b64f44ba27d65ca8a7ae6, type: 3}
+  - {fileID: 8300000, guid: f4a25d00c708ed440aa732094014dba8, type: 3}
+  - {fileID: 8300000, guid: 026bb1662e75e264fbe47f126ba5f2c5, type: 3}
   mechClips:
-  - {fileID: 8300000, guid: dfd30bf14500a15468c7abebab88b9da, type: 3}
-  - {fileID: 8300000, guid: 4933a4883af8e1b4c8ecf13b52ad7ada, type: 3}
-  - {fileID: 8300000, guid: 4aa1eb38ec615784d94fb96adf3cc648, type: 3}
-  - {fileID: 8300000, guid: 12efe608d987e0542aac8894ebcb8f1b, type: 3}
-  - {fileID: 8300000, guid: 485897cb62e770541b00389643a8ce3e, type: 3}
-  - {fileID: 8300000, guid: 8e128a52e8be7b1458a3e1b2e076ea46, type: 3}
+  - {fileID: 8300000, guid: 153471ec45a2ae149844eeb781923d8d, type: 3}
+  - {fileID: 8300000, guid: 606069b601c0c304ba5c8471beb77173, type: 3}
+  - {fileID: 8300000, guid: bfb41de65aa97274ab093bd357dc2731, type: 3}
+  - {fileID: 8300000, guid: 13f1ac676d17f814ca247cc7a83875fc, type: 3}
+  - {fileID: 8300000, guid: b7de4ef623acdbe4c85f8243e23fcaf9, type: 3}
+  - {fileID: 8300000, guid: 1ac8561378ea7c24cba781ed65d728d0, type: 3}
+  rechamberClips: []
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: ad8463e9fe5f6094c8249b9ad91b59da, type: 2}

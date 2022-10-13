@@ -41,16 +41,18 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutItems.Add(tempItems[i]);
         }
 
-        SetLoadoutDataFromPrefs();
-        InstantiateLoadoutSelections();
-        InstantiateLoadoutWeaponSelections();
-        OpenLoadoutButtonsVisual();
-        DisablePreview();
-        DisableWeaponSelection();
-        loadoutPreviewUI.QuitCustomizationUI();
+        //MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
     }
     void Start()
     {
+        InstantiateLoadoutSelections();
+        SetLoadoutDataFromPrefs();
+        InstantiateLoadoutWeaponSelections();
+        OpenLoadoutButtonsVisual();
+        loadoutPreviewUI.QuitCustomizationUI();
+        DisablePreview();
+        loadoutItems[selectedLoadoutIndex].ToggleSelectVisual(true);
+        DisableWeaponSelection();
     }
     public void SetLoadoutDataToPreferences()
     {
@@ -172,6 +174,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         if (PlayerPrefs.HasKey("SMWA_AppearanceIndex1")) loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[0] = GetLoadoutDataFromPreferences("SMWA_AppearanceIndex1");
         if (PlayerPrefs.HasKey("SMWA_AppearanceIndex2")) loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[1] = GetLoadoutDataFromPreferences("SMWA_AppearanceIndex2");
 
+        loadoutItems[selectedLoadoutIndex].SelectLoadout();
         loadoutDataList[selectedLoadoutIndex].weaponData[0] = FindWeaponDataFromIndex(selectedMainWeaponIndex);
         loadoutDataList[selectedLoadoutIndex].weaponData[1] = FindWeaponDataFromIndex(selectedSecondWeaponIndex);
         loadoutDataList[selectedLoadoutIndex].selectedSight[0] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSightIndex[0]);

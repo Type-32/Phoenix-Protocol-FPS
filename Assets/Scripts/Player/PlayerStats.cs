@@ -88,5 +88,10 @@ public class PlayerStats : MonoBehaviour
     {
         mouseSensitivity = sensitivity;
         player.fpsCam.mouseSensitivityValve = sensitivity;
+        player.fpsCam.ResetAimingSensitivity(sensitivity);
+    }
+    public void SetPlayerFOV(float fov)
+    {
+        player.fpsCam.SetPlayerFOV(fov);
     }
 }

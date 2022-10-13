@@ -49,6 +49,7 @@ public class LoadoutWeaponSelectionItem : MonoBehaviour
         loadoutSelection.DisableWeaponSelection();
         loadoutSelection.OpenLoadoutButtonsVisual();
         loadoutSelection.SetLoadoutDataToPreferences();
+        Launcher.Instance.SetLoadoutValuesToPlayer();
     }
 
     public void SetDamageValue(float amount)

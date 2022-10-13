@@ -34,6 +34,31 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                 weaponSlots[i].InitializeStart();
             }
         }
+        if (!player.pv.IsMine)
+        {
+            Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
+            Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < muzzle1.Length; i++) muzzle1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < muzzle2.Length; i++) muzzle2[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            weaponSlots[0].gun.muzzleFire.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            weaponSlots[1].gun.muzzleFire.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            Transform[] list1 = weaponSlots[0].gun.gunVisual.GetComponentsInChildren<Transform>();
+            Transform[] list2 = weaponSlots[1].gun.gunVisual.GetComponentsInChildren<Transform>();
+            Transform[] list3 = weaponSlots[0].gun.attachment.attachmentHolder.GetComponentsInChildren<Transform>();
+            Transform[] list4 = weaponSlots[1].gun.attachment.attachmentHolder.GetComponentsInChildren<Transform>();
+            Debug.Log("Init Start Line 51");
+            EquipWeapon(0);
+            for (int i = 0; i < list1.Length; i++) list1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < list2.Length; i++) list2[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < list3.Length; i++) list3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < list4.Length; i++) list4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            Transform[] obj1 = weaponSlots[0].gun.handsVisual.GetComponentsInChildren<Transform>();
+            Transform[] obj2 = weaponSlots[1].gun.handsVisual.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < obj1.Length; i++) Destroy(obj1[i].gameObject);
+            for (int i = 0; i < obj2.Length; i++) Destroy(obj2[i].gameObject);
+            Destroy(weaponSlots[0].gun.handsVisual);
+            Destroy(weaponSlots[1].gun.handsVisual);
+        }
         if (player.pv.IsMine)
         {
             Debug.Log("Init Start Line 36");
@@ -44,27 +69,6 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Camera[] temp = GetComponentsInChildren<Camera>();
             for (int i = 0; i < temp.Length; i++)
             Destroy(temp[i].gameObject);
-        }
-        if (!player.pv.IsMine)
-        {
-            weaponSlots[0].gun.muzzleFire.gameObject.layer = LayerMask.NameToLayer("Default");
-            weaponSlots[1].gun.muzzleFire.gameObject.layer = LayerMask.NameToLayer("Default");
-            Transform[] list1 = weaponSlots[0].gun.gunVisual.GetComponentsInChildren<Transform>();
-            Transform[] list2 = weaponSlots[1].gun.gunVisual.GetComponentsInChildren<Transform>();
-            Transform[] list3 = weaponSlots[0].gun.attachment.attachmentHolder.GetComponentsInChildren<Transform>();
-            Transform[] list4 = weaponSlots[1].gun.attachment.attachmentHolder.GetComponentsInChildren<Transform>();
-            Debug.Log("Init Start Line 51");
-            EquipWeapon(0);
-            for (int i = 0; i < list1.Length; i++) list1[i].gameObject.layer = LayerMask.NameToLayer("Default");
-            for (int i = 0; i < list2.Length; i++) list2[i].gameObject.layer = LayerMask.NameToLayer("Default");
-            for (int i = 0; i < list3.Length; i++) list3[i].gameObject.layer = LayerMask.NameToLayer("Default");
-            for (int i = 0; i < list4.Length; i++) list4[i].gameObject.layer = LayerMask.NameToLayer("Default");
-            Transform[] obj1 = weaponSlots[0].gun.handsVisual.GetComponentsInChildren<Transform>();
-            Transform[] obj2 = weaponSlots[1].gun.handsVisual.GetComponentsInChildren<Transform>();
-            for (int i = 0; i < obj1.Length; i++) Destroy(obj1[i].gameObject);
-            for (int i = 0; i < obj2.Length; i++) Destroy(obj2[i].gameObject);
-            Destroy(weaponSlots[0].gun.handsVisual);
-            Destroy(weaponSlots[1].gun.handsVisual);
         }
         //SelectWeapon();
     }

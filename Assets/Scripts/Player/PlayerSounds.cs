@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerSounds : MonoBehaviour
 {
@@ -50,6 +52,13 @@ public class PlayerSounds : MonoBehaviour
     }
     public void InvokePlayerFootsteps()
     {
+        player.pv.RPC(nameof(RPC_InvokePlayerFootsteps), RpcTarget.All, player.pv.ViewID);
+    }
+
+    [PunRPC]
+    public void RPC_InvokePlayerFootsteps(int viewID)
+    {
+        if (player.pv.ViewID != viewID) return;
         if (Physics.Raycast(player.fpsCam.transform.position, Vector3.down, out RaycastHit hit, 4))
         {
             switch (hit.collider.tag)
@@ -82,7 +91,6 @@ public class PlayerSounds : MonoBehaviour
         }
         footstepTimer = GetCurrentOffset;
     }
-
     public void InvokePlayerHurtAudio()
     {
         stats.playerInternalAS.PlayOneShot(playerHurtClips[Random.Range(0, playerHurtClips.Length - 1)]);

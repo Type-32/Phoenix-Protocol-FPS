@@ -11,6 +11,8 @@ public class MouseLookScript : MonoBehaviour
     private float mouseX;
     private float mouseY;
     public float mouseSensitivityValve;
+    private float regularSensitivity;
+    private float aimingSensitivity;
     [SerializeField] Camera itemLayerCamera;
     public Camera playerMainCamera;
     public Camera minimapCamera;
@@ -32,9 +34,20 @@ public class MouseLookScript : MonoBehaviour
             mouseSensitivityValve = player.stats.mouseSensitivity;
             mouseX = 0f;
             mouseY = 0f;
+            regularSensitivity = mouseSensitivityValve;
+            aimingSensitivity = mouseSensitivityValve / 1.3f;
         }
     }
-
+    public void ResetAimingSensitivity(float sensitivity)
+    {
+        regularSensitivity = sensitivity;
+        aimingSensitivity = sensitivity / 1.3f;
+    }
+    public void SetPlayerFOV(float fov)
+    {
+        playerMainCamera.fieldOfView = fov;
+        player.stats.cameraFieldOfView = fov;
+    }
     void Update()
     {
         if (!player.pv.IsMine) return;
@@ -43,6 +56,15 @@ public class MouseLookScript : MonoBehaviour
     }
     void CameraInput()
     {
+        
+        if (player.stats.isAiming)
+        {
+            mouseSensitivityValve = aimingSensitivity;
+        }
+        else
+        {
+            mouseSensitivityValve = regularSensitivity;
+        }
         if (player.stats.mouseMovementEnabled)
         {
             mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivityValve * Time.deltaTime;

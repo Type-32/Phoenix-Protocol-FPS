@@ -46,6 +46,7 @@ public class LoadoutSelectionItem : MonoBehaviour
         loadoutSelection.OnSelectLoadoutCallback(loadoutIndex, tempIndex1, tempIndex2, 0, 0);
         selectionVisual.SetActive(true);
         loadoutSelection.SetLoadoutDataToPreferences();
+        Launcher.Instance.SetLoadoutValuesToPlayer();
     }
     public void SetLoadoutName(string content)
     {

@@ -11,6 +11,8 @@ public class SettingsMenu : MonoBehaviour
     public Dropdown qualityDropdown;
     public Slider volumeSlider;
     public Slider sensitivitySlider;
+    public Slider fieldOfViewSlider;
+    public Text fieldOfViewValue;
     public Toggle fullscreenToggle;
     public void SetVolume(float volume)
     {
@@ -23,6 +25,12 @@ public class SettingsMenu : MonoBehaviour
     {
         sensitivitySlider.value = sensitivity;
         PlayerPrefs.SetFloat("Mouse Sensitivity", sensitivity);
+    }
+    public void SetFieldOfView(float fov)
+    {
+        fieldOfViewValue.text = fov.ToString();
+        fieldOfViewSlider.value = fov;
+        PlayerPrefs.SetFloat("Field Of View", fov);
     }
     public void SetQuality(int qualityIndex)
     {
@@ -69,6 +77,8 @@ public class SettingsMenu : MonoBehaviour
         volumeSlider.maxValue = 0;
         sensitivitySlider.minValue = 0f;
         sensitivitySlider.maxValue = 200f;
+        fieldOfViewSlider.minValue = 60f;
+        fieldOfViewSlider.maxValue = 100f;
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> resOptions = new List<string>();
@@ -146,6 +156,14 @@ public class SettingsMenu : MonoBehaviour
         else
         {
             SetSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
+        }
+        if (!PlayerPrefs.HasKey("Field Of View"))
+        {
+            SetFieldOfView(75f);
+        }
+        else
+        {
+            SetFieldOfView(PlayerPrefs.GetFloat("Field Of View"));
         }
     }
 }

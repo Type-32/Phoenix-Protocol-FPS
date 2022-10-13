@@ -13,13 +13,5 @@ public class KillMessagesHUD : MonoBehaviour
     {
         if(!playerManager.pv.IsMine) gameObject.SetActive(false);
     }
-    public Sprite FindWeaponIcon(int index)
-    {
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
-        {
-            if (i == index) return GlobalDatabase.singleton.allWeaponDatas[i].itemIcon;
-        }
-        return null;
-    }
 
 }

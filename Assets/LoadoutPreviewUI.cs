@@ -30,6 +30,17 @@ public class LoadoutPreviewUI : MonoBehaviour
             images[index <= 1 ? index : 0].sprite = weaponData.itemIcon;
             buttons[index <= 1 ? index : 0].gameObject.SetActive(true);
             loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = weaponData;
+            if(index <= 1)
+            {
+                if (index == 0)
+                {
+                    loadoutSelection.selectedMainWeaponIndex = Launcher.Instance.FindGlobalWeaponIndex(weaponData);
+                }
+                else
+                {
+                    loadoutSelection.selectedSecondWeaponIndex = Launcher.Instance.FindGlobalWeaponIndex(weaponData);
+                }
+            }
         }
         else
         {

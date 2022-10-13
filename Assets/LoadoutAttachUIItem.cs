@@ -37,5 +37,6 @@ public class LoadoutAttachUIItem : MonoBehaviour
         script.loadoutDataList[script.selectedLoadoutIndex].SetAttachment(weaponAttachmentData, weaponAttachmentData.attachmentType, script.forSelectedSlot);
         script.customButtonsHolder.SetAllIcons(script.forSelectedSlot);
         script.SetLoadoutDataToPreferences();
+        Launcher.Instance.SetLoadoutValuesToPlayer();
     }
 }

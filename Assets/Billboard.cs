@@ -13,6 +13,7 @@ public class Billboard : MonoBehaviour
             cam = FindObjectOfType<Camera>();
         }
         if (cam == null) return;
+        //if (cam.GetComponent<MinimapCameraIdentifier>() != null) cam = FindObjectOfType<Camera>();
         transform.LookAt(cam.transform.position);
         transform.Rotate(Vector3.up * 180);
     }

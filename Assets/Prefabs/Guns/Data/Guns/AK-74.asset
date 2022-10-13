@@ -25,12 +25,14 @@ MonoBehaviour:
   weaponProjectile: {fileID: 0}
   maxAmmoPerMag: 30
   magazineCount: 4
-  damage: 32
+  damage: 36
   range: 210
   reloadTime: 3
   impactForce: 10
   fireRate: 11
   FOVMultiplier: 2
+  hipfireSpread: 1
+  rechamberDelay: 0.1
   boltRecoveryDuration: 1.5
   aimSpeed: 1
   damagePerPellet: 10
@@ -43,6 +45,8 @@ MonoBehaviour:
   enableAutomatic: 1
   enableBurst: 0
   enableSingle: 1
+  hasHipfireInaccuracy: 1
+  ejectCasingAfterRechamber: 0
   bassClips:
   - {fileID: 8300000, guid: 661909432356a5f4b93d1f70bd6ad9d8, type: 3}
   fireClips:
@@ -65,6 +69,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 78bf7161a2b561a499e39eb1b5ed9e64, type: 3}
   - {fileID: 8300000, guid: 6f2ff7c64fe77d24598dd9c1ebc66818, type: 3}
   - {fileID: 8300000, guid: b0d4f4818505c494d8002556c34d9f3f, type: 3}
+  rechamberClips: []
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: 3757cbdc14ffd6d4c91b9b2d37b34d73, type: 2}

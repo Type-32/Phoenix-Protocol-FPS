@@ -92,7 +92,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseCosmeticsMenu();
         CloseCreateRoomMenu();
         CloseSettingsMenu();
-        CloseLoadoutSelectionMenu();
+        //CloseLoadoutSelectionMenu();
         OpenMainMenu();
     }
 
@@ -363,11 +363,11 @@ public class MainMenuUIManager : MonoBehaviour
 
 
     #region Room Creation
-    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer)
+    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer, int mapIndex)
     {
         RoomOptions roomOptions = new RoomOptions();
         long roomCode = Random.Range(10000000, 99999999);
-        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "roomMode", "roomCode" }; //Expose values to main lobby
+        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "roomMode", "roomCode", "roomMapIndex" }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add("roomName", roomName);
@@ -375,6 +375,7 @@ public class MainMenuUIManager : MonoBehaviour
         roomOptions.CustomRoomProperties.Add("mapInfoIndex", mapInfoIndex);
         roomOptions.CustomRoomProperties.Add("maxPlayer", maxPlayer);
         roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
+        roomOptions.CustomRoomProperties.Add("roomMapIndex", mapIndex);
         switch (roomGamemodes)
         {
             case Gamemodes.FFA:
@@ -397,7 +398,7 @@ public class MainMenuUIManager : MonoBehaviour
     {
         RoomOptions roomOptionsTemp = new RoomOptions();
         roomOptionsTemp.CustomRoomProperties = new Hashtable();
-        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount);
+        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex);
         return roomOptionsTemp;
     }
     public void OnCreateRoomInputSubmit(string roomInput)
