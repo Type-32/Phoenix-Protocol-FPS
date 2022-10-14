@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    public ItemData itemData;
+    public SupplyData supplyData;
 }

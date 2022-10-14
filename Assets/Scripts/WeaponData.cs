@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "New Weapon Data", menuName = "New Weapon Data", order = 1)]
+[CreateAssetMenu(fileName = "Weapon Data", menuName = "New Weapon Data", order = 1)]
 public class WeaponData : ItemData
 {
     public GameObject weaponPrefab;

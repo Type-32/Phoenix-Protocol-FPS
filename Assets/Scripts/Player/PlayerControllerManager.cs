@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Photon.Pun;
@@ -47,6 +48,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [Header("Multiplayer")]
     public PhotonView pv;
     public PlayerManager playerManager;
+    public List<GameObject> playerDeathLoots = new();
 
     private bool hasArmor = false;
     private float timePassedAfterDamageTaken = 5f;
@@ -111,18 +113,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             stats.playerMovementEnabled = true;
             stats.mouseMovementEnabled = true;
-        }
-    }
-    public void GetPickupsForPlayer()
-    {
-        RaycastHit detectRay;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out detectRay, 3f))
-        {
-            Pickup temp = detectRay.collider.GetComponent<Pickup>();
-            if(temp != null && temp.itemData != null)
-            {
-                
-            }
         }
     }
     public void SetMouseSensitivity(float value)
@@ -203,12 +193,28 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         playerFeet2.SetActive(false);
         gameObject.SetActive(false);
     }
+    public void SpawnDeathLoot()
+    {
+        if (playerDeathLoots.Count > 0)
+        {
+            int randomIndex = Random.Range(0, playerDeathLoots.Count - 1);
+            pv.RPC(nameof(RPC_SpawnDeathLoot), RpcTarget.All, transform.position, randomIndex);
+        }
+    }
     public void Die()
     {
+
         InvokePlayerDeathEffects();
+        SpawnDeathLoot();
         playerManager.Die();
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;
+    }
+    [PunRPC]
+    void RPC_SpawnDeathLoot(Vector3 pos, int randomIndex)
+    {
+        pos.y += 3f;
+        Instantiate(playerDeathLoots[randomIndex], pos, transform.rotation);
     }
     [PunRPC]
     void RPC_TakeDamage(float amount, bool bypassArmor, PhotonMessageInfo info)

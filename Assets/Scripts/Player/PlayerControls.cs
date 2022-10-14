@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -76,13 +77,17 @@ public class PlayerControls : MonoBehaviour
             KeybindedActions();
         }
     }
+    public void InteractWithPickup()
+    {
+        player.pv.RPC(nameof(RPC_InteractWithPickup), RpcTarget.All);
+    }
     public void InteractIndicatorCheck()
     {
         RaycastHit detectRay;
         if (Physics.Raycast(player.fpsCam.transform.position, player.fpsCam.transform.forward, out detectRay, 3f))
         {
             Pickup temp = detectRay.collider.GetComponent<Pickup>();
-            if (temp != null && temp.itemData != null)
+            if (temp != null && temp.supplyData != null)
             {
                 player.ui.interactionIndicator.gameObject.SetActive(true);
             }
@@ -90,6 +95,10 @@ public class PlayerControls : MonoBehaviour
             {
                 player.ui.interactionIndicator.gameObject.SetActive(false);
             }
+        }
+        else
+        {
+            player.ui.interactionIndicator.gameObject.SetActive(false);
         }
     }
     private void OnDrawGizmosSelected()
@@ -130,7 +139,7 @@ public class PlayerControls : MonoBehaviour
     }
     void KeybindedActions()
     {
-        if (Input.GetKeyDown("f")) player.GetPickupsForPlayer();
+        if (Input.GetKeyDown("f")) InteractWithPickup();
         if (Input.GetKeyDown("k")) player.TakeDamage(100f, true);
     }
     void Logics()
@@ -197,4 +206,34 @@ public class PlayerControls : MonoBehaviour
     }
     #endregion
     
+    [PunRPC]
+    void RPC_InteractWithPickup()
+    {
+        RaycastHit detectRay;
+        if (Physics.Raycast(player.fpsCam.transform.position, player.fpsCam.transform.forward, out detectRay, 3f))
+        {
+            Pickup temp = detectRay.collider.GetComponent<Pickup>();
+            if (temp != null && temp.supplyData != null)
+            {
+                if (temp.supplyData.supplyAmmo)
+                {
+                    int _mapg = player.holder.weaponSlots[player.holder.weaponIndex].gun.stats.weaponData.maxAmmoPerMag;
+                    player.holder.weaponSlots[player.holder.weaponIndex].gun.stats.ammoPool += _mapg * temp.supplyData.supplyAmmoMagAmount;
+                }
+                if (temp.supplyData.supplyArmor)
+                {
+                    float _armor = temp.supplyData.supplyArmorAmount;
+                    player.stats.armor += _armor;
+                    if (player.stats.armor > player.stats.armorLimit) player.stats.armor = player.stats.armorLimit;
+                }
+                if (temp.supplyData.supplyHealth)
+                {
+                    float _health = temp.supplyData.supplyHealthAmount;
+                    player.stats.health += _health;
+                    if (player.stats.health > player.stats.healthLimit) player.stats.health = player.stats.healthLimit;
+                }
+                if (temp.supplyData.destroyOnUse) Destroy(temp.gameObject);
+            }
+        }
+    }
 }

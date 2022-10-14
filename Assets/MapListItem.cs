@@ -27,6 +27,6 @@ public class MapListItem : MonoBehaviour
     }
     public void OnClick()
     {
-        holder.SetSelectedMap(mapIndex - 1, mapName.text);
+        holder.SetSelectedMap(mapIndex, mapName.text);
     }
 }

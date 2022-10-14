@@ -76,7 +76,6 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         if (!player.pv.IsMine) return;
-        if (stress < 0) stress = 0f;
         if (health < 0) health = 0f;
         if (armor < 0) armor = 0f;
     }
