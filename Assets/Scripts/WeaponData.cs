@@ -22,6 +22,7 @@ public class WeaponData : ItemData
     [Range(1f, 3f)] public float FOVMultiplier = 1.1f;
     [Range(0.5f, 2f)] public float hipfireSpread = 1f;
     public float rechamberDelay = 0.1f;
+    public float shellEjectionDelay = 0f;
     public float boltRecoveryDuration = 1.5f;
     public float aimSpeed = 3f;
     [Range(0f, 50f)] public float damagePerPellet = 10f;

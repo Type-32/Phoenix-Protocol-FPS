@@ -14,27 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: LMR-08
   itemDescription: Sniper Rifle
-  itemIcon: {fileID: 21300000, guid: f04e408d53c121a418fafedc0f39fc4a, type: 3}
+  itemIcon: {fileID: 21300000, guid: 18604e2c1148aa246a4d5c33c54c7b7e, type: 3}
   equippedByDefault: 0
   unlockingLevel: 1
   requiresPurchase: 0
   purchasePrice: 100
-  weaponPrefab: {fileID: 6788626819295025767, guid: e081dcabc1fdb4d40b04d5ebbfc557db,
+  weaponPrefab: {fileID: 6788626819295025767, guid: 7c8bab39aa7dc4e4baccabe37ff8d970,
     type: 3}
   weaponType: 7
   weaponProjectile: {fileID: 0}
   maxAmmoPerMag: 5
   magazineCount: 2
-  damage: 87
+  damage: 90
   range: 300
   reloadTime: 5
   impactForce: 12
   fireRate: 12.4
   FOVMultiplier: 2.8
   hipfireSpread: 0.8
-  rechamberDelay: 0.4
-  boltRecoveryDuration: 1
-  aimSpeed: 1.5
+  rechamberDelay: 0.5
+  shellEjectionDelay: 0.1
+  boltRecoveryDuration: 1.4
+  aimSpeed: 1.6
   damagePerPellet: 10
   pelletsPerFire: 1
   isEnabled: 1
@@ -48,28 +49,25 @@ MonoBehaviour:
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 1
   bassClips:
-  - {fileID: 8300000, guid: bf28a123c40dfbc40a4050edf538aff7, type: 3}
+  - {fileID: 8300000, guid: 0d88164ddcb598c4ba84a1cc4a00999d, type: 3}
   fireClips:
-  - {fileID: 8300000, guid: 03af4835ad5dfed4395f9f341557166f, type: 3}
-  - {fileID: 8300000, guid: f87c4a5e5a166b249a8d0450aeb60105, type: 3}
-  - {fileID: 8300000, guid: aef05e6c17e6d9a41bc3fe7d768daf8a, type: 3}
-  - {fileID: 8300000, guid: 7d6c232b3b98f154a979217bfe53e76c, type: 3}
-  - {fileID: 8300000, guid: ca424bb0aa8c6614faa00efd7aefcf90, type: 3}
-  - {fileID: 8300000, guid: 426bc3968130f19459f6b266cb908303, type: 3}
+  - {fileID: 8300000, guid: 86ae713ed054bcd41b87a464859543a5, type: 3}
+  - {fileID: 8300000, guid: 2bd73e8beb5b51b4da52a4897cfa6c00, type: 3}
+  - {fileID: 8300000, guid: 930ebacae8a4a5c43938546fe937f66f, type: 3}
+  - {fileID: 8300000, guid: 1f85dcfc4a28e14498b5d55ad2212f3a, type: 3}
+  - {fileID: 8300000, guid: 0e0132364e433044085bf3d06fed6e02, type: 3}
+  - {fileID: 8300000, guid: 81ac1d6ea9cdac94bbcfc31e8c2d8453, type: 3}
   silencedFireClips:
-  - {fileID: 8300000, guid: d471133d037ff9046b6c0561918c8a31, type: 3}
-  - {fileID: 8300000, guid: e9d3bef718ceb6643908a4048b5b8c69, type: 3}
-  - {fileID: 8300000, guid: 426603ee1af870642a4b6b4692292312, type: 3}
-  - {fileID: 8300000, guid: 568db3aa36285a147a0c88998cdc506b, type: 3}
-  - {fileID: 8300000, guid: 2e08731f2d42b71418b3fb398f64839d, type: 3}
-  - {fileID: 8300000, guid: 70a548cefda5fe14cb12d707239a2bab, type: 3}
+  - {fileID: 8300000, guid: 0404de10ce0c630489bae5a1813c5979, type: 3}
+  - {fileID: 8300000, guid: 3311f1efe7ddcb24da92ff798a5ec892, type: 3}
+  - {fileID: 8300000, guid: a7f33b674d6929544a6217af1055049c, type: 3}
+  - {fileID: 8300000, guid: 20699b43e38188940a2d6f29130f8ce2, type: 3}
+  - {fileID: 8300000, guid: 20714f64b8942364fa43c1aac4944397, type: 3}
+  - {fileID: 8300000, guid: 0745abf7366adf146bac43249d9e2c00, type: 3}
   mechClips:
-  - {fileID: 8300000, guid: 5a8bb36cdbb24504cb5dc82153fabefb, type: 3}
-  - {fileID: 8300000, guid: 2a1ced2364e4ba64aa00f2869d0c774d, type: 3}
-  - {fileID: 8300000, guid: ef3ebe228895aa64283a4c1d964d1e92, type: 3}
-  - {fileID: 8300000, guid: ef1a5aa4d392f56438d9a0be877649c9, type: 3}
+  - {fileID: 8300000, guid: cf3596975f469b348870b80dee3ff5eb, type: 3}
   rechamberClips:
-  - {fileID: 8300000, guid: 8862c4194949691469113cbd2a2ed2ef, type: 3}
+  - {fileID: 8300000, guid: 32d4b9551d02b884cb735371dc03252f, type: 3}
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: ad8463e9fe5f6094c8249b9ad91b59da, type: 2}

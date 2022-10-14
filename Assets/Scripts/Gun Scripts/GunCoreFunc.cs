@@ -288,6 +288,11 @@ public class GunCoreFunc : MonoBehaviour
         yield return new WaitForSeconds(gun.stats.weaponData.rechamberDelay);
         anim.animate.SetTrigger("rechamberAnim");
         gun.audio.PlayRechamberSound();
+        StartCoroutine(PlayShellEject(gun.stats.weaponData.shellEjectionDelay));
+    }
+    IEnumerator PlayShellEject(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         gun.shellEject.GetComponent<ParticleSystem>().Play();
     }
     IEnumerator Reload()

@@ -33,11 +33,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         if (scene.buildIndex == 1)//Inside game Scene
         {
-            PhotonNetwork.CurrentRoom.IsVisible = false;
+            //PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }else if (scene.buildIndex == 2)
         {
-            PhotonNetwork.CurrentRoom.IsVisible = false;
+            //PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
         else

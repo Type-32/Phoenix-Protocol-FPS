@@ -20,7 +20,8 @@ public class RoomListItem : MonoBehaviour
         roomInfo = info;
         roomName.text = info.Name;
         //roomIcon.sprite = Launcher.Instance.mapItemInfo[info.CustomProperties[0]]
-        roomIcon.sprite = Launcher.Instance.mapItemInfo[(int)info.CustomProperties["mapInfoIndex"]].mapIcon;
+        Debug.Log("Getting Map Info Index: " + (((int)info.CustomProperties["roomMapIndex"]) - 1));
+        roomIcon.sprite = Launcher.Instance.mapItemInfo[((int)info.CustomProperties["roomMapIndex"]) - 1].mapIcon;
         roomMode.text = (string)info.CustomProperties["roomMode"];
         roomHostName.text = (string)info.CustomProperties["roomHostName"];
 
