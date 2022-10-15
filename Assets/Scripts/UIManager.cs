@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [Header("HUD Elements")]
     public GameObject crosshair;
     public GameObject interactionIndicator;
+    public GameObject nametagIndicatorObject;
 
     [Space]
     [Header("HUD Stats")]
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     public Slider armorBar;
     public Text healthText;
     public Text armorText;
+    public Text nametagIndicator;
     public QuantityStatsHUD quantityHUD;
     public CanvasGroup healthBarAlpha;
 
@@ -57,22 +59,22 @@ public class UIManager : MonoBehaviour
         //interactionIndicator = FindObjectOfType<InteractionIndicatorScript>().gameObject;
     }
 
+    /*
     void Update()
     {
         if (!player.pv.IsMine) return;
-        /*
-        passedTime += Time.deltaTime;
-        if (healthAlphaDuration <= 0f)
-        {
-            healthBarAlpha.alpha = Mathf.Lerp(healthBarAlpha.alpha, 0.6f, 5 * Time.deltaTime);
-        }
-        else
-        {
-            healthBarAlpha.alpha = Mathf.Lerp(healthBarAlpha.alpha, 1f, 5 * Time.deltaTime);
-            if (passedTime >= 1) { healthAlphaDuration -= 1; passedTime = 0; }
-        }*/
+        //passedTime += Time.deltaTime;
+        //if (healthAlphaDuration <= 0f)
+        //{
+        //    healthBarAlpha.alpha = Mathf.Lerp(healthBarAlpha.alpha, 0.6f, 5 * Time.deltaTime);
+        //}
+        //else
+        //{
+        //    healthBarAlpha.alpha = Mathf.Lerp(healthBarAlpha.alpha, 1f, 5 * Time.deltaTime);
+        //    if (passedTime >= 1) { healthAlphaDuration -= 1; passedTime = 0; }
+        //}
 
-    }
+    }*/
     public enum HitmarkerType
     {
         Killmarker,

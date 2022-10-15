@@ -24,12 +24,14 @@ public class PlayerStats : MonoBehaviour
     [Range(0f, 5f)] public float jumpForce = 2f;
     [Range(-10f, -5f)] public float gravity = -9.81f;
     public float groundDist = 0.4f;
+    public float playerNametagDistance = 20f;
     public float crouchYScale;
 
     [Space]
     [Header("Player Options")]
     public bool toggleAiming = false;
     public bool invertedMouse = false;
+    public bool enableNightVision = false;
 
     [Space]
     [Header("Player States")]

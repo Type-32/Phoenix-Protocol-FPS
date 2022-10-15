@@ -79,7 +79,7 @@ public class PlayerControls : MonoBehaviour
     }
     public void InteractWithPickup()
     {
-        player.pv.RPC(nameof(RPC_InteractWithPickup), RpcTarget.All);
+        player.pv.RPC(nameof(RPC_InteractWithPickup), RpcTarget.All, player.fpsCam.transform.position, player.fpsCam.transform.rotation, player.fpsCam.transform.forward);
     }
     public void InteractIndicatorCheck()
     {
@@ -140,6 +140,8 @@ public class PlayerControls : MonoBehaviour
     void KeybindedActions()
     {
         if (Input.GetKeyDown("f")) InteractWithPickup();
+        if (Input.GetKeyDown("n")) player.ToggleNightVision();
+        if (Input.GetKeyDown("g") && player.playerManager.recordKills >= 3 && !player.usingStreakGifts) StartCoroutine(player.UseStreakGift(5f, 3));
         if (Input.GetKeyDown("k")) player.TakeDamage(100f, true);
     }
     void Logics()
@@ -205,12 +207,13 @@ public class PlayerControls : MonoBehaviour
         else player.stats.isWalking = false;
     }
     #endregion
-    
+
+    Transform nullTransform;
     [PunRPC]
-    void RPC_InteractWithPickup()
+    void RPC_InteractWithPickup(Vector3 playerPos, Quaternion playerRot, Vector3 playerForward)
     {
         RaycastHit detectRay;
-        if (Physics.Raycast(player.fpsCam.transform.position, player.fpsCam.transform.forward, out detectRay, 3f))
+        if (Physics.Raycast(playerPos, playerForward, out detectRay, 3f))
         {
             Pickup temp = detectRay.collider.GetComponent<Pickup>();
             if (temp != null && temp.supplyData != null)

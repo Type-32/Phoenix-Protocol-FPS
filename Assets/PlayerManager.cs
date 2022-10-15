@@ -69,6 +69,7 @@ public class PlayerManager : MonoBehaviour
     public int deaths = 0;
     public bool randomSpawnpoint = false;
     [HideInInspector] public int streakKills = 0;
+    [HideInInspector] public int recordKills = 0;
 
     [Space]
     [Header("Kill Messages")]
@@ -78,6 +79,7 @@ public class PlayerManager : MonoBehaviour
     int selectedSPIndex = 0;
     Vector3 tempVelocity;
     float fov = 60f;
+    private Color randomPlayerColor;
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
@@ -116,6 +118,7 @@ public class PlayerManager : MonoBehaviour
             hasRespawned = true;
             CloseMenu();
             CloseLoadoutMenu();
+            randomPlayerColor = Random.ColorHSV();
         }
         else
         {
@@ -126,6 +129,7 @@ public class PlayerManager : MonoBehaviour
             slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
             //CreateController();
             OnJoiningOngoingRoom();
+            randomPlayerColor = Random.ColorHSV();
         }
         //if (!pv.IsMine) return;
         openedInventory = false;
@@ -181,9 +185,11 @@ public class PlayerManager : MonoBehaviour
         //Player Related Settings
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
         controller.GetComponent<PlayerStats>().SetPlayerFOV(PlayerPrefs.GetFloat("Field Of View"));
+        controller.GetComponent<PlayerControllerManager>().SetBodyMaterialColor(randomPlayerColor);
     }
     public void Die()
     {
+        streakKills = 0;
         cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
         respawning = true;
         secondCount = 0;
@@ -487,6 +493,8 @@ public class PlayerManager : MonoBehaviour
     void RPC_GetKill(string killedPlayerName, int withWeaponIndex)
     {
         kills++;
+        recordKills++;
+        streakKills++;
         Hashtable hash = new Hashtable();
         hash.Add("kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);

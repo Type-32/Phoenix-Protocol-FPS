@@ -39,6 +39,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             //PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+        }else if (scene.buildIndex == 3)
+        {
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
         else
         {

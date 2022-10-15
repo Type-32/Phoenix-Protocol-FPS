@@ -42,7 +42,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
     [Space]
     [Header("Volume Effects")]
-    [SerializeField] Volume playerVolumeEffect, playerHurtEffect, armorHurtEffect;
+    [SerializeField] Volume playerVolumeEffect, playerHurtEffect, armorHurtEffect, nightVisionEffect;
 
     [Space]
     [Header("Multiplayer")]
@@ -52,6 +52,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
     private bool hasArmor = false;
     private float timePassedAfterDamageTaken = 5f;
+    public bool usingStreakGifts = false;
+    public GameObject playerMinimapDot;
+    private List<GameObject> allMinimapDots = new();
 
     [SerializeField] int weaponIndex1;
     [SerializeField] int weaponIndex2;
@@ -62,6 +65,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         pv = GetComponent<PhotonView>();
         //ui = FindObjectOfType<UIManager>();
         //if(playerHeadMat != null) gameObject.GetComponent<MeshRenderer>playerHeadMat
+
     }
     private void Start()
     {
@@ -75,6 +79,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerBody.SetActive(false);
             playerFeet1.SetActive(false);
             playerFeet2.SetActive(false);
+            nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
         }
         else
         {
@@ -85,6 +90,15 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerBody.SetActive(true);
             playerFeet1.SetActive(true);
             playerFeet2.SetActive(true);
+            nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
+            playerMinimapDot.SetActive(false);
+            MinimapDotIdentifier[] tempget;
+            tempget = FindObjectsOfType<MinimapDotIdentifier>();
+            for(int i = 0; i < tempget.Length; i++)
+            {
+                allMinimapDots.Add(tempget[i].gameObject);
+            }
+            OperateAllMinimapDots(false);
         }
     }
     private void Update()
@@ -93,6 +107,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (transform.position.y < -35) Die();
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
+        CrosshairNametagDetect();
 
         if(timePassedAfterDamageTaken < 5f) timePassedAfterDamageTaken += Time.deltaTime;
         else
@@ -113,6 +128,13 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             stats.playerMovementEnabled = true;
             stats.mouseMovementEnabled = true;
+        }
+    }
+    public void OperateAllMinimapDots(bool value)
+    {
+        for(int i = 0; i < allMinimapDots.Count; i++)
+        {
+            allMinimapDots[i].SetActive(value);
         }
     }
     public void SetMouseSensitivity(float value)
@@ -153,7 +175,15 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         playerHeadMaterial.color = color;
     }
     #endregion
-    
+    public IEnumerator UseStreakGift(float duration, int cost)
+    {
+        usingStreakGifts = true;
+        OperateAllMinimapDots(true);
+        playerManager.recordKills -= cost;
+        yield return new WaitForSeconds(duration);
+        OperateAllMinimapDots(false);
+        usingStreakGifts = false;
+    }
     private void TakeHitEffect()
     {
 
@@ -177,6 +207,27 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         ui.healthBar.maxValue = stats.healthLimit;
         ui.armorBar.maxValue = stats.armorLimit;
         stats.stress = 0;
+    }
+    private void CrosshairNametagDetect()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(holder.transform.position, holder.transform.forward, out hit, stats.playerNametagDistance))
+        {
+            PhotonView _pv = hit.collider.GetComponent<PhotonView>();
+            if(_pv != null)
+            {
+                ui.nametagIndicatorObject.SetActive(true);
+                ui.nametagIndicator.text = _pv.Owner.NickName;
+            }
+            else
+            {
+                ui.nametagIndicatorObject.SetActive(false);
+            }
+        }
+        else
+        {
+            ui.nametagIndicatorObject.SetActive(false);
+        }
     }
     private void PlayerGUIReference()
     {
@@ -210,10 +261,22 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;
     }
+    public void ToggleNightVision()
+    {
+        if (stats.enableNightVision)
+        {
+            stats.enableNightVision = false;
+        }
+        else
+        {
+            stats.enableNightVision = true;
+        }
+        nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
+    }
     [PunRPC]
     void RPC_SpawnDeathLoot(Vector3 pos, int randomIndex)
     {
-        pos.y += 3f;
+        pos.y += 1.5f;
         Instantiate(playerDeathLoots[randomIndex], pos, transform.rotation);
     }
     [PunRPC]
