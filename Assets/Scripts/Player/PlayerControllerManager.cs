@@ -108,8 +108,18 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
         CrosshairNametagDetect();
+        if (playerManager.recordKills >= 3)
+        {
+            ui.streakBackground.value = Mathf.Lerp(ui.streakBackground.value, 1f, Time.deltaTime * 3);
+            ui.streakHUDAlpha.alpha = Mathf.Lerp(ui.streakHUDAlpha.alpha, 1f, Time.deltaTime * 3);
+        }
+        else
+        {
+            ui.streakBackground.value = Mathf.Lerp(ui.streakBackground.value, 0f, Time.deltaTime * 3);
+            ui.streakHUDAlpha.alpha = Mathf.Lerp(ui.streakHUDAlpha.alpha, 0.2f, Time.deltaTime * 3);
+        }
 
-        if(timePassedAfterDamageTaken < 5f) timePassedAfterDamageTaken += Time.deltaTime;
+        if (timePassedAfterDamageTaken < 5f) timePassedAfterDamageTaken += Time.deltaTime;
         else
         {
             if(stats.health < stats.healthLimit) stats.health += 1f;
@@ -257,6 +267,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         InvokePlayerDeathEffects();
         SpawnDeathLoot();
+        OperateAllMinimapDots(false);
+        usingStreakGifts = false;
         playerManager.Die();
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;

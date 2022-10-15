@@ -591,7 +591,8 @@ MonoBehaviour:
   - {fileID: 796601214760731350, guid: 5bb4a62c581f6e94eba656df7d26e357, type: 3}
   - {fileID: 1795865179717777145, guid: f7650f6819ba4ec4eb210fe4135c55f6, type: 3}
   - {fileID: 7963757370325973555, guid: 7d5df0f7cc8896e4aad2b26b6e7bf843, type: 3}
-  playerMinimapDot: {fileID: 0}
+  usingStreakGifts: 0
+  playerMinimapDot: {fileID: 692699609841304608}
   weaponIndex1: 0
   weaponIndex2: 0
 --- !u!114 &1244489258922964122
@@ -2053,6 +2054,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cross
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010044969688653928, guid: 6065880057579b44fb72d8661f07ef35,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9010044969688653928, guid: 6065880057579b44fb72d8661f07ef35,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

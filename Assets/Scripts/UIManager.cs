@@ -22,24 +22,18 @@ public class UIManager : MonoBehaviour
     [Header("HUD Stats")]
     public Slider healthBar;
     public Slider armorBar;
+    public Slider streakBackground;
     public Text healthText;
     public Text armorText;
     public Text nametagIndicator;
     public QuantityStatsHUD quantityHUD;
     public CanvasGroup healthBarAlpha;
+    public CanvasGroup streakHUDAlpha;
 
     [Space]
     [Header("Inventory")]
     public GameObject inventory;
-
-
-    private const int xpBase = 500;
-    private int xpLimit = 0;
     public float hitmarkerTimePassed = 0;
-    private float hitmarkerTimeLimit = 0;
-
-    private float healthAlphaDuration = 0f;
-    float passedTime = 0f;
 
     public struct ReturnHitmarkerData
     {
