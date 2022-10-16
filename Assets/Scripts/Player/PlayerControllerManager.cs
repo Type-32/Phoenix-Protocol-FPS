@@ -54,7 +54,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     private float timePassedAfterDamageTaken = 5f;
     public bool usingStreakGifts = false;
     public GameObject playerMinimapDot;
-    private List<GameObject> allMinimapDots = new();
+    public List<GameObject> allMinimapDots = new();
 
     [SerializeField] int weaponIndex1;
     [SerializeField] int weaponIndex2;
@@ -80,6 +80,14 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerFeet1.SetActive(false);
             playerFeet2.SetActive(false);
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
+            MinimapDotIdentifier[] tempget;
+            tempget = FindObjectsOfType<MinimapDotIdentifier>();
+            for (int i = 0; i < tempget.Length; i++)
+            {
+                allMinimapDots.Add(tempget[i].gameObject);
+            }
+            OperateAllMinimapDots(false);
+            playerMinimapDot.SetActive(true);
         }
         else
         {
@@ -91,14 +99,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerFeet1.SetActive(true);
             playerFeet2.SetActive(true);
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
-            playerMinimapDot.SetActive(false);
-            MinimapDotIdentifier[] tempget;
-            tempget = FindObjectsOfType<MinimapDotIdentifier>();
-            for(int i = 0; i < tempget.Length; i++)
-            {
-                allMinimapDots.Add(tempget[i].gameObject);
-            }
-            OperateAllMinimapDots(false);
         }
     }
     private void Update()
@@ -144,6 +144,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         for(int i = 0; i < allMinimapDots.Count; i++)
         {
+            if (allMinimapDots[i] == null) return;
             allMinimapDots[i].SetActive(value);
         }
     }
@@ -193,6 +194,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         yield return new WaitForSeconds(duration);
         OperateAllMinimapDots(false);
         usingStreakGifts = false;
+        playerMinimapDot.SetActive(true);
     }
     private void TakeHitEffect()
     {

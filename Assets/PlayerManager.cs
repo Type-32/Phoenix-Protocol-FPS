@@ -502,6 +502,15 @@ public class PlayerManager : MonoBehaviour
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 120);
         InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
+        MinimapDotIdentifier[] tempget;
+        tempget = FindObjectsOfType<MinimapDotIdentifier>();
+        controller.GetComponent<PlayerControllerManager>().allMinimapDots.Clear();
+        for (int i = 0; i < tempget.Length; i++)
+        {
+            controller.GetComponent<PlayerControllerManager>().allMinimapDots.Add(tempget[i].gameObject);
+        }
+        controller.GetComponent<PlayerControllerManager>().OperateAllMinimapDots(false);
+        controller.GetComponent<PlayerControllerManager>().playerMinimapDot.SetActive(true);
         //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
     }
