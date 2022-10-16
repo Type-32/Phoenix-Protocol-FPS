@@ -99,6 +99,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerFeet1.SetActive(true);
             playerFeet2.SetActive(true);
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
+            playerMinimapDot.SetActive(false);
         }
     }
     private void Update()
@@ -139,6 +140,18 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             stats.playerMovementEnabled = true;
             stats.mouseMovementEnabled = true;
         }
+    }
+    public void InitializeAllMinimapDots()
+    {
+        MinimapDotIdentifier[] tempget;
+        allMinimapDots.Clear();
+        tempget = FindObjectsOfType<MinimapDotIdentifier>();
+        for (int i = 0; i < tempget.Length; i++)
+        {
+            allMinimapDots.Add(tempget[i].gameObject);
+        }
+        OperateAllMinimapDots(false);
+        playerMinimapDot.SetActive(true);
     }
     public void OperateAllMinimapDots(bool value)
     {
@@ -188,13 +201,14 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     #endregion
     public IEnumerator UseStreakGift(float duration, int cost)
     {
+        InitializeAllMinimapDots();
         usingStreakGifts = true;
         OperateAllMinimapDots(true);
         playerManager.recordKills -= cost;
         yield return new WaitForSeconds(duration);
         OperateAllMinimapDots(false);
         usingStreakGifts = false;
-        playerMinimapDot.SetActive(true);
+        InitializeAllMinimapDots();
     }
     private void TakeHitEffect()
     {
@@ -352,6 +366,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void InvokeGunEffects()
     {
         //Debug.LogWarning("Invoking Gun Effects RPC...");
+        /*
         if (holder.weaponIndex == 0)
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
@@ -370,8 +385,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         else
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
-        }
-        //pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, pv.ViewID);
+        }*/
+        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, pv.ViewID);
     }
     public void InvokePlayerDeathEffects()
     {
