@@ -57,6 +57,7 @@ public class MaterialSelection : MonoBehaviour
             feetColor = color;
         }
     }
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -67,5 +68,5 @@ public class MaterialSelection : MonoBehaviour
     void Update()
     {
         
-    }
+    }*/
 }
