@@ -56,15 +56,15 @@ public class PlayerControls : MonoBehaviour
     }
     void Update()
     {
-        velocityDebug = player.body.velocity;
-        x = Input.GetAxis("Horizontal");
-        z = Input.GetAxis("Vertical");
         if (!player.pv.IsMine)
         {
             //transform.position = Vector3.Lerp(transform.position, transform.position, 0.1f);
         }
         else
         {
+            velocityDebug = player.body.velocity;
+            x = Input.GetAxis("Horizontal");
+            z = Input.GetAxis("Vertical");
             player.holder.WeaponFunction();
             if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
             Logics();
@@ -172,7 +172,20 @@ public class PlayerControls : MonoBehaviour
     {
         if (Input.GetKeyDown("c"))
         {
-            if (!player.stats.isCrouching)
+            if (player.stats.isSprinting && player.stats.onGround)
+            {
+                if (!player.stats.isSliding)
+                {
+                    player.stats.isSliding = true;
+                }
+                else
+                {
+                    player.stats.isSliding = false;
+                }
+                player.stats.isCrouching = true;
+                //player.stats.onGround = true;
+            }
+            else if (!player.stats.isCrouching)
             {
                 player.stats.isCrouching = true;
                 player.stats.onGround = true;
@@ -181,6 +194,8 @@ public class PlayerControls : MonoBehaviour
             {
                 player.stats.isCrouching = false;
             }
+            player.SynchronizePlayerState(player.stats.isCrouching, 1);
+            player.SynchronizePlayerState(player.stats.isSliding, 2);
         }
     }
     void JumpingLogic()
@@ -197,14 +212,18 @@ public class PlayerControls : MonoBehaviour
         if (Input.GetKey("left shift") && !player.stats.isAiming && !player.stats.isCrouching && Input.GetAxis("Vertical") > 0)
         {
             player.stats.isSprinting = true;
-
         }
-        else { player.stats.isSprinting = false; }
+        else
+        {
+            player.stats.isSprinting = false;
+        }
+        player.SynchronizePlayerState(player.stats.isSprinting, 0);
     }
     void WalkingLogic()
     {
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) { player.stats.isWalking = true; }
         else player.stats.isWalking = false;
+        player.SynchronizePlayerState(player.stats.isWalking, 3);
     }
     #endregion
 

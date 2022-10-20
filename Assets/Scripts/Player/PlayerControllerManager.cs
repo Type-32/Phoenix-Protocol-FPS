@@ -393,6 +393,36 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         //Debug.LogWarning("Invoking PLayer Death Effects RPC...");
         pv.RPC(nameof(RPC_InvokePlayerDeathEffects), RpcTarget.All);
     }
+    public void SynchronizePlayerState(bool value, int stateIndex)
+    {
+        pv.RPC(nameof(RPC_ChangePlayerState), RpcTarget.All);
+    }
+    [PunRPC]
+    public void RPC_ChangePlayerState(bool value, int ind)
+    {
+        /*
+       0. Sprinting
+       1. Crouching
+       2. Sliding
+         */
+        switch (ind)
+        {
+            case 0:
+                stats.isSprinting = value;
+                break;
+            case 1:
+                stats.isCrouching = value;
+                break;
+            case 2:
+                stats.isSliding = value;
+                break;
+            case 3:
+                stats.isWalking = value;
+                break;
+            default:
+                break;
+        }
+    }
     [PunRPC]
     public void RPC_InvokePlayerDeathEffects()
     {
