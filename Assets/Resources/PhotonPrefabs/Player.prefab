@@ -622,6 +622,7 @@ MonoBehaviour:
   speed: 3.3
   sprintSpeed: 5.8
   crouchSpeed: 2.4
+  slideSpeed: 9.5
   jumpForce: 0.7
   gravity: -10
   groundDist: 0.29
@@ -657,6 +658,12 @@ MonoBehaviour:
   totalDealtDamage: 0
   totalAbsorbedDamage: 0
   totalGainedXP: 0
+  originalCenter: {x: 0, y: 0, z: 0}
+  originalRadius: 0
+  originalHeight: 0
+  crouchCenter: {x: 0, y: 0, z: 0}
+  crouchRadius: 0
+  crouchHeight: 0
 --- !u!114 &1783430866537944348
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,7 +20,8 @@ public class PlayerStats : MonoBehaviour
     [Range(0f, 150f)] public float armorLimit = 150f;
     public float speed = 4f;
     public float sprintSpeed = 8f;
-    public float crouchSpeed = 2.8f;
+    public float crouchSpeed = 2.5f;
+    public float slideSpeed = 9.5f;
     [Range(0f, 5f)] public float jumpForce = 2f;
     [Range(-10f, -5f)] public float gravity = -9.81f;
     public float groundDist = 0.4f;
@@ -75,6 +76,23 @@ public class PlayerStats : MonoBehaviour
     public float totalAbsorbedDamage = 0;
     public int totalGainedXP = 0;
 
+    [HideInInspector] public Vector3 originalCenter;
+    [HideInInspector] public float originalRadius;
+    [HideInInspector] public float originalHeight;
+    [HideInInspector] public Vector3 crouchCenter = new Vector3(0f, 0.91f, 0.04f);
+    [HideInInspector] public float crouchRadius = 0.32f;
+    [HideInInspector] public float crouchHeight = 1.05f;
+
+    private void Awake()
+    {
+        originalCenter = player.body.center;
+        originalRadius = player.body.radius;
+        originalHeight = player.body.height;
+
+        player.capsuleCollider.center = originalCenter;
+        player.capsuleCollider.radius = originalRadius;
+        player.capsuleCollider.height = originalHeight;
+    }
     private void Update()
     {
         if (!player.pv.IsMine) return;

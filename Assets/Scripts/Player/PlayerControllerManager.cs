@@ -141,6 +141,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             stats.mouseMovementEnabled = true;
         }
     }
+    public void ChangePlayerHitbox(Vector3 center, float radius, float height)
+    {
+        pv.RPC(nameof(RPC_ChangePlayerHitbox), RpcTarget.All, center, radius, height);
+    }
     public void InitializeAllMinimapDots()
     {
         MinimapDotIdentifier[] tempget;
@@ -300,6 +304,13 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             stats.enableNightVision = true;
         }
         nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
+    }
+    [PunRPC]
+    void RPC_ChangePlayerHitbox(Vector3 center, float radius, float height)
+    {
+        body.center = capsuleCollider.center = center;
+        body.radius = capsuleCollider.radius = radius;
+        body.height = capsuleCollider.height = height;
     }
     [PunRPC]
     void RPC_SpawnDeathLoot(Vector3 pos, int randomIndex)

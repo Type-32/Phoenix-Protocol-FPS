@@ -108,13 +108,11 @@ public class PlayerControls : MonoBehaviour
     }
     void Movement()
     {
-        if(player.stats.onGround) speedValve = player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
+        if(player.stats.onGround) speedValve = player.stats.isSliding ? player.stats.slideSpeed : player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
         if (player.stats.playerMovementEnabled)
         {
             playerInput = player.transform.right * x + transform.forward * z;
-            //smoothedPlayerInput = Vector3.SmoothDamp(smoothedPlayerInput, playerInput * speedValve * Time.deltaTime, ref smoothMoveVelocity, smoothTime);
             player.body.Move(playerInput * speedValve * Time.deltaTime);
-            //player.body.velocity = MoveVec;
         }
         if (player.stats.onGround && player.stats.isJumping) velocity.y = Mathf.Sqrt(player.stats.jumpForce * -2f * player.stats.gravity);
         player.capsuleCollider.height = player.stats.isCrouching ? capsuleColliderCrouchHeight : capsuleColliderInitHeight;
@@ -176,13 +174,12 @@ public class PlayerControls : MonoBehaviour
             {
                 if (!player.stats.isSliding)
                 {
-                    player.stats.isSliding = true;
+                    StartCoroutine(ActivateSlide());
                 }
                 else
                 {
-                    player.stats.isSliding = false;
+                    StartCoroutine(ActivateSlide());
                 }
-                player.stats.isCrouching = true;
                 //player.stats.onGround = true;
             }
             else if (!player.stats.isCrouching)
@@ -197,6 +194,8 @@ public class PlayerControls : MonoBehaviour
             player.SynchronizePlayerState(player.stats.isCrouching, 1);
             player.SynchronizePlayerState(player.stats.isSliding, 2);
         }
+        if (player.stats.isCrouching || player.stats.isSliding) player.ChangePlayerHitbox(player.stats.crouchCenter, player.stats.crouchRadius, player.stats.crouchHeight);
+        else player.ChangePlayerHitbox(player.stats.originalCenter, player.stats.originalRadius, player.stats.originalHeight);
     }
     void JumpingLogic()
     {
@@ -226,7 +225,18 @@ public class PlayerControls : MonoBehaviour
         player.SynchronizePlayerState(player.stats.isWalking, 3);
     }
     #endregion
-
+    IEnumerator ActivateSlide()
+    {
+        if (player.stats.isSliding)
+        {
+            player.stats.isSliding = false;
+            yield return null;
+        }
+        player.stats.isCrouching = true;
+        player.stats.isSliding = true;
+        yield return new WaitForSeconds(1.1f);
+        player.stats.isSliding = false;
+    }
     Transform nullTransform;
     [PunRPC]
     void RPC_InteractWithPickup(Vector3 playerPos, Quaternion playerRot, Vector3 playerForward)
