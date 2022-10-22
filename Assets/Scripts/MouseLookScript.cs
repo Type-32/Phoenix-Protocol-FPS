@@ -36,6 +36,7 @@ public class MouseLookScript : MonoBehaviour
             mouseY = 0f;
             regularSensitivity = mouseSensitivityValve;
             aimingSensitivity = mouseSensitivityValve / 1.3f;
+            temp = new Vector3(transform.localPosition.x, 1.461f, transform.localPosition.z);
         }
     }
     public void ResetAimingSensitivity(float sensitivity)
@@ -48,17 +49,22 @@ public class MouseLookScript : MonoBehaviour
         playerMainCamera.fieldOfView = fov;
         player.stats.cameraFieldOfView = fov;
     }
+    Vector3 temp;
     void Update()
     {
-        if (!player.pv.IsMine) return;
+        if (!player.pv.IsMine)
+        {
+            if (player.stats.isCrouching) transform.localPosition = new Vector3(transform.localPosition.x, 1.1f, transform.localPosition.z);
+            else transform.localPosition = new Vector3(transform.localPosition.x, 1.461f, transform.localPosition.z);
+            return;
+        }
         CameraInput();
         CameraMovement();
-        if (player.stats.isCrouching) transform.localPosition = new Vector3(transform.localPosition.x, 1.1f, transform.localPosition.z);
-        else transform.localPosition = new Vector3(transform.localPosition.x, 1.461f, transform.localPosition.z);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, temp, Time.deltaTime * 8);
     }
     public void SetPlayerVerticalPosition(float value)
     {
-        transform.localPosition = new Vector3(transform.localPosition.x, value, transform.localPosition.z);
+        temp = new Vector3(transform.localPosition.x, value, transform.localPosition.z);
     }
     void CameraInput()
     {

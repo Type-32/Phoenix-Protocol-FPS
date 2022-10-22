@@ -33,6 +33,7 @@ public class GunCoreFunc : MonoBehaviour
         SightFOVInitialize();
         FiremodeInitialize();
         timePassedUntillNextShot = gun.stats.boltRecoveryDuration;
+        gun.stats.autoReload = true;
     }
     void SightFOVInitialize()
     {
@@ -90,14 +91,8 @@ public class GunCoreFunc : MonoBehaviour
     }
     public void ReloadMechanics()
     {
-        if (!gun.stats.autoReload)
-        {
-            if (Input.GetKeyDown("r") && !gun.stats.isReloading) StartCoroutine(Reload());
-        }
-        else
-        {
-            if (gun.stats.ammo <= 0 && !gun.stats.isReloading) StartCoroutine(Reload());
-        }
+        if (Input.GetKeyDown("r") && !gun.stats.isReloading) StartCoroutine(Reload());
+        if (gun.stats.ammo <= 0 && !gun.stats.isReloading) StartCoroutine(Reload());
     }
     private void RequestShootServerRpc(float range, float damage)
     {

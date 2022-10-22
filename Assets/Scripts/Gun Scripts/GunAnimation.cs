@@ -50,9 +50,11 @@ public class GunAnimation : MonoBehaviour
 
     public float aimBobAmount = 0.015f;
     public float walkBobAmount = 0.1f;
+    public float crouchBobAmount = 0.02f;
     public float sprintBobAmount = 0.15f;
     public float aimBobSpeed = 8f;
     public float walkBobSpeed = 14f;
+    public float crouchBobSpeed = 7f;
     public float sprintBobSpeed = 20f;
     public float returnDuration = 5f;
 
@@ -184,7 +186,7 @@ public class GunAnimation : MonoBehaviour
         {
             //defaultXPos + Mathf.Cos(timer) * (player.stats.isSprinting ? sprintBobAmount : walkBobAmount)
             timer += Time.deltaTime * (gun.player.stats.isSprinting ? sprintBobSpeed : gun.stats.isAiming ? aimBobSpeed : walkBobSpeed);
-            gunModel.transform.localPosition = new Vector3(Mathf.Lerp(gunModel.transform.localPosition.x, defaultXPos + Mathf.Cos(timer/2) * (gun.player.stats.isSprinting ? sprintBobAmount : gun.stats.isAiming ? aimBobAmount : walkBobAmount), Time.deltaTime * 8), Mathf.Lerp(gunModel.transform.localPosition.y, defaultYPos + Mathf.Sin(timer) * (gun.player.stats.isSprinting ? sprintBobAmount : gun.stats.isAiming ? aimBobAmount : walkBobAmount), Time.deltaTime * 8), gunModel.transform.localPosition.z);
+            gunModel.transform.localPosition = new Vector3(Mathf.Lerp(gunModel.transform.localPosition.x, defaultXPos + Mathf.Cos(timer/2) * (gun.player.stats.isSprinting ? sprintBobAmount : gun.stats.isAiming ? aimBobAmount : gun.player.stats.isCrouching ? crouchBobAmount : walkBobAmount), Time.deltaTime * 8), Mathf.Lerp(gunModel.transform.localPosition.y, defaultYPos + Mathf.Sin(timer) * (gun.player.stats.isSprinting ? sprintBobAmount : gun.stats.isAiming ? aimBobAmount : gun.player.stats.isCrouching ? crouchBobAmount : walkBobAmount), Time.deltaTime * 8), gunModel.transform.localPosition.z);
         }
     }
 }
