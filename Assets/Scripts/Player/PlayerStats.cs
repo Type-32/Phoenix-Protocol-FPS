@@ -92,6 +92,10 @@ public class PlayerStats : MonoBehaviour
         player.capsuleCollider.center = originalCenter;
         player.capsuleCollider.radius = originalRadius;
         player.capsuleCollider.height = originalHeight;
+
+        crouchCenter = new Vector3(0f, 0.91f, 0.04f);
+        crouchRadius = 0.32f;
+        crouchHeight = 1.05f;
     }
     private void Update()
     {

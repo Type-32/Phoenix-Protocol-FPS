@@ -406,7 +406,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void SynchronizePlayerState(bool value, int stateIndex)
     {
-        pv.RPC(nameof(RPC_ChangePlayerState), RpcTarget.All);
+        pv.RPC(nameof(RPC_ChangePlayerState), RpcTarget.All, value, stateIndex);
     }
     [PunRPC]
     public void RPC_ChangePlayerState(bool value, int ind)

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Bobbing : MonoBehaviour
 {
+    public float crouchBobAmount = 0.1f;
     public float walkBobAmount = 0.1f;
     public float sprintBobAmount = 0.15f;
+    public float crouchBobSpeed = 10f;
     public float walkBobSpeed = 14f;
     public float sprintBobSpeed = 16f;
     public float returnDuration = 5f;

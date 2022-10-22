@@ -621,8 +621,8 @@ MonoBehaviour:
   armorLimit: 150
   speed: 3.3
   sprintSpeed: 5.8
-  crouchSpeed: 2.4
-  slideSpeed: 9.5
+  crouchSpeed: 2
+  slideSpeed: 10
   jumpForce: 0.7
   gravity: -10
   groundDist: 0.29
@@ -683,6 +683,7 @@ MonoBehaviour:
   aimingMouseSensitivity: 0
   velocity: {x: 0, y: 0, z: 0}
   smoothTime: 1.5
+  slideTime: 0
   velocityDebug: {x: 0, y: 0, z: 0}
 --- !u!143 &8054581112490276648
 CharacterController:
@@ -826,8 +827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ebb6852c0b04af390d143003b964b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  animator: {fileID: 0}
+  player: {fileID: 7939240843359642470}
+  animator: {fileID: 1836123336799776065}
 --- !u!1 &5269136817220969897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,8 +1832,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6489b5fd2c8d4be489221d2a45436dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crouchBobAmount: 0.02
   walkBobAmount: 0.025
   sprintBobAmount: 0.06
+  crouchBobSpeed: 9
   walkBobSpeed: 13
   sprintBobSpeed: 17
   returnDuration: 3

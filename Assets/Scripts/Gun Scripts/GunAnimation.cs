@@ -111,6 +111,7 @@ public class GunAnimation : MonoBehaviour
         animate.SetBool("isSprinting", gun.stats.isSprinting);
         animate.SetBool("isAiming", gun.stats.isAiming);
         animate.SetBool("isReloading", gun.stats.isReloading);
+        animate.SetBool("isSliding", gun.player.stats.isSliding);
         if (gun.stats.isAiming)
         {
             gun.attachment.CheckEnabledSightAimingPosition(gun.player.holder.weaponIndex);

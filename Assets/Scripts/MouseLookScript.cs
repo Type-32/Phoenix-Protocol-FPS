@@ -53,6 +53,12 @@ public class MouseLookScript : MonoBehaviour
         if (!player.pv.IsMine) return;
         CameraInput();
         CameraMovement();
+        if (player.stats.isCrouching) transform.localPosition = new Vector3(transform.localPosition.x, 1.1f, transform.localPosition.z);
+        else transform.localPosition = new Vector3(transform.localPosition.x, 1.461f, transform.localPosition.z);
+    }
+    public void SetPlayerVerticalPosition(float value)
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, value, transform.localPosition.z);
     }
     void CameraInput()
     {

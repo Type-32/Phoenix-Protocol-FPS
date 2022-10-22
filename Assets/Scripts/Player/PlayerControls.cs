@@ -27,6 +27,8 @@ public class PlayerControls : MonoBehaviour
     float x,z;
     Vector3 posTemp;
     Quaternion rotTemp;
+    [HideInInspector] public float slideTime = 0f;
+    float slideValveSpeed;
 
     [Space]
     [SerializeField] Vector3 velocityDebug;
@@ -34,6 +36,7 @@ public class PlayerControls : MonoBehaviour
     {
         normalFOV = player.stats.cameraFieldOfView;
         sprintFOV = player.stats.sprintFOVMultiplier * player.stats.cameraFieldOfView;
+        //slideTime = 0.7f;
     }
     private void Start()
     {
@@ -67,6 +70,13 @@ public class PlayerControls : MonoBehaviour
             z = Input.GetAxis("Vertical");
             player.holder.WeaponFunction();
             if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
+            if (slideTime <= 0f) player.stats.isSliding = false;
+            else player.stats.isSliding = true;
+            if (slideTime > 0f)
+            {
+                slideValveSpeed = Mathf.Lerp(slideValveSpeed, player.stats.speed, Time.deltaTime * 1.5f);
+                slideTime -= Time.deltaTime;
+            }
             Logics();
             GroundCheck();
             Gravity();
@@ -108,7 +118,7 @@ public class PlayerControls : MonoBehaviour
     }
     void Movement()
     {
-        if(player.stats.onGround) speedValve = player.stats.isSliding ? player.stats.slideSpeed : player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
+        if(player.stats.onGround) speedValve = player.stats.isSliding ? slideValveSpeed : player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
         if (player.stats.playerMovementEnabled)
         {
             playerInput = player.transform.right * x + transform.forward * z;
@@ -168,19 +178,19 @@ public class PlayerControls : MonoBehaviour
     }
     void CrouchingLogic()
     {
-        if (Input.GetKeyDown("c"))
+        if (Input.GetKeyDown("c") && player.stats.onGround)
         {
-            if (player.stats.isSprinting && player.stats.onGround)
+            if (player.stats.isSliding)
+            {
+                ActivateSlide();
+                //player.stats.onGround = true;
+            }
+            else if (player.stats.isSprinting && player.stats.onGround)
             {
                 if (!player.stats.isSliding)
                 {
-                    StartCoroutine(ActivateSlide());
+                    ActivateSlide();
                 }
-                else
-                {
-                    StartCoroutine(ActivateSlide());
-                }
-                //player.stats.onGround = true;
             }
             else if (!player.stats.isCrouching)
             {
@@ -196,6 +206,8 @@ public class PlayerControls : MonoBehaviour
         }
         if (player.stats.isCrouching || player.stats.isSliding) player.ChangePlayerHitbox(player.stats.crouchCenter, player.stats.crouchRadius, player.stats.crouchHeight);
         else player.ChangePlayerHitbox(player.stats.originalCenter, player.stats.originalRadius, player.stats.originalHeight);
+        player.fpsCam.SetPlayerVerticalPosition(player.stats.isCrouching ? 1.1f : 1.461f);
+        player.stats.onGround = true;
     }
     void JumpingLogic()
     {
@@ -208,7 +220,7 @@ public class PlayerControls : MonoBehaviour
     }
     void SprintingLogic()
     {
-        if (Input.GetKey("left shift") && !player.stats.isAiming && !player.stats.isCrouching && Input.GetAxis("Vertical") > 0)
+        if (Input.GetKey("left shift") && !player.stats.isAiming && !player.stats.isCrouching && Input.GetAxis("Vertical") > 0 && !player.stats.isSliding)
         {
             player.stats.isSprinting = true;
         }
@@ -225,17 +237,19 @@ public class PlayerControls : MonoBehaviour
         player.SynchronizePlayerState(player.stats.isWalking, 3);
     }
     #endregion
-    IEnumerator ActivateSlide()
+    void ActivateSlide()
     {
         if (player.stats.isSliding)
         {
-            player.stats.isSliding = false;
-            yield return null;
+            slideTime = 0f;
+            player.stats.isCrouching = false;
+            slideValveSpeed = player.stats.slideSpeed;
+            return;
         }
         player.stats.isCrouching = true;
-        player.stats.isSliding = true;
-        yield return new WaitForSeconds(1.1f);
-        player.stats.isSliding = false;
+        slideTime = 0.7f;
+        slideValveSpeed = player.stats.slideSpeed;
+        return;
     }
     Transform nullTransform;
     [PunRPC]
