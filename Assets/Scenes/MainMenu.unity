@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 0d233c67f1531ad4f99f05e83d8b288e,
+    type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: bcfe2823b0b164647933923160dfa868,
     type: 2}
 --- !u!196 &4
@@ -449,6 +450,7 @@ GameObject:
   - component: {fileID: 21476265}
   - component: {fileID: 21476264}
   - component: {fileID: 21476263}
+  - component: {fileID: 21476267}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -542,6 +544,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 21476267}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1395783784}
         m_TargetAssemblyTypeName: MainMenuUIManager, Assembly-CSharp
         m_MethodName: OpenSettingsMenu
@@ -604,6 +618,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21476261}
   m_CullTransparentMesh: 1
+--- !u!82 &21476267
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21476261}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a6f00ff0890e16f4c801b2b9e1d48b97, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.99432373
+      value: 0.9416809
+      inSlope: -1.002004
+      outSlope: -1.002004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.87535477
+      value: 1.0125008
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &26062854
 GameObject:
   m_ObjectHideFlags: 0
@@ -4697,7 +4807,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Version V0.3.1.dev
+  m_Text: Game Version V0.3.2.dev
 --- !u!222 &427481499
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7912,6 +8022,7 @@ GameObject:
   - component: {fileID: 651652746}
   - component: {fileID: 651652745}
   - component: {fileID: 651652744}
+  - component: {fileID: 651652749}
   m_Layer: 5
   m_Name: MultiplayerMenuButton
   m_TagString: Untagged
@@ -8020,6 +8131,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 651652749}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1395783784}
         m_TargetAssemblyTypeName: MainMenuUIManager, Assembly-CSharp
         m_MethodName: OpenMultiplayerMenu
@@ -8082,6 +8205,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651652742}
   m_CullTransparentMesh: 1
+--- !u!82 &651652749
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651652742}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a6f00ff0890e16f4c801b2b9e1d48b97, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.99432373
+      value: 0.9416809
+      inSlope: -1.002004
+      outSlope: -1.002004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.87535477
+      value: 1.0125008
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &656926197
 GameObject:
   m_ObjectHideFlags: 0
@@ -8370,6 +8589,7 @@ GameObject:
   - component: {fileID: 710477652}
   - component: {fileID: 710477651}
   - component: {fileID: 710477653}
+  - component: {fileID: 710477654}
   m_Layer: 5
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8468,6 +8688,14 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!81 &710477654
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710477649}
+  m_Enabled: 1
 --- !u!1 &710650520
 GameObject:
   m_ObjectHideFlags: 0
@@ -8561,6 +8789,7 @@ GameObject:
   - component: {fileID: 719901220}
   - component: {fileID: 719901219}
   - component: {fileID: 719901218}
+  - component: {fileID: 719901222}
   m_Layer: 5
   m_Name: QuitGame
   m_TagString: Untagged
@@ -8654,6 +8883,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 719901222}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1395783785}
         m_TargetAssemblyTypeName: Launcher, Assembly-CSharp
         m_MethodName: QuitApplication
@@ -8704,6 +8945,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719901216}
   m_CullTransparentMesh: 1
+--- !u!82 &719901222
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719901216}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a6f00ff0890e16f4c801b2b9e1d48b97, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.99432373
+      value: 0.9416809
+      inSlope: -1.002004
+      outSlope: -1.002004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.87535477
+      value: 1.0125008
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &719988920
 GameObject:
   m_ObjectHideFlags: 0
@@ -9266,6 +9603,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 755469628}
+        m_TargetAssemblyTypeName: LoadoutSelectionScript, Assembly-CSharp
+        m_MethodName: WriteLoadoutDataToJSON
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1395783784}
         m_TargetAssemblyTypeName: MainMenuUIManager, Assembly-CSharp
         m_MethodName: OpenMultiplayerMenu
@@ -10689,6 +11038,154 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b95d96d7f9b81c4190d357a3d24e11e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emptyLoadoutDataJSON:
+    SelectedSlot: 0
+    Slots:
+    - SlotName: Custom Loadout 1
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+    - SlotName: 
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+    - SlotName: 
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+    - SlotName: 
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+    - SlotName: 
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+    - SlotName: 
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+    - SlotName: 
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+    - SlotName: 
+      EquippedByDefault: 0
+      Weapon1: 0
+      Weapon2: 0
+      Equipment1: 0
+      Equipment2: 0
+      WA_Sight1: 0
+      WA_Sight2: 0
+      WA_Barrel1: 0
+      WA_Barrel2: 0
+      WA_Underbarrel1: 0
+      WA_Underbarrel2: 0
+      WA_Rightbarrel1: 0
+      WA_Rightbarrel2: 0
+      WA_Leftbarrel1: 0
+      WA_Leftbarrel2: 0
+  emptyLoadoutSlotDataJSON:
+    SlotName: Custom Loadout
+    EquippedByDefault: 0
+    Weapon1: 0
+    Weapon2: 1
+    Equipment1: 0
+    Equipment2: 0
+    WA_Sight1: -1
+    WA_Sight2: -1
+    WA_Barrel1: -1
+    WA_Barrel2: -1
+    WA_Underbarrel1: -1
+    WA_Underbarrel2: -1
+    WA_Rightbarrel1: -1
+    WA_Rightbarrel2: -1
+    WA_Leftbarrel1: -1
+    WA_Leftbarrel2: -1
   allWeaponDatas:
   - {fileID: 11400000, guid: 9a03a34708b70e14e9d9dc4148a0153b, type: 2}
   - {fileID: 11400000, guid: ee51d33405e4e57459c89e32666c30ce, type: 2}
@@ -10731,6 +11228,7 @@ MonoBehaviour:
   allLogDatas:
   - {fileID: 11400000, guid: a0b196405379ba34cae277347b576ad0, type: 2}
   - {fileID: 11400000, guid: 583b763727fb3cb4fb1688fef47f0442, type: 2}
+  loadoutSelectionScript: {fileID: 755469628}
 --- !u!4 &851938315
 Transform:
   m_ObjectHideFlags: 0
@@ -11010,7 +11508,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Version V0.3.1.dev
+  m_Text: Game Version V0.3.2.dev
 --- !u!222 &899640138
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14297,6 +14795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1096422007}
+  - component: {fileID: 1096422008}
   m_Layer: 0
   m_Name: PlayerModel
   m_TagString: Untagged
@@ -14323,6 +14822,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 194.686, z: 0}
+--- !u!95 &1096422008
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096422006}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ecc567530653e7c49ac779a91ecbb95d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1096747349
 GameObject:
   m_ObjectHideFlags: 0
@@ -19889,7 +20408,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Version V0.3.1.dev
+  m_Text: Game Version V0.3.2.dev
 --- !u!222 &1453541663
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20666,6 +21185,7 @@ GameObject:
   - component: {fileID: 1507839638}
   - component: {fileID: 1507839637}
   - component: {fileID: 1507839636}
+  - component: {fileID: 1507839641}
   m_Layer: 5
   m_Name: SingleplayerMenuButton
   m_TagString: Untagged
@@ -20812,6 +21332,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1507839634}
   m_CullTransparentMesh: 1
+--- !u!82 &1507839641
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507839634}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a6f00ff0890e16f4c801b2b9e1d48b97, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.99432373
+      value: 0.9416809
+      inSlope: -1.002004
+      outSlope: -1.002004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.87535477
+      value: 1.0125008
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1529321975
 GameObject:
   m_ObjectHideFlags: 0
@@ -21889,6 +22505,7 @@ GameObject:
   - component: {fileID: 1582245608}
   - component: {fileID: 1582245607}
   - component: {fileID: 1582245606}
+  - component: {fileID: 1582245611}
   m_Layer: 5
   m_Name: UpdateLogsMenuButton
   m_TagString: Untagged
@@ -21997,6 +22614,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1582245611}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1395783784}
         m_TargetAssemblyTypeName: MainMenuUIManager, Assembly-CSharp
         m_MethodName: OpenUpdateLogsMenu
@@ -22059,6 +22688,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1582245604}
   m_CullTransparentMesh: 1
+--- !u!82 &1582245611
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582245604}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a6f00ff0890e16f4c801b2b9e1d48b97, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.99432373
+      value: 0.9416809
+      inSlope: -1.002004
+      outSlope: -1.002004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.87535477
+      value: 1.0125008
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1583002658
 GameObject:
   m_ObjectHideFlags: 0
@@ -23359,7 +24084,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Multiplayer Version V0.3.1.dev
+  m_Text: Multiplayer Version V0.3.2.dev
 --- !u!222 &1681023741
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23788,7 +24513,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Multiplayer Version V0.3.1.dev
+  m_Text: Multiplayer Version V0.3.2.dev
 --- !u!222 &1697758516
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24007,7 +24732,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Multiplayer Version V0.3.1.dev
+  m_Text: Multiplayer Version V0.3.2.dev
 --- !u!222 &1732846816
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -9,6 +9,6 @@ public class DeathMenuController : MonoBehaviour
     public GameObject loadoutDeathIndicator;
     public DeathCamLookScript deathCam;
     public bool playerIsDead = false;
-    private int maxRespawnDelay = 3;
+    //private int maxRespawnDelay = 3;
     public int respawnDelay;
 }

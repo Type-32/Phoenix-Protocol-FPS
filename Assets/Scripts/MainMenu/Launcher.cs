@@ -186,10 +186,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Hashtable temp = new Hashtable();
         //PhotonNetwork.LocalPlayer.CustomProperties = new Hashtable();
-        int selectedMainWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[PlayerPrefs.GetInt("selectedLoadoutIndex")].weaponData[0]);
-        int selectedSecondWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[PlayerPrefs.GetInt("selectedLoadoutIndex")].weaponData[1]);
-        Debug.LogWarning(selectedMainWeaponIndex);
-        Debug.LogWarning(selectedSecondWeaponIndex);
+        int selectedMainWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[0]);
+        int selectedSecondWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1]);
+        //Debug.LogWarning(selectedMainWeaponIndex);
+        //Debug.LogWarning(selectedSecondWeaponIndex);
         temp.Add("selectedMainWeaponIndex", selectedMainWeaponIndex);
         temp.Add("selectedSecondWeaponIndex", selectedSecondWeaponIndex);
 

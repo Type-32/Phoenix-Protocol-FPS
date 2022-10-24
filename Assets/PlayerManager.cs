@@ -23,6 +23,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] Button respawnButton;
     public LoadoutSlotHolder slotHolderScript;
     public ChoiceHolderScript choiceHolderScript;
+    public AudioListener audioListener;
     [SerializeField] bool hasRespawned = false;
     [SerializeField] bool respawning = false;
     [SerializeField] float temp;
@@ -78,7 +79,7 @@ public class PlayerManager : MonoBehaviour
 
     int selectedSPIndex = 0;
     Vector3 tempVelocity;
-    float fov = 60f;
+    //float fov = 60f;
     private Color randomPlayerColor;
 
     public WeaponData FindWeaponDataFromIndex(int index)
@@ -130,6 +131,8 @@ public class PlayerManager : MonoBehaviour
             //CreateController();
             OnJoiningOngoingRoom();
             randomPlayerColor = Random.ColorHSV();
+            OpenMenu();
+            CloseMenu();
         }
         //if (!pv.IsMine) return;
         openedInventory = false;
@@ -163,6 +166,7 @@ public class PlayerManager : MonoBehaviour
     }
     void CreateController()
     {
+        audioListener.enabled = false;
         respawning = true;
         respawnButton.interactable = false;
         respawnUI.redeployButton.interactable = true;
@@ -189,6 +193,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void Die()
     {
+        audioListener.enabled = true;
         streakKills = 0;
         cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
         respawning = true;

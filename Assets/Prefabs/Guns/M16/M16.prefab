@@ -461,10 +461,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 5
-  MaxDistance: 10
+  MinDistance: 1
+  MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -683,9 +683,11 @@ MonoBehaviour:
   rotationZ: 1
   aimBobAmount: 0.005
   walkBobAmount: 0.05
+  crouchBobAmount: 0.02
   sprintBobAmount: 0.1
   aimBobSpeed: 7
   walkBobSpeed: 13
+  crouchBobSpeed: 7
   sprintBobSpeed: 20
   returnDuration: 5
 --- !u!114 &6142865428349537592

@@ -61,8 +61,6 @@ public class GunAnimation : MonoBehaviour
     private float defaultYPos = 0f;
     private float defaultXPos = 0f;
     private float timer;
-
-    private float xPosDelay = 0f;
     /*
     private void Start()
     {

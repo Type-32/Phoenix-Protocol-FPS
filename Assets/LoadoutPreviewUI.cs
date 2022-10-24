@@ -49,6 +49,7 @@ public class LoadoutPreviewUI : MonoBehaviour
             buttons[index <= 1 ? index : 0].gameObject.SetActive(false);
             loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = null;
         }
+        loadoutSelection.WriteLoadoutDataToJSON();
     }
     public void SetPreviewInfo(LoadoutData data)
     {

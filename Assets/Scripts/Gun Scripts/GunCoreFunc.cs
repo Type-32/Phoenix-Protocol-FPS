@@ -92,7 +92,7 @@ public class GunCoreFunc : MonoBehaviour
     public void ReloadMechanics()
     {
         if (Input.GetKeyDown("r") && !gun.stats.isReloading) StartCoroutine(Reload());
-        if (gun.stats.ammo <= 0 && !gun.stats.isReloading) StartCoroutine(Reload());
+        if (gun.stats.ammo <= 0 && gun.stats.ammoPool > 0 && !gun.stats.isReloading) StartCoroutine(Reload());
     }
     private void RequestShootServerRpc(float range, float damage)
     {

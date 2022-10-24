@@ -48,7 +48,6 @@ public class LoadoutWeaponSelectionItem : MonoBehaviour
         loadoutSelection.EnablePreview();
         loadoutSelection.DisableWeaponSelection();
         loadoutSelection.OpenLoadoutButtonsVisual();
-        loadoutSelection.SetLoadoutDataToPreferences();
         Launcher.Instance.SetLoadoutValuesToPlayer();
     }
 
