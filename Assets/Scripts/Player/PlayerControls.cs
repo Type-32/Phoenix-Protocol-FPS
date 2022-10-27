@@ -202,7 +202,7 @@ public class PlayerControls : MonoBehaviour
                 player.stats.isCrouching = false;
             }
             player.SynchronizePlayerState(player.stats.isCrouching, 1);
-            player.SynchronizePlayerState(player.stats.isSliding, 2);
+            //player.SynchronizePlayerState(player.stats.isSliding, 2);
         }
         if (player.stats.isCrouching || player.stats.isSliding) player.ChangePlayerHitbox(player.stats.crouchCenter, player.stats.crouchRadius, player.stats.crouchHeight);
         else player.ChangePlayerHitbox(player.stats.originalCenter, player.stats.originalRadius, player.stats.originalHeight);
@@ -244,11 +244,13 @@ public class PlayerControls : MonoBehaviour
             slideTime = 0f;
             player.stats.isCrouching = false;
             slideValveSpeed = player.stats.slideSpeed;
+            player.SynchronizePlayerState(false, 2);
             return;
         }
         player.stats.isCrouching = true;
         slideTime = 0.7f;
         slideValveSpeed = player.stats.slideSpeed;
+        player.SynchronizePlayerState(true, 2);
         return;
     }
     Transform nullTransform;
