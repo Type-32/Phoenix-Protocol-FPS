@@ -73,6 +73,10 @@ public class SettingsMenu : MonoBehaviour
     Resolution[] resolutions;
     private void Awake()
     {
+        SettingsMenuAwakeFunction();
+    }
+    public void SettingsMenuAwakeFunction()
+    {
         volumeSlider.minValue = -80;
         volumeSlider.maxValue = 0;
         sensitivitySlider.minValue = 0f;
@@ -83,11 +87,11 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.ClearOptions();
         List<string> resOptions = new List<string>();
         int currentResIndex = 0;
-        for(int i = 0;i < resolutions.Length; i++)
+        for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRate;
             resOptions.Add(option);
-            if(resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
             {
                 currentResIndex = i;
             }

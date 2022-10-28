@@ -202,7 +202,7 @@ public class PlayerControls : MonoBehaviour
                 player.stats.isCrouching = false;
             }
             player.SynchronizePlayerState(player.stats.isCrouching, 1);
-            //player.SynchronizePlayerState(player.stats.isSliding, 2);
+            player.SynchronizePlayerState(player.stats.isSliding, 2);
         }
         if (player.stats.isCrouching || player.stats.isSliding) player.ChangePlayerHitbox(player.stats.crouchCenter, player.stats.crouchRadius, player.stats.crouchHeight);
         else player.ChangePlayerHitbox(player.stats.originalCenter, player.stats.originalRadius, player.stats.originalHeight);
@@ -228,13 +228,22 @@ public class PlayerControls : MonoBehaviour
         {
             player.stats.isSprinting = false;
         }
-        player.SynchronizePlayerState(player.stats.isSprinting, 0);
+        if(Input.GetKeyDown("left shift"))
+        {
+            player.SynchronizePlayerState(player.stats.isSprinting, 0);
+        }else if(Input.GetKeyUp("left shift"))
+        {
+            player.SynchronizePlayerState(player.stats.isSprinting, 0);
+        }
     }
     void WalkingLogic()
     {
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) { player.stats.isWalking = true; }
         else player.stats.isWalking = false;
-        player.SynchronizePlayerState(player.stats.isWalking, 3);
+        if (Input.GetKeyDown("w") || Input.GetKeyUp("w")) player.SynchronizePlayerState(player.stats.isWalking, 3);
+        if (Input.GetKeyDown("a") || Input.GetKeyUp("a")) player.SynchronizePlayerState(player.stats.isWalking, 3);
+        if (Input.GetKeyDown("s") || Input.GetKeyUp("s")) player.SynchronizePlayerState(player.stats.isWalking, 3);
+        if (Input.GetKeyDown("d") || Input.GetKeyUp("d")) player.SynchronizePlayerState(player.stats.isWalking, 3);
     }
     #endregion
     void ActivateSlide()

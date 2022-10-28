@@ -81,6 +81,7 @@ public class PlayerManager : MonoBehaviour
     Vector3 tempVelocity;
     //float fov = 60f;
     private Color randomPlayerColor;
+    public RoomManager roomManager;
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
@@ -94,6 +95,7 @@ public class PlayerManager : MonoBehaviour
     {
         pv = GetComponent<PhotonView>();
         spawnpointCamera = FindObjectOfType<SpawnpointCamera>();
+        roomManager = FindObjectOfType<RoomManager>();
         if (pv.IsMine)
         {
             
@@ -123,6 +125,12 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            settingsMenu.SettingsMenuAwakeFunction();
+            settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
+            settingsMenu.SetQuality(PlayerPrefs.GetInt("Quality Index"));
+            settingsMenu.SetResolution(PlayerPrefs.GetInt("Resolution Index"));
+            settingsMenu.SetFieldOfView(PlayerPrefs.GetFloat("Field Of View"));
+            settingsMenu.SetFullscreen(PlayerPrefs.GetInt("Fullscreen Enabled") == 1 ? true : false);
             //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
             //Debug.Log(selectedMainWeaponIndex);
             //Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
@@ -131,8 +139,6 @@ public class PlayerManager : MonoBehaviour
             //CreateController();
             OnJoiningOngoingRoom();
             randomPlayerColor = Random.ColorHSV();
-            OpenMenu();
-            CloseMenu();
         }
         //if (!pv.IsMine) return;
         openedInventory = false;
@@ -190,6 +196,15 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
         controller.GetComponent<PlayerStats>().SetPlayerFOV(PlayerPrefs.GetFloat("Field Of View"));
         controller.GetComponent<PlayerControllerManager>().SetBodyMaterialColor(randomPlayerColor);
+        if (controller != null)
+        {
+            controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
+            settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
+            settingsMenu.SetQuality(PlayerPrefs.GetInt("Quality Index"));
+            settingsMenu.SetResolution(PlayerPrefs.GetInt("Resolution Index"));
+            settingsMenu.SetFieldOfView(PlayerPrefs.GetFloat("Field Of View"));
+            settingsMenu.SetFullscreen(PlayerPrefs.GetInt("Fullscreen Enabled") == 1 ? true : false);
+        }
     }
     public void Die()
     {
@@ -269,9 +284,20 @@ public class PlayerManager : MonoBehaviour
         //while (PhotonNetwork.IsConnected)
         while (PhotonNetwork.InRoom)
             yield return null;
+        roomManager.SelfDestruction();
         SceneManager.LoadScene(0);
-        MainMenuUIManager.instance.OpenLoadingMenu();
         MainMenuUIManager.instance.CloseMainMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseFindRoomMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        //MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MainMenuUIManager.instance.CloseRoomMenu();
+        MainMenuUIManager.instance.CloseSettingsMenu();
+        MainMenuUIManager.instance.CloseUpdateLogsMenu();
+        MainMenuUIManager.instance.CloseCreateRoomMenu();
+        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+        MainMenuUIManager.instance.CloseCosmeticsMenu();
+        Debug.Log("Loaded Scene from Player Manager");
     }
     private void Update()
     {
@@ -441,6 +467,10 @@ public class PlayerManager : MonoBehaviour
         {
             controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
             settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
+            settingsMenu.SetQuality(PlayerPrefs.GetInt("Quality Index"));
+            settingsMenu.SetResolution(PlayerPrefs.GetInt("Resolution Index"));
+            settingsMenu.SetFieldOfView(PlayerPrefs.GetInt("Field Of View"));
+            settingsMenu.SetFullscreen(PlayerPrefs.GetInt("Fullscreen Enabled") == 1 ? true : false);
         }
         //if (!pv.IsMine) return;
         //Debug.Log("Toggled Settings Menu ");

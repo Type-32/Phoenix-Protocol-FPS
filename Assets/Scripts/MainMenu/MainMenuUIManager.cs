@@ -83,6 +83,7 @@ public class MainMenuUIManager : MonoBehaviour
     }
     void Start()
     {
+        Debug.Log("Loaded Scene from Main Menu");
         JoiningMasterLobby(false);
         SetCreateRoomInputField(true);
         SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");

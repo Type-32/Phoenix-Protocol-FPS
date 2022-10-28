@@ -45,14 +45,36 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            MainMenuUIManager.instance.CloseCosmeticsMenu();
-            MainMenuUIManager.instance.CloseCreateRoomMenu();
-            MainMenuUIManager.instance.CloseMainMenu();
-            MainMenuUIManager.instance.CloseRoomMenu();
-            MainMenuUIManager.instance.CloseSettingsMenu();
-            MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
-            MainMenuUIManager.instance.CloseLoadingMenu();
-            MainMenuUIManager.instance.OpenMultiplayerMenu();
+            CloseAllMenus();
         }
+    }
+    public void CloseAllMenus()
+    {
+        MainMenuUIManager.instance.CloseMainMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseFindRoomMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MainMenuUIManager.instance.CloseRoomMenu();
+        MainMenuUIManager.instance.CloseSettingsMenu();
+        MainMenuUIManager.instance.CloseUpdateLogsMenu();
+        MainMenuUIManager.instance.CloseCreateRoomMenu();
+        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+        MainMenuUIManager.instance.CloseCosmeticsMenu();
+        //MainMenuUIManager.instance.OpenMultiplayerMenu();
+        //CloseMainMenuDelayed(0.5f);
+        Debug.Log("Loaded Scene from Room Manager");
+    }
+    public IEnumerator CloseMainMenuDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        MainMenuUIManager.instance.CloseMainMenu();
+    }
+    public void SelfDestruction()
+    {
+        RoomManager temp = Instantiate(gameObject).GetComponent<RoomManager>();
+        //temp.CloseAllMenus();
+        //StartCoroutine(temp.CloseMainMenuDelayed(0.2f));
+        Destroy(gameObject);
     }
 }

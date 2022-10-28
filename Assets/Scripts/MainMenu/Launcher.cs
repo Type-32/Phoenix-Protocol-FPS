@@ -114,9 +114,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("Disconnected from Room");
-        MainMenuUIManager.instance.CloseRoomMenu();
+        MainMenuUIManager.instance.CloseMainMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
         MainMenuUIManager.instance.CloseFindRoomMenu();
         MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MainMenuUIManager.instance.CloseRoomMenu();
+        MainMenuUIManager.instance.CloseSettingsMenu();
+        MainMenuUIManager.instance.CloseUpdateLogsMenu();
+        MainMenuUIManager.instance.CloseCreateRoomMenu();
+        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+        MainMenuUIManager.instance.CloseCosmeticsMenu();
         MainMenuUIManager.instance.OpenMultiplayerMenu();
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
