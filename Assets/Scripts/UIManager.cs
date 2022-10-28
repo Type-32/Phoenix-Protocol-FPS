@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -17,6 +18,8 @@ public class UIManager : MonoBehaviour
     public GameObject crosshair;
     public GameObject interactionIndicator;
     public GameObject nametagIndicatorObject;
+    public Transform hurtIndicatorHolder;
+    public GameObject hurtIndicatorPrefab;
 
     [Space]
     [Header("HUD Stats")]
@@ -34,6 +37,36 @@ public class UIManager : MonoBehaviour
     [Header("Inventory")]
     public GameObject inventory;
     public float hitmarkerTimePassed = 0;
+    public static Action<Transform> CreateIndicator = delegate { };
+    public static Func<Transform, bool> CheckIfObjectInSight = null;
+    private Dictionary<Transform, HurtIndicatorBehavior> Indicators = new Dictionary<Transform, HurtIndicatorBehavior>();
+
+    private void OnEnable()
+    {
+        CreateIndicator += Create;
+        CheckIfObjectInSight += InSight;
+    }
+    private void OnDisable()
+    {
+        CreateIndicator -= Create;
+        CheckIfObjectInSight -= InSight;
+    }
+    void Create(Transform target)
+    {
+        if (Indicators.ContainsKey(target))
+        {
+            Indicators[target].Restart();
+            return;
+        }
+        HurtIndicatorBehavior newIndicator = Instantiate(hurtIndicatorPrefab, hurtIndicatorHolder).GetComponent<HurtIndicatorBehavior>();
+        newIndicator.RegisterData(target, player.transform, new Action( () => { Indicators.Remove(target); }));
+        Indicators.Add(target, newIndicator);
+    }
+    bool InSight(Transform t)
+    {
+        Vector3 screenpoint = player.fpsCam.playerMainCamera.WorldToViewportPoint(t.position);
+        return screenpoint.z > 0 && screenpoint.x > 0 && screenpoint.x < 1 && screenpoint.y > 0 && screenpoint.y < 1;
+    }
 
     public struct ReturnHitmarkerData
     {

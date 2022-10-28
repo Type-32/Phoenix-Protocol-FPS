@@ -29,6 +29,7 @@ public class PlayerControls : MonoBehaviour
     Quaternion rotTemp;
     [HideInInspector] public float slideTime = 0f;
     float slideValveSpeed;
+    bool hadSlide = true;
 
     [Space]
     [SerializeField] Vector3 velocityDebug;
@@ -45,6 +46,7 @@ public class PlayerControls : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
             return;
         }
+        hadSlide = true;
         posTemp = transform.position;
         rotTemp = transform.rotation;
         mouseLook = player.fpsCam.GetComponent<MouseLookScript>();
@@ -69,9 +71,20 @@ public class PlayerControls : MonoBehaviour
             x = Input.GetAxis("Horizontal");
             z = Input.GetAxis("Vertical");
             player.holder.WeaponFunction();
-            if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
-            if (slideTime <= 0f) player.stats.isSliding = false;
-            else player.stats.isSliding = true;
+            //if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
+            if (slideTime <= 0f)
+            {
+                player.stats.isSliding = false;
+                if (!hadSlide)
+                {
+                    player.SynchronizePlayerState(player.stats.isSliding, 2);
+                    hadSlide = true;
+                }
+            }
+            else
+            { 
+                player.stats.isSliding = true;
+            }
             if (slideTime > 0f)
             {
                 slideValveSpeed = Mathf.Lerp(slideValveSpeed, player.stats.speed, Time.deltaTime * 1.5f);
@@ -150,7 +163,7 @@ public class PlayerControls : MonoBehaviour
         if (Input.GetKeyDown("f")) InteractWithPickup();
         if (Input.GetKeyDown("n")) player.ToggleNightVision();
         if (Input.GetKeyDown("g") && player.playerManager.recordKills >= 3 && !player.usingStreakGifts) StartCoroutine(player.UseStreakGift(5f, 3));
-        if (Input.GetKeyDown("k")) player.TakeDamage(100f, true);
+        if (Input.GetKeyDown("k")) player.TakeDamage(100f, true, transform);
     }
     void Logics()
     {
@@ -260,6 +273,7 @@ public class PlayerControls : MonoBehaviour
         slideTime = 0.7f;
         slideValveSpeed = player.stats.slideSpeed;
         player.SynchronizePlayerState(true, 2);
+        hadSlide = false;
         return;
     }
     Transform nullTransform;

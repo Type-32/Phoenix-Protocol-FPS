@@ -58,6 +58,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             for (int i = 0; i < obj2.Length; i++) Destroy(obj2[i].gameObject);
             Destroy(weaponSlots[0].gun.handsVisual);
             Destroy(weaponSlots[1].gun.handsVisual);
+            weaponSlots[0].gun.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+            weaponSlots[1].gun.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
         }
         if (player.pv.IsMine)
         {

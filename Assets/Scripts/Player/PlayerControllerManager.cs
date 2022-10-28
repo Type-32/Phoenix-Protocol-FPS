@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Photon.Pun;
@@ -35,6 +36,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public Recoil recoilScript;
     public Transform groundCheck;
     public GameObject playerDeathEffect;
+    //public Camera cameraView;
 
     [Space]
     [Header("Ground Masks")]
@@ -171,11 +173,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         controls.aimingMouseSensitivity = stats.mouseSensitivity * 0.8f;
     }
 
-    public bool TakeDamage(float amount, bool bypassArmor)
+    public bool TakeDamage(float amount, bool bypassArmor, Transform present)
     {
         bool tempflag = false;
         stats.health -= amount;
-        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor);
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor, present);
         /*
         if (stats.health <= 0)//Lag compensation here for visual player death lag, but it didn't work
         {
@@ -278,7 +280,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         if (playerDeathLoots.Count > 0)
         {
-            int randomIndex = Random.Range(0, playerDeathLoots.Count - 1);
+            int randomIndex = UnityEngine.Random.Range(0, playerDeathLoots.Count - 1);
             pv.RPC(nameof(RPC_SpawnDeathLoot), RpcTarget.All, transform.position, randomIndex);
         }
     }
@@ -318,11 +320,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         pos.y += 1.5f;
         Instantiate(playerDeathLoots[randomIndex], pos, transform.rotation);
     }
+    Transform tempTransform;
     [PunRPC]
-    void RPC_TakeDamage(float amount, bool bypassArmor, PhotonMessageInfo info)
+    void RPC_TakeDamage(float amount, bool bypassArmor, Transform present, PhotonMessageInfo info)
     {
         Debug.Log("Took Damage " + amount + " from " + info.Sender.NickName + " using " + ((int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]).ToString());
-
+        UIManager.CreateIndicator(present);
         //Core Take Damage Functions
         recoilScript.RecoilFire(0.4f, 0.8f, 4, 0.12f, 0, 5, 12, 5, 12);
         if (bypassArmor)
