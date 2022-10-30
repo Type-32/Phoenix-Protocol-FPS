@@ -39,6 +39,11 @@ public class PlayerControls : MonoBehaviour
         sprintFOV = player.stats.sprintFOVMultiplier * player.stats.cameraFieldOfView;
         //slideTime = 0.7f;
     }
+    public void SetNewFOV(float value)
+    {
+        normalFOV = value;
+        sprintFOV = player.stats.sprintFOVMultiplier * value;
+    }
     private void Start()
     {
         if (!player.pv.IsMine)
@@ -163,7 +168,7 @@ public class PlayerControls : MonoBehaviour
         if (Input.GetKeyDown("f")) InteractWithPickup();
         if (Input.GetKeyDown("n")) player.ToggleNightVision();
         if (Input.GetKeyDown("g") && player.playerManager.recordKills >= 3 && !player.usingStreakGifts) StartCoroutine(player.UseStreakGift(5f, 3));
-        if (Input.GetKeyDown("k")) player.TakeDamage(100f, true, transform);
+        if (Input.GetKeyDown("k")) player.TakeDamage(100f, true, transform.position, transform.rotation);
     }
     void Logics()
     {

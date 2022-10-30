@@ -6,6 +6,7 @@ public class GlobalDatabase : MonoBehaviour
 {
     public LoadoutDataJSON emptyLoadoutDataJSON;
     public LoadoutSlotDataJSON emptyLoadoutSlotDataJSON;
+    public SettingsOptionsJSON emptySettingsOptionsJSON;
     public List<WeaponData> allWeaponDatas = new();
     public List<WeaponAppearanceData> allWeaponAppearanceDatas = new();
     public List<WeaponAttachmentData> allWeaponAttachmentDatas = new();

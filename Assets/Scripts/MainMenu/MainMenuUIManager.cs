@@ -30,6 +30,8 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Text connectionIndicator;
     [SerializeField] private Text invalidInputField;
     [SerializeField] private Text roomTitle;
+    [SerializeField] private Text findRoomIndicator;
+    [SerializeField] private InputField findRoomInputField;
     public InputField playerNameInputField;
 
     [Space]
@@ -56,10 +58,12 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private int roomMapSelectionIndex;
     [SerializeField] private Gamemodes selectedGamemodes = Gamemodes.FFA;
     [SerializeField] private int maxPlayerCount = 8;
+    [SerializeField] private bool roomVisibility = true;
 
     [Header("Room Visual")]
     [SerializeField] Text maxPlayers;
     [SerializeField] Text gamemodes;
+    [SerializeField] Text visibility;
 
     [Header("Room Preview")]
     [SerializeField] Text selectedRoomName;
@@ -225,6 +229,18 @@ public class MainMenuUIManager : MonoBehaviour
             OpenFindRoomMenu();
         }
     }
+    public void SetFindRoomText(string text)
+    {
+        findRoomIndicator.text = text;
+    }
+    public string GetFindRoomText()
+    {
+        return findRoomIndicator.text;
+    }
+    public int GetRoomCodeInputField()
+    {
+        return int.Parse(findRoomInputField.text);
+    }
     #endregion
 
     #region Loading Menus
@@ -383,19 +399,18 @@ public class MainMenuUIManager : MonoBehaviour
     #endregion
 
     #region Room Creation
-    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer, int mapIndex)
+    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer, int mapIndex, bool roomVisibility)
     {
+        Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
-        long roomCode = Random.Range(10000000, 99999999);
-        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "roomMode", "roomCode", "roomMapIndex" }; //Expose values to main lobby
+        int roomCode = Random.Range(10000000, 99999999);
+        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "roomMode", "roomMapIndex", "roomVisibility", "roomCode" }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add("roomName", roomName);
         roomOptions.CustomRoomProperties.Add("roomHostName", roomHostName);
         roomOptions.CustomRoomProperties.Add("mapInfoIndex", mapInfoIndex);
         roomOptions.CustomRoomProperties.Add("maxPlayer", maxPlayer);
-        roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
-        roomOptions.CustomRoomProperties.Add("roomMapIndex", mapIndex);
         switch (roomGamemodes)
         {
             case Gamemodes.FFA:
@@ -411,14 +426,42 @@ public class MainMenuUIManager : MonoBehaviour
                 roomOptions.CustomRoomProperties.Add("roomMode", "Drop Zones");
                 break;
         }
+        roomOptions.CustomRoomProperties.Add("roomMapIndex", mapIndex);
+        roomOptions.CustomRoomProperties.Add("roomVisibility", roomVisibility);
+        roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
         roomOptions.MaxPlayers = (byte)maxPlayer;
+
+        /*
+        hash.Add("roomName", roomName);
+        hash.Add("roomHostName", roomHostName);
+        hash.Add("mapInfoIndex", mapInfoIndex);
+        hash.Add("maxPlayer", maxPlayer);
+        switch (roomGamemodes)
+        {
+            case Gamemodes.FFA:
+                hash.Add("roomMode", "Free For All");
+                break;
+            case Gamemodes.TDM:
+                hash.Add("roomMode", "Team Deathmatch");
+                break;
+            case Gamemodes.KOTH:
+                hash.Add("roomMode", "King of the Hills");
+                break;
+            case Gamemodes.DZ:
+                hash.Add("roomMode", "Drop Zones");
+                break;
+        }
+        hash.Add("roomMapIndex", mapIndex);
+        hash.Add("roomVisibility", roomVisibility);
+        hash.Add("roomCode", roomCode);
+        roomOptions.CustomRoomProperties = hash;*/
         return roomOptions;
     }
     public RoomOptions GetGeneratedRoomOptions()
     {
         RoomOptions roomOptionsTemp = new RoomOptions();
         roomOptionsTemp.CustomRoomProperties = new Hashtable();
-        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex);
+        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility);
         return roomOptionsTemp;
     }
     public void OnCreateRoomInputSubmit(string roomInput)
@@ -453,7 +496,11 @@ public class MainMenuUIManager : MonoBehaviour
     {
         selectedMaxPlayers.text = "Max Players: " + maxPlayersInput.ToString();
     }
-
+    public void OnChangedVisibility(bool visible)
+    {
+        if (visible) visibility.text = "Public";
+        else visibility.text = "Private";
+    }
 
     public void DecreasePlayerCount()
     {
@@ -519,5 +566,13 @@ public class MainMenuUIManager : MonoBehaviour
         }
         OnSelectedGamemode(selectedGamemodes);
     }
+
+    public void ToggleVisibilitySelect()
+    {
+        if (roomVisibility) roomVisibility = false;
+        else roomVisibility = true;
+        OnChangedVisibility(roomVisibility);
+    }
     #endregion
+
 }

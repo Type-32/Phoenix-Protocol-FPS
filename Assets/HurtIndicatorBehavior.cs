@@ -9,56 +9,73 @@ public class HurtIndicatorBehavior : MonoBehaviour
     public UIManager manager;
     public CanvasGroup localCanvasGroup;
 
-    private float maxTimer = 8f;
-    private float timer = 6f;
+    private float maxTimer = 6f;
+    private float timer = 5f;
 
     private RectTransform rectTrans;
+    protected RectTransform Rect
+    {
+        get
+        {
+            if(rectTrans == null)
+            {
+                rectTrans = GetComponent<RectTransform>();
+                if(rectTrans == null)
+                {
+                    rectTrans = gameObject.AddComponent<RectTransform>();
+                }
+            }
+            return rectTrans;
+        }
+    }
 
     private Action unReg = null;
-    private IEnumerator cooldown;
+    private IEnumerator IE_cooldown = null;
 
-    private Transform target;
-    private Transform player;
+    private UIManager.ValueTransform target;
+    private Transform player = null;
 
-    public Vector3 targetPos = Vector3.zero;
-    public Quaternion targetRot = Quaternion.identity;
+    private Vector3 targetPos = Vector3.zero;
+    private Quaternion targetRot = Quaternion.identity;
     void Awake()
     {
         manager = GetComponentInParent<UIManager>();
+        //rectTrans = GetComponent<RectTransform>();
     }
-    public void RegisterData(Transform target, Transform player, Action unRegister)
+    public void RegisterData(UIManager.ValueTransform target, Transform player, Action unRegister)
     {
         this.target = target;
         this.player = player;
-        this.unReg = unRegister;
+        unReg = unRegister;
         StartCoroutine(RotateToTarget());
         StartTimer();
     }
     private void StartTimer()
     {
-        if(cooldown != null)
+        if(IE_cooldown != null)
         {
-            StopCoroutine(cooldown);
+            StopCoroutine(IE_cooldown);
         }
-        cooldown = Countdown();
-        StartCoroutine(cooldown);
+        IE_cooldown = Countdown();
+        StartCoroutine(IE_cooldown);
     }
     IEnumerator RotateToTarget()
     {
         while (enabled)
         {
-            if (target)
-            {
+            //if (target)
+            //{
                 targetPos = target.position;
                 targetRot = target.rotation;
-            }
+            //}
             Vector3 dir = player.position - targetPos;
             targetRot = Quaternion.LookRotation(dir);
-            targetRot.z = targetRot.y;
-            targetRot.x = targetRot.y = 0;
+            targetRot.z = -targetRot.y;
+            targetRot.x = 0;
+            targetRot.y = 0;
 
             Vector3 northDir = new Vector3(0, 0, player.eulerAngles.y);
-            rectTrans.localRotation = targetRot * Quaternion.Euler(northDir);
+            Rect.localRotation = targetRot * Quaternion.Euler(northDir);
 
             yield return null;
         }

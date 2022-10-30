@@ -173,11 +173,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         controls.aimingMouseSensitivity = stats.mouseSensitivity * 0.8f;
     }
 
-    public bool TakeDamage(float amount, bool bypassArmor, Transform present)
+    public bool TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot)
     {
         bool tempflag = false;
         stats.health -= amount;
-        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor, present);
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor, targetPos, targetRot);
         /*
         if (stats.health <= 0)//Lag compensation here for visual player death lag, but it didn't work
         {
@@ -322,10 +322,17 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     Transform tempTransform;
     [PunRPC]
-    void RPC_TakeDamage(float amount, bool bypassArmor, Transform present, PhotonMessageInfo info)
+    void RPC_TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot, PhotonMessageInfo info)
     {
         Debug.Log("Took Damage " + amount + " from " + info.Sender.NickName + " using " + ((int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]).ToString());
-        UIManager.CreateIndicator(present);
+        //tempTransform.position = transform.position;
+        //tempTransform.rotation = transform.rotation;
+        //tempTransform.position = targetPos;
+        //tempTransform.rotation = targetRot;
+        UIManager.ValueTransform tmp;
+        tmp.position = targetPos;
+        tmp.rotation = targetRot;
+        UIManager.CreateIndicator(tmp);
         //Core Take Damage Functions
         recoilScript.RecoilFire(0.4f, 0.8f, 4, 0.12f, 0, 5, 12, 5, 12);
         if (bypassArmor)

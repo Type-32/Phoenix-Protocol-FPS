@@ -58,19 +58,29 @@ public class LoadoutSelectionScript : MonoBehaviour
         DisableWeaponSelection();
         //MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
     }
+    public int FindGlobalWeaponIndex(WeaponData data)
+    {
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        {
+            if (GlobalDatabase.singleton.allWeaponDatas[i] == data) return i;
+        }
+        return -1;
+    }
     public void WriteLoadoutDataToJSON()
     {
         LoadoutDataJSON data = new();
         data = GlobalDatabase.singleton.emptyLoadoutDataJSON;
-
         data.SelectedSlot = selectedLoadoutIndex;
+        //string json = JsonUtility.ToJson(data, true);
+        //File.WriteAllText(Application.persistentDataPath + "/LoadoutDataConfig.json", json);
+
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
             //data.Slots[i] = GlobalDatabase.singleton.emptyLoadoutSlotDataJSON;
             //data.Slots[i].WeaponData1 = loadoutDataList[i].weaponData[0];
             //data.Slots[i].WeaponData2 = loadoutDataList[i].weaponData[1];
-            data.Slots[i].Weapon1 = Launcher.Instance.FindGlobalWeaponIndex(loadoutDataList[i].weaponData[0]);
-            data.Slots[i].Weapon2 = Launcher.Instance.FindGlobalWeaponIndex(loadoutDataList[i].weaponData[1]);
+            data.Slots[i].Weapon1 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[0]);
+            data.Slots[i].Weapon2 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[1]);
             data.Slots[i].WA_Sight1 = loadoutDataList[i].selectedSightIndex[0];
             data.Slots[i].WA_Sight2 = loadoutDataList[i].selectedSightIndex[1];
             data.Slots[i].WA_Barrel1 = loadoutDataList[i].selectedBarrelIndex[0];
@@ -84,13 +94,13 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Application.dataPath + "/LoadoutDataConfig.json", json);
+        File.WriteAllText(Application.persistentDataPath + "/LoadoutDataConfig.json", json);
         Debug.LogWarning("Writing Loadout Data To Files...");
     }
     public void ReadLoadoutDataFromJSON()
     {
-        if (!File.Exists(Application.dataPath + "/LoadoutDataConfig.json")) WriteLoadoutDataToJSON();
-        string json = File.ReadAllText(Application.dataPath + "/LoadoutDataConfig.json");
+        if (!File.Exists(Application.persistentDataPath + "/LoadoutDataConfig.json")) WriteLoadoutDataToJSON();
+        string json = File.ReadAllText(Application.persistentDataPath + "/LoadoutDataConfig.json");
         Debug.LogWarning("Reading Loadout Data To Files...");
         LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
         selectedLoadoutIndex = jsonData.SelectedSlot;

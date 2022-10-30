@@ -8,6 +8,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+    public List<RoomInfo> rl = new List<RoomInfo>();
+    [Space]
     public static Launcher Instance;
     public List<MapItemInfo> mapItemInfo = new List<MapItemInfo>();
     [SerializeField] private Transform roomListContent;
@@ -15,12 +17,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private Transform playerListContent;
     [SerializeField] private GameObject playerListItemPrefab;
     [SerializeField] private GameObject startGameButton;
+    [SerializeField] private Text roomCodeText;
     public LoadoutSelectionScript loadoutSelection;
     public string startKey = "103274803";
     // Start is called before the first frame update
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        MainMenuUIManager.instance.SetFindRoomText("");
     }
     private void Awake()
     {
@@ -85,6 +89,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         PhotonNetwork.CurrentRoom.SetCustomProperties(MainMenuUIManager.instance.GetGeneratedRoomOptions().CustomRoomProperties);
+        if ((bool)MainMenuUIManager.instance.GetGeneratedRoomOptions().CustomRoomProperties["roomVisibility"])
+        {
+            PhotonNetwork.CurrentRoom.IsVisible = true;
+        }
+        else
+        {
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+        }
     }
     public override void OnJoinedRoom()
     {
@@ -106,6 +118,9 @@ public class Launcher : MonoBehaviourPunCallbacks
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
         }
         startGameButton.SetActive(CheckIfStartAllowed());
+        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"]);
+        int tmp = (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"];
+        roomCodeText.text = (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"] ? "" : ("Room Code: " + tmp.ToString());
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
@@ -129,15 +144,37 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        foreach(Transform trans in roomListContent)
+        //rl = roomList;
+        foreach (Transform trans in roomListContent)
         {
             Destroy(trans.gameObject);
         }
-        for(int i = 0;i < roomList.Count; i++)
+        for(int i = 0; i < roomList.Count; i++)
         {
-            if (roomList[i].RemovedFromList) continue;
+            rl.Add(roomList[i]);
+            if (roomList[i].RemovedFromList)
+            {
+                //rl.Add(roomList[i]);
+                continue;
+            }
             Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
+        Debug.Log(rl.Count);
+    }
+    
+    public void FindRoomThroughCode()
+    {
+        int code = MainMenuUIManager.instance.GetRoomCodeInputField();
+        for (int i = 0; i < rl.Count; i++)
+        {
+            if((int)rl[i].CustomProperties["roomCode"] == code)
+            {
+                MainMenuUIManager.instance.SetFindRoomText("");
+                JoinRoom(rl[i]);
+                return;
+            }
+        }
+        MainMenuUIManager.instance.SetFindRoomText("Room with Code " + code + " Not Found.");
     }
     public void JoinRoom(RoomInfo info)
     {

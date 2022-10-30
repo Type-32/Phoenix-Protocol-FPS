@@ -82,6 +82,7 @@ public class PlayerManager : MonoBehaviour
     //float fov = 60f;
     private Color randomPlayerColor;
     public RoomManager roomManager;
+    public CurrentMatchManager cmm;
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
@@ -96,14 +97,18 @@ public class PlayerManager : MonoBehaviour
         pv = GetComponent<PhotonView>();
         spawnpointCamera = FindObjectOfType<SpawnpointCamera>();
         roomManager = FindObjectOfType<RoomManager>();
+        cmm = FindObjectOfType<CurrentMatchManager>();
         if (pv.IsMine)
         {
-            
+            cmm.AddPlayer(this);
         }
         else
         {
+            cmm.AddPlayer(this);
             cameraObject.gameObject.SetActive(false);
         }
+        settingsMenu.SettingsMenuAwakeFunction();
+        ToggleSettingsMenu(true);
         ToggleSettingsMenu(false);
     }
     // Start is called before the first frame update
@@ -125,12 +130,8 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
-            settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
-            settingsMenu.SetQuality(PlayerPrefs.GetInt("Quality Index"));
-            settingsMenu.SetResolution(PlayerPrefs.GetInt("Resolution Index"));
-            settingsMenu.SetFieldOfView(PlayerPrefs.GetFloat("Field Of View"));
-            settingsMenu.SetFullscreen(PlayerPrefs.GetInt("Fullscreen Enabled") == 1 ? true : false);
             //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
             //Debug.Log(selectedMainWeaponIndex);
             //Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
@@ -157,7 +158,7 @@ public class PlayerManager : MonoBehaviour
 
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
-        respawnCountdown = 6;
+        respawnCountdown = 5;
         hasRespawned = false;
         temp = 0;
         returnTemp = 0f;
@@ -192,19 +193,14 @@ public class PlayerManager : MonoBehaviour
         deathGUICanvas.alpha = 0f;
         deathGUICanvas.gameObject.SetActive(false);
 
+        settingsMenu.SettingsMenuAwakeFunction();
         //Player Related Settings
-        controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
-        controller.GetComponent<PlayerStats>().SetPlayerFOV(PlayerPrefs.GetFloat("Field Of View"));
+        string json = File.ReadAllText(Application.persistentDataPath + "/SettingsOptions.json");
+        SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
+
+        controller.GetComponent<PlayerStats>().SetPlayerSensitivity(jsonData.MouseSensitivity);
+        controller.GetComponent<PlayerStats>().SetPlayerFOV(jsonData.FieldOfView);
         controller.GetComponent<PlayerControllerManager>().SetBodyMaterialColor(randomPlayerColor);
-        if (controller != null)
-        {
-            controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
-            settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
-            settingsMenu.SetQuality(PlayerPrefs.GetInt("Quality Index"));
-            settingsMenu.SetResolution(PlayerPrefs.GetInt("Resolution Index"));
-            settingsMenu.SetFieldOfView(PlayerPrefs.GetFloat("Field Of View"));
-            settingsMenu.SetFullscreen(PlayerPrefs.GetInt("Fullscreen Enabled") == 1 ? true : false);
-        }
     }
     public void Die()
     {
@@ -228,7 +224,7 @@ public class PlayerManager : MonoBehaviour
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
-        respawnCountdown = 6;
+        respawnCountdown = 5;
         hasRespawned = false;
         temp = 0;
         returnTemp = 0f;
@@ -285,6 +281,7 @@ public class PlayerManager : MonoBehaviour
         while (PhotonNetwork.InRoom)
             yield return null;
         roomManager.SelfDestruction();
+        cmm.RemovePlayer(this);
         SceneManager.LoadScene(0);
         MainMenuUIManager.instance.CloseMainMenu();
         MainMenuUIManager.instance.CloseLoadingMenu();
@@ -463,18 +460,39 @@ public class PlayerManager : MonoBehaviour
     }
     public void ToggleSettingsMenu(bool value)
     {
-        if(controller != null)
+        if (!value)
         {
-            controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
-            settingsMenu.SetVolume(PlayerPrefs.GetFloat("Master Volume"));
-            settingsMenu.SetQuality(PlayerPrefs.GetInt("Quality Index"));
-            settingsMenu.SetResolution(PlayerPrefs.GetInt("Resolution Index"));
-            settingsMenu.SetFieldOfView(PlayerPrefs.GetInt("Field Of View"));
-            settingsMenu.SetFullscreen(PlayerPrefs.GetInt("Fullscreen Enabled") == 1 ? true : false);
+            SettingsOptionsJSON data = new SettingsOptionsJSON();
+            data.Volume = settingsMenu.volumeSlider.value;
+            data.FieldOfView = settingsMenu.fieldOfViewSlider.value;
+            data.Fullscreen = settingsMenu.fullscreenToggle.isOn;
+            data.MouseSensitivity = settingsMenu.sensitivitySlider.value;
+            data.QualityIndex = settingsMenu.qualityDropdown.value;
+            data.ResolutionIndex = settingsMenu.resolutionDropdown.value;
+
+            Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
+            string json = JsonUtility.ToJson(data, true);
+            File.WriteAllText(Application.persistentDataPath + "/SettingsOptions.json", json);
+            Debug.LogWarning("Writing Settings Options To Files...");
         }
-        //if (!pv.IsMine) return;
-        //Debug.Log("Toggled Settings Menu ");
-        //Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
+        else
+        {
+            if (!File.Exists(Application.persistentDataPath + "/SettingsOptions.json")) settingsMenu.WriteSettingsOptionsToJSON();
+            string json = File.ReadAllText(Application.persistentDataPath + "/SettingsOptions.json");
+            Debug.LogWarning("Reading Settings Options To Files...");
+            SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
+            settingsMenu.SetFieldOfView(jsonData.FieldOfView);
+            settingsMenu.SetVolume(jsonData.Volume);
+            settingsMenu.SetFullscreen(jsonData.Fullscreen);
+            settingsMenu.SetSensitivity(jsonData.MouseSensitivity);
+            settingsMenu.SetQuality(jsonData.QualityIndex);
+            settingsMenu.SetResolution(jsonData.ResolutionIndex);
+            if (controller != null)
+            {
+                controller.GetComponent<PlayerStats>().SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
+                controller.GetComponent<PlayerStats>().SetPlayerFOV(jsonData.FieldOfView);
+            }
+        }
         openedSettingsSection = value;
         settingsMenu.gameObject.SetActive(value);
 
@@ -546,6 +564,7 @@ public class PlayerManager : MonoBehaviour
         }
         controller.GetComponent<PlayerControllerManager>().OperateAllMinimapDots(false);
         controller.GetComponent<PlayerControllerManager>().playerMinimapDot.SetActive(true);
+        cmm.OnPlayerKillUpdate();
         //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
     }

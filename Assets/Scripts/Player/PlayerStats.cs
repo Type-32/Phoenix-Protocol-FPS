@@ -116,5 +116,6 @@ public class PlayerStats : MonoBehaviour
     public void SetPlayerFOV(float fov)
     {
         player.fpsCam.SetPlayerFOV(fov);
+        player.controls.SetNewFOV(fov);
     }
 }

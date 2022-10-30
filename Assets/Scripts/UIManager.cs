@@ -37,10 +37,15 @@ public class UIManager : MonoBehaviour
     [Header("Inventory")]
     public GameObject inventory;
     public float hitmarkerTimePassed = 0;
-    public static Action<Transform> CreateIndicator = delegate { };
-    public static Func<Transform, bool> CheckIfObjectInSight = null;
-    private Dictionary<Transform, HurtIndicatorBehavior> Indicators = new Dictionary<Transform, HurtIndicatorBehavior>();
 
+    public static Action<ValueTransform> CreateIndicator = delegate { };
+    public static Func<ValueTransform, bool> CheckIfObjectInSight = null;
+    private Dictionary<ValueTransform, HurtIndicatorBehavior> Indicators = new();
+    public struct ValueTransform
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+    }
     private void OnEnable()
     {
         CreateIndicator += Create;
@@ -51,7 +56,7 @@ public class UIManager : MonoBehaviour
         CreateIndicator -= Create;
         CheckIfObjectInSight -= InSight;
     }
-    void Create(Transform target)
+    void Create(ValueTransform target)
     {
         if (Indicators.ContainsKey(target))
         {
@@ -62,7 +67,7 @@ public class UIManager : MonoBehaviour
         newIndicator.RegisterData(target, player.transform, new Action( () => { Indicators.Remove(target); }));
         Indicators.Add(target, newIndicator);
     }
-    bool InSight(Transform t)
+    bool InSight(ValueTransform t)
     {
         Vector3 screenpoint = player.fpsCam.playerMainCamera.WorldToViewportPoint(t.position);
         return screenpoint.z > 0 && screenpoint.x > 0 && screenpoint.x < 1 && screenpoint.y > 0 && screenpoint.y < 1;

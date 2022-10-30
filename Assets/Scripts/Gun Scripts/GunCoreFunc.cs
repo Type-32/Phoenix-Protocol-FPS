@@ -223,7 +223,7 @@ public class GunCoreFunc : MonoBehaviour
             if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
             {
                 bool hitmarkerFlag = false;
-                hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, transform);
+                hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation);
                 if (!hitmarkerFlag)
                 {
                     gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
