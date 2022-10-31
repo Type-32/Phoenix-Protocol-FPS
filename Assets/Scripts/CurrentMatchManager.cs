@@ -19,6 +19,7 @@ public class CurrentMatchManager : MonoBehaviourPun
     [Space]
     [Header("FFA")]
     public PlayerManager topPlayer;
+    public PlayerManager localClientPlayer;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -63,6 +64,7 @@ public class CurrentMatchManager : MonoBehaviourPun
                 break;
         }
         topPlayer = FindObjectOfType<PlayerManager>();
+        OnPlayerKillUpdate();
         UpdateTopPlayerHUD(topPlayer.kills, topPlayer.pv.Owner.NickName);
     }
     public void OnPlayerKillUpdate()
@@ -71,7 +73,7 @@ public class CurrentMatchManager : MonoBehaviourPun
         int temp = -100000;
         for(int i = 0; i < players.Count; i++)
         {
-            if(players[i].kills > temp)
+            if(players[i].kills >= temp)
             {
                 topPlayer = players[i];
                 temp = players[i].kills;
@@ -147,6 +149,30 @@ public class CurrentMatchManager : MonoBehaviourPun
     public void UpdateTopPlayerHUD(int kill, string name)
     {
         pv.RPC(nameof(RPC_UpdateTopPlayerHUD), RpcTarget.All, kill, name);
+    }
+    public void FindForPhotonView(int viewID)
+    {
+
+    }
+    public void RefreshPlayerList()
+    {
+        pv.RPC(nameof(RPC_RefreshPlayerList), RpcTarget.All);
+    }
+    [PunRPC]
+    void RPC_RefreshPlayerList()
+    {
+        players.Clear();
+        PlayerManager[] tmp = FindObjectsOfType<PlayerManager>();
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            players.Add(tmp[i]);
+        }
+        OnPlayerListUpdate(players);
+    }
+    [PunRPC]
+    void RPC_FindForPhotonView()
+    {
+
     }
     [PunRPC]
     void RPC_UpdateTopPlayerHUD(int kill, string name)

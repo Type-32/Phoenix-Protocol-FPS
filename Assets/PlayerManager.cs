@@ -98,13 +98,15 @@ public class PlayerManager : MonoBehaviour
         spawnpointCamera = FindObjectOfType<SpawnpointCamera>();
         roomManager = FindObjectOfType<RoomManager>();
         cmm = FindObjectOfType<CurrentMatchManager>();
+        cmm.RefreshPlayerList();
         if (pv.IsMine)
         {
-            cmm.AddPlayer(this);
+            //cmm.AddPlayer(this);
+            cmm.localClientPlayer = this;
         }
         else
         {
-            cmm.AddPlayer(this);
+            //cmm.AddPlayer(this);
             cameraObject.gameObject.SetActive(false);
         }
         settingsMenu.SettingsMenuAwakeFunction();
@@ -204,6 +206,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void Die()
     {
+        if (pv.IsMine) SynchronizeValues(kills, deaths);
         audioListener.enabled = true;
         streakKills = 0;
         cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
@@ -233,6 +236,16 @@ public class PlayerManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         if (randomSpawnpoint || spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
         spawnpointUI.ChooseSpawnpoint(selectedSPIndex);
+    }
+    public void SynchronizeValues(int kills, int deaths)
+    {
+        pv.RPC(nameof(RPC_SynchronizeValues), RpcTarget.All, kills, deaths);
+    }
+    [PunRPC]
+    void RPC_SynchronizeValues(int kills, int deaths)
+    {
+        this.kills = kills;
+        this.deaths = deaths;
     }
     IEnumerator DelayedCompleteCountdown(float duration)
     {
@@ -564,6 +577,7 @@ public class PlayerManager : MonoBehaviour
         }
         controller.GetComponent<PlayerControllerManager>().OperateAllMinimapDots(false);
         controller.GetComponent<PlayerControllerManager>().playerMinimapDot.SetActive(true);
+        if (pv.IsMine) SynchronizeValues(kills, deaths);
         cmm.OnPlayerKillUpdate();
         //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
