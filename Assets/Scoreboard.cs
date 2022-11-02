@@ -67,14 +67,14 @@ public class Scoreboard : MonoBehaviourPunCallbacks
     {
         int temp = -10000;
         string tempname = "";
-        ScoreboardItem tempItem = new();
+        //ScoreboardItem tempItem = new();
         for (int i = 0; i < LocalScoreboardItems.Count; i++)
         {
             if (int.Parse(LocalScoreboardItems[i].killsText.text) >= temp)
             {
                 temp = int.Parse(LocalScoreboardItems[i].killsText.text);
                 tempname = LocalScoreboardItems[i].usernameText.text;
-                tempItem = LocalScoreboardItems[i];
+                //tempItem = LocalScoreboardItems[i];
             }
         }
         matchManager.UpdateTopPlayerHUD(temp, tempname);

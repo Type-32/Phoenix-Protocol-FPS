@@ -57,6 +57,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public bool usingStreakGifts = false;
     public GameObject playerMinimapDot;
     public List<GameObject> allMinimapDots = new();
+    public bool hidePlayerHUD = false;
 
     [SerializeField] int weaponIndex1;
     [SerializeField] int weaponIndex2;
@@ -88,8 +89,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             {
                 allMinimapDots.Add(tempget[i].gameObject);
             }
-            OperateAllMinimapDots(false);
+            DisableAllMinimapDots();
             playerMinimapDot.SetActive(true);
+            ui.hud.GetComponent<CanvasGroup>().alpha = 1;
         }
         else
         {
@@ -111,6 +113,19 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
         CrosshairNametagDetect();
+        if (Input.GetKeyDown("l"))
+        {
+            if (hidePlayerHUD)
+            {
+                hidePlayerHUD = false;
+                ui.hud.GetComponent<CanvasGroup>().alpha = 1;
+            }
+            else
+            {
+                hidePlayerHUD = true;
+                ui.hud.GetComponent<CanvasGroup>().alpha = 0;
+            }
+        }
         if (playerManager.recordKills >= 3)
         {
             ui.streakBackground.value = Mathf.Lerp(ui.streakBackground.value, 1f, Time.deltaTime * 3);
@@ -147,25 +162,27 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         pv.RPC(nameof(RPC_ChangePlayerHitbox), RpcTarget.All, center, radius, height);
     }
-    public void InitializeAllMinimapDots()
+    public void EnableAllMinimapDots()
     {
         MinimapDotIdentifier[] tempget;
-        allMinimapDots.Clear();
         tempget = FindObjectsOfType<MinimapDotIdentifier>();
         for (int i = 0; i < tempget.Length; i++)
         {
-            allMinimapDots.Add(tempget[i].gameObject);
+            tempget[i].gameObject.SetActive(true);
         }
-        OperateAllMinimapDots(false);
+        //OperateAllMinimapDots(false);
         playerMinimapDot.SetActive(true);
     }
-    public void OperateAllMinimapDots(bool value)
+    public void DisableAllMinimapDots()
     {
-        for(int i = 0; i < allMinimapDots.Count; i++)
+        MinimapDotIdentifier[] tempget;
+        tempget = FindObjectsOfType<MinimapDotIdentifier>();
+        for (int i = 0; i < tempget.Length; i++)
         {
-            if (allMinimapDots[i] == null) return;
-            allMinimapDots[i].SetActive(value);
+            tempget[i].gameObject.SetActive(false);
         }
+        //OperateAllMinimapDots(false);
+        playerMinimapDot.SetActive(true);
     }
     public void SetMouseSensitivity(float value)
     {
@@ -207,14 +224,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     #endregion
     public IEnumerator UseStreakGift(float duration, int cost)
     {
-        InitializeAllMinimapDots();
+        EnableAllMinimapDots();
         usingStreakGifts = true;
-        OperateAllMinimapDots(true);
         playerManager.recordKills -= cost;
         yield return new WaitForSeconds(duration);
-        OperateAllMinimapDots(false);
         usingStreakGifts = false;
-        InitializeAllMinimapDots();
+        DisableAllMinimapDots();
     }
     private void TakeHitEffect()
     {
@@ -289,7 +304,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         InvokePlayerDeathEffects();
         SpawnDeathLoot();
-        OperateAllMinimapDots(false);
+        DisableAllMinimapDots();
         usingStreakGifts = false;
         playerManager.Die();
         Debug.Log("Player " + stats.playerName + " was Killed");

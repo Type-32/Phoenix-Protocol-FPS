@@ -586,7 +586,7 @@ public class PlayerManager : MonoBehaviour
         {
             controller.GetComponent<PlayerControllerManager>().allMinimapDots.Add(tempget[i].gameObject);
         }
-        controller.GetComponent<PlayerControllerManager>().OperateAllMinimapDots(false);
+        controller.GetComponent<PlayerControllerManager>().DisableAllMinimapDots();
         controller.GetComponent<PlayerControllerManager>().playerMinimapDot.SetActive(true);
         if (pv.IsMine) SynchronizeValues(kills, deaths);
         //cmm.OnPlayerKillUpdate();
