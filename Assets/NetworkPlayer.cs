@@ -26,7 +26,7 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
         {
             transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
-            player.holder.transform.position = Vector3.Lerp(player.holder.transform.position, camRealPos, 0.1f);
+            //player.holder.transform.position = Vector3.Lerp(player.holder.transform.position, camRealPos, 0.1f);
             player.holder.transform.rotation = Quaternion.Lerp(player.holder.transform.rotation, camRealRot, 0.1f);
         }
     }
@@ -36,14 +36,14 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
-            stream.SendNext(player.holder.transform.position);
+            //stream.SendNext(player.holder.transform.position);
             stream.SendNext(player.holder.transform.rotation);
         }
         else
         {
             realPosition = (Vector3)stream.ReceiveNext();
             realRotation = (Quaternion)stream.ReceiveNext();
-            camRealPos = (Vector3)stream.ReceiveNext();
+            //camRealPos = (Vector3)stream.ReceiveNext();
             camRealRot = (Quaternion)stream.ReceiveNext();
         }
     }
