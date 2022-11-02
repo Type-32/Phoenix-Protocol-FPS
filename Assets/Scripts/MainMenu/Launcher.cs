@@ -268,6 +268,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void StartGame()
     {
         SetLoadoutValuesToPlayer();
+        PhotonNetwork.CurrentRoom.CustomProperties["gameStarted"] = true;
         PhotonNetwork.LoadLevel((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"]);
     }
     public void QuitApplication()

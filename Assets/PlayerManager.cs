@@ -95,6 +95,16 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+        if (pv.IsMine)
+        {
+            Hashtable th = new();
+            th.Add("kills", kills);
+            th.Add("deaths", deaths);
+            pv.Owner.CustomProperties.TryAdd("kills", kills);
+            pv.Owner.CustomProperties.TryAdd("deaths", deaths);
+            pv.Owner.SetCustomProperties(th);
+            
+        }
         spawnpointCamera = FindObjectOfType<SpawnpointCamera>();
         roomManager = FindObjectOfType<RoomManager>();
         cmm = FindObjectOfType<CurrentMatchManager>();
@@ -103,6 +113,7 @@ public class PlayerManager : MonoBehaviour
         {
             //cmm.AddPlayer(this);
             cmm.localClientPlayer = this;
+            if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameStarted"]) cmm.UpdatePlayerKillOnClient();
         }
         else
         {
@@ -578,7 +589,7 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerControllerManager>().OperateAllMinimapDots(false);
         controller.GetComponent<PlayerControllerManager>().playerMinimapDot.SetActive(true);
         if (pv.IsMine) SynchronizeValues(kills, deaths);
-        cmm.OnPlayerKillUpdate();
+        //cmm.OnPlayerKillUpdate();
         //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);
     }

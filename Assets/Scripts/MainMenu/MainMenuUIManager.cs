@@ -404,13 +404,14 @@ public class MainMenuUIManager : MonoBehaviour
         Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
         int roomCode = Random.Range(10000000, 99999999);
-        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "roomMode", "roomMapIndex", "roomVisibility", "roomCode" }; //Expose values to main lobby
+        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "roomMode", "roomMapIndex", "roomVisibility", "roomCode" }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add("roomName", roomName);
         roomOptions.CustomRoomProperties.Add("roomHostName", roomHostName);
         roomOptions.CustomRoomProperties.Add("mapInfoIndex", mapInfoIndex);
         roomOptions.CustomRoomProperties.Add("maxPlayer", maxPlayer);
+        roomOptions.CustomRoomProperties.Add("gameStarted", false);
         switch (roomGamemodes)
         {
             case Gamemodes.FFA:

@@ -12,10 +12,12 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     public Text killsText;
     public Text deathsText;
     public Text pingText;
-    Player player;
-    public void Initialize(Player player)
+    public Scoreboard scoreboard;
+    public Player player;
+    public void Initialize(Player player, Scoreboard scbd)
     {
         this.player = player;
+        scoreboard = scbd;
         usernameText.text = player.NickName;
         UpdateStats();
     }
@@ -24,6 +26,7 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
         if (player.CustomProperties.TryGetValue("kills", out object kills))
         {
             killsText.text = kills.ToString();
+            scoreboard.FindForMostKills();
         }
         if (player.CustomProperties.TryGetValue("deaths", out object deaths))
         {

@@ -6,11 +6,12 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class CurrentMatchManager : MonoBehaviourPun
+public class CurrentMatchManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private PhotonView pv;
     private InGameUI internalUI;
     public List<PlayerManager> players = new();
+    public List<Player> punPlayers = new();
     public bool gameStarted = false;
     public bool gameEnded = false;
     public MainMenuUIManager.Gamemodes roomGamemode;
@@ -18,12 +19,15 @@ public class CurrentMatchManager : MonoBehaviourPun
 
     [Space]
     [Header("FFA")]
+    public Player punTopPlayer;
     public PlayerManager topPlayer;
     public PlayerManager localClientPlayer;
+    public Scoreboard scoreboard;
     // Start is called before the first frame update
     private void Awake()
     {
         internalUI = FindObjectOfType<InGameUI>();
+        scoreboard = FindObjectOfType<Scoreboard>();
         //pv = GetComponent<PhotonView>();
         //photonView.ViewID = 998;
     }
@@ -65,7 +69,49 @@ public class CurrentMatchManager : MonoBehaviourPun
         }
         topPlayer = FindObjectOfType<PlayerManager>();
         OnPlayerKillUpdate();
-        UpdateTopPlayerHUD(topPlayer.kills, topPlayer.pv.Owner.NickName);
+        //UpdateTopPlayerHUD(topPlayer.kills, topPlayer.pv.Owner.NickName);
+    }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        punPlayers.Add(newPlayer);
+    }
+    public override void OnPlayerLeftRoom(Player newPlayer)
+    {
+        punPlayers.Remove(newPlayer);
+    }
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        /*
+        for(int i = 0; i < punPlayers.Count; i++)
+        {
+            if(punPlayers[i] == targetPlayer)
+            {
+                //if (changedProps.ContainsKey("kills")) OnPlayerKillReceiveCallback();
+                //else return;
+            }
+        }*/
+    }
+    //public override void On
+    public void OnPlayerKillReceiveCallback()
+    {
+        punPlayers = scoreboard.LocalPlayerDatas;
+        if (roomGamemode != MainMenuUIManager.Gamemodes.FFA) return;
+        int temp = -100000;
+        if (punTopPlayer == null) punTopPlayer = punPlayers[Random.Range(0, punPlayers.Count - 1)];
+        for (int i = 0; i < players.Count; i++)
+        {
+            if ((int)punPlayers[i].CustomProperties["kills"] >= temp)
+            {
+                punTopPlayer = punPlayers[i];
+                temp = (int)punPlayers[i].CustomProperties["kills"];
+            }
+        }
+        UpdateTopPlayerHUD((int)punTopPlayer.CustomProperties["kills"], punTopPlayer.NickName);
+        for(int i = 0; i < players.Count; i++)
+        {
+            if(punTopPlayer.UserId == players[i].pv.Owner.UserId) topPlayer = players[i];
+        }
+        Debug.Log("Received Pun Kill Update");
     }
     public void OnPlayerKillUpdate()
     {
@@ -73,13 +119,29 @@ public class CurrentMatchManager : MonoBehaviourPun
         int temp = -100000;
         for(int i = 0; i < players.Count; i++)
         {
-            if(players[i].kills >= temp)
+            if((int)players[i].pv.Owner.CustomProperties["kills"] >= temp)
             {
                 topPlayer = players[i];
-                temp = players[i].kills;
+                temp = (int)players[i].pv.Owner.CustomProperties["kills"];
             }
         }
-        UpdateTopPlayerHUD(topPlayer.kills, topPlayer.pv.Owner.NickName);
+        UpdateTopPlayerHUD((int)topPlayer.pv.Owner.CustomProperties["kills"], topPlayer.pv.Owner.NickName);
+        Debug.Log("Called Kill Update");
+    }
+    public void UpdatePlayerKillOnClient()
+    {
+        if (roomGamemode != MainMenuUIManager.Gamemodes.FFA) return;
+        int temp = -100000;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if ((int)players[i].pv.Owner.CustomProperties["kills"] >= temp)
+            {
+                topPlayer = players[i];
+                temp = (int)players[i].pv.Owner.CustomProperties["kills"];
+            }
+        }
+        internalUI.topPlayerName.text = topPlayer.pv.Owner.NickName;
+        internalUI.topPlayerScore.text = ((int)topPlayer.pv.Owner.CustomProperties["kills"]).ToString();
     }
     public void OnPlayerListUpdate(List<PlayerManager> playerList)
     {
@@ -150,9 +212,9 @@ public class CurrentMatchManager : MonoBehaviourPun
     {
         pv.RPC(nameof(RPC_UpdateTopPlayerHUD), RpcTarget.All, kill, name);
     }
-    public void FindForPhotonView(int viewID)
+    public void FindForPlayerID(string id)
     {
-
+        pv.RPC(nameof(RPC_FindForPlayerID), RpcTarget.All, id);
     }
     public void RefreshPlayerList()
     {
@@ -170,9 +232,13 @@ public class CurrentMatchManager : MonoBehaviourPun
         OnPlayerListUpdate(players);
     }
     [PunRPC]
-    void RPC_FindForPhotonView()
+    void RPC_FindForPlayerID(string id)
     {
-
+        PlayerManager[] tmp = FindObjectsOfType<PlayerManager>();
+        for(int i = 0; i < tmp.Length; i++)
+        {
+            if (tmp[i].pv.Owner.UserId == id) topPlayer = tmp[i];
+        }
     }
     [PunRPC]
     void RPC_UpdateTopPlayerHUD(int kill, string name)

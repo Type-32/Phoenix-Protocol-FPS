@@ -30600,7 +30600,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1261404565}
-  - component: {fileID: 1261404564}
   - component: {fileID: 1261404566}
   m_Layer: 0
   m_Name: SpawnManager
@@ -30609,24 +30608,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1261404564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261404563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d878d31fd7e46c24cafaaf6b94f3e5a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  players: []
-  gameStarted: 0
-  gameEnded: 0
-  roomGamemode: 0
-  totalTime: 0
-  topPlayer: {fileID: 0}
 --- !u!4 &1261404565
 Transform:
   m_ObjectHideFlags: 0
