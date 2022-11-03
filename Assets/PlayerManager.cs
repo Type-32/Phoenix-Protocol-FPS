@@ -295,18 +295,21 @@ public class PlayerManager : MonoBehaviour
     }
     public void DisconnectPlayer()
     {
+        if (!pv.IsMine) return;
         StartCoroutine(DisconnectAndLoad());
     }
     IEnumerator DisconnectAndLoad()
     {
+        if (!pv.IsMine) return;
         //PhotonNetwork.Disconnect();
         PhotonNetwork.LeaveRoom();
         //while (PhotonNetwork.IsConnected)
         while (PhotonNetwork.InRoom)
             yield return null;
-        roomManager.SelfDestruction();
         cmm.RemovePlayer(this);
         SceneManager.LoadScene(0);
+        roomManager.SelfDestruction();
+        Debug.Log("Self Destruction Occured");
         MainMenuUIManager.instance.CloseMainMenu();
         MainMenuUIManager.instance.CloseLoadingMenu();
         MainMenuUIManager.instance.CloseFindRoomMenu();
@@ -326,7 +329,10 @@ public class PlayerManager : MonoBehaviour
         //Developer Console
         if (Launcher.Instance.startKey == PhotonNetwork.LocalPlayer.NickName)
         {
-
+            if (Input.GetKeyDown("o"))
+            {
+                GetKill("TestName", 0);
+            }
         }
         if (secondFill < 1f)
         {
