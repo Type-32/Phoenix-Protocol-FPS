@@ -300,7 +300,7 @@ public class PlayerManager : MonoBehaviour
     }
     IEnumerator DisconnectAndLoad()
     {
-        if (!pv.IsMine) return;
+        if (!pv.IsMine) yield return null;
         //PhotonNetwork.Disconnect();
         PhotonNetwork.LeaveRoom();
         //while (PhotonNetwork.IsConnected)
