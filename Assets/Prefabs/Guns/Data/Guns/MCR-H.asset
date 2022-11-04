@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec236da174a09f2468714c004e0f7581, type: 3}
-  m_Name: Grenn-36
+  m_Name: MCR-H
   m_EditorClassIdentifier: 
-  itemName: Grenn-36
+  itemName: MCR-H
   itemDescription: Assault Rifle
-  itemIcon: {fileID: 21300000, guid: 7c62df13d5264264bbe703d80e9c31b6, type: 3}
+  itemIcon: {fileID: 21300000, guid: 75a887de988f79e45949ecf875548cd6, type: 3}
   equippedByDefault: 0
   unlockingLevel: 1
   requiresPurchase: 0
   purchasePrice: 100
-  weaponPrefab: {fileID: 6788626819295025767, guid: 4de2158da16d86f4eb08d26db1be4382,
+  weaponPrefab: {fileID: 6788626819295025767, guid: daa465edf50eb004c8ae603bb07b016c,
     type: 3}
   weaponType: 0
   weaponProjectile: {fileID: 0}
-  maxAmmoPerMag: 30
+  maxAmmoPerMag: 20
   magazineCount: 4
-  damage: 38
-  range: 210
+  damage: 42
+  range: 260
   reloadTime: 3
   impactForce: 10
-  fireRate: 10.75
-  FOVMultiplier: 2.25
-  hipfireSpread: 1.4
+  fireRate: 10.2
+  FOVMultiplier: 2.5
+  hipfireSpread: 1.75
   rechamberDelay: 0.1
   shellEjectionDelay: 0
   boltRecoveryDuration: 1.5
@@ -49,26 +49,28 @@ MonoBehaviour:
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
   bassClips:
-  - {fileID: 8300000, guid: fba10627c14e09e4598a003ce50675e7, type: 3}
+  - {fileID: 8300000, guid: 81ea3ef5f4afa53479c42fde5a3dfefd, type: 3}
   fireClips:
-  - {fileID: 8300000, guid: 69ba93446eb22fe43921ac9673be2840, type: 3}
-  - {fileID: 8300000, guid: 853fa6ca72774a24c89fa9a1e1f0cfdd, type: 3}
-  - {fileID: 8300000, guid: 5852629200c19f940b09725c63f16a6d, type: 3}
-  - {fileID: 8300000, guid: d61981e41604ee14f8c6cefb47e7bcac, type: 3}
+  - {fileID: 8300000, guid: fb81611d75be4a143b027a1c0264fe5b, type: 3}
+  - {fileID: 8300000, guid: 5785f95bfbdcc1c44a302b1b6c2a515c, type: 3}
+  - {fileID: 8300000, guid: 13231290adfca5c46962f9acd6c8c2ed, type: 3}
+  - {fileID: 8300000, guid: 320bd97802154ca44ab2fd60ba43ac1b, type: 3}
+  - {fileID: 8300000, guid: 1db5234f4763541488bab039fa3bbc2e, type: 3}
+  - {fileID: 8300000, guid: d45915b5c37349a4380f91e05f54d3cb, type: 3}
   silencedFireClips:
-  - {fileID: 8300000, guid: ea4d830fd409b4146b728479623c9540, type: 3}
-  - {fileID: 8300000, guid: 90adcd5ae06edce4caa91656281225e4, type: 3}
-  - {fileID: 8300000, guid: 295c4e16e80c7164b9e1fcb44066ce50, type: 3}
-  - {fileID: 8300000, guid: ffeb175f80db0c54ea60614a7eb457d5, type: 3}
-  - {fileID: 8300000, guid: 4f5ca30c10e728841ae39e3dd483a01c, type: 3}
-  - {fileID: 8300000, guid: 861c55d9004f7b4498e08f8f7fdfafaf, type: 3}
+  - {fileID: 8300000, guid: fb81611d75be4a143b027a1c0264fe5b, type: 3}
+  - {fileID: 8300000, guid: 5785f95bfbdcc1c44a302b1b6c2a515c, type: 3}
+  - {fileID: 8300000, guid: 13231290adfca5c46962f9acd6c8c2ed, type: 3}
+  - {fileID: 8300000, guid: 320bd97802154ca44ab2fd60ba43ac1b, type: 3}
+  - {fileID: 8300000, guid: 1db5234f4763541488bab039fa3bbc2e, type: 3}
+  - {fileID: 8300000, guid: d45915b5c37349a4380f91e05f54d3cb, type: 3}
   mechClips:
-  - {fileID: 8300000, guid: efc2e587b6e9e1e4c8773b4b02d8b392, type: 3}
-  - {fileID: 8300000, guid: 2ea5793202e789c499f92b2c29284be2, type: 3}
-  - {fileID: 8300000, guid: fba12d4aaa0173643ac100b78242c930, type: 3}
-  - {fileID: 8300000, guid: fb0bc0c38422feb44b2333fb24cf52e2, type: 3}
-  - {fileID: 8300000, guid: 6c7280f1d54739c42bdf2d5aec3781c7, type: 3}
-  - {fileID: 8300000, guid: 0ebbfd9238da3ed4587f977665995d9a, type: 3}
+  - {fileID: 8300000, guid: 068ac7270556b6446ac58e18ab3a3b07, type: 3}
+  - {fileID: 8300000, guid: adaa9782a65d781448e0304beba5d120, type: 3}
+  - {fileID: 8300000, guid: 246beade1ea136f489c005073203f2e1, type: 3}
+  - {fileID: 8300000, guid: 096ea89f38e2f914dbe730896f9a244b, type: 3}
+  - {fileID: 8300000, guid: 662a33f9ca1d10247a47ddae642e92e2, type: 3}
+  - {fileID: 8300000, guid: cf0471dd75ef6dd40bc21459202e7ecb, type: 3}
   rechamberClips: []
   applicableVariants: []
   applicableAttachments:
@@ -81,4 +83,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad8463e9fe5f6094c8249b9ad91b59da, type: 2}
   - {fileID: 11400000, guid: 18c69c5a9f561a04eb7b4cf7de51fda1, type: 2}
   - {fileID: 11400000, guid: 5d4ea03721058124f90295b220f740d0, type: 2}
-  - {fileID: 11400000, guid: 8eb85bee56b46524fb589d5f002ebe45, type: 2}
