@@ -53,6 +53,7 @@ public class GunCoreFunc : MonoBehaviour
             fmList.Add(QuantityStatsHUD.FireMode.SniperSingle);
             stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
         }
+        stats.fireMode = fmList[0];
     }
     void StateInitalize()
     {
