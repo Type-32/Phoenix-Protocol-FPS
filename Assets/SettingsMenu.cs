@@ -129,7 +129,7 @@ public class SettingsMenu : MonoBehaviour
         volumeSlider.minValue = -80;
         volumeSlider.maxValue = 0;
         sensitivitySlider.minValue = 0f;
-        sensitivitySlider.maxValue = 200f;
+        sensitivitySlider.maxValue = 300f;
         fieldOfViewSlider.minValue = 75f;
         fieldOfViewSlider.maxValue = 100f;
         resolutions = Screen.resolutions;

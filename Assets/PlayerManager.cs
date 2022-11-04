@@ -503,6 +503,7 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(Application.persistentDataPath + "/SettingsOptions.json", json);
+            if (controller != null) controller.GetComponent<PlayerControllerManager>().SetMouseSensitivity(data.MouseSensitivity);
             Debug.LogWarning("Writing Settings Options To Files...");
         }
         else
