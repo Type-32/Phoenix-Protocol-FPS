@@ -19,6 +19,8 @@ public class PlayerSounds : MonoBehaviour
     public AudioClip[] heavyHitmarkerClips = default;
     public AudioClip[] killmarkerClips = default;
     public AudioClip[] armorBreakMarkerClips = default;
+    public AudioClip useNightVisionClip = default;
+    public AudioClip removeNightVisionClip = default;
 
     [Space]
     [Header("Ground Surface Material Audio Clips")]
@@ -98,6 +100,14 @@ public class PlayerSounds : MonoBehaviour
     public void InvokeArmorDamagedAudio()
     {
         stats.playerInternalAS.PlayOneShot(armorDamagedClips[Random.Range(0, armorDamagedClips.Length - 1)]);
+    }
+    public void InvokeUseNightVisionAudio()
+    {
+        stats.playerInternalAS.PlayOneShot(useNightVisionClip);
+    }
+    public void InvokeRemoveNightVisionAudio()
+    {
+        stats.playerInternalAS.PlayOneShot(removeNightVisionClip);
     }
     public void InvokeHitmarkerAudio(UIManager.HitmarkerType type)
     {

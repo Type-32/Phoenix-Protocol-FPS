@@ -323,6 +323,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
         playerManager.nightVisionState = stats.enableNightVision;
+        if (stats.enableNightVision) sfx.InvokeUseNightVisionAudio();
+        else sfx.InvokeRemoveNightVisionAudio();
     }
     [PunRPC]
     void RPC_ChangePlayerHitbox(Vector3 center, float radius, float height)
