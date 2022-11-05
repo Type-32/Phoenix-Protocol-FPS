@@ -27,7 +27,7 @@ MonoBehaviour:
   magazineCount: 5
   damage: 20
   range: 100
-  reloadTime: 2.7
+  reloadTime: 1.75
   impactForce: 5
   fireRate: 12.5
   FOVMultiplier: 2
@@ -38,6 +38,7 @@ MonoBehaviour:
   aimSpeed: 1
   damagePerPellet: 10
   pelletsPerFire: 1
+  reloadTimePerPellet: 0.8
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -48,6 +49,7 @@ MonoBehaviour:
   enableSingle: 1
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
+  reloadByBullet: 0
   bassClips:
   - {fileID: 8300000, guid: 7ed280e1a0e5843419b7493937f7d6b0, type: 3}
   fireClips:

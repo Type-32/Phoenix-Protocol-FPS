@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LoadoutWeaponSelectionItem : MonoBehaviour
 {
     public LoadoutSelectionScript loadoutSelection;
+    public LoadoutCustomButtonsHolder customButtonsHolder;
     public WeaponData weaponData;
     [SerializeField] Image weaponIcon;
     [SerializeField] Text weaponName;
@@ -17,6 +18,7 @@ public class LoadoutWeaponSelectionItem : MonoBehaviour
     private void Awake()
     {
         loadoutSelection = GetComponentInParent<LoadoutSelectionScript>();
+        customButtonsHolder = FindObjectOfType<LoadoutCustomButtonsHolder>();
     }
 
     void Start()
@@ -49,6 +51,7 @@ public class LoadoutWeaponSelectionItem : MonoBehaviour
         loadoutSelection.DisableWeaponSelection();
         loadoutSelection.OpenLoadoutButtonsVisual();
         Launcher.Instance.SetLoadoutValuesToPlayer();
+        customButtonsHolder.OnClickClearButton();
     }
 
     public void SetDamageValue(float amount)
