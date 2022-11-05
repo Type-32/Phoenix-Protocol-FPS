@@ -19,7 +19,7 @@ MonoBehaviour:
   unlockingLevel: 1
   requiresPurchase: 0
   purchasePrice: 100
-  weaponPrefab: {fileID: 6788626819295025767, guid: 0162686170696ce4389da9ab40e9f804,
+  weaponPrefab: {fileID: 6788626819295025767, guid: 4c1b680f8451aea4f8f990faf3680588,
     type: 3}
   weaponType: 3
   weaponProjectile: {fileID: 0}
@@ -31,12 +31,14 @@ MonoBehaviour:
   impactForce: 12
   fireRate: 11.8
   FOVMultiplier: 2
-  hipfireSpread: 1
+  hipfireSpread: 0.8
   rechamberDelay: 0.1
-  boltRecoveryDuration: 1.5
+  shellEjectionDelay: 0
+  boltRecoveryDuration: 1
   aimSpeed: 1
   damagePerPellet: 15
-  pelletsPerFire: 5
+  pelletsPerFire: 6
+  reloadTimePerPellet: 0.78
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -47,23 +49,35 @@ MonoBehaviour:
   enableSingle: 1
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 1
+  reloadByBullet: 1
   bassClips:
-  - {fileID: 8300000, guid: 664fd6f28989ae34bb13b18cfe09aa81, type: 3}
+  - {fileID: 8300000, guid: 829beab9744efe34985ebce775ad2979, type: 3}
   fireClips:
-  - {fileID: 8300000, guid: d7481c60bfb13f0489afd4c51d1d5443, type: 3}
-  - {fileID: 8300000, guid: 922b5bd5f8fb9ff4e86f98f9afffa467, type: 3}
-  - {fileID: 8300000, guid: d24e8154b82faab40b434b8e1f5a41ac, type: 3}
-  - {fileID: 8300000, guid: 8fed9a24f3a32e941a37229447a1efaa, type: 3}
-  - {fileID: 8300000, guid: 01755b773f1bfe44ca557867ae44d969, type: 3}
-  - {fileID: 8300000, guid: 79d0a151bd2c170468db9fa8beb7a8da, type: 3}
-  silencedFireClips: []
+  - {fileID: 8300000, guid: b0fb0748acb8dba488c1af0749382269, type: 3}
+  - {fileID: 8300000, guid: 8cad5ae36b2496047bc5519b88ec57ec, type: 3}
+  - {fileID: 8300000, guid: 5e49567ceb054c54a80e7dfd5e7ead60, type: 3}
+  - {fileID: 8300000, guid: cee80159a497a0441bd889980b1a1fda, type: 3}
+  - {fileID: 8300000, guid: 1edc78914f6bb8047ae54657656292a8, type: 3}
+  - {fileID: 8300000, guid: c2fc10b12e3f0fb4ea42ede36a39c3c5, type: 3}
+  silencedFireClips:
+  - {fileID: 8300000, guid: 252c39a03dea51f42aa4e39f523353cf, type: 3}
+  - {fileID: 8300000, guid: d806f102075061949a5234415e6d5623, type: 3}
+  - {fileID: 8300000, guid: 415ff61c8e2a64745b755c626ed7821b, type: 3}
+  - {fileID: 8300000, guid: 54aecef1e329f37409a607c81309eaa2, type: 3}
+  - {fileID: 8300000, guid: 0275067954a02984da5dd1af47249c5f, type: 3}
+  - {fileID: 8300000, guid: be7b166397fb61447ae1fbd49044be38, type: 3}
   mechClips:
-  - {fileID: 8300000, guid: 2a2f613078731604ea90f9c7f98e6103, type: 3}
-  - {fileID: 8300000, guid: dac30c5dd168dc946950c32ef1ce09b9, type: 3}
-  - {fileID: 8300000, guid: bf03470a9afb1a04daec7e08b25b1ae0, type: 3}
-  - {fileID: 8300000, guid: c15f34d9b44818642a77d5a676c5ef02, type: 3}
-  - {fileID: 8300000, guid: 8a1af0c12f88eab4992a8aa5d87b3122, type: 3}
-  - {fileID: 8300000, guid: 410f1c2ae72e01545962f0925cf5cc91, type: 3}
-  rechamberClips: []
+  - {fileID: 8300000, guid: 57f6244da1022e74dbe444defd35d6b3, type: 3}
+  - {fileID: 8300000, guid: 20a6b3915696bd849b4ca26bcbe0fbd0, type: 3}
+  - {fileID: 8300000, guid: 0d89c6e2a9c9c8042a08ba05fb9f7845, type: 3}
+  - {fileID: 8300000, guid: 1d0b7b06bc3dd504582c77daf6a09f80, type: 3}
+  - {fileID: 8300000, guid: e7f67aeb5d625df498d8ebd54102c223, type: 3}
+  - {fileID: 8300000, guid: 43fcbfa8950ce3a4e92a61e2944a9f94, type: 3}
+  rechamberClips:
+  - {fileID: 8300000, guid: e60765212108f054bb189a7e4e747131, type: 3}
   applicableVariants: []
-  applicableAttachments: []
+  applicableAttachments:
+  - {fileID: 11400000, guid: eaa3091aa3f59c1458f80c48eac2633e, type: 2}
+  - {fileID: 11400000, guid: 5d4ea03721058124f90295b220f740d0, type: 2}
+  - {fileID: 11400000, guid: ad8463e9fe5f6094c8249b9ad91b59da, type: 2}
+  - {fileID: 11400000, guid: 18c69c5a9f561a04eb7b4cf7de51fda1, type: 2}

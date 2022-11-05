@@ -27,6 +27,7 @@ public class WeaponData : ItemData
     public float aimSpeed = 3f;
     [Range(0f, 50f)] public float damagePerPellet = 10f;
     public int pelletsPerFire = 1;
+    public float reloadTimePerPellet = 0.8f;
 
     [Space]
     [Header("Weapon Parameters")]
@@ -40,6 +41,7 @@ public class WeaponData : ItemData
     public bool enableSingle = true;
     public bool hasHipfireInaccuracy = true;
     public bool ejectCasingAfterRechamber = false;
+    public bool reloadByBullet = false;
 
     [Space]
     [Header("Audio Clips")]

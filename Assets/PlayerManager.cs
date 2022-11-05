@@ -69,6 +69,7 @@ public class PlayerManager : MonoBehaviour
     public int kills = 0;
     public int deaths = 0;
     public bool randomSpawnpoint = false;
+    public bool nightVisionState = false;
     [HideInInspector] public int streakKills = 0;
     [HideInInspector] public int recordKills = 0;
 
@@ -488,6 +489,14 @@ public class PlayerManager : MonoBehaviour
         enabledButtonHolder = value;
         buttonHolder.SetActive(value);
     }
+    public void OnChangedSensitivityValue(float value)
+    {
+        if(controller != null) controller.GetComponent<PlayerStats>().SetPlayerSensitivity(value);
+    }
+    public void OnChangedFOVValue(float value)
+    {
+        if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerFOV(value);
+    }
     public void ToggleSettingsMenu(bool value)
     {
         if (!value)
@@ -503,7 +512,8 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(Application.persistentDataPath + "/SettingsOptions.json", json);
-            if (controller != null) controller.GetComponent<PlayerControllerManager>().SetMouseSensitivity(data.MouseSensitivity);
+            if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerSensitivity(data.MouseSensitivity);
+            if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerFOV(data.FieldOfView);
             Debug.LogWarning("Writing Settings Options To Files...");
         }
         else

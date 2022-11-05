@@ -186,7 +186,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (!player.stats.toggleAiming)
         {
-            player.stats.isAiming = Input.GetButton("Fire2") ? true : false;
+            player.stats.isAiming = Input.GetButton("Fire2") & !player.stats.isSliding ? true : false;
         }
         else
         {

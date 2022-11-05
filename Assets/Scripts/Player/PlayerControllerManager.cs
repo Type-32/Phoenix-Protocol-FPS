@@ -82,6 +82,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerBody.SetActive(false);
             playerFeet1.SetActive(false);
             playerFeet2.SetActive(false);
+            stats.enableNightVision = playerManager.nightVisionState;
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
             MinimapDotIdentifier[] tempget;
             tempget = FindObjectsOfType<MinimapDotIdentifier>();
@@ -321,6 +322,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             stats.enableNightVision = true;
         }
         nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
+        playerManager.nightVisionState = stats.enableNightVision;
     }
     [PunRPC]
     void RPC_ChangePlayerHitbox(Vector3 center, float radius, float height)

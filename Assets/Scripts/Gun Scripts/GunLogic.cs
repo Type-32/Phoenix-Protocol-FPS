@@ -25,16 +25,16 @@ public class GunLogic : MonoBehaviour
     {
         if (gun.stats.isAiming)
         {
-            spreadConstant = Mathf.Lerp(spreadConstant, 0f, gun.stats.weaponData.aimSpeed);
+            spreadConstant = Mathf.Lerp(spreadConstant, gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun ? 0.3f : 0f, gun.stats.weaponData.aimSpeed);
         }
         else
         {
-            spreadConstant = Mathf.Lerp(spreadConstant, 1f, gun.stats.weaponData.aimSpeed);
+            spreadConstant = Mathf.Lerp(spreadConstant, gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun ? 1.2f : 1f, gun.stats.weaponData.aimSpeed);
         }
     }
     void AimingLogic()
     {
-        if (Input.GetButton("Fire2") && !gun.stats.isReloading) gun.stats.isAiming = true;
+        if (Input.GetButton("Fire2") && !gun.stats.isReloading && !gun.player.stats.isSliding) gun.stats.isAiming = true;
         else gun.stats.isAiming = false;
     }
     void GunMovementLogic()

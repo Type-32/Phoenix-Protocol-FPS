@@ -53,6 +53,12 @@ public class GunCoreFunc : MonoBehaviour
             fmList.Add(QuantityStatsHUD.FireMode.SniperSingle);
             stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
         }
+        if (stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
+        {
+            fmList.Clear();
+            fmList.Add(QuantityStatsHUD.FireMode.Shotgun);
+            stats.fireMode = QuantityStatsHUD.FireMode.Shotgun;
+        }
         stats.fireMode = fmList[0];
     }
     void StateInitalize()
@@ -92,7 +98,7 @@ public class GunCoreFunc : MonoBehaviour
     }
     public void ReloadMechanics()
     {
-        if (Input.GetKeyDown("r") && !gun.stats.isReloading) StartCoroutine(Reload());
+        if (Input.GetKeyDown("r") && !gun.stats.isReloading && gun.stats.ammo != gun.stats.weaponData.maxAmmoPerMag) StartCoroutine(Reload());
         if (gun.stats.ammo <= 0 && gun.stats.ammoPool > 0 && !gun.stats.isReloading) StartCoroutine(Reload());
     }
     private void RequestShootServerRpc(float range, float damage)
@@ -125,6 +131,10 @@ public class GunCoreFunc : MonoBehaviour
         {
             ShootWithSniperSingle();
         }
+        else if (stats.fireMode == QuantityStatsHUD.FireMode.Shotgun)
+        {
+            ShootWithShotgunProperties();
+        }
         else if (stats.fireMode == QuantityStatsHUD.FireMode.Single)
         {
             if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
@@ -140,6 +150,20 @@ public class GunCoreFunc : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
         {
             Shoot(gun.stats.range, gun.stats.damage);
+            //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
+            timePassedUntillNextShot = 0f;
+        }
+    }
+    public void ShootWithShotgunProperties()
+    {
+        if (stats.fireMode != QuantityStatsHUD.FireMode.Shotgun) stats.fireMode = QuantityStatsHUD.FireMode.Shotgun;
+        if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
+        if (Input.GetButtonDown("Fire1") && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+        {
+            if (gun.stats.ammo <= 0 || stats.isSprinting) return;
+            for (int i = 0; i < gun.stats.weaponData.pelletsPerFire; i++) Shoot(gun.stats.range, gun.stats.weaponData.damagePerPellet);
+            gun.stats.ammo--;
+            if (gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun) StartCoroutine(Rechamber());
             //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
             timePassedUntillNextShot = 0f;
         }
@@ -200,7 +224,7 @@ public class GunCoreFunc : MonoBehaviour
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
 
         anim.animate.SetTrigger("isFiring");
-        gun.stats.ammo--;
+        if(gun.stats.weaponData.weaponType != QuantityStatsHUD.WeaponType.Shotgun) gun.stats.ammo--;
         gun.player.InvokeGunEffects();
         RaycastHit hit;
         Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
@@ -280,7 +304,7 @@ public class GunCoreFunc : MonoBehaviour
 
     IEnumerator Rechamber()
     {
-        Debug.Log("Rechambering!");
+        //Debug.Log("Rechambering!");
         yield return new WaitForSeconds(gun.stats.weaponData.rechamberDelay);
         anim.animate.SetTrigger("rechamberAnim");
         gun.audio.PlayRechamberSound();
@@ -295,27 +319,54 @@ public class GunCoreFunc : MonoBehaviour
     {
         int storeRes = 0;
         gun.stats.isReloading = true;
-        Debug.Log("Reloading... ");
+        //Debug.Log("Reloading... ");
         //anim.animate.Play("Reload"); 
-        yield return new WaitForSeconds(gun.stats.weaponData.reloadTime);
-
-        gun.stats.ammoPool += gun.stats.ammo;
-        if(gun.stats.ammoPool >= gun.stats.maxAmmo){
-            storeRes = gun.stats.maxAmmo - gun.stats.ammo;
-            for(int i = 1; i <= storeRes; i++){
-                gun.stats.ammo++;
-            }
-            gun.stats.ammoPool -= gun.stats.maxAmmo;
-        }else{
-            gun.stats.ammo = 0;
-            //gun.stats.ammo = gun.stats.ammoPool;
-            for(int i = 1; i <= gun.stats.ammoPool; i++){
-                gun.stats.ammo++;
-            }
-            gun.stats.ammoPool = 0;
+        float reloadTime = 0f;
+        if (gun.stats.weaponData.reloadByBullet)
+        {
+            reloadTime = gun.stats.weaponData.reloadTimePerPellet;
         }
-        gun.stats.isReloading = false;
-
+        else
+        {
+            reloadTime = gun.stats.weaponData.reloadTime;
+        }
+        yield return new WaitForSeconds(reloadTime);
+        if (!gun.stats.weaponData.reloadByBullet)
+        {
+            gun.stats.ammoPool += gun.stats.ammo;
+            if (gun.stats.ammoPool >= gun.stats.maxAmmo)
+            {
+                storeRes = gun.stats.maxAmmo - gun.stats.ammo;
+                for (int i = 1; i <= storeRes; i++)
+                {
+                    gun.stats.ammo++;
+                }
+                gun.stats.ammoPool -= gun.stats.maxAmmo;
+            }
+            else
+            {
+                gun.stats.ammo = 0;
+                //gun.stats.ammo = gun.stats.ammoPool;
+                for (int i = 1; i <= gun.stats.ammoPool; i++)
+                {
+                    gun.stats.ammo++;
+                }
+                gun.stats.ammoPool = 0;
+            }
+            gun.stats.isReloading = false;
+        }
+        else
+        {
+            //gun.stats.isReloading = false;
+            if (gun.stats.ammo < gun.stats.weaponData.maxAmmoPerMag && gun.stats.ammoPool > 0)
+            {
+                gun.stats.ammo++;
+                gun.stats.ammoPool--;
+                if (gun.stats.ammo < gun.stats.weaponData.maxAmmoPerMag && gun.stats.ammoPool > 0) StartCoroutine(Reload());
+                else gun.stats.isReloading = false;
+            }
+            else gun.stats.isReloading = false;
+        }
     }
 
     public void SpawnPickup(){

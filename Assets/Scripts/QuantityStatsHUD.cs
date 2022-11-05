@@ -25,6 +25,7 @@ public class QuantityStatsHUD : MonoBehaviour
         Burst,
         SniperSingle,
         Projectile,
+        Shotgun,
         None
     }
     public enum WeaponType

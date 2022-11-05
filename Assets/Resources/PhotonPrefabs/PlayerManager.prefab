@@ -1686,6 +1686,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5241159417376985502}
+        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
+        m_MethodName: OnChangedSensitivityValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1161022875627804923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1981,6 +1993,7 @@ MonoBehaviour:
   kills: 0
   deaths: 0
   randomSpawnpoint: 0
+  nightVisionState: 0
   streakKills: 0
   recordKills: 0
   killMSGHolder: {fileID: 3039702503099373490}
@@ -8328,6 +8341,18 @@ MonoBehaviour:
       - m_Target: {fileID: 9070340306030797484}
         m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
         m_MethodName: SetFieldOfView
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5241159417376985502}
+        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
+        m_MethodName: OnChangedFOVValue
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
