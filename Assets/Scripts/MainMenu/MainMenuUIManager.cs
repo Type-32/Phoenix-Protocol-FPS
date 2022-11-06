@@ -24,6 +24,8 @@ public class MainMenuUIManager : MonoBehaviour
     public GameObject cosmeticsMenu;
     public GameObject createRoomMenu;
     public GameObject loadoutSelectionMenu;
+    public GameObject popupMenu;
+    public GameObject shopMenu;
 
     [Space]
     [Header("Misc Components")]
@@ -46,6 +48,8 @@ public class MainMenuUIManager : MonoBehaviour
     public bool openedSettingsMenu = false;
     public bool openedCreateRoomMenu = false;
     public bool openedLoadoutSelectionMenu = false;
+    public bool openedPopupMenu = false;
+    public bool openedShopMenu = false;
     public bool usingCreateRooomInputField = false;
 
     [Space]
@@ -59,6 +63,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Gamemodes selectedGamemodes = Gamemodes.FFA;
     [SerializeField] private int maxPlayerCount = 8;
     [SerializeField] private bool roomVisibility = true;
+    [SerializeField] private Transform popupHolder;
 
     [Header("Room Visual")]
     [SerializeField] Text maxPlayers;
@@ -71,6 +76,17 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] Text selectedGamemode;
     [SerializeField] Text selectedMaxPlayers;
 
+    [Space]
+    [Header("Popups")]
+    public List<PopupWindowItem> popupWindows = new();
+    public GameObject popupWindowItemPrefab;
+
+    [Space]
+    [Header("User Stats")]
+    public Text username;
+    public Text userLevel;
+    public Text userCoins;
+    public Slider userLevelProgress;
 
     public enum Gamemodes
     {
@@ -84,6 +100,7 @@ public class MainMenuUIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        Debug.Log("Initializing Awake Main menu");
     }
     void Start()
     {
@@ -576,4 +593,63 @@ public class MainMenuUIManager : MonoBehaviour
     }
     #endregion
 
+    #region Shop Menu
+    public void ToggleShopMenu(bool value)
+    {
+        openedShopMenu = value;
+        shopMenu.SetActive(value);
+        if (value)
+        {
+            shopMenu.GetComponent<ShopMenuScript>().ToggleWeaponsMenu(value);
+            shopMenu.GetComponent<ShopMenuScript>().TogglePreviewUI(value);
+        }
+    }
+    #endregion
+
+    #region Popup Menu
+    public void TogglePopupMenu(bool value)
+    {
+        openedPopupMenu = value;
+        popupMenu.SetActive(value);
+    }
+    public void AddPopup(string title, string content)
+    {
+        PopupWindowItem item = Instantiate(popupWindowItemPrefab, popupHolder).GetComponent<PopupWindowItem>();
+        item.SetInfo(title, content);
+        popupWindows.Add(item);
+    }
+    public bool RemovePopup(PopupWindowItem i)
+    {
+        if (popupWindows.Contains(i))
+        {
+            popupWindows.Remove(i);
+            Destroy(i.gameObject);
+            return true;
+        }
+        return false;
+    }
+    #endregion
+
+    #region User GUI
+    public void SetUserGUIData(string name, int level, float levelProgress, int coin)
+    {
+        username.text = name;
+        userLevel.text = level.ToString();
+        userLevelProgress.value = levelProgress;
+        userCoins.text = "$" + coin.ToString();
+    }
+    public void UpdateName(string name)
+    {
+        username.text = name;
+    }
+    public void UpdateCoin(int coin)
+    {
+        userCoins.text = "$" + coin.ToString();
+    }
+    public void UpdateLevels(int level, float levelProgress)
+    {
+        userLevel.text = level.ToString();
+        userLevelProgress.value = levelProgress;
+    }
+    #endregion
 }

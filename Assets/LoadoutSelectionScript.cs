@@ -103,13 +103,34 @@ public class LoadoutSelectionScript : MonoBehaviour
         string json = File.ReadAllText(Application.persistentDataPath + "/LoadoutDataConfig.json");
         Debug.LogWarning("Reading Loadout Data To Files...");
         LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
+        json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
         selectedLoadoutIndex = jsonData.SelectedSlot;
         selectedMainWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon1;
         selectedSecondWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon2;
+        bool checkChange = false;
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
-            loadoutDataList[i].weaponData[0] = FindWeaponDataFromIndex(jsonData.Slots[i].Weapon1);
-            loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(jsonData.Slots[i].Weapon2);
+            if (jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1))
+            {
+                loadoutDataList[i].weaponData[0] = FindWeaponDataFromIndex(jsonData.Slots[i].Weapon1);
+            }
+            else
+            {
+                checkChange = true;
+                loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(0);
+            }
+
+            if (jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2))
+            {
+                loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(jsonData.Slots[i].Weapon2);
+            }
+            else
+            {
+                checkChange = true;
+                loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(2);
+            }
+
             loadoutDataList[i].selectedSight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Sight1);
             loadoutDataList[i].selectedSight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Sight2);
             loadoutDataList[i].selectedBarrel[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Barrel1);
@@ -119,54 +140,21 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].selectedSidebarrelLeft[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Leftbarrel1);
             loadoutDataList[i].selectedSidebarrelLeft[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Leftbarrel2);
             loadoutDataList[i].selectedSidebarrelRight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel1);
-            loadoutDataList[i].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel1);
+            loadoutDataList[i].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel2);
 
-            loadoutDataList[i].selectedSightIndex[0] = jsonData.Slots[i].WA_Sight1;
-            loadoutDataList[i].selectedSightIndex[1] = jsonData.Slots[i].WA_Sight2;
-            loadoutDataList[i].selectedBarrelIndex[0] = jsonData.Slots[i].WA_Barrel1;
-            loadoutDataList[i].selectedBarrelIndex[1] = jsonData.Slots[i].WA_Barrel2;
-            loadoutDataList[i].selectedUnderbarrelIndex[0] = jsonData.Slots[i].WA_Underbarrel1;
-            loadoutDataList[i].selectedUnderbarrelIndex[1] = jsonData.Slots[i].WA_Underbarrel2;
-            loadoutDataList[i].selectedSidebarrelLeftIndex[0] = jsonData.Slots[i].WA_Leftbarrel1;
-            loadoutDataList[i].selectedSidebarrelLeftIndex[1] = jsonData.Slots[i].WA_Leftbarrel2;
-            loadoutDataList[i].selectedSidebarrelRightIndex[0] = jsonData.Slots[i].WA_Rightbarrel1;
-            loadoutDataList[i].selectedSidebarrelRightIndex[1] = jsonData.Slots[i].WA_Rightbarrel1;
+            loadoutDataList[i].selectedSightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Sight1 : -1;
+            loadoutDataList[i].selectedSightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Sight2 : -1;
+            loadoutDataList[i].selectedBarrelIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Barrel1 : -1;
+            loadoutDataList[i].selectedBarrelIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Barrel2 : -1;
+            loadoutDataList[i].selectedUnderbarrelIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Underbarrel1 : -1;
+            loadoutDataList[i].selectedUnderbarrelIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Underbarrel2 : -1;
+            loadoutDataList[i].selectedSidebarrelLeftIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Leftbarrel1 : -1;
+            loadoutDataList[i].selectedSidebarrelLeftIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Leftbarrel2 : -1;
+            loadoutDataList[i].selectedSidebarrelRightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Rightbarrel1 : -1;
+            loadoutDataList[i].selectedSidebarrelRightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Rightbarrel2 : -1;
         }
+        if (checkChange) WriteLoadoutDataToJSON();
     }
-    /*
-    public void SetLoadoutDataToPreferences()
-    {
-        Debug.LogError("Setting Loadout Data To Prefs...");
-        int selectedMainWeaponIndex = Launcher.Instance.FindGlobalWeaponIndex(loadoutDataList[selectedLoadoutIndex].weaponData[0]);
-        int selectedSecondWeaponIndex = Launcher.Instance.FindGlobalWeaponIndex(loadoutDataList[selectedLoadoutIndex].weaponData[1]);
-        int SMWA_SightIndex1 = loadoutDataList[selectedLoadoutIndex].selectedSightIndex[0];
-        int SMWA_SightIndex2 = loadoutDataList[selectedLoadoutIndex].selectedSightIndex[1];
-        int SMWA_BarrelIndex1 = loadoutDataList[selectedLoadoutIndex].selectedBarrelIndex[0];
-        int SMWA_BarrelIndex2 = loadoutDataList[selectedLoadoutIndex].selectedBarrelIndex[1];
-        int SMWA_UnderbarrelIndex1 = loadoutDataList[selectedLoadoutIndex].selectedUnderbarrelIndex[0];
-        int SMWA_UnderbarrelIndex2 = loadoutDataList[selectedLoadoutIndex].selectedUnderbarrelIndex[1];
-        int SMWA_LeftbarrelIndex1 = loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeftIndex[0];
-        int SMWA_LeftbarrelIndex2 = loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeftIndex[1];
-        int SMWA_RightbarrelIndex1 = loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRightIndex[0];
-        int SMWA_RightbarrelIndex2 = loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRightIndex[1];
-        int SMWA_AppearanceIndex1 = loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[0];
-        int SMWA_AppearanceIndex2 = loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[1];
-        PlayerPrefs.SetInt("selectedLoadoutIndex", selectedLoadoutIndex);
-        PlayerPrefs.SetInt("selectedMainWeaponIndex", selectedMainWeaponIndex);
-        PlayerPrefs.SetInt("selectedSecondWeaponIndex", selectedSecondWeaponIndex);
-        PlayerPrefs.SetInt("SMWA_SightIndex1", SMWA_SightIndex1);
-        PlayerPrefs.SetInt("SMWA_SightIndex2", SMWA_SightIndex2);
-        PlayerPrefs.SetInt("SMWA_BarrelIndex1", SMWA_BarrelIndex1);
-        PlayerPrefs.SetInt("SMWA_BarrelIndex2", SMWA_BarrelIndex2);
-        PlayerPrefs.SetInt("SMWA_UnderbarrelIndex1", SMWA_UnderbarrelIndex1);
-        PlayerPrefs.SetInt("SMWA_UnderbarrelIndex2", SMWA_UnderbarrelIndex2);
-        PlayerPrefs.SetInt("SMWA_LeftbarrelIndex1", SMWA_LeftbarrelIndex1);
-        PlayerPrefs.SetInt("SMWA_LeftbarrelIndex2", SMWA_LeftbarrelIndex2);
-        PlayerPrefs.SetInt("SMWA_RightbarrelIndex1", SMWA_RightbarrelIndex1);
-        PlayerPrefs.SetInt("SMWA_RightbarrelIndex2", SMWA_RightbarrelIndex2);
-        PlayerPrefs.SetInt("SMWA_AppearanceIndex1", SMWA_AppearanceIndex1);
-        PlayerPrefs.SetInt("SMWA_AppearanceIndex2", SMWA_AppearanceIndex2);
-    }*/
     public int GetLoadoutDataFromPreferences(string key)
     {
         int returner = 0;
