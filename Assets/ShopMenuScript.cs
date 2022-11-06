@@ -26,14 +26,17 @@ public class ShopMenuScript : MonoBehaviour
     public Transform previewAttachItemHolder;
     public Image previewIcon;
     public Text previewWeaponName;
+    public Text previewWeaponPrice;
     public Slider previewDamage;
     public Slider previewFireRate;
     public Slider previewAmmo;
     public Slider previewRange;
+    public Button purchasePreview;
 
     [Space]
     [SerializeField] WeaponData previewingWeaponData;
     [SerializeField] List<ShopAttachPreviewItem> attachList = new();
+    [SerializeField] List<ShopWeaponItem> shopWeaponList = new();
 
     void Start()
     {
@@ -46,6 +49,7 @@ public class ShopMenuScript : MonoBehaviour
         weaponsMenu.SetActive(false);
         cratesMenu.SetActive(false);
         TogglePreviewUI(false);
+        MainMenuUIManager.instance.ToggleShopMenu(false);
     }
     public void InitializeWeaponsMenu(UserDataJSON jsonData)
     {
@@ -67,13 +71,15 @@ public class ShopMenuScript : MonoBehaviour
                 un = pur = true;
             }
             item.SetItemData(GlobalDatabase.singleton.allWeaponDatas[i], un, pur);
+            shopWeaponList.Add(item);
         }
     }
-    public void SetPreviewInfo(WeaponData data)
+    public void SetPreviewInfo(WeaponData data, bool showPurchaseButton)
     {
         previewingWeaponData = data;
         previewIcon.sprite = data.itemIcon;
         previewWeaponName.text = data.itemName;
+        previewWeaponPrice.text = "$" + data.purchasePrice.ToString();
         previewDamage.value = data.damage;
         previewFireRate.value = data.fireRate;
         previewRange.value = data.range;
@@ -92,6 +98,7 @@ public class ShopMenuScript : MonoBehaviour
             attachList.Add(item);
             item.SetInfo(data.applicableAttachments[i].attachmentIcon);
         }
+        purchasePreview.interactable = showPurchaseButton;
     }
     public void ToggleWeaponsMenu(bool value)
     {
@@ -118,5 +125,49 @@ public class ShopMenuScript : MonoBehaviour
     public void TogglePreviewUI(bool value)
     {
         previewUI.SetActive(value);
+    }
+    public void OnClickPurchaseButton()
+    {
+        PurchaseWeapon(previewingWeaponData);
+    }
+    public void PurchaseWeapon(WeaponData data)
+    {
+        if (data != null)
+        {
+            string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+            Debug.LogWarning("Reading User Data To Files...");
+            UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
+            jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+            if(jsonData.userCoins >= data.purchasePrice)
+            {
+                MainMenuUIManager.instance.AddPopup("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
+                FindForWeaponDataInList(data).SetItemData(data, true, true);
+                jsonData.userCoins -= data.purchasePrice;
+                //jsonData.shopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
+                jsonData.shopData.ownedWeaponIndexes.Add(Launcher.Instance.FindGlobalWeaponIndex(data));
+                purchasePreview.interactable = false;
+                MainMenuUIManager.instance.UpdateCoin(jsonData.userCoins);
+
+                string jsonWrite = JsonUtility.ToJson(jsonData, true);
+                File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", jsonWrite);
+                MainMenuUIManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutWeaponSelections();
+                Debug.LogWarning("Writing User Data To Files...");
+            }
+            else
+            {
+                MainMenuUIManager.instance.AddPopup("Purchase Result", "Cannot Purchase Weapon! You need more money!");
+            }
+        }
+    }
+    public ShopWeaponItem FindForWeaponDataInList(WeaponData data)
+    {
+        for(int i = 0; i < shopWeaponList.Count; i++)
+        {
+            if(shopWeaponList[i].weaponData == data)
+            {
+                return shopWeaponList[i];
+            }
+        }
+        return new();
     }
 }

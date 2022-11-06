@@ -118,7 +118,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             else
             {
                 checkChange = true;
-                loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(0);
+                loadoutDataList[i].weaponData[0] = FindWeaponDataFromIndex(0);
             }
 
             if (jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2))
@@ -281,8 +281,19 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void InstantiateLoadoutWeaponSelections()
     {
+        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
+        if(loadoutWeaponSelects.Count != 0)
+        {
+            for(int i = 0; i < loadoutWeaponSelects.Count; i++)
+            {
+                Destroy(loadoutWeaponSelects[i].gameObject);
+            }
+            loadoutWeaponSelects.Clear();
+        }
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
+            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
             LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
             //loadoutDataList[i].loadoutIndex = i;
             loadoutWeaponSelects.Add(temp);

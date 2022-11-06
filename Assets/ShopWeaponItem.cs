@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ShopWeaponItem : MonoBehaviour
 {
     ShopMenuScript script;
-    WeaponData weaponData;
+    public WeaponData weaponData;
     public Text weaponName;
     public Text weaponState;
     public Image weaponIcon;
@@ -44,7 +44,7 @@ public class ShopWeaponItem : MonoBehaviour
     }
     public void SelectItem()
     {
-        script.SetPreviewInfo(weaponData);
+        script.SetPreviewInfo(weaponData, isUnlocked ? !isPurchased ? true : false : false);
         script.TogglePreviewUI(true);
     }
 }
