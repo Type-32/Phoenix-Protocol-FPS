@@ -53,6 +53,8 @@ public class ShopMenuScript : MonoBehaviour
     }
     public void InitializeWeaponsMenu(UserDataJSON jsonData)
     {
+        bool informPopupNeeded = false;
+        string content = "You have unlocked the following content(s) in your last session: \n";
         for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
             ShopWeaponItem item = Instantiate(shopWeaponItemPrefab, shopWeaponItemHolder).GetComponent<ShopWeaponItem>();
@@ -60,6 +62,15 @@ public class ShopMenuScript : MonoBehaviour
             if (jsonData.shopData.availableWeaponIndexes.Contains(i))
             {
                 un = pur = false;
+                if (jsonData.userLevel >= GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel)
+                {
+                    un = true;
+                    pur = false;
+                    informPopupNeeded = true;
+                    jsonData.shopData.availableWeaponIndexes.Remove(i);
+                    jsonData.shopData.unlockedWeaponIndexes.Add(i);
+                    content = content + GlobalDatabase.singleton.allWeaponDatas[i].itemName + "\n";
+                }
             }
             if (jsonData.shopData.unlockedWeaponIndexes.Contains(i))
             {
@@ -73,6 +84,7 @@ public class ShopMenuScript : MonoBehaviour
             item.SetItemData(GlobalDatabase.singleton.allWeaponDatas[i], un, pur);
             shopWeaponList.Add(item);
         }
+        if (informPopupNeeded) MainMenuUIManager.instance.AddPopup("Unlocking Content", content);
     }
     public void SetPreviewInfo(WeaponData data, bool showPurchaseButton)
     {
