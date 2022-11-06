@@ -16,9 +16,9 @@ MonoBehaviour:
   itemDescription: Sniper Rifle
   itemIcon: {fileID: 21300000, guid: 18604e2c1148aa246a4d5c33c54c7b7e, type: 3}
   equippedByDefault: 0
-  unlockingLevel: 1
-  requiresPurchase: 0
-  purchasePrice: 100
+  unlockingLevel: 16
+  requiresPurchase: 1
+  purchasePrice: 7200
   weaponPrefab: {fileID: 6788626819295025767, guid: 7c8bab39aa7dc4e4baccabe37ff8d970,
     type: 3}
   weaponType: 7
@@ -38,6 +38,7 @@ MonoBehaviour:
   aimSpeed: 1.6
   damagePerPellet: 10
   pelletsPerFire: 1
+  reloadTimePerPellet: 0.8
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -48,6 +49,7 @@ MonoBehaviour:
   enableSingle: 1
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 1
+  reloadByBullet: 0
   bassClips:
   - {fileID: 8300000, guid: 0d88164ddcb598c4ba84a1cc4a00999d, type: 3}
   fireClips:

@@ -16,9 +16,9 @@ MonoBehaviour:
   itemDescription: Assault Rifle
   itemIcon: {fileID: 21300000, guid: b00e5458f587de345898e30fb2196b03, type: 3}
   equippedByDefault: 0
-  unlockingLevel: 1
-  requiresPurchase: 0
-  purchasePrice: 100
+  unlockingLevel: 17
+  requiresPurchase: 1
+  purchasePrice: 5000
   weaponPrefab: {fileID: 6788626819295025767, guid: 548c17a9de0185b44bcd5a72f54c5d25,
     type: 3}
   weaponType: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
   magazineCount: 5
   damage: 36
   range: 240
-  reloadTime: 3
+  reloadTime: 2.5
   impactForce: 20
   fireRate: 12.8
   FOVMultiplier: 2.5
@@ -38,6 +38,7 @@ MonoBehaviour:
   aimSpeed: 1
   damagePerPellet: 10
   pelletsPerFire: 1
+  reloadTimePerPellet: 0.8
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -48,6 +49,7 @@ MonoBehaviour:
   enableSingle: 1
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
+  reloadByBullet: 0
   bassClips:
   - {fileID: 8300000, guid: 86fbbbea1d3cbd94891228354a8c8003, type: 3}
   fireClips:

@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec236da174a09f2468714c004e0f7581, type: 3}
+  m_Name: Breacher-12
+  m_EditorClassIdentifier: 
+  itemName: Breacher-12
+  itemDescription: Shotgun
+  itemIcon: {fileID: 21300000, guid: 981b7d3119ac8dd4fa3c4b44fdb590b4, type: 3}
+  equippedByDefault: 0
+  unlockingLevel: 18
+  requiresPurchase: 1
+  purchasePrice: 6500
+  weaponPrefab: {fileID: 6788626819295025767, guid: 588cc7b2d86f71f4e81dbd50872e5532,
+    type: 3}
+  weaponType: 3
+  weaponProjectile: {fileID: 0}
+  maxAmmoPerMag: 8
+  magazineCount: 4
+  damage: 38
+  range: 100
+  reloadTime: 3.5
+  impactForce: 12
+  fireRate: 9
+  FOVMultiplier: 2
+  hipfireSpread: 1
+  rechamberDelay: 0.1
+  shellEjectionDelay: 0
+  boltRecoveryDuration: 0.4
+  aimSpeed: 1
+  damagePerPellet: 10
+  pelletsPerFire: 8
+  reloadTimePerPellet: 0.78
+  isEnabled: 1
+  isMelee: 0
+  isExplosive: 0
+  isArmorPenetrative: 0
+  isSniperProperties: 0
+  enableAutomatic: 0
+  enableBurst: 0
+  enableSingle: 1
+  hasHipfireInaccuracy: 1
+  ejectCasingAfterRechamber: 0
+  reloadByBullet: 0
+  bassClips:
+  - {fileID: 8300000, guid: 70f003884f42da04bb26a6cef4aeaa69, type: 3}
+  fireClips:
+  - {fileID: 8300000, guid: 2944f33316a2bb243ac281e538d02cf8, type: 3}
+  - {fileID: 8300000, guid: 5758bf1e40f343f48b3359ef3c82366f, type: 3}
+  - {fileID: 8300000, guid: 922c4ca009db4a24baca509bce1a7e80, type: 3}
+  - {fileID: 8300000, guid: 2ef4d436fe311774a81a375ab9860c36, type: 3}
+  - {fileID: 8300000, guid: 4ba9e5b28e6368e4c96f572b6eebe1e9, type: 3}
+  - {fileID: 8300000, guid: 6663002256b9a164eb88915c0b284813, type: 3}
+  silencedFireClips:
+  - {fileID: 8300000, guid: b5ec32b007463174cbac25ee3e07e3fc, type: 3}
+  - {fileID: 8300000, guid: 66b78a865006bd443a91a0127d9ccc69, type: 3}
+  - {fileID: 8300000, guid: d8b1d50c1cc13d548b10a6bf657dd134, type: 3}
+  - {fileID: 8300000, guid: d6e48e6f2f967914c9ebf4710f76adad, type: 3}
+  - {fileID: 8300000, guid: d3f999cc93a7bdd4290d7cb3d6e98262, type: 3}
+  - {fileID: 8300000, guid: 40b4ac63087a3d14f9552badd7328e5f, type: 3}
+  - {fileID: 8300000, guid: d958c31581b479d45842b63815338e66, type: 3}
+  - {fileID: 8300000, guid: 88c21021fe1dfd645b96cfcdca0a6014, type: 3}
+  mechClips:
+  - {fileID: 8300000, guid: 4fe0c312edb38b247bc098cff394fc7a, type: 3}
+  - {fileID: 8300000, guid: 19232df7c83eb2d44a419c043cf0c76f, type: 3}
+  - {fileID: 8300000, guid: 87d73b8187ad90843b607acf69dc288e, type: 3}
+  - {fileID: 8300000, guid: 61a938027c5231f44aaa564accbbc050, type: 3}
+  - {fileID: 8300000, guid: fd4d0fac0d7f5c741a677eee47719f57, type: 3}
+  - {fileID: 8300000, guid: f4f4a30eb84f39d4facbf6b9af49ddd8, type: 3}
+  - {fileID: 8300000, guid: b43410459ddb56849b1c126090775947, type: 3}
+  - {fileID: 8300000, guid: c630bccc959f05d4682503600af8f25c, type: 3}
+  rechamberClips: []
+  applicableVariants: []
+  applicableAttachments:
+  - {fileID: 11400000, guid: eaa3091aa3f59c1458f80c48eac2633e, type: 2}

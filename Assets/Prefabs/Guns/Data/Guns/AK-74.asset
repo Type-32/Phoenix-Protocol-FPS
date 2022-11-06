@@ -18,7 +18,7 @@ MonoBehaviour:
   equippedByDefault: 0
   unlockingLevel: 1
   requiresPurchase: 0
-  purchasePrice: 100
+  purchasePrice: 0
   weaponPrefab: {fileID: 6788626819295025767, guid: 68efe89b7a2114e11a88b23cd6ab6d20,
     type: 3}
   weaponType: 0
@@ -33,10 +33,12 @@ MonoBehaviour:
   FOVMultiplier: 2
   hipfireSpread: 1
   rechamberDelay: 0.1
+  shellEjectionDelay: 0
   boltRecoveryDuration: 1.5
   aimSpeed: 1
   damagePerPellet: 10
   pelletsPerFire: 1
+  reloadTimePerPellet: 0.8
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -47,6 +49,7 @@ MonoBehaviour:
   enableSingle: 1
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
+  reloadByBullet: 0
   bassClips:
   - {fileID: 8300000, guid: 661909432356a5f4b93d1f70bd6ad9d8, type: 3}
   fireClips:

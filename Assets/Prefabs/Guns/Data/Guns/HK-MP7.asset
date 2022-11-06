@@ -16,9 +16,9 @@ MonoBehaviour:
   itemDescription: SMG
   itemIcon: {fileID: 21300000, guid: 4745fc41aa8000a4fbdeb33dd4e02bdb, type: 3}
   equippedByDefault: 0
-  unlockingLevel: 1
-  requiresPurchase: 0
-  purchasePrice: 100
+  unlockingLevel: 5
+  requiresPurchase: 1
+  purchasePrice: 2900
   weaponPrefab: {fileID: 6788626819295025767, guid: 6a7652dd6dcab95408f485312819f1b7,
     type: 3}
   weaponType: 0
@@ -32,10 +32,13 @@ MonoBehaviour:
   fireRate: 15.5
   FOVMultiplier: 1.8
   hipfireSpread: 1.5
+  rechamberDelay: 0.1
+  shellEjectionDelay: 0
   boltRecoveryDuration: 1.5
   aimSpeed: 1
   damagePerPellet: 10
   pelletsPerFire: 1
+  reloadTimePerPellet: 0.8
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -45,6 +48,8 @@ MonoBehaviour:
   enableBurst: 0
   enableSingle: 1
   hasHipfireInaccuracy: 1
+  ejectCasingAfterRechamber: 0
+  reloadByBullet: 0
   bassClips:
   - {fileID: 8300000, guid: e7bdbcb55415fe1458ff00431302b0d9, type: 3}
   fireClips:
@@ -62,6 +67,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 42afde6ce2dc02c4fb294100b7a60de5, type: 3}
   - {fileID: 8300000, guid: f7045cde0e01d2c48a4ffdecd6a39bff, type: 3}
   - {fileID: 8300000, guid: 55e51e19ee55c2840a534d957143358d, type: 3}
+  rechamberClips: []
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: 3757cbdc14ffd6d4c91b9b2d37b34d73, type: 2}

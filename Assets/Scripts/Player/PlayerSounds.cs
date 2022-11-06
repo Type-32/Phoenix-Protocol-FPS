@@ -66,28 +66,36 @@ public class PlayerSounds : MonoBehaviour
             switch (hit.collider.tag)
             {
                 case "Footsteps/Wood":
-                    stats.footstepAS.PlayOneShot(woodClips[Random.Range(0, woodClips.Length - 1)]);
+                    stats.footstepAS.clip = woodClips[Random.Range(0, woodClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Wool":
-                    stats.footstepAS.PlayOneShot(woolClips[Random.Range(0, woolClips.Length - 1)]);
+                    stats.footstepAS.clip = woolClips[Random.Range(0, woolClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Concrete":
-                    stats.footstepAS.PlayOneShot(concreteClips[Random.Range(0, concreteClips.Length - 1)]);
+                    stats.footstepAS.clip = concreteClips[Random.Range(0, concreteClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Metal":
-                    stats.footstepAS.PlayOneShot(metalClips[Random.Range(0, metalClips.Length - 1)]);
+                    stats.footstepAS.clip = metalClips[Random.Range(0, metalClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Dirt":
-                    stats.footstepAS.PlayOneShot(dirtClips[Random.Range(0, dirtClips.Length - 1)]);
+                    stats.footstepAS.clip = dirtClips[Random.Range(0, dirtClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/ThinLiquid":
-                    stats.footstepAS.PlayOneShot(thinLiquidClips[Random.Range(0, thinLiquidClips.Length - 1)]);
+                    stats.footstepAS.clip = thinLiquidClips[Random.Range(0, thinLiquidClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/ThickLiquid":
-                    stats.footstepAS.PlayOneShot(thickLiquidClips[Random.Range(0, thickLiquidClips.Length - 1)]);
+                    stats.footstepAS.clip = thickLiquidClips[Random.Range(0, thickLiquidClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
                 default:
-                    stats.footstepAS.PlayOneShot(defaultClips[Random.Range(0, defaultClips.Length - 1)]);
+                    stats.footstepAS.clip = defaultClips[Random.Range(0, defaultClips.Length - 1)];
+                    stats.footstepAS.Play();
                     break;
             }
         }

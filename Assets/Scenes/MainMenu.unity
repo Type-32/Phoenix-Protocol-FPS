@@ -11566,6 +11566,7 @@ GameObject:
   m_Component:
   - component: {fileID: 851938315}
   - component: {fileID: 851938314}
+  - component: {fileID: 851938316}
   m_Layer: 0
   m_Name: GlobalDatabase
   m_TagString: Untagged
@@ -11752,6 +11753,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 53fa2ec654836044180f81186329d519, type: 2}
   - {fileID: 11400000, guid: 02122827c60880041ac5df9cc65e452f, type: 2}
   - {fileID: 11400000, guid: ce9b8475d911b084e983708f66605082, type: 2}
+  - {fileID: 11400000, guid: 860fa09a2047a8a439f39540e29b6197, type: 2}
   - {fileID: 11400000, guid: 386b6db7c5f923c46bd466798260df48, type: 2}
   - {fileID: 11400000, guid: 919bdc4312019cb4ab31dcb83cfc93bb, type: 2}
   allWeaponAppearanceDatas:
@@ -11805,6 +11807,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &851938316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851938313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dd6efaa44747da41a3b5c5a1276e6a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &873961026
 GameObject:
   m_ObjectHideFlags: 0

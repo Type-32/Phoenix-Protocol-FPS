@@ -98,7 +98,7 @@ public class GunCoreFunc : MonoBehaviour
     }
     public void ReloadMechanics()
     {
-        if (Input.GetKeyDown("r") && !gun.stats.isReloading && gun.stats.ammo != gun.stats.weaponData.maxAmmoPerMag) StartCoroutine(Reload());
+        if (Input.GetKeyDown("r") && !gun.stats.isReloading && gun.stats.ammo != gun.stats.weaponData.maxAmmoPerMag && gun.stats.ammoPool > 0) StartCoroutine(Reload());
         if (gun.stats.ammo <= 0 && gun.stats.ammoPool > 0 && !gun.stats.isReloading) StartCoroutine(Reload());
     }
     private void RequestShootServerRpc(float range, float damage)
@@ -163,7 +163,7 @@ public class GunCoreFunc : MonoBehaviour
             if (gun.stats.ammo <= 0 || stats.isSprinting) return;
             for (int i = 0; i < gun.stats.weaponData.pelletsPerFire; i++) Shoot(gun.stats.range, gun.stats.weaponData.damagePerPellet);
             gun.stats.ammo--;
-            if (gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun) StartCoroutine(Rechamber());
+            if (gun.stats.weaponData.ejectCasingAfterRechamber) StartCoroutine(Rechamber());
             //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
             timePassedUntillNextShot = 0f;
         }

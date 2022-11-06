@@ -16,9 +16,9 @@ MonoBehaviour:
   itemDescription: Marksman Rifle
   itemIcon: {fileID: 21300000, guid: df7d2a278dc66934ebfd0dc03037ddfa, type: 3}
   equippedByDefault: 0
-  unlockingLevel: 1
-  requiresPurchase: 0
-  purchasePrice: 100
+  unlockingLevel: 4
+  requiresPurchase: 1
+  purchasePrice: 3600
   weaponPrefab: {fileID: 6788626819295025767, guid: e081dcabc1fdb4d40b04d5ebbfc557db,
     type: 3}
   weaponType: 7
@@ -33,10 +33,12 @@ MonoBehaviour:
   FOVMultiplier: 2.8
   hipfireSpread: 0.8
   rechamberDelay: 0.4
+  shellEjectionDelay: 0
   boltRecoveryDuration: 1
   aimSpeed: 1.5
   damagePerPellet: 10
   pelletsPerFire: 1
+  reloadTimePerPellet: 0.8
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -47,6 +49,7 @@ MonoBehaviour:
   enableSingle: 1
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 1
+  reloadByBullet: 0
   bassClips:
   - {fileID: 8300000, guid: bf28a123c40dfbc40a4050edf538aff7, type: 3}
   fireClips:
