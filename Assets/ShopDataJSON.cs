@@ -8,14 +8,11 @@ public class ShopDataJSON
     public List<int> ownedWeaponIndexes;
     public List<int> availableWeaponIndexes;
     public Dictionary<int, int> availableWeaponCrates;
-    public Dictionary<int, bool> announcedUnlockedWeaponIndexes;
-    public Dictionary<int, bool> announcedOwnedWeaponIndexes;
     internal ShopDataJSON()
     {
-        unlockedWeaponIndexes = new();
-        ownedWeaponIndexes = new();
-        availableWeaponIndexes = new();
-        announcedUnlockedWeaponIndexes = new();
-        announcedOwnedWeaponIndexes = new();
+        unlockedWeaponIndexes = new List<int>();
+        ownedWeaponIndexes = new List<int>();
+        availableWeaponIndexes = new List<int>();
+        availableWeaponCrates = new Dictionary<int, int>();
     }
 }

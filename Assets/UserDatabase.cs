@@ -61,6 +61,17 @@ public class UserDatabase : MonoBehaviour
         File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
         Debug.LogWarning("Initializing User Data To Files...");
     }
+    public void AddUserCurrency(int amount)
+    {
+        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        jsonData.userCoins += amount;
+        if (RoomManager.Instance.currentSceneIndex == 0)
+        {
+            MainMenuUIManager.instance.UpdateCoin(jsonData.userCoins);
+        }
+        WriteInputDataToJSON(jsonData);
+    }
     public void AddUserLevelXP(int amount)
     {
         string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");

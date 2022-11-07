@@ -594,7 +594,7 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
-        InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 2 : 0));
+        InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0));
         InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         MinimapDotIdentifier[] tempget;
         tempget = FindObjectsOfType<MinimapDotIdentifier>();
