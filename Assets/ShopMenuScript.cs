@@ -84,6 +84,7 @@ public class ShopMenuScript : MonoBehaviour
             item.SetItemData(GlobalDatabase.singleton.allWeaponDatas[i], un, pur);
             shopWeaponList.Add(item);
         }
+        UserDatabase.Instance.WriteInputDataToJSON(jsonData);
         if (informPopupNeeded) MainMenuUIManager.instance.AddPopup("Unlocking Content", content);
     }
     public void SetPreviewInfo(WeaponData data, bool showPurchaseButton)

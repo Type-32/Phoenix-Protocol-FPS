@@ -56,7 +56,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         DisablePreview();
         loadoutItems[selectedLoadoutIndex].ToggleSelectVisual(true);
         DisableWeaponSelection();
-        //MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
     }
     public int FindGlobalWeaponIndex(WeaponData data)
     {

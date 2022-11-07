@@ -594,7 +594,7 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
-        InstantiateKillIcon(false, killedPlayerName, 120);
+        InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 2 : 0));
         InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         MinimapDotIdentifier[] tempget;
         tempget = FindObjectsOfType<MinimapDotIdentifier>();
@@ -606,22 +606,11 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerControllerManager>().DisableAllMinimapDots();
         controller.GetComponent<PlayerControllerManager>().playerMinimapDot.SetActive(true);
 
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
-        Debug.LogWarning("Reading User Data From Files...");
-        UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
-        jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-        int levelLimit = jsonData.userLevel * 500;
-        if (jsonData.userLevelXP + 120 >= levelLimit)
+        if (pv.IsMine)
         {
-            jsonData.userLevelXP += 120;
-            jsonData.userLevel++;
-            jsonData.userLevelXP -= levelLimit;
-            levelLimit = jsonData.userLevel * 500;
-        }else{
-            jsonData.userLevelXP += 120;
+            SynchronizeValues(kills, deaths);
+            UserDatabase.Instance.AddUserLevelXP(150 + (streakKills > 1 ? 150 * (streakKills - 1) / 2 : 0));
         }
-        UserDatabase.Instance.WriteInputDataToJSON(jsonData);
-        if (pv.IsMine) SynchronizeValues(kills, deaths);
         //cmm.OnPlayerKillUpdate();
         //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         //Debug.Log("Killed " + killedPlayerName + " with " + withWeaponIndex);

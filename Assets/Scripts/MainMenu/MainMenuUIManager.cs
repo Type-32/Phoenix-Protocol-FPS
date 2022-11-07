@@ -76,9 +76,21 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] Text selectedGamemode;
     [SerializeField] Text selectedMaxPlayers;
 
+    public enum PopupQueue
+    {
+        OnMainMenuLoad,
+        OnOpenedGame
+    };
+    public struct PopupData
+    {
+        public string title;
+        public string content;
+        public PopupQueue queueType;
+    };
     [Space]
     [Header("Popups")]
     public List<PopupWindowItem> popupWindows = new();
+    public List<PopupData> queuedPopups = new();
     public GameObject popupWindowItemPrefab;
 
     [Space]
@@ -119,6 +131,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseUpdateLogsMenu();
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
+
     }
 
     #region Main Menus
@@ -617,6 +630,15 @@ public class MainMenuUIManager : MonoBehaviour
         PopupWindowItem item = Instantiate(popupWindowItemPrefab, popupHolder).GetComponent<PopupWindowItem>();
         item.SetInfo(title, content);
         popupWindows.Add(item);
+        Debug.Log("Popup Instantiated");
+    }
+    public void AddQueuedPopup(string title, string content, PopupQueue queueType)
+    {
+        PopupData temp;
+        temp.title = title;
+        temp.content = content;
+        temp.queueType = queueType;
+        queuedPopups.Add(temp);
     }
     public bool RemovePopup(PopupWindowItem i)
     {
@@ -635,7 +657,7 @@ public class MainMenuUIManager : MonoBehaviour
     {
         username.text = name;
         userLevel.text = level.ToString();
-        userLevelProgress.value = levelProgress;
+        userLevelProgress.value = levelProgress / (float)(level * 500);
         userCoins.text = "$" + coin.ToString();
     }
     public void UpdateName(string name)

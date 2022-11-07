@@ -25,8 +25,8 @@ public class UserDatabase : MonoBehaviour
         UserDataJSON jsonData = emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         //Debug.Log(jsonData.userLevel);
-        MainMenuUIManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, jsonData.userLevelXP / (jsonData.userLevel * 500), jsonData.userCoins);
-        
+        MainMenuUIManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, (float)jsonData.userLevelXP, jsonData.userCoins);
+        Debug.Log((jsonData.userLevelXP / (jsonData.userLevel * 500)));
         if (!jsonData.hasInitialized)
         {
             string content = "";
@@ -60,5 +60,41 @@ public class UserDatabase : MonoBehaviour
         //File.Create(Application.persistentDataPath + "/UserDataConfig.json");
         File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
         Debug.LogWarning("Initializing User Data To Files...");
+    }
+    public void AddUserLevelXP(int amount)
+    {
+        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        int levelLim = jsonData.userLevel * 500;
+        string unlockedContent = "";
+        if (jsonData.userLevelXP + amount >= levelLim)
+        {
+            jsonData.userLevelXP = jsonData.userLevelXP + amount - levelLim;
+            jsonData.userLevel++;
+            for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            {
+                if (GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel <= jsonData.userLevel)
+                {
+                    unlockedContent = unlockedContent + "-" + GlobalDatabase.singleton.allWeaponDatas[i].itemName + "\n";
+                }
+            }
+            if (RoomManager.Instance.currentSceneIndex != 0)
+            {
+                MainMenuUIManager.PopupData tmp;
+                tmp.title = "Level Up";
+                tmp.content = "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent);
+                tmp.queueType = MainMenuUIManager.PopupQueue.OnMainMenuLoad;
+                if (!MainMenuUIManager.instance.queuedPopups.Contains(tmp)) MainMenuUIManager.instance.AddQueuedPopup(tmp.title, tmp.content, MainMenuUIManager.PopupQueue.OnMainMenuLoad);
+            }
+            else MainMenuUIManager.instance.AddPopup("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
+            WriteInputDataToJSON(jsonData);
+        }
+        else
+        {
+            if (RoomManager.Instance.currentSceneIndex != 0) MainMenuUIManager.instance.AddQueuedPopup("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent), MainMenuUIManager.PopupQueue.OnMainMenuLoad);
+            else MainMenuUIManager.instance.AddPopup("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
+            jsonData.userLevelXP += amount;
+            WriteInputDataToJSON(jsonData);
+        }
     }
 }

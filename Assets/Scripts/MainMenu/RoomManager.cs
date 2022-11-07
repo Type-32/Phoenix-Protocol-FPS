@@ -8,6 +8,7 @@ using System.IO;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Instance;
+    public int currentSceneIndex = 0;
     private void Awake()
     {
         if (Instance)
@@ -43,10 +44,27 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
+        else if (scene.buildIndex == 0)
+        {
+            if (MainMenuUIManager.instance.queuedPopups.Count > 0)
+            {
+                for (int i = 0; i < MainMenuUIManager.instance.queuedPopups.Count; i++)
+                {
+                    if (MainMenuUIManager.instance.queuedPopups[i].queueType == MainMenuUIManager.PopupQueue.OnMainMenuLoad)
+                    {
+                        MainMenuUIManager.instance.AddPopup(MainMenuUIManager.instance.queuedPopups[i].title, MainMenuUIManager.instance.queuedPopups[i].content);
+                        MainMenuUIManager.instance.queuedPopups.Remove(MainMenuUIManager.instance.queuedPopups[i]);
+                        Debug.Log("Removing used queued popup");
+                    }
+                }
+                MainMenuUIManager.instance.queuedPopups.Clear();
+            }
+        }
         else
         {
             CloseAllMenus();
         }
+        currentSceneIndex = scene.buildIndex;
     }
     public void CloseAllMenus()
     {
