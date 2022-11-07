@@ -25,6 +25,7 @@ public class InGameUI : MonoBehaviour
     public Text topPlayerName;
     public Text topPlayerScore;
     public Text timeText;
+    public Text requirementText;
 
     private void Awake()
     {
@@ -61,5 +62,9 @@ public class InGameUI : MonoBehaviour
     public void ToggleDZ_UI(bool toggle)
     {
         DropZonesUI.SetActive(toggle);
+    }
+    public void SetFFAMaxKillRequirement(int amount)
+    {
+        requirementText.text = "Get " + amount + " kills to win the game!";
     }
 }

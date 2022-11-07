@@ -75,6 +75,11 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] Text selectedMap;
     [SerializeField] Text selectedGamemode;
     [SerializeField] Text selectedMaxPlayers;
+    [SerializeField] Text selectedMaxKillLimit;
+    public List<GameObject> FFAGamemodeOptions = new();
+    public List<GameObject> TDMPlayersOptions = new();
+    public List<GameObject> KOTHPlayersOptions = new();
+    public List<GameObject> DZPlayersOptions = new();
 
     public enum PopupQueue
     {
