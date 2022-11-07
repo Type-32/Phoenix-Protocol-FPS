@@ -605,6 +605,22 @@ public class PlayerManager : MonoBehaviour
         }
         controller.GetComponent<PlayerControllerManager>().DisableAllMinimapDots();
         controller.GetComponent<PlayerControllerManager>().playerMinimapDot.SetActive(true);
+
+        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        Debug.LogWarning("Reading User Data From Files...");
+        UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
+        jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        int levelLimit = jsonData.userLevel * 500;
+        if (jsonData.userLevelXP + 120 >= levelLimit)
+        {
+            jsonData.userLevelXP += 120;
+            jsonData.userLevel++;
+            jsonData.userLevelXP -= levelLimit;
+            levelLimit = jsonData.userLevel * 500;
+        }else{
+            jsonData.userLevelXP += 120;
+        }
+        UserDatabase.Instance.WriteInputDataToJSON(jsonData);
         if (pv.IsMine) SynchronizeValues(kills, deaths);
         //cmm.OnPlayerKillUpdate();
         //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);

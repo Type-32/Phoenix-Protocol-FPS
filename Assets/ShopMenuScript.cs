@@ -160,8 +160,7 @@ public class ShopMenuScript : MonoBehaviour
                 purchasePreview.interactable = false;
                 MainMenuUIManager.instance.UpdateCoin(jsonData.userCoins);
 
-                string jsonWrite = JsonUtility.ToJson(jsonData, true);
-                File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", jsonWrite);
+                UserDatabase.Instance.WriteInputDataToJSON(jsonData);
                 MainMenuUIManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutWeaponSelections();
                 Debug.LogWarning("Writing User Data To Files...");
             }
