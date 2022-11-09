@@ -140,6 +140,10 @@ public class MainMenuUIManager : MonoBehaviour
         OpenMainMenu();
 
     }
+    private void OnEnable()
+    {
+        MainMenuUIManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue(), UserDatabase.Instance.GetUserCoinValue());
+    }
 
     #region Main Menus
     public void OpenMainMenu()
@@ -685,7 +689,7 @@ public class MainMenuUIManager : MonoBehaviour
     {
         username.text = name;
         userLevel.text = level.ToString();
-        userLevelProgress.value = levelProgress / (float)(level * 500);
+        userLevelProgress.value = levelProgress / (float)(level * UserDatabase.Instance.levelLimiter);
         userCoins.text = "$" + coin.ToString();
     }
     public void UpdateName(string name)

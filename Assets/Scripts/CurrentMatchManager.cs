@@ -211,7 +211,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }
         localClientPlayer.CloseMenu();
         internalUI.ToggleMatchEndStats(true, 2f);
-        int gainedCoins = (int)(localClientPlayer.totalGainedXP * (2f / 3f));
+        int gainedCoins = (int)(localClientPlayer.totalGainedXP * (5f / 6f));
         internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
         UserDatabase.Instance.AddUserLevelXP(localClientPlayer.totalGainedXP);
         UserDatabase.Instance.AddUserCurrency(gainedCoins);

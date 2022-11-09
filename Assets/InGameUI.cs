@@ -108,9 +108,9 @@ public class InGameUI : MonoBehaviour
         KDRatio.text = "K/D: " + ((float)totalKills / (float)totalDeaths).ToString();
         this.totalGainedCoins.text = "Resulting Money Gained: " + totalGainedCoins.ToString();
         this.totalGainedXP.text = "Gained XP in match: " + totalGainedXP.ToString();
-        this.XPSlider.value = xp / (level * 500);
-        this.levelText.text = (totalGainedXP + xp >= level * 500) ? ("Level " + level.ToString() + " > " + (level + 1).ToString()) : ("Level " + level.ToString());
-        sliderXPTemp = ((float)totalGainedXP / ((float)level * 500f)) + xp;
+        this.XPSlider.value = xp / (level * UserDatabase.Instance.levelLimiter);
+        this.levelText.text = (totalGainedXP + xp >= level * UserDatabase.Instance.levelLimiter) ? ("Level " + level.ToString() + " > " + (level + 1).ToString()) : ("Level " + level.ToString());
+        sliderXPTemp = ((float)totalGainedXP / ((float)level * UserDatabase.Instance.levelLimiter)) + xp;
     }
     public void OnLeaveButtonClick()
     {

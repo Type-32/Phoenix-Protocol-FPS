@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class UserDatabase : MonoBehaviour
 {
     public static UserDatabase Instance;
     public UserDataJSON emptyUserDataJSON;
+    public int levelLimiter = 800;
     private void Awake()
     {
         Instance = this;
+        levelLimiter = 800;
     }
     private void Start()
     {
@@ -24,9 +27,8 @@ public class UserDatabase : MonoBehaviour
         Debug.LogWarning("Reading User Data To Files...");
         UserDataJSON jsonData = emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-        //Debug.Log(jsonData.userLevel);
         MainMenuUIManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, (float)jsonData.userLevelXP, jsonData.userCoins);
-        Debug.Log((jsonData.userLevelXP / (jsonData.userLevel * 500)));
+        Debug.Log((jsonData.userLevelXP / (jsonData.userLevel * UserDatabase.Instance.levelLimiter)));
         if (!jsonData.hasInitialized)
         {
             string content = "";
@@ -76,7 +78,7 @@ public class UserDatabase : MonoBehaviour
     {
         string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
         UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-        int levelLim = jsonData.userLevel * 500;
+        int levelLim = jsonData.userLevel * UserDatabase.Instance.levelLimiter;
         string unlockedContent = "";
         bool ret = false;
         if (jsonData.userLevelXP + amount >= levelLim)
