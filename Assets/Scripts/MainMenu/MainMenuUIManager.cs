@@ -62,6 +62,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private int roomMapSelectionIndex;
     [SerializeField] private Gamemodes selectedGamemodes = Gamemodes.FFA;
     [SerializeField] private int maxPlayerCount = 8;
+    [SerializeField] private int maxKillLimitNumber = 8;
     [SerializeField] private bool roomVisibility = true;
     [SerializeField] private Transform popupHolder;
 
@@ -69,6 +70,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] Text maxPlayers;
     [SerializeField] Text gamemodes;
     [SerializeField] Text visibility;
+    [SerializeField] Text maxKillLimit;
 
     [Header("Room Preview")]
     [SerializeField] Text selectedRoomName;
@@ -434,12 +436,12 @@ public class MainMenuUIManager : MonoBehaviour
     #endregion
 
     #region Room Creation
-    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer, int mapIndex, bool roomVisibility)
+    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit)
     {
         Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
         int roomCode = Random.Range(10000000, 99999999);
-        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "roomMode", "roomMapIndex", "roomVisibility", "roomCode" }; //Expose values to main lobby
+        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit" }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add("roomName", roomName);
@@ -465,6 +467,7 @@ public class MainMenuUIManager : MonoBehaviour
         roomOptions.CustomRoomProperties.Add("roomMapIndex", mapIndex);
         roomOptions.CustomRoomProperties.Add("roomVisibility", roomVisibility);
         roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
+        roomOptions.CustomRoomProperties.Add("maxKillLimit", maxKillLimit);
         roomOptions.MaxPlayers = (byte)maxPlayer;
 
         /*
@@ -497,7 +500,7 @@ public class MainMenuUIManager : MonoBehaviour
     {
         RoomOptions roomOptionsTemp = new RoomOptions();
         roomOptionsTemp.CustomRoomProperties = new Hashtable();
-        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility);
+        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility, maxKillLimitNumber);
         return roomOptionsTemp;
     }
     public void OnCreateRoomInputSubmit(string roomInput)
@@ -532,6 +535,10 @@ public class MainMenuUIManager : MonoBehaviour
     {
         selectedMaxPlayers.text = "Max Players: " + maxPlayersInput.ToString();
     }
+    public void OnChangedMaxKillLimit(int input)
+    {
+        selectedMaxKillLimit.text = "Max Kill Limit: " + input.ToString();
+    }
     public void OnChangedVisibility(bool visible)
     {
         if (visible) visibility.text = "Public";
@@ -549,10 +556,26 @@ public class MainMenuUIManager : MonoBehaviour
     public void IncreasePlayerCount()
     {
         int temp = int.Parse(maxPlayers.text);
-        if (temp + 1 > 12) return;
+        if (temp + 1 > 20) return;
         maxPlayerCount = temp + 1;
         maxPlayers.text = (temp + 1).ToString();
         OnChangedMaxPlayers(temp + 1);
+    }
+    public void DecreaseKillLimit()
+    {
+        int temp = int.Parse(maxKillLimit.text);
+        if (temp - 1 < 10) return;
+        maxKillLimitNumber = temp - 1;
+        maxKillLimit.text = (temp - 1).ToString();
+        OnChangedMaxKillLimit(temp - 1);
+    }
+    public void IncreaseKillLimit()
+    {
+        int temp = int.Parse(maxKillLimit.text);
+        if (temp + 1 > 50) return;
+        maxKillLimitNumber = temp + 1;
+        maxKillLimit.text = (temp + 1).ToString();
+        OnChangedMaxKillLimit(temp + 1);
     }
 
 

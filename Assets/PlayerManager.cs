@@ -345,7 +345,7 @@ public class PlayerManager : MonoBehaviour
             secondFill = 0f;
             secondCount++;
         }
-        if ((Input.GetKeyDown(KeyCode.Escape)))
+        if ((Input.GetKeyDown(KeyCode.Escape) && !cmm.gameEnded))
         {
             if (loadoutMenu.openedSelectionMenu)
             {

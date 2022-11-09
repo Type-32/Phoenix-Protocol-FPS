@@ -24,9 +24,11 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public PlayerManager topPlayer;
     public PlayerManager localClientPlayer;
     public Scoreboard scoreboard;
+    public int maxKillLimit;
     // Start is called before the first frame update
     private void Awake()
     {
+        maxKillLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"];
         internalUI = FindObjectOfType<InGameUI>();
         scoreboard = FindObjectOfType<Scoreboard>();
         //pv = GetComponent<PhotonView>();
@@ -183,7 +185,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     void FreeForAllFunctions()
     {
-        if(topPlayer.kills >= 30)
+        if(topPlayer.kills >= maxKillLimit)
         {
             gameStarted = false;
             gameEnded = true;
@@ -203,10 +205,12 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         internalUI.ToggleMatchEndUI(true);
         internalUI.SetMatchEndMessage(winnerName + " Won the match!");
         //StartCoroutine(QuitEveryPlayer(3f));
-        localClientPlayer.controller.GetComponent<PlayerControllerManager>().stats.mouseMovementEnabled = false;
-        localClientPlayer.controller.GetComponent<PlayerControllerManager>().stats.playerMovementEnabled = false;
-        localClientPlayer.controller.GetComponent<PlayerControllerManager>().stats.gunInteractionEnabled = false;
-        internalUI.ToggleMatchEndStats(true, 3f);
+        if(localClientPlayer.controller != null)
+        {
+            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die();
+        }
+        localClientPlayer.CloseMenu();
+        internalUI.ToggleMatchEndStats(true, 2f);
         int gainedCoins = (int)(localClientPlayer.totalGainedXP * (2f / 3f));
         internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
         UserDatabase.Instance.AddUserLevelXP(localClientPlayer.totalGainedXP);

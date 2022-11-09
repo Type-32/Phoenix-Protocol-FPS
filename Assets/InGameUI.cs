@@ -45,6 +45,7 @@ public class InGameUI : MonoBehaviour
     {
         instance = this;
         matchManager = FindObjectOfType<CurrentMatchManager>();
+        requirementText.text = "Get " + ((int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]).ToString() + " kills to win the game!";
     }
     private void Update()
     {
@@ -87,6 +88,7 @@ public class InGameUI : MonoBehaviour
     }
     public void ToggleMatchEndStats(bool toggle, float delay)
     {
+        Cursor.lockState = CursorLockMode.None;
         StartCoroutine(TGL_MatchEndStats(toggle, delay));
         endMatchMenuEnabled = toggle;
     }
@@ -109,5 +111,9 @@ public class InGameUI : MonoBehaviour
         this.XPSlider.value = xp / (level * 500);
         this.levelText.text = (totalGainedXP + xp >= level * 500) ? ("Level " + level.ToString() + " > " + (level + 1).ToString()) : ("Level " + level.ToString());
         sliderXPTemp = ((float)totalGainedXP / ((float)level * 500f)) + xp;
+    }
+    public void OnLeaveButtonClick()
+    {
+        matchManager.QuitFromMatchEnd();
     }
 }

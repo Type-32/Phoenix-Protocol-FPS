@@ -299,6 +299,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutWeaponSelects.Add(temp);
             temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
             temp.weaponIndex = i;
+            temp.customButtonsHolder = this.customButtonsHolder;
         }
     }
 
