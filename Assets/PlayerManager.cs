@@ -12,7 +12,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerManager : MonoBehaviour
 {
     public PhotonView pv;
-    GameObject controller;
+    public GameObject controller;
     [SerializeField] GameObject deathUI;
     [SerializeField] Text deathCountdown;
     public Camera cameraObject;
@@ -72,6 +72,7 @@ public class PlayerManager : MonoBehaviour
     public bool nightVisionState = false;
     [HideInInspector] public int streakKills = 0;
     [HideInInspector] public int recordKills = 0;
+    [HideInInspector] public int totalGainedXP = 0;
 
     [Space]
     [Header("Kill Messages")]
@@ -595,6 +596,7 @@ public class PlayerManager : MonoBehaviour
         player.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0));
+        totalGainedXP += 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0);
         InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         MinimapDotIdentifier[] tempget;
         tempget = FindObjectsOfType<MinimapDotIdentifier>();

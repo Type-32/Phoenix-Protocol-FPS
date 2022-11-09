@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -34,6 +35,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         internalUI.ToggleMatchEndUI(false);
+        internalUI.ToggleMatchEndStats(false, 0f);
         gameStarted = true;
         gameEnded = false;
         switch (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"])
@@ -183,6 +185,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         if(topPlayer.kills >= 30)
         {
+            gameStarted = false;
+            gameEnded = true;
             FFAWin(topPlayer.pv.Owner.NickName);
         }
     }
@@ -198,7 +202,22 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
         internalUI.SetMatchEndMessage(winnerName + " Won the match!");
-        StartCoroutine(QuitEveryPlayer(3f));
+        //StartCoroutine(QuitEveryPlayer(3f));
+        localClientPlayer.controller.GetComponent<PlayerControllerManager>().stats.mouseMovementEnabled = false;
+        localClientPlayer.controller.GetComponent<PlayerControllerManager>().stats.playerMovementEnabled = false;
+        localClientPlayer.controller.GetComponent<PlayerControllerManager>().stats.gunInteractionEnabled = false;
+        internalUI.ToggleMatchEndStats(true, 3f);
+        int gainedCoins = (int)(localClientPlayer.totalGainedXP * (2f / 3f));
+        internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
+        UserDatabase.Instance.AddUserLevelXP(localClientPlayer.totalGainedXP);
+        UserDatabase.Instance.AddUserCurrency(gainedCoins);
+    }
+    public void QuitFromMatchEnd()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if(players[i].pv.IsMine) players[i].DisconnectPlayer();
+        }
     }
     public IEnumerator QuitEveryPlayer(float delay)
     {

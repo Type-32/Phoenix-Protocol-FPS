@@ -72,14 +72,16 @@ public class UserDatabase : MonoBehaviour
         }
         WriteInputDataToJSON(jsonData);
     }
-    public void AddUserLevelXP(int amount)
+    public bool AddUserLevelXP(int amount)
     {
         string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
         UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         int levelLim = jsonData.userLevel * 500;
         string unlockedContent = "";
+        bool ret = false;
         if (jsonData.userLevelXP + amount >= levelLim)
         {
+            ret = true;
             jsonData.userLevelXP = jsonData.userLevelXP + amount - levelLim;
             jsonData.userLevel++;
             for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
@@ -107,5 +109,24 @@ public class UserDatabase : MonoBehaviour
             jsonData.userLevelXP += amount;
             WriteInputDataToJSON(jsonData);
         }
+        return ret;
+    }
+    public int GetUserXPValue()
+    {
+        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        return jsonData.userLevelXP;
+    }
+    public int GetUserXPLevelValue()
+    {
+        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        return jsonData.userLevel;
+    }
+    public int GetUserCoinValue()
+    {
+        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        return jsonData.userCoins;
     }
 }
