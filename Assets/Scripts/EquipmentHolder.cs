@@ -149,10 +149,10 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     {
         if (_index == previousWeaponIndex) return;
         weaponIndex = _index;
-        weaponSlots[weaponIndex].item.SetActive(true);
+        weaponSlots[weaponIndex].gameObject.SetActive(true);
         if(previousWeaponIndex != -1)
         {
-            weaponSlots[previousWeaponIndex].item.SetActive(false);
+            weaponSlots[previousWeaponIndex].gameObject.SetActive(false);
         }
         previousWeaponIndex = weaponIndex;
 
