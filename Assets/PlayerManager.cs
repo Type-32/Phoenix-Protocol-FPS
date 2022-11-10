@@ -216,6 +216,7 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(jsonData.MouseSensitivity);
         controller.GetComponent<PlayerStats>().SetPlayerFOV(jsonData.FieldOfView);
         controller.GetComponent<PlayerControllerManager>().SetBodyMaterialColor(randomPlayerColor);
+        cmm.RefreshAllHostileIndicators();
     }
     public void Die()
     {
