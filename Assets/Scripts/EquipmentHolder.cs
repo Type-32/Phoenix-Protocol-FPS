@@ -24,18 +24,14 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-
-        for (int i = 0; i < 2; i++)
-        {
-            if(player.playerManager.slotHolderScript.slotWeaponData[i] != null)
-            {
-                InstantiateWeapon(player.playerManager.slotHolderScript.slotWeaponData[i], i);
-                weaponSlots[i].InitializeAwake();
-                weaponSlots[i].InitializeStart();
-            }
-        }
         if (!player.pv.IsMine)
         {
+            for (int i = 0; i < 2; i++)
+            {
+                InstantiateWeapon(GlobalDatabase.singleton.allWeaponDatas[(int)player.pv.Owner.CustomProperties["selectedMainWeaponIndex"]], i);
+                //weaponSlots[i].InitializeAwake();
+                //weaponSlots[i].InitializeStart();
+            }
             Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             for (int i = 0; i < muzzle1.Length; i++) muzzle1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
@@ -71,6 +67,15 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         }
         if (player.pv.IsMine)
         {
+            for (int i = 0; i < 2; i++)
+            {
+                if (player.playerManager.slotHolderScript.slotWeaponData[i] != null)
+                {
+                    InstantiateWeapon(player.playerManager.slotHolderScript.slotWeaponData[i], i);
+                    weaponSlots[i].InitializeAwake();
+                    weaponSlots[i].InitializeStart();
+                }
+            }
             Debug.Log("Init Start Line 36");
             EquipWeapon(0);
         }
@@ -149,7 +154,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     {
         if (_index == previousWeaponIndex) return;
         weaponIndex = _index;
-        weaponSlots[weaponIndex].gameObject.SetActive(true);
+        weaponSlots[_index].gameObject.SetActive(true);
         if(previousWeaponIndex != -1)
         {
             weaponSlots[previousWeaponIndex].gameObject.SetActive(false);
