@@ -105,7 +105,7 @@ public class PlayerStats : MonoBehaviour
     }
     private void Start()
     {
-        SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
+        //SetPlayerSensitivity(PlayerPrefs.GetFloat("Mouse Sensitivity"));
     }
     public void SetPlayerSensitivity(float sensitivity)
     {
