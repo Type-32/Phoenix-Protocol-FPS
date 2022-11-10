@@ -30,7 +30,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float secondFill = 0f;
     [SerializeField] float secondCount = 0f;
     [SerializeField] float returnTemp = 2f;
-    [SerializeField] int respawnCountdown = 6;
+    [SerializeField] int respawnCountdown = 4;
 
     [Space]
     [Header("UI")]
@@ -141,7 +141,7 @@ public class PlayerManager : MonoBehaviour
             hasRespawned = true;
             CloseMenu();
             CloseLoadoutMenu();
-            randomPlayerColor = Random.ColorHSV();
+            randomPlayerColor = Color.red;
         }
         else
         {
@@ -154,7 +154,7 @@ public class PlayerManager : MonoBehaviour
             slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
             //CreateController();
             OnJoiningOngoingRoom();
-            randomPlayerColor = Random.ColorHSV();
+            //randomPlayerColor = Random.ColorHSV();
         }
         //if (!pv.IsMine) return;
         openedInventory = false;
@@ -173,7 +173,7 @@ public class PlayerManager : MonoBehaviour
 
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
-        respawnCountdown = 5;
+        respawnCountdown = 4;
         hasRespawned = false;
         temp = 0;
         returnTemp = 0f;
@@ -240,7 +240,7 @@ public class PlayerManager : MonoBehaviour
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
-        respawnCountdown = 5;
+        respawnCountdown = 4;
         hasRespawned = false;
         temp = 0;
         returnTemp = 0f;
@@ -611,7 +611,7 @@ public class PlayerManager : MonoBehaviour
         if (pv.IsMine)
         {
             SynchronizeValues(kills, deaths);
-            UserDatabase.Instance.AddUserLevelXP(150 + (streakKills > 1 ? 150 * (streakKills - 1) / 2 : 0));
+            //UserDatabase.Instance.AddUserLevelXP(150 + (streakKills > 1 ? 150 * (streakKills - 1) / 2 : 0));
         }
         //cmm.OnPlayerKillUpdate();
         //pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedPlayerName, pv.Owner.NickName, withWeaponIndex);

@@ -109,7 +109,7 @@ public class InGameUI : MonoBehaviour
         this.totalGainedCoins.text = "Resulting Money Gained: " + totalGainedCoins.ToString();
         this.totalGainedXP.text = "Gained XP in match: " + totalGainedXP.ToString();
         this.XPSlider.value = xp / (level * UserDatabase.Instance.levelLimiter);
-        this.levelText.text = (totalGainedXP + xp >= level * UserDatabase.Instance.levelLimiter) ? ("Level " + level.ToString() + " > " + (level + 1).ToString()) : ("Level " + level.ToString());
+        this.levelText.text = (totalGainedXP + xp >= level * UserDatabase.Instance.levelLimiter) ? ("Level " + level.ToString() + " > " + UserDatabase.Instance.GetUserXPLevelValue().ToString()) : ("Level " + level.ToString());
         sliderXPTemp = ((float)totalGainedXP / ((float)level * UserDatabase.Instance.levelLimiter)) + xp;
     }
     public void OnLeaveButtonClick()

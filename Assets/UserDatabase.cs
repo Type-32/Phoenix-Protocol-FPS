@@ -59,7 +59,7 @@ public class UserDatabase : MonoBehaviour
         data = emptyUserDataJSON;
 
         string json = JsonUtility.ToJson(data, true);
-        //File.Create(Application.persistentDataPath + "/UserDataConfig.json");
+        File.Create(Application.persistentDataPath + "/UserDataConfig.json");
         File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
         Debug.LogWarning("Initializing User Data To Files...");
     }

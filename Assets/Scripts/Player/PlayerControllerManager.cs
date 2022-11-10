@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Photon.Pun;
@@ -296,7 +295,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         if (playerDeathLoots.Count > 0)
         {
-            int randomIndex = UnityEngine.Random.Range(0, playerDeathLoots.Count - 1);
+            int randomIndex = Random.Range(0, playerDeathLoots.Count - 1);
             pv.RPC(nameof(RPC_SpawnDeathLoot), RpcTarget.All, transform.position, randomIndex);
         }
     }
