@@ -196,6 +196,28 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         pv.RPC(nameof(RPC_FFAWinMatch), RpcTarget.All, winnerName);
     }
+    public void RefreshAllHostileIndicators()
+    {
+        pv.RPC(nameof(RPC_RefreshHostileIndicators), RpcTarget.All);
+    }
+    [PunRPC]
+    void RPC_RefreshHostileIndicators()
+    {
+        if(localClientPlayer.controller != null)
+        {
+            PlayerControllerManager plr = localClientPlayer.controller.GetComponent<PlayerControllerManager>();
+            for (int i = 0; i < plr.ui.hostileTargetIndicators.Count; i++)
+            {
+                plr.ui.RemoveTargetIndicator(plr.ui.hostileTargetIndicators[i]);
+            }
+            PlayerControllerManager[] plrArray = FindObjectsOfType<PlayerControllerManager>();
+            foreach (PlayerControllerManager p in plrArray)
+            {
+                if (p == plr) continue;
+                plr.ui.AddTargetIndicator(p.gameObject, UIManager.TargetIndicatorType.Hostile, Color.red);
+            }
+        }
+    }
     [PunRPC]
     public void RPC_FFAWinMatch(string winnerName)
     {

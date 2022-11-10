@@ -249,6 +249,7 @@ public class PlayerManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         if (randomSpawnpoint || spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
         spawnpointUI.ChooseSpawnpoint(selectedSPIndex);
+        cmm.RefreshAllHostileIndicators();
     }
     public void SynchronizeValues(int kills, int deaths)
     {

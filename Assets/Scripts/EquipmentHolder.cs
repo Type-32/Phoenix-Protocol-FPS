@@ -28,7 +28,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         {
             for (int i = 0; i < 2; i++)
             {
-                InstantiateWeapon(GlobalDatabase.singleton.allWeaponDatas[(int)player.pv.Owner.CustomProperties["selectedMainWeaponIndex"]], i);
+                InstantiateWeapon(GlobalDatabase.singleton.allWeaponDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedMainWeaponIndex"]) : ((int)player.pv.Owner.CustomProperties["selectedSecondWeaponIndex"])], i);
                 //weaponSlots[i].InitializeAwake();
                 //weaponSlots[i].InitializeStart();
             }

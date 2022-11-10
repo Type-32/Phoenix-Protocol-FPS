@@ -73,6 +73,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         if (pv.IsMine)
         {
+            ui.hostileTIGroup.alpha = 0;
             weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
             weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
             recoilScript = FindObjectOfType<Recoil>();
@@ -224,12 +225,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     #endregion
     public IEnumerator UseStreakGift(float duration, int cost)
     {
-        EnableAllMinimapDots();
+        ui.hostileTIGroup.alpha = 1;
         usingStreakGifts = true;
         playerManager.recordKills -= cost;
         yield return new WaitForSeconds(duration);
         usingStreakGifts = false;
-        DisableAllMinimapDots();
+        ui.hostileTIGroup.alpha = 0;
     }
     private void TakeHitEffect()
     {
