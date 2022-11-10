@@ -42,7 +42,7 @@ public class TargetIndicator : MonoBehaviour
     }
     public void UpdateTargetIndicator()
     {
-        if(target == null)
+        if (target == null)
         {
             Destroy(gameObject);
             return;

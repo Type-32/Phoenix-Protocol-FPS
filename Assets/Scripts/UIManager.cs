@@ -178,18 +178,18 @@ public class UIManager : MonoBehaviour
     {
         if (objectiveTargetIndicators.Contains(indicator))
         {
-            Destroy(indicator);
             objectiveTargetIndicators.Remove(indicator);
+            Destroy(indicator.gameObject);
         }
         if (hostileTargetIndicators.Contains(indicator))
         {
-            Destroy(indicator);
             hostileTargetIndicators.Remove(indicator);
+            Destroy(indicator.gameObject);
         }
         if (friendlyTargetIndicators.Contains(indicator))
         {
-            Destroy(indicator);
             friendlyTargetIndicators.Remove(indicator);
+            Destroy(indicator.gameObject);
         }
     }
     public void InvokeHitmarker(HitmarkerType type)
