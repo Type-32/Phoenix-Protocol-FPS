@@ -51,7 +51,7 @@ public class TargetIndicator : MonoBehaviour
     }
     protected void SetPosition()
     {
-        Vector3 iPos = camera.WorldToScreenPoint(target.transform.position);
+        Vector3 iPos = camera.WorldToScreenPoint(new Vector3(target.transform.position.x, target.transform.position.y + 1f, target.transform.position.z));
         if(iPos.z >= 0f & iPos.x <= holderRect.rect.width * holderRect.rect.height & iPos.y <= holderRect.rect.height * holderRect.localScale.x & iPos.x >= 0f & iPos.y >= 0f)
         {
             iPos.z = 0f;

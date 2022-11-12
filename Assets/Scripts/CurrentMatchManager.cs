@@ -12,6 +12,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     [SerializeField] private PhotonView pv;
     private InGameUI internalUI;
     public List<PlayerManager> players = new();
+    public List<PlayerManager> teamBlue = new();
+    public List<PlayerManager> teamRed = new();
     public List<Player> punPlayers = new();
     public bool gameStarted = false;
     public bool gameEnded = false;
@@ -264,6 +266,29 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public void RefreshPlayerList()
     {
         pv.RPC(nameof(RPC_RefreshPlayerList), RpcTarget.All);
+    }
+    public void DistributeTeams()
+    {
+        if (players.Count >= 2)
+        {
+            int blue = players.Count / 2;
+            int red = players.Count - blue;
+            List<PlayerManager> tempPlayers = players;
+            for (int i = 0; i < blue; i++)
+            {
+                PlayerManager chosen = tempPlayers[Random.Range(0, tempPlayers.Count - 1)];
+                teamBlue.Add(chosen);
+                chosen.pv.Owner.CustomProperties.Add("team", true);
+                tempPlayers.Remove(chosen);
+            }
+            for (int i = 0; i < red; i++)
+            {
+                PlayerManager chosen = tempPlayers[Random.Range(0, tempPlayers.Count - 1)];
+                teamRed.Add(chosen);
+                chosen.pv.Owner.CustomProperties.Add("team", false);
+                tempPlayers.Remove(chosen);
+            }
+        }
     }
     [PunRPC]
     void RPC_RefreshPlayerList()

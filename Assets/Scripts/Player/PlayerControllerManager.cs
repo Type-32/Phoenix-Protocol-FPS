@@ -52,6 +52,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public List<GameObject> playerDeathLoots = new();
 
     private bool hasArmor = false;
+    public bool IsTeam = false;
     private float timePassedAfterDamageTaken = 5f;
     public bool usingStreakGifts = false;
     public GameObject playerMinimapDot;

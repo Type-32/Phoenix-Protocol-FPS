@@ -70,6 +70,7 @@ public class PlayerManager : MonoBehaviour
     public int deaths = 0;
     public bool randomSpawnpoint = false;
     public bool nightVisionState = false;
+    public bool IsTeam = false;
     [HideInInspector] public int streakKills = 0;
     [HideInInspector] public int recordKills = 0;
     [HideInInspector] public int totalGainedXP = 0;
@@ -111,6 +112,10 @@ public class PlayerManager : MonoBehaviour
         roomManager = FindObjectOfType<RoomManager>();
         cmm = FindObjectOfType<CurrentMatchManager>();
         cmm.RefreshPlayerList();
+        if (pv.Owner.IsMasterClient)
+        {
+
+        }
         if (pv.IsMine)
         {
             //cmm.AddPlayer(this);
@@ -163,6 +168,10 @@ public class PlayerManager : MonoBehaviour
 
         //respawnCountdown = 8;
     }
+    public void RetreiveIsTeamValue()
+    {
+        IsTeam = (bool)pv.Owner.CustomProperties["team"];
+    }
     void OnJoiningOngoingRoom()
     {
         cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
@@ -188,6 +197,7 @@ public class PlayerManager : MonoBehaviour
     }
     void CreateController()
     {
+        RetreiveIsTeamValue();
         audioListener.enabled = false;
         respawning = true;
         respawnButton.interactable = false;
@@ -216,6 +226,7 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(jsonData.MouseSensitivity);
         controller.GetComponent<PlayerStats>().SetPlayerFOV(jsonData.FieldOfView);
         controller.GetComponent<PlayerControllerManager>().SetBodyMaterialColor(randomPlayerColor);
+        controller.GetComponent<PlayerControllerManager>().IsTeam = IsTeam;
         cmm.RefreshAllHostileIndicators();
     }
     public void Die()
