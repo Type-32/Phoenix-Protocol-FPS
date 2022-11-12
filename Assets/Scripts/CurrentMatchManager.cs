@@ -12,21 +12,26 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     [SerializeField] private PhotonView pv;
     private InGameUI internalUI;
     public List<PlayerManager> players = new();
-    public List<PlayerManager> teamBlue = new();
-    public List<PlayerManager> teamRed = new();
     public List<Player> punPlayers = new();
     public bool gameStarted = false;
     public bool gameEnded = false;
     public MainMenuUIManager.Gamemodes roomGamemode;
     public float totalTime = 0f;
+    public int maxKillLimit;
+    public Scoreboard scoreboard;
 
     [Space]
     [Header("FFA")]
     public Player punTopPlayer;
     public PlayerManager topPlayer;
     public PlayerManager localClientPlayer;
-    public Scoreboard scoreboard;
-    public int maxKillLimit;
+
+    [Space, Header("TDM")]
+    public List<PlayerManager> teamBlue = new();
+    public List<PlayerManager> teamRed = new();
+    public int teamBluePoints = 0;
+    public int teamRedPoints = 0;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -194,6 +199,10 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             FFAWin(topPlayer.pv.Owner.NickName);
         }
     }
+    void TeamDeathmatchFunctions()
+    {
+        
+    }
     public void FFAWin(string winnerName)
     {
         pv.RPC(nameof(RPC_FFAWinMatch), RpcTarget.All, winnerName);
@@ -255,6 +264,10 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             players[i].DisconnectPlayer();
         }
     }
+    public void UpdateTeamDeathmatchHUD(int blueKills, int redKills)
+    {
+
+    }
     public void UpdateTopPlayerHUD(int kill, string name)
     {
         pv.RPC(nameof(RPC_UpdateTopPlayerHUD), RpcTarget.All, kill, name);
@@ -280,6 +293,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 teamBlue.Add(chosen);
                 chosen.pv.Owner.CustomProperties.Add("team", true);
                 tempPlayers.Remove(chosen);
+                chosen.RetreiveIsTeamValue();
             }
             for (int i = 0; i < red; i++)
             {
@@ -287,8 +301,61 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 teamRed.Add(chosen);
                 chosen.pv.Owner.CustomProperties.Add("team", false);
                 tempPlayers.Remove(chosen);
+                chosen.RetreiveIsTeamValue();
+            }
+            string[] blueClientIDs = new string[teamBlue.Count];
+            string[] redClientIDs = new string[teamRed.Count];
+            for (int i = 0; i < teamBlue.Count; i++)
+            {
+                blueClientIDs[i] = teamBlue[i].pv.Owner.UserId;
+            }
+            for (int i = 0; i < teamRed.Count; i++)
+            {
+                redClientIDs[i] = teamRed[i].pv.Owner.UserId;
+            }
+            SynchronizeBlueTeamMembers(blueClientIDs);
+            SynchronizeRedTeamMembers(redClientIDs);
+        }
+    }
+    public void SynchronizeBlueTeamMembers(string[] clientIDs)
+    {
+        pv.RPC(nameof(RPC_SyncBlueClientIDs), RpcTarget.All, clientIDs);
+    }
+    [PunRPC]
+    void RPC_UpdateTeamDeathmatchHUD(int blueKills, int redKills)
+    {
+
+    }
+    [PunRPC]
+    void RPC_SyncBlueClientIDs(string[] ids)
+    {
+        for (int i = 0; i < ids.Length; i++)
+        {
+            teamBlue.Add(Client_FindForPlayerID(ids[i]));
+        }
+    }
+    public void SynchronizeRedTeamMembers(string[] clientIDs)
+    {
+        pv.RPC(nameof(RPC_SyncBlueClientIDs), RpcTarget.All, clientIDs);
+    }
+    [PunRPC]
+    void RPC_SyncRedClientIDs(string[] ids)
+    {
+        for (int i = 0; i < ids.Length; i++)
+        {
+            teamRed.Add(Client_FindForPlayerID(ids[i]));
+        }
+    }
+    PlayerManager Client_FindForPlayerID(string userID)
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if(players[i].pv.Owner.UserId == userID)
+            {
+                return players[i];
             }
         }
+        return null;
     }
     [PunRPC]
     void RPC_RefreshPlayerList()

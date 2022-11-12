@@ -23,14 +23,26 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     }
     void UpdateStats()
     {
-        if (player.CustomProperties.TryGetValue("kills", out object kills))
+        if(scoreboard.matchManager.roomGamemode == MainMenuUIManager.Gamemodes.FFA)
         {
-            killsText.text = kills.ToString();
-            scoreboard.FindForMostKills();
-        }
-        if (player.CustomProperties.TryGetValue("deaths", out object deaths))
+            if (player.CustomProperties.TryGetValue("kills", out object kills))
+            {
+                killsText.text = kills.ToString();
+                scoreboard.FindForMostKills();
+            }
+            if (player.CustomProperties.TryGetValue("deaths", out object deaths))
+            {
+                deathsText.text = deaths.ToString();
+            }
+        }else if (scoreboard.matchManager.roomGamemode == MainMenuUIManager.Gamemodes.TDM)
         {
-            deathsText.text = deaths.ToString();
+            if(player.CustomProperties.TryGetValue("team", out object team))
+            {
+                if ((bool)team)
+                {
+
+                }
+            }
         }
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

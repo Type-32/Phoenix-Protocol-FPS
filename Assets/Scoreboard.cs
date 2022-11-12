@@ -28,19 +28,25 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     public void AddScoreboardItem(Player player)
     {
-        matchManager = FindObjectOfType<CurrentMatchManager>();
-        ScoreboardItem item = Instantiate(scoreboardItemPrefab, container).GetComponent<ScoreboardItem>();
-        item.Initialize(player, this);
-        scoreboardItems[player] = item;
-        LocalScoreboardItems.Add(item);
-        LocalPlayerDatas.Add(player);
+        if(matchManager.roomGamemode == MainMenuUIManager.Gamemodes.FFA)
+        {
+            matchManager = FindObjectOfType<CurrentMatchManager>();
+            ScoreboardItem item = Instantiate(scoreboardItemPrefab, container).GetComponent<ScoreboardItem>();
+            item.Initialize(player, this);
+            scoreboardItems[player] = item;
+            LocalScoreboardItems.Add(item);
+            LocalPlayerDatas.Add(player);
+        }
     }
     public void RemoveScoreboardItem(Player player)
     {
-        LocalScoreboardItems.Remove(scoreboardItems[player]);
-        LocalPlayerDatas.Remove(player);
-        Destroy(scoreboardItems[player].gameObject);
-        scoreboardItems.Remove(player);
+        if (matchManager.roomGamemode == MainMenuUIManager.Gamemodes.FFA)
+        {
+            LocalScoreboardItems.Remove(scoreboardItems[player]);
+            LocalPlayerDatas.Remove(player);
+            Destroy(scoreboardItems[player].gameObject);
+            scoreboardItems.Remove(player);
+        }
     }
 
 
@@ -79,5 +85,9 @@ public class Scoreboard : MonoBehaviourPunCallbacks
         }
         matchManager.UpdateTopPlayerHUD(temp, tempname);
         //matchManager.FindForPlayerID(tempItem.player.UserId);
+    }
+    public void TDM_AddBlueData()
+    {
+        //matchManager
     }
 }

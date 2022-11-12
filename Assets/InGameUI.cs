@@ -39,6 +39,12 @@ public class InGameUI : MonoBehaviour
     public Text requirementText;
     float sliderXPTemp;
 
+    [Space, Header("TDM References")]
+    public Text blueTeamKillsText;
+    public Text redTeamKillsText;
+    public Slider blueTeamKillsSlider;
+    public Slider redTeamKillsSlider;
+
     bool endMatchMenuEnabled = false;
 
     private void Awake()
@@ -115,5 +121,14 @@ public class InGameUI : MonoBehaviour
     public void OnLeaveButtonClick()
     {
         matchManager.QuitFromMatchEnd();
+    }
+    public void UpdateTDMData(int blueKills, int redKills, int maxKills)
+    {
+        blueTeamKillsText.text = blueKills.ToString();
+        blueTeamKillsSlider.value = blueKills;
+        redTeamKillsText.text = redKills.ToString();
+        redTeamKillsSlider.value = redKills;
+        redTeamKillsSlider.maxValue = blueTeamKillsSlider.maxValue = maxKills;
+        redTeamKillsSlider.minValue = blueTeamKillsSlider.minValue = 0;
     }
 }
