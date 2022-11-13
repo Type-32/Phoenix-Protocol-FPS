@@ -372,7 +372,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             for (int i = 0; i < blue; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                Player chosen = tmp[rnd];
+                //tmp.Count
+                tmp.TryGetValue(rnd, out Player chosen);
                 teamBlue.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", true);
@@ -382,7 +383,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             for (int i = 0; i < red; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                Player chosen = tmp[rnd];
+                tmp.TryGetValue(rnd, out Player chosen);
                 teamRed.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", false);
