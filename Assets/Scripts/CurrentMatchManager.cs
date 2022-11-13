@@ -379,29 +379,23 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 int rnd = Random.Range(0, blue - 1);
                 //tmp.Count
                 PlayerManager chosen = tmp[rnd];
-                teamBlue.Add(chosen);
+                //teamBlue.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", true);
                 chosen.pv.Owner.SetCustomProperties(temp);
+                SynchronizeBlueTeamMembers(chosen.pv.Owner.UserId);
                 tmp.Remove(chosen);
             }
             for (int i = 0; i < red; i++)
             {
                 int rnd = Random.Range(0, red - 1);
                 PlayerManager chosen = tmp[rnd];
-                teamRed.Add(chosen);
+                //teamRed.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", false);
                 chosen.pv.Owner.SetCustomProperties(temp);
+                SynchronizeRedTeamMembers(chosen.pv.Owner.UserId);
                 tmp.Remove(chosen);
-            }
-            for (int i = 0; i < teamBlue.Count; i++)
-            {
-                SynchronizeBlueTeamMembers(teamBlue[i].pv.Owner.UserId);
-            }
-            for (int i = 0; i < teamRed.Count; i++)
-            {
-                SynchronizeRedTeamMembers(teamRed[i].pv.Owner.UserId);
             }
             UpdateTeamDeathmatchHUD(0, 0);
         }
@@ -419,7 +413,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     void RPC_SyncBlueClientIDs(string ids)
     {
         PlayerManager tp = Client_FindForPlayerID(ids);
-        if (tp.pv.Owner.IsLocal) return;
+        //if (tp.pv.Owner.IsLocal) return;
         teamBlue.Add(tp);
     }
     public void SynchronizeRedTeamMembers(string clientIDs)
@@ -430,7 +424,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     void RPC_SyncRedClientIDs(string ids)
     {
         PlayerManager tp = Client_FindForPlayerID(ids);
-        if (tp.pv.Owner.IsLocal) return;
+        //if (tp.pv.Owner.IsLocal) return;
         teamRed.Add(tp);
     }
     PlayerManager Client_FindForPlayerID(string userID)
