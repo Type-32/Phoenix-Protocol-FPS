@@ -188,7 +188,7 @@ public class PlayerManager : MonoBehaviour
     IEnumerator DelayedSyncIsTeam(float amount)
     {
         yield return new WaitForSeconds(amount);
-        RetreiveIsTeamValue();
+        //RetreiveIsTeamValue();
     }
     public void RetreiveIsTeamValue()
     {
