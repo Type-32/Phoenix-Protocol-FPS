@@ -150,7 +150,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            if (PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Team Deathmatch")
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
             {
                 cmm.DistributeTeams();
             }
