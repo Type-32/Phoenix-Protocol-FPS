@@ -159,6 +159,7 @@ public class PlayerManager : MonoBehaviour
             {
                 StartCoroutine(DelayedInit(0.2f));
             }
+            StartCoroutine(DelayedSyncIsTeam(0.25f));
             //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
             //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
@@ -183,6 +184,11 @@ public class PlayerManager : MonoBehaviour
         cmm.RefreshPlayerList();
         cmm.DistributeTeams();
         cmm.TeamDeathmatchKillLogic(IsTeam);
+    }
+    IEnumerator DelayedSyncIsTeam(float amount)
+    {
+        yield return new WaitForSeconds(amount);
+        RetreiveIsTeamValue();
     }
     public void RetreiveIsTeamValue()
     {
