@@ -27,8 +27,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public PlayerManager localClientPlayer;
 
     [Space, Header("TDM")]
-    public List<PlayerManager> teamBlue = new();
-    public List<PlayerManager> teamRed = new();
+    public List<Player> teamBlue = new();
+    public List<Player> teamRed = new();
+    public List<Player> tmp = new();
     public int teamBluePoints = 0;
     public int teamRedPoints = 0;
 
@@ -359,11 +360,11 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void DistributeTeams()
     {
-        List<PlayerManager> tmp = new();
+        /*
         foreach (var player in FindObjectsOfType<PlayerManager>())
         {
             tmp.Add(player);
-        }
+        }*/
         Debug.Log("Teams Distributed");
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
         {
@@ -377,21 +378,21 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
                 //tmp.Count
-                PlayerManager chosen = tmp[rnd];
+                Player chosen = tmp[rnd];
                 teamBlue.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", true);
-                chosen.pv.Owner.SetCustomProperties(temp);
+                chosen.SetCustomProperties(temp);
                 tmp.Remove(chosen);
             }
             for (int i = 0; i < red; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                PlayerManager chosen = tmp[rnd];
+                Player chosen = tmp[rnd];
                 teamRed.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", false);
-                chosen.pv.Owner.SetCustomProperties(temp);
+                chosen.SetCustomProperties(temp);
                 tmp.Remove(chosen);
             }
             for (int i = 0; i < teamBlue.Count; i++)
