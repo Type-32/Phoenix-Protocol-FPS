@@ -134,6 +134,10 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch" && pv.Owner.IsMasterClient)
+        {
+            cmm.DistributeTeams();
+        }
         if (!pv.IsMine)
         {
             //cameraObject.gameObject.SetActive(false);
@@ -150,10 +154,6 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
-            {
-                cmm.DistributeTeams();
-            }
             //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
             //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
