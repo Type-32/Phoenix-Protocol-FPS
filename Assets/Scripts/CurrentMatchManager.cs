@@ -391,18 +391,16 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             string[] redClientIDs = new string[teamRed.Count];
             for (int i = 0; i < teamBlue.Count; i++)
             {
-                blueClientIDs[i] = teamBlue[i].pv.Owner.UserId;
+                SynchronizeBlueTeamMembers(teamBlue[i].pv.Owner.UserId);
             }
             for (int i = 0; i < teamRed.Count; i++)
             {
-                redClientIDs[i] = teamRed[i].pv.Owner.UserId;
+                SynchronizeRedTeamMembers(teamRed[i].pv.Owner.UserId);
             }
-            SynchronizeBlueTeamMembers(blueClientIDs);
-            SynchronizeRedTeamMembers(redClientIDs);
             UpdateTeamDeathmatchHUD(0, 0);
         }
     }
-    public void SynchronizeBlueTeamMembers(string[] clientIDs)
+    public void SynchronizeBlueTeamMembers(string clientIDs)
     {
         pv.RPC(nameof(RPC_SyncBlueClientIDs), RpcTarget.All, clientIDs);
     }
@@ -412,24 +410,18 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         internalUI.UpdateTDMData(blueKills, redKills, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
     }
     [PunRPC]
-    void RPC_SyncBlueClientIDs(string[] ids)
+    void RPC_SyncBlueClientIDs(string ids)
     {
-        for (int i = 0; i < ids.Length; i++)
-        {
-            teamBlue.Add(Client_FindForPlayerID(ids[i]));
-        }
+        teamBlue.Add(Client_FindForPlayerID(ids));
     }
-    public void SynchronizeRedTeamMembers(string[] clientIDs)
+    public void SynchronizeRedTeamMembers(string clientIDs)
     {
         pv.RPC(nameof(RPC_SyncRedClientIDs), RpcTarget.All, clientIDs);
     }
     [PunRPC]
-    void RPC_SyncRedClientIDs(string[] ids)
+    void RPC_SyncRedClientIDs(string ids)
     {
-        for (int i = 0; i < ids.Length; i++)
-        {
-            teamRed.Add(Client_FindForPlayerID(ids[i]));
-        }
+        teamRed.Add(Client_FindForPlayerID(ids));
     }
     PlayerManager Client_FindForPlayerID(string userID)
     {
