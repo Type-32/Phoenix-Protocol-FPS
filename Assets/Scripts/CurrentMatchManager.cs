@@ -366,6 +366,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             Debug.Log("Executing Command");
             int blue = players.Count / 2;
             int red = players.Count - blue;
+            Debug.Log("Blue Count: " + blue);
+            Debug.Log("Red Count: " + red);
             List<PlayerManager> tempPlayers = players;
             for (int i = 0; i < blue; i++)
             {
@@ -387,8 +389,6 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 tempPlayers.Remove(chosen);
                 chosen.RetreiveIsTeamValue();
             }
-            string[] blueClientIDs = new string[teamBlue.Count];
-            string[] redClientIDs = new string[teamRed.Count];
             for (int i = 0; i < teamBlue.Count; i++)
             {
                 SynchronizeBlueTeamMembers(teamBlue[i].pv.Owner.UserId);
