@@ -86,8 +86,4 @@ public class Scoreboard : MonoBehaviourPunCallbacks
         matchManager.UpdateTopPlayerHUD(temp, tempname);
         //matchManager.FindForPlayerID(tempItem.player.UserId);
     }
-    public void TDM_AddBlueData()
-    {
-        //matchManager
-    }
 }

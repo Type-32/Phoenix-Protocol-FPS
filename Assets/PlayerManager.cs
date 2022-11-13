@@ -150,6 +150,10 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Team Deathmatch")
+            {
+                cmm.DistributeTeams();
+            }
             //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
             //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
@@ -169,6 +173,11 @@ public class PlayerManager : MonoBehaviour
         //respawnCountdown = 8;
     }
     public void RetreiveIsTeamValue()
+    {
+        pv.RPC(nameof(RPC_GetIsTeamValue), RpcTarget.All);
+    }
+    [PunRPC]
+    void RPC_GetIsTeamValue()
     {
         IsTeam = (bool)pv.Owner.CustomProperties["team"];
     }

@@ -199,7 +199,13 @@ public class Launcher : MonoBehaviourPunCallbacks
             flag = true;
             if (flag)
             {
-                if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
+                if (PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Free For All")
+                {
+                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
+                }else if (PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Team Deathmatch")
+                {
+                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
+                }
                 else startGameButton.GetComponent<Button>().interactable = false;
             }
         }

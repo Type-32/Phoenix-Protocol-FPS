@@ -168,6 +168,83 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         if(players.Contains(player)) players.Remove(player);
         OnPlayerListUpdate(players);
     }
+    public void TeamDeathmatchKillLogic(bool team)
+    {
+        TDM_AddPoint(1, team);
+    }
+    void TDM_AddPoint(int amount, bool team)
+    {
+        if(localClientPlayer.pv.Owner.IsMasterClient)
+        {
+            if (localClientPlayer.IsTeam == true)
+            {
+                if (team == localClientPlayer.IsTeam)
+                {
+                    teamBluePoints += amount;
+                }
+                else
+                {
+                    teamRedPoints += amount;
+                }
+            }
+            else
+            {
+                if (team == localClientPlayer.IsTeam)
+                {
+                    teamRedPoints += amount;
+                }
+                else
+                {
+                    teamBluePoints += amount;
+                }
+            }
+        }
+        else
+        {
+            for(int i = 0; i < players.Count; i++)
+            {
+                if (players[i].pv.Owner.IsMasterClient)
+                {
+                    if (players[i].IsTeam == true)
+                    {
+                        if(team == players[i].IsTeam)
+                        {
+                            teamBluePoints += amount;
+                        }
+                        else
+                        {
+                            teamRedPoints += amount;
+                        }
+                    }
+                    else
+                    {
+                        if (team == players[i].IsTeam)
+                        {
+                            teamRedPoints += amount;
+                        }
+                        else
+                        {
+                            teamBluePoints += amount;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        pv.RPC(nameof(TDM_AddPointSynchronize), RpcTarget.All, teamBluePoints, teamRedPoints);
+    }
+    [PunRPC]
+    void TDM_AddPointSynchronize(int blueAmount, int redAmount)
+    {
+        if (localClientPlayer.IsTeam)
+        {
+            internalUI.UpdateTDMData(blueAmount, redAmount, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
+        }
+        else
+        {
+            internalUI.UpdateTDMData(redAmount, blueAmount, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
+        }
+    }
     private void Update()
     {
         if (gameEnded)
@@ -266,7 +343,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void UpdateTeamDeathmatchHUD(int blueKills, int redKills)
     {
-
+        pv.RPC(nameof(RPC_UpdateTeamDeathmatchHUD), RpcTarget.All, blueKills, redKills);
     }
     public void UpdateTopPlayerHUD(int kill, string name)
     {
@@ -315,6 +392,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             }
             SynchronizeBlueTeamMembers(blueClientIDs);
             SynchronizeRedTeamMembers(redClientIDs);
+            UpdateTeamDeathmatchHUD(0, 0);
         }
     }
     public void SynchronizeBlueTeamMembers(string[] clientIDs)
@@ -324,7 +402,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_UpdateTeamDeathmatchHUD(int blueKills, int redKills)
     {
-
+        internalUI.UpdateTDMData(blueKills, redKills, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
     }
     [PunRPC]
     void RPC_SyncBlueClientIDs(string[] ids)

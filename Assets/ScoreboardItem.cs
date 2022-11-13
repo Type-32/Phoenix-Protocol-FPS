@@ -38,10 +38,7 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
         {
             if(player.CustomProperties.TryGetValue("team", out object team))
             {
-                if ((bool)team)
-                {
-
-                }
+                scoreboard.matchManager.TeamDeathmatchKillLogic((bool)team);
             }
         }
     }

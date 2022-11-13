@@ -247,17 +247,38 @@ public class GunCoreFunc : MonoBehaviour
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
             if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
             {
-                bool hitmarkerFlag = false;
-                hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation);
-                if (!hitmarkerFlag)
+                if(PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Team Deathmatch")
                 {
-                    gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
-                    gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Hitmarker);
+                    if(hit.collider.gameObject.GetComponent<PlayerControllerManager>().IsTeam != gun.player.IsTeam)
+                    {
+                        bool hitmarkerFlag = false;
+                        hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation);
+                        if (!hitmarkerFlag)
+                        {
+                            gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
+                            gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Hitmarker);
+                        }
+                        else if (hitmarkerFlag)
+                        {
+                            gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
+                            gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
+                        }
+                    }
                 }
-                else if (hitmarkerFlag)
+                else
                 {
-                    gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
-                    gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
+                    bool hitmarkerFlag = false;
+                    hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation);
+                    if (!hitmarkerFlag)
+                    {
+                        gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
+                        gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Hitmarker);
+                    }
+                    else if (hitmarkerFlag)
+                    {
+                        gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
+                        gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
+                    }
                 }
             }
             else
