@@ -74,7 +74,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         if (pv.IsMine)
         {
-            IsTeam = (bool)pv.Owner.CustomProperties["team"];
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
             ui.hostileTIGroup.alpha = 0;
             weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
             weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
@@ -98,7 +98,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         else
         {
-            IsTeam = (bool)pv.Owner.CustomProperties["team"];
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
             weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
             weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
             Destroy(ui.gameObject);
