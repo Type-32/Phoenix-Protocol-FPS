@@ -384,6 +384,10 @@ public class MainMenuUIManager : MonoBehaviour
     #endregion
 
     #region Main
+    public Gamemodes GetGamemode()
+    {
+        return selectedGamemodes;
+    }
     public void UseCreateRoomInputField()
     {
         if (usingCreateRooomInputField)

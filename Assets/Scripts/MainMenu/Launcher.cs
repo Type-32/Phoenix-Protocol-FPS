@@ -199,10 +199,10 @@ public class Launcher : MonoBehaviourPunCallbacks
             flag = true;
             if (flag)
             {
-                if (PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Free For All")
+                if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.FFA)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
-                }else if (PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Team Deathmatch")
+                }else if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.TDM)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
                 }
