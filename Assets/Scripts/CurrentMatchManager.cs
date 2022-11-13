@@ -378,6 +378,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 Hashtable temp = new Hashtable();
                 temp.Add("team", true);
                 chosen.pv.Owner.SetCustomProperties(temp);
+                chosen.pv.Owner.CustomProperties.Add("team", true);
                 SynchronizeBlueTeamMembers(tmp[rnd].GetComponent<PhotonView>().ViewID);
                 tmp.Remove(chosen);
             }
@@ -389,6 +390,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 Hashtable temp = new Hashtable();
                 temp.Add("team", false);
                 chosen.pv.Owner.SetCustomProperties(temp);
+                chosen.pv.Owner.CustomProperties.Add("team", false);
                 SynchronizeRedTeamMembers(tmp[rnd].GetComponent<PhotonView>().ViewID);
                 tmp.Remove(chosen);
             }
