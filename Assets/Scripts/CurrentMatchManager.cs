@@ -359,6 +359,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void DistributeTeams()
     {
+        Debug.Log("Teams Distributed");
         if (players.Count >= 2)
         {
             int blue = players.Count / 2;
@@ -368,7 +369,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             {
                 PlayerManager chosen = tempPlayers[Random.Range(0, tempPlayers.Count - 1)];
                 teamBlue.Add(chosen);
-                chosen.pv.Owner.CustomProperties.Add("team", true);
+                Hashtable temp = new Hashtable();
+                temp.Add("team", true);
+                chosen.pv.Owner.SetCustomProperties(temp);
                 tempPlayers.Remove(chosen);
                 chosen.RetreiveIsTeamValue();
             }
@@ -376,7 +379,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             {
                 PlayerManager chosen = tempPlayers[Random.Range(0, tempPlayers.Count - 1)];
                 teamRed.Add(chosen);
-                chosen.pv.Owner.CustomProperties.Add("team", false);
+                Hashtable temp = new Hashtable();
+                temp.Add("team", false);
+                chosen.pv.Owner.SetCustomProperties(temp);
                 tempPlayers.Remove(chosen);
                 chosen.RetreiveIsTeamValue();
             }
