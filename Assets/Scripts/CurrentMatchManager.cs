@@ -359,7 +359,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void DistributeTeams()
     {
-        Dictionary<int, Player> tmp = PhotonNetwork.CurrentRoom.Players;
+        Player[] ca = PhotonNetwork.PlayerList;
+        List<Player> tmp = new();
+        for (int i = 0; i < ca.Length; i++) tmp.Add(ca[i]);
         Debug.Log("Teams Distributed");
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
         {
@@ -373,22 +375,22 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
                 //tmp.Count
-                tmp.TryGetValue(rnd, out Player chosen);
+                Player chosen = tmp[rnd];
                 teamBlue.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", true);
                 chosen.SetCustomProperties(temp);
-                tmp.Remove(rnd);
+                tmp.Remove(chosen);
             }
             for (int i = 0; i < red; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                tmp.TryGetValue(rnd, out Player chosen);
+                Player chosen = tmp[rnd];
                 teamRed.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", false);
                 chosen.SetCustomProperties(temp);
-                tmp.Remove(rnd);
+                tmp.Remove(chosen);
             }
             for (int i = 0; i < teamBlue.Count; i++)
             {
