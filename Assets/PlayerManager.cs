@@ -98,6 +98,10 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+        Hashtable temp = new();
+        temp.Add("team", false);
+        pv.Owner.CustomProperties.TryAdd("team", false);
+        pv.Owner.SetCustomProperties(temp);
         if (pv.IsMine)
         {
             Hashtable th = new();
@@ -153,6 +157,7 @@ public class PlayerManager : MonoBehaviour
             if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch" && pv.Owner.IsMasterClient)
             {
                 cmm.DistributeTeams();
+                cmm.TeamDeathmatchKillLogic(IsTeam);
             }
             //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
