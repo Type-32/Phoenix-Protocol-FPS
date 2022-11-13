@@ -359,15 +359,16 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void DistributeTeams()
     {
+        PlayerManager[] tmp = FindObjectsOfType<PlayerManager>();
         Debug.Log("Teams Distributed");
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
         {
             RefreshPlayerList();
             Debug.Log("Executing Command");
-            int blue = players.Count / 2;
-            int red = players.Count - blue;
-            Debug.Log("Blue Count: " + blue);
-            Debug.Log("Red Count: " + red);
+            int blue = tmp.Length / 2;
+            int red = tmp.Length - blue;
+            Debug.Log("Blue Count: " + blue + "\n PlayerCount: " + tmp.Length);
+            Debug.Log("Red Count: " + red + "\n PlayerCount: " + tmp.Length);
             List<PlayerManager> tempPlayers = players;
             for (int i = 0; i < blue; i++)
             {
