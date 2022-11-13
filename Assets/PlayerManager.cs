@@ -159,7 +159,7 @@ public class PlayerManager : MonoBehaviour
             {
                 StartCoroutine(DelayedInit(0.2f));
             }
-            StartCoroutine(DelayedSyncIsTeam(0.25f));
+            StartCoroutine(DelayedSyncIsTeam(0.55f));
             //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
             //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
