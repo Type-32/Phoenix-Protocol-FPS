@@ -397,11 +397,11 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             }
             for (int i = 0; i < teamBlue.Count; i++)
             {
-                SynchronizeBlueTeamMembers(teamBlue[i].pv.Owner.UserId);
+                SynchronizeBlueTeamMembers(teamBlue[i].UserId);
             }
             for (int i = 0; i < teamRed.Count; i++)
             {
-                SynchronizeRedTeamMembers(teamRed[i].pv.Owner.UserId);
+                SynchronizeRedTeamMembers(teamRed[i].UserId);
             }
             UpdateTeamDeathmatchHUD(0, 0);
         }
@@ -429,13 +429,13 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         teamRed.Add(Client_FindForPlayerID(ids));
     }
-    PlayerManager Client_FindForPlayerID(string userID)
+    Player Client_FindForPlayerID(string userID)
     {
         for (int i = 0; i < players.Count; i++)
         {
             if(players[i].pv.Owner.UserId == userID)
             {
-                return players[i];
+                return players[i].pv.Owner;
             }
         }
         return null;
