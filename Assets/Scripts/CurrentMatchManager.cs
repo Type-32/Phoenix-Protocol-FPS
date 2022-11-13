@@ -383,7 +383,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 Hashtable temp = new Hashtable();
                 temp.Add("team", true);
                 chosen.pv.Owner.SetCustomProperties(temp);
-                SynchronizeBlueTeamMembers(chosen.pv.Owner.UserId);
+                SynchronizeBlueTeamMembers(chosen.pv.ViewID);
                 tmp.Remove(chosen);
             }
             for (int i = 0; i < red; i++)
@@ -394,13 +394,13 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 Hashtable temp = new Hashtable();
                 temp.Add("team", false);
                 chosen.pv.Owner.SetCustomProperties(temp);
-                SynchronizeRedTeamMembers(chosen.pv.Owner.UserId);
+                SynchronizeRedTeamMembers(chosen.pv.ViewID);
                 tmp.Remove(chosen);
             }
             UpdateTeamDeathmatchHUD(0, 0);
         }
     }
-    public void SynchronizeBlueTeamMembers(string clientIDs)
+    public void SynchronizeBlueTeamMembers(int clientIDs)
     {
         pv.RPC(nameof(RPC_SyncBlueClientIDs), RpcTarget.All, clientIDs);
     }
@@ -410,30 +410,31 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         internalUI.UpdateTDMData(blueKills, redKills, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
     }
     [PunRPC]
-    void RPC_SyncBlueClientIDs(string ids)
+    void RPC_SyncBlueClientIDs(int ids)
     {
         PlayerManager tp = Client_FindForPlayerID(ids);
         //if (tp.pv.Owner.IsLocal) return;
         teamBlue.Add(tp);
     }
-    public void SynchronizeRedTeamMembers(string clientIDs)
+    public void SynchronizeRedTeamMembers(int clientIDs)
     {
         pv.RPC(nameof(RPC_SyncRedClientIDs), RpcTarget.All, clientIDs);
     }
     [PunRPC]
-    void RPC_SyncRedClientIDs(string ids)
+    void RPC_SyncRedClientIDs(int ids)
     {
         PlayerManager tp = Client_FindForPlayerID(ids);
         //if (tp.pv.Owner.IsLocal) return;
         teamRed.Add(tp);
     }
-    PlayerManager Client_FindForPlayerID(string userID)
+    PlayerManager Client_FindForPlayerID(int userID)
     {
-        for (int i = 0; i < players.Count; i++)
+        PlayerManager[] tps = FindObjectsOfType<PlayerManager>();
+        for (int i = 0; i < tps.Length; i++)
         {
-            if(players[i].pv.Owner.UserId == userID)
+            if(tps[i].pv.ViewID == userID)
             {
-                return players[i];
+                return tps[i];
             }
         }
         return null;
