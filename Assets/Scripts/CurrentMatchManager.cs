@@ -360,7 +360,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public void DistributeTeams()
     {
         List<Player> tmp = new();
-        foreach (var player in PhotonNetwork.PlayerList)
+        foreach (var player in scoreboard.LocalPlayerDatas)
         {
             tmp.Add(player);
         }

@@ -156,8 +156,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch" && pv.Owner.IsMasterClient)
             {
-                cmm.DistributeTeams();
-                cmm.TeamDeathmatchKillLogic(IsTeam);
+                StartCoroutine(DelayedInit(0.1f));
             }
             //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();

@@ -36,11 +36,25 @@ public class Scoreboard : MonoBehaviourPunCallbacks
             scoreboardItems[player] = item;
             LocalScoreboardItems.Add(item);
             LocalPlayerDatas.Add(player);
+        }else if(matchManager.roomMode == MainMenuUIManager.Gamemodes.TDM)
+        {
+            matchManager = FindObjectOfType<CurrentMatchManager>();
+            ScoreboardItem item = Instantiate(scoreboardItemPrefab, container).GetComponent<ScoreboardItem>();
+            item.Initialize(player, this);
+            scoreboardItems[player] = item;
+            LocalScoreboardItems.Add(item);
+            LocalPlayerDatas.Add(player);
         }
     }
     public void RemoveScoreboardItem(Player player)
     {
         if (matchManager.roomMode == MainMenuUIManager.Gamemodes.FFA)
+        {
+            LocalScoreboardItems.Remove(scoreboardItems[player]);
+            LocalPlayerDatas.Remove(player);
+            Destroy(scoreboardItems[player].gameObject);
+            scoreboardItems.Remove(player);
+        }else if(matchManager.roomMode == MainMenuUIManager.Gamemodes.TDM)
         {
             LocalScoreboardItems.Remove(scoreboardItems[player]);
             LocalPlayerDatas.Remove(player);
