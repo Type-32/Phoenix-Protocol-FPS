@@ -418,7 +418,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_SyncBlueClientIDs(string ids)
     {
-        teamBlue.Add(Client_FindForPlayerID(ids));
+        PlayerManager tp = Client_FindForPlayerID(ids);
+        if (tp.pv.Owner.IsLocal) return;
+        teamBlue.Add(tp);
     }
     public void SynchronizeRedTeamMembers(string clientIDs)
     {
@@ -427,7 +429,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_SyncRedClientIDs(string ids)
     {
-        teamRed.Add(Client_FindForPlayerID(ids));
+        PlayerManager tp = Client_FindForPlayerID(ids);
+        if (tp.pv.Owner.IsLocal) return;
+        teamRed.Add(tp);
     }
     PlayerManager Client_FindForPlayerID(string userID)
     {
