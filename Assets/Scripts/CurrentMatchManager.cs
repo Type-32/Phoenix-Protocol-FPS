@@ -360,8 +360,10 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public void DistributeTeams()
     {
         Debug.Log("Teams Distributed");
-        if (players.Count >= 2)
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
         {
+            RefreshPlayerList();
+            Debug.Log("Executing Command");
             int blue = players.Count / 2;
             int red = players.Count - blue;
             List<PlayerManager> tempPlayers = players;

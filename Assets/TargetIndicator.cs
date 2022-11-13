@@ -44,7 +44,7 @@ public class TargetIndicator : MonoBehaviour
     {
         if (target == null)
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
             return;
         }
         SetPosition();
