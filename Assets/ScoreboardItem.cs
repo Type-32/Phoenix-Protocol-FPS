@@ -23,7 +23,7 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     }
     void UpdateStats()
     {
-        if(scoreboard.matchManager.roomGamemode == MainMenuUIManager.Gamemodes.FFA)
+        if(scoreboard.matchManager.roomMode == MainMenuUIManager.Gamemodes.FFA)
         {
             if (player.CustomProperties.TryGetValue("kills", out object kills))
             {
@@ -34,7 +34,7 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
             {
                 deathsText.text = deaths.ToString();
             }
-        }else if (scoreboard.matchManager.roomGamemode == MainMenuUIManager.Gamemodes.TDM)
+        }else if (scoreboard.matchManager.roomMode == MainMenuUIManager.Gamemodes.TDM)
         {
             if(player.CustomProperties.TryGetValue("team", out object team))
             {

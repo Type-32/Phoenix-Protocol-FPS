@@ -247,7 +247,7 @@ public class GunCoreFunc : MonoBehaviour
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
             if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
             {
-                if(PhotonNetwork.CurrentRoom.CustomProperties["roomGamemode"].ToString() == "Team Deathmatch")
+                if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
                 {
                     if(hit.collider.gameObject.GetComponent<PlayerControllerManager>().IsTeam != gun.player.IsTeam)
                     {

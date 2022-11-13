@@ -444,7 +444,7 @@ public class MainMenuUIManager : MonoBehaviour
     #endregion
 
     #region Room Creation
-    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomGamemodes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit)
+    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomModes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit)
     {
         Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
@@ -457,7 +457,7 @@ public class MainMenuUIManager : MonoBehaviour
         roomOptions.CustomRoomProperties.Add("mapInfoIndex", mapInfoIndex);
         roomOptions.CustomRoomProperties.Add("maxPlayer", maxPlayer);
         roomOptions.CustomRoomProperties.Add("gameStarted", false);
-        switch (roomGamemodes)
+        switch (roomModes)
         {
             case Gamemodes.FFA:
                 roomOptions.CustomRoomProperties.Add("roomMode", "Free For All");
@@ -483,7 +483,7 @@ public class MainMenuUIManager : MonoBehaviour
         hash.Add("roomHostName", roomHostName);
         hash.Add("mapInfoIndex", mapInfoIndex);
         hash.Add("maxPlayer", maxPlayer);
-        switch (roomGamemodes)
+        switch (roomModes)
         {
             case Gamemodes.FFA:
                 hash.Add("roomMode", "Free For All");

@@ -28,7 +28,7 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     public void AddScoreboardItem(Player player)
     {
-        if(matchManager.roomGamemode == MainMenuUIManager.Gamemodes.FFA)
+        if(matchManager.roomMode == MainMenuUIManager.Gamemodes.FFA)
         {
             matchManager = FindObjectOfType<CurrentMatchManager>();
             ScoreboardItem item = Instantiate(scoreboardItemPrefab, container).GetComponent<ScoreboardItem>();
@@ -40,7 +40,7 @@ public class Scoreboard : MonoBehaviourPunCallbacks
     }
     public void RemoveScoreboardItem(Player player)
     {
-        if (matchManager.roomGamemode == MainMenuUIManager.Gamemodes.FFA)
+        if (matchManager.roomMode == MainMenuUIManager.Gamemodes.FFA)
         {
             LocalScoreboardItems.Remove(scoreboardItems[player]);
             LocalPlayerDatas.Remove(player);
