@@ -421,7 +421,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void SynchronizeRedTeamMembers(string[] clientIDs)
     {
-        pv.RPC(nameof(RPC_SyncBlueClientIDs), RpcTarget.All, clientIDs);
+        pv.RPC(nameof(RPC_SyncRedClientIDs), RpcTarget.All, clientIDs);
     }
     [PunRPC]
     void RPC_SyncRedClientIDs(string[] ids)
