@@ -24,7 +24,7 @@ public class UserDatabase : MonoBehaviour
     {
         if (!File.Exists(Application.persistentDataPath + "/UserDataConfig.json")) InitializeUserDataToJSON();
         string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
-        Debug.LogWarning("Reading User Data To Files...");
+        //Debug.LogWarning("Reading User Data To Files...");
         UserDataJSON jsonData = emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         MainMenuUIManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, (float)jsonData.userLevelXP, jsonData.userCoins);
@@ -45,13 +45,13 @@ public class UserDatabase : MonoBehaviour
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
-        Debug.LogWarning("Writing User Data To Files...");
+        //Debug.LogWarning("Writing User Data To Files...");
     }
     public void WriteInputDataToJSON(UserDataJSON data)
     {
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
-        Debug.LogWarning("Writing User Data To Files...");
+        //Debug.LogWarning("Writing User Data To Files...");
     }
     public void InitializeUserDataToJSON()
     {
@@ -61,7 +61,7 @@ public class UserDatabase : MonoBehaviour
         string json = JsonUtility.ToJson(data, true);
         File.Create(Application.persistentDataPath + "/UserDataConfig.json");
         File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
-        Debug.LogWarning("Initializing User Data To Files...");
+        //Debug.LogWarning("Initializing User Data To Files...");
     }
     public void AddUserCurrency(int amount)
     {

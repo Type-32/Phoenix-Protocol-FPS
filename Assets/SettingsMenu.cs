@@ -26,10 +26,10 @@ public class SettingsMenu : MonoBehaviour
         data.QualityIndex = qualityDropdown.value;
         data.ResolutionIndex = resolutionDropdown.value;
 
-        Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
+        //Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.persistentDataPath + "/SettingsOptions.json", json);
-        Debug.LogWarning("Writing Settings Options To Files...");
+        //Debug.LogWarning("Writing Settings Options To Files...");
     }
     public void InitializeSettingsOptionsToJSON()
     {
@@ -41,16 +41,16 @@ public class SettingsMenu : MonoBehaviour
         data.QualityIndex = 1;
         data.ResolutionIndex = -1;
 
-        Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
+        //Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(Application.persistentDataPath + "/SettingsOptions.json", json);
-        Debug.LogWarning("Writing Settings Options To Files...");
+        //Debug.LogWarning("Writing Settings Options To Files...");
     }
     public void ReadSettingsOptionsFromJSON()
     {
         if (!File.Exists(Application.persistentDataPath + "/SettingsOptions.json")) InitializeSettingsOptionsToJSON();
         string json = File.ReadAllText(Application.persistentDataPath + "/SettingsOptions.json");
-        Debug.LogWarning("Reading Settings Options To Files...");
+        //Debug.LogWarning("Reading Settings Options To Files...");
         SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
         SetFieldOfView(jsonData.FieldOfView);
         SetVolume(jsonData.Volume);
@@ -92,8 +92,8 @@ public class SettingsMenu : MonoBehaviour
     }
     public void SetResolution(int resolutionIndex)
     {
-        Debug.LogWarning("Resolution Index: " + resolutionIndex);
-        Debug.LogWarning("Available Resolutions: " + resolutions.Length);
+        //Debug.LogWarning("Resolution Index: " + resolutionIndex);
+        //Debug.LogWarning("Available Resolutions: " + resolutions.Length);
         resolutionDropdown.value = resolutionIndex;
         resolutions = Screen.resolutions;
         Resolution resolution = resolutions[resolutionIndex == -1 ? resolutions.Length - 1 : resolutionIndex >= resolutions.Length ? resolutions.Length - 1 : resolutionIndex];
@@ -110,7 +110,7 @@ public class SettingsMenu : MonoBehaviour
         {
             case "Mouse Sensitivity":
                 returner = sensitivitySlider.value;
-                Debug.Log("Set Player Sensitivity Value on Spawn ");
+                //Debug.Log("Set Player Sensitivity Value on Spawn ");
                 break;
             default:
                 return null;
@@ -155,7 +155,7 @@ public class SettingsMenu : MonoBehaviour
     {
         if (!File.Exists(Application.persistentDataPath + "/SettingsOptions.json")) InitializeSettingsOptionsToJSON();
         string json = File.ReadAllText(Application.persistentDataPath + "/SettingsOptions.json");
-        Debug.LogWarning("Reading Settings Options To Files...");
+        //Debug.LogWarning("Reading Settings Options To Files...");
         SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
 
         SetVolume(jsonData.Volume);

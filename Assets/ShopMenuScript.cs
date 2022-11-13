@@ -42,7 +42,7 @@ public class ShopMenuScript : MonoBehaviour
     {
         if (!File.Exists(Application.persistentDataPath + "/UserDataConfig.json")) UserDatabase.Instance.InitializeUserDataToJSON();
         string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
-        Debug.LogWarning("Reading User Data To Files...");
+        //Debug.LogWarning("Reading User Data To Files...");
         UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         InitializeWeaponsMenu(jsonData);
@@ -148,7 +148,7 @@ public class ShopMenuScript : MonoBehaviour
         if (data != null)
         {
             string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
-            Debug.LogWarning("Reading User Data To Files...");
+            //Debug.LogWarning("Reading User Data To Files...");
             UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
             jsonData = JsonUtility.FromJson<UserDataJSON>(json);
             if(jsonData.userCoins >= data.purchasePrice)
@@ -163,7 +163,7 @@ public class ShopMenuScript : MonoBehaviour
 
                 UserDatabase.Instance.WriteInputDataToJSON(jsonData);
                 MainMenuUIManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutWeaponSelections();
-                Debug.LogWarning("Writing User Data To Files...");
+                //Debug.LogWarning("Writing User Data To Files...");
             }
             else
             {

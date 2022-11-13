@@ -360,7 +360,10 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public void DistributeTeams()
     {
         List<Player> tmp = new();
-        foreach (Player player in PhotonNetwork.PlayerList) tmp.Add(player);
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            tmp.Add(player);
+        }
         Debug.Log("Teams Distributed");
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
         {

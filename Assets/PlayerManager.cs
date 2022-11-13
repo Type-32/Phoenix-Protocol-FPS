@@ -177,6 +177,12 @@ public class PlayerManager : MonoBehaviour
 
         //respawnCountdown = 8;
     }
+    IEnumerator DelayedInit(float amount)
+    {
+        yield return new WaitForSeconds(amount);
+        cmm.DistributeTeams();
+        cmm.TeamDeathmatchKillLogic(IsTeam);
+    }
     public void RetreiveIsTeamValue()
     {
         pv.RPC(nameof(RPC_GetIsTeamValue), RpcTarget.All);
