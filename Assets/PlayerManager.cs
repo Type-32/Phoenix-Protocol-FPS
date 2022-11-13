@@ -98,10 +98,11 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
+        /*
         Hashtable temp = new();
         temp.Add("team", false);
         pv.Owner.CustomProperties.TryAdd("team", false);
-        pv.Owner.SetCustomProperties(temp);
+        pv.Owner.SetCustomProperties(temp);*/
         if (pv.IsMine)
         {
             Hashtable th = new();

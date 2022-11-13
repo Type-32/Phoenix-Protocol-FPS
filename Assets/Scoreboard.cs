@@ -19,7 +19,7 @@ public class Scoreboard : MonoBehaviourPunCallbacks
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             AddScoreboardItem(player);
-            matchManager.tmp.Add(player);
+            //matchManager.tmp.Add(player);
         }
     }
     private void Awake()

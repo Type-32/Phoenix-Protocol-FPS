@@ -27,9 +27,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public PlayerManager localClientPlayer;
 
     [Space, Header("TDM")]
-    public List<Player> teamBlue = new();
-    public List<Player> teamRed = new();
-    public List<Player> tmp = new();
+    public List<PlayerManager> teamBlue = new();
+    public List<PlayerManager> teamRed = new();
     public int teamBluePoints = 0;
     public int teamRedPoints = 0;
 
@@ -360,6 +359,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void DistributeTeams()
     {
+        List<PlayerManager> tmp = players;
         /*
         foreach (var player in FindObjectsOfType<PlayerManager>())
         {
@@ -378,30 +378,30 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
                 //tmp.Count
-                Player chosen = tmp[rnd];
+                PlayerManager chosen = tmp[rnd];
                 teamBlue.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", true);
-                chosen.SetCustomProperties(temp);
+                chosen.pv.Owner.SetCustomProperties(temp);
                 tmp.Remove(chosen);
             }
             for (int i = 0; i < red; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                Player chosen = tmp[rnd];
+                PlayerManager chosen = tmp[rnd];
                 teamRed.Add(chosen);
                 Hashtable temp = new Hashtable();
                 temp.Add("team", false);
-                chosen.SetCustomProperties(temp);
+                chosen.pv.Owner.SetCustomProperties(temp);
                 tmp.Remove(chosen);
             }
             for (int i = 0; i < teamBlue.Count; i++)
             {
-                SynchronizeBlueTeamMembers(teamBlue[i].UserId);
+                SynchronizeBlueTeamMembers(teamBlue[i].pv.Owner.UserId);
             }
             for (int i = 0; i < teamRed.Count; i++)
             {
-                SynchronizeRedTeamMembers(teamRed[i].UserId);
+                SynchronizeRedTeamMembers(teamRed[i].pv.Owner.UserId);
             }
             UpdateTeamDeathmatchHUD(0, 0);
         }
@@ -429,13 +429,13 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         teamRed.Add(Client_FindForPlayerID(ids));
     }
-    Player Client_FindForPlayerID(string userID)
+    PlayerManager Client_FindForPlayerID(string userID)
     {
         for (int i = 0; i < players.Count; i++)
         {
             if(players[i].pv.Owner.UserId == userID)
             {
-                return players[i].pv.Owner;
+                return players[i];
             }
         }
         return null;
