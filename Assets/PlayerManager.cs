@@ -737,7 +737,7 @@ public class PlayerManager : MonoBehaviour
             }
         }
         //Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
-        Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex + " on team " + (!killedIsTeam ? "Red" : "Blue"));
+        Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex + " on team " + (killerIsTeam ? "Red" : "Blue"));
         Destroy(temp, 15f);
     }
 
