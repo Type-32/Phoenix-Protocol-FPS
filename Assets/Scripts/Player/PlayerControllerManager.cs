@@ -98,7 +98,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         else
         {
-            //if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = playerManager.IsTeam;
             weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
             weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
             Destroy(ui.gameObject);
