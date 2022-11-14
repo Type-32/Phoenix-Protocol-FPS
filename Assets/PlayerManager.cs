@@ -660,7 +660,7 @@ public class PlayerManager : MonoBehaviour
         InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0));
         totalGainedXP += 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0);
         if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
-        else TDM_InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex, (bool)pv.Owner.CustomProperties["roomMode"]);
+        else TDM_InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex, (bool)pv.Owner.CustomProperties["team"]);
         MinimapDotIdentifier[] tempget;
         tempget = FindObjectsOfType<MinimapDotIdentifier>();
         controller.GetComponent<PlayerControllerManager>().allMinimapDots.Clear();
