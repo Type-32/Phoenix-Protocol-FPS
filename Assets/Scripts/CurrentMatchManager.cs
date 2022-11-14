@@ -372,16 +372,14 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             for (int i = 0; i < blue; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                PlayerManager chosen = tmp[rnd];
-                chosen.SetPlayerIsTeamState(true, true);
+                tmp[rnd].SetPlayerIsTeamState(true, true);
                 SynchronizeBlueTeamMembers(tmp[rnd].GetComponent<PhotonView>().ViewID);
                 tmp.Remove(tmp[rnd]);
             }
             for (int i = 0; i < red; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                PlayerManager chosen = tmp[rnd];
-                chosen.SetPlayerIsTeamState(false, true);
+                tmp[rnd].SetPlayerIsTeamState(false, true);
                 SynchronizeRedTeamMembers(tmp[rnd].GetComponent<PhotonView>().ViewID);
                 tmp.Remove(tmp[rnd]);
             }
