@@ -372,27 +372,18 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             for (int i = 0; i < blue; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
-                //tmp.Count
                 PlayerManager chosen = tmp[rnd];
-                //teamBlue.Add(chosen);
-                Hashtable temp = new Hashtable();
-                temp.Add("team", true);
-                chosen.pv.Owner.SetCustomProperties(temp);
-                chosen.pv.Owner.CustomProperties.Add("team", true);
+                chosen.SetPlayerIsTeamState(true, true);
                 SynchronizeBlueTeamMembers(tmp[rnd].GetComponent<PhotonView>().ViewID);
-                tmp.Remove(chosen);
+                tmp.Remove(tmp[rnd]);
             }
             for (int i = 0; i < red; i++)
             {
                 int rnd = Random.Range(0, tmp.Count - 1);
                 PlayerManager chosen = tmp[rnd];
-                //teamRed.Add(chosen);
-                Hashtable temp = new Hashtable();
-                temp.Add("team", false);
-                chosen.pv.Owner.SetCustomProperties(temp);
-                chosen.pv.Owner.CustomProperties.Add("team", false);
+                chosen.SetPlayerIsTeamState(false, true);
                 SynchronizeRedTeamMembers(tmp[rnd].GetComponent<PhotonView>().ViewID);
-                tmp.Remove(chosen);
+                tmp.Remove(tmp[rnd]);
             }
             UpdateTeamDeathmatchHUD(0, 0);
         }

@@ -190,6 +190,28 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(amount);
         //RetreiveIsTeamValue();
     }
+    public void SetPlayerIsTeamState(bool IsTeam, bool synchronize)
+    {
+        if (synchronize)
+        {
+            pv.RPC(nameof(RPC_SetTeamState), RpcTarget.All, IsTeam);
+        }
+        else
+        {
+            this.IsTeam = IsTeam;
+            Hashtable tp = new();
+            tp.Add("team", IsTeam);
+            pv.Owner.SetCustomProperties(tp);
+        }
+    }
+    [PunRPC]
+    void RPC_SetTeamState(bool state)
+    {
+        IsTeam = state;
+        Hashtable tp = new();
+        tp.Add("team", state);
+        pv.Owner.SetCustomProperties(tp);
+    }
     public void RetreiveIsTeamValue()
     {
         pv.RPC(nameof(RPC_GetIsTeamValue), RpcTarget.All);
