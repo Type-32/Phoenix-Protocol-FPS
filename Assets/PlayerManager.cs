@@ -694,6 +694,18 @@ public class PlayerManager : MonoBehaviour
         Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
         temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, InGameUI.instance.FindWeaponIcon(weaponIndex));
+        if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Free For All")
+        {
+            if (killerName == pv.Owner.NickName)
+            {
+                temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+            }
+            else
+            {
+                temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+                temp.GetComponent<KillMessageItem>().SetKillerColor(Color.red);
+            }
+        }
         Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
         Destroy(temp, 15f);
     }
