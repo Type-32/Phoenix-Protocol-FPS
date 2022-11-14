@@ -45,7 +45,7 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
                 killsText.text = kills.ToString();
                 player.CustomProperties.TryGetValue("team", out object team);
                 int res = (int)kills - cachedPlayerKill;
-                if (res >= 1) scoreboard.matchManager.TeamDeathmatchKillLogic(res, (bool)team);
+                if (res >= 1) { scoreboard.matchManager.TeamDeathmatchKillLogic(res, (bool)team); cachedPlayerKill = (int)kills; }
             }
             if (player.CustomProperties.TryGetValue("deaths", out object deaths))
             {

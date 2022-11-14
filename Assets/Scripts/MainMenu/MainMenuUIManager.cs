@@ -61,8 +61,8 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private InputField roomInputField;
     [SerializeField] private int roomMapSelectionIndex;
     [SerializeField] private Gamemodes selectedGamemodes = Gamemodes.FFA;
-    [SerializeField] private int maxPlayerCount = 8;
-    [SerializeField] private int maxKillLimitNumber = 8;
+    [SerializeField] private int maxPlayerCount = 10;
+    [SerializeField] private int maxKillLimitNumber = 30;
     [SerializeField] private bool roomVisibility = true;
     [SerializeField] private Transform popupHolder;
 
