@@ -157,9 +157,9 @@ public class PlayerManager : MonoBehaviour
         {
             if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch" && pv.Owner.IsMasterClient)
             {
-                StartCoroutine(DelayedInit(0.2f));
+                StartCoroutine(DelayedInit(0.05f));
             }
-            StartCoroutine(DelayedSyncIsTeam(0.55f));
+            StartCoroutine(DelayedSyncIsTeam(0.1f));
             //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
             //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
@@ -659,7 +659,8 @@ public class PlayerManager : MonoBehaviour
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0));
         totalGainedXP += 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0);
-        InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
+        if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
+        else TDM_InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex, (bool)pv.Owner.CustomProperties["roomMode"]);
         MinimapDotIdentifier[] tempget;
         tempget = FindObjectsOfType<MinimapDotIdentifier>();
         controller.GetComponent<PlayerControllerManager>().allMinimapDots.Clear();
@@ -683,6 +684,10 @@ public class PlayerManager : MonoBehaviour
     {
         pv.RPC(nameof(RPC_InstantiateMessageOnKill), RpcTarget.All, killedName, killerName, weaponIndex);
     }
+    public void TDM_InstantiateKillMSG(string killedName, string killerName, int weaponIndex, bool killedIsTeam)
+    {
+        pv.RPC(nameof(RPC_TDM_InstantiateMessageOnKill), RpcTarget.All, killedName, killerName, weaponIndex, killedIsTeam);
+    }
     [PunRPC]
     public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex)
     {
@@ -690,6 +695,23 @@ public class PlayerManager : MonoBehaviour
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
         temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, InGameUI.instance.FindWeaponIcon(weaponIndex));
         Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
+        Destroy(temp, 15f);
+    }
+    [PunRPC]
+    public void RPC_TDM_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool killedIsTeam)
+    {
+        GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
+        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, InGameUI.instance.FindWeaponIcon(weaponIndex));
+        if (IsTeam == killedIsTeam)
+        {
+            temp.GetComponent<KillMessageItem>().SetKillerColor(Color.red);
+        }
+        else
+        {
+            temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+        }
+        //Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
+        Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex + " on team " + (!killedIsTeam ? "Red" : "Blue"));
         Destroy(temp, 15f);
     }
 

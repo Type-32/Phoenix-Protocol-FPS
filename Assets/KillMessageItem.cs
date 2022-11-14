@@ -14,4 +14,12 @@ public class KillMessageItem : MonoBehaviour
         killer.text = killerName;
         icon.sprite = img;
     }
+    public void SetKillerColor(Color killerColor)
+    {
+        killer.color = killerColor;
+    }
+    public void SetKilledColor(Color killedColor)
+    {
+        killed.color = killedColor;
+    }
 }
