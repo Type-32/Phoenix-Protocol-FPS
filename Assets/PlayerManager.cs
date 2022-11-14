@@ -246,7 +246,7 @@ public class PlayerManager : MonoBehaviour
     }
     void CreateController()
     {
-        if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") RetreiveIsTeamValue();
+        //if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") RetreiveIsTeamValue();
         audioListener.enabled = false;
         respawning = true;
         respawnButton.interactable = false;
