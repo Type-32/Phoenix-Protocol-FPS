@@ -710,17 +710,31 @@ public class PlayerManager : MonoBehaviour
         Destroy(temp, 15f);
     }
     [PunRPC]
-    public void RPC_TDM_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool killedIsTeam)
+    public void RPC_TDM_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool killerIsTeam)
     {
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
         temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, InGameUI.instance.FindWeaponIcon(weaponIndex));
-        if (IsTeam == killedIsTeam)
+        if (killerIsTeam)
         {
-            temp.GetComponent<KillMessageItem>().SetKillerColor(Color.red);
+            if (IsTeam == killerIsTeam)
+            {
+                temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+            }
+            else
+            {
+                temp.GetComponent<KillMessageItem>().SetKillerColor(Color.red);
+            }
         }
         else
         {
-            temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+            if (IsTeam == killerIsTeam)
+            {
+                temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+            }
+            else
+            {
+                temp.GetComponent<KillMessageItem>().SetKillerColor(Color.red);
+            }
         }
         //Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
         Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex + " on team " + (!killedIsTeam ? "Red" : "Blue"));
