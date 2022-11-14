@@ -14,11 +14,15 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     public Text pingText;
     public Scoreboard scoreboard;
     public Player player;
+    private int cachedPlayerKill;
+    private int cachedPlayerDeath;
     public void Initialize(Player player, Scoreboard scbd)
     {
         this.player = player;
         scoreboard = scbd;
         usernameText.text = player.NickName;
+        cachedPlayerKill = 0;
+        cachedPlayerDeath = 0;
         UpdateStats();
     }
     void UpdateStats()
@@ -40,7 +44,8 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
             {
                 killsText.text = kills.ToString();
                 player.CustomProperties.TryGetValue("team", out object team);
-                scoreboard.matchManager.TeamDeathmatchKillLogic((bool)team);
+                int res = (int)kills - cachedPlayerKill;
+                if (res >= 1) scoreboard.matchManager.TeamDeathmatchKillLogic(res, (bool)team);
             }
             if (player.CustomProperties.TryGetValue("deaths", out object deaths))
             {

@@ -183,7 +183,7 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(amount);
         cmm.RefreshPlayerList();
         cmm.DistributeTeams();
-        cmm.TeamDeathmatchKillLogic(IsTeam);
+        cmm.TeamDeathmatchKillLogic(0, IsTeam);
     }
     IEnumerator DelayedSyncIsTeam(float amount)
     {

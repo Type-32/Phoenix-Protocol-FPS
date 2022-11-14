@@ -168,9 +168,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         if(players.Contains(player)) players.Remove(player);
         OnPlayerListUpdate(players);
     }
-    public void TeamDeathmatchKillLogic(bool team)
-    {
-        TDM_AddPoint(1, team);
+    public void TeamDeathmatchKillLogic(int amount, bool team)
+    { 
+        TDM_AddPoint(amount, team);
     }
     void TDM_AddPoint(int amount, bool team)
     {
