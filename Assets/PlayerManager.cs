@@ -716,7 +716,7 @@ public class PlayerManager : MonoBehaviour
         temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, InGameUI.instance.FindWeaponIcon(weaponIndex));
         if (killerIsTeam)
         {
-            if (IsTeam == killerIsTeam)
+            if (cmm.localClientPlayer.IsTeam == killerIsTeam)
             {
                 temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
             }
@@ -727,7 +727,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            if (IsTeam == killerIsTeam)
+            if (cmm.localClientPlayer.IsTeam == killerIsTeam)
             {
                 temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
             }
