@@ -52,6 +52,8 @@ public class InGameUI : MonoBehaviour
         instance = this;
         matchManager = FindObjectOfType<CurrentMatchManager>();
         requirementText.text = "Get " + ((int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]).ToString() + " kills to win the game!";
+        redTeamKillsSlider.maxValue = blueTeamKillsSlider.maxValue = (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"];
+        redTeamKillsSlider.minValue = blueTeamKillsSlider.minValue = 0;
     }
     private void Update()
     {

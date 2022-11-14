@@ -395,7 +395,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_UpdateTeamDeathmatchHUD(int blueKills, int redKills)
     {
-        internalUI.UpdateTDMData(blueKills, redKills, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
+        internalUI.UpdateTDMData(blueKills, redKills, maxKillLimit);
     }
     [PunRPC]
     void RPC_SyncBlueClientIDs(int ids)
