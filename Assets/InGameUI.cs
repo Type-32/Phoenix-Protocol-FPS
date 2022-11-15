@@ -40,6 +40,9 @@ public class InGameUI : MonoBehaviour
     float sliderXPTemp;
 
     [Space, Header("TDM References")]
+    public GameObject TDMEndMatchUI;
+    public GameObject TDMEndMatchUI_Win;
+    public GameObject TDMEndMatchUI_Lose;
     public Text blueTeamKillsText;
     public Text redTeamKillsText;
     public Slider blueTeamKillsSlider;
@@ -77,6 +80,18 @@ public class InGameUI : MonoBehaviour
     public void ToggleMatchEndUI(bool toggle)
     {
         MatchFinishUI.SetActive(toggle);
+    }
+    public void TDM_ToggleMatchEndUI(bool toggle, bool winnerIsTeam, bool localIsTeam)
+    {
+        TDMEndMatchUI.SetActive(toggle);
+        if (winnerIsTeam == localIsTeam)
+        {
+            TDMEndMatchUI_Win.SetActive(toggle);
+        }
+        else
+        {
+            TDMEndMatchUI_Lose.SetActive(toggle);
+        }
     }
     public void ToggleTDM_UI(bool toggle)
     {
@@ -116,7 +131,7 @@ public class InGameUI : MonoBehaviour
         KDRatio.text = "K/D: " + ((float)totalKills / (float)totalDeaths).ToString();
         this.totalGainedCoins.text = "Resulting Money Gained: " + totalGainedCoins.ToString();
         this.totalGainedXP.text = "Gained XP in match: " + totalGainedXP.ToString();
-        this.XPSlider.value = xp / (level * UserDatabase.Instance.levelLimiter);
+        this.XPSlider.value = (float)xp / (float)(level * UserDatabase.Instance.levelLimiter);
         this.levelText.text = (totalGainedXP + xp >= level * UserDatabase.Instance.levelLimiter) ? ("Level " + level.ToString() + " > " + UserDatabase.Instance.GetUserXPLevelValue().ToString()) : ("Level " + level.ToString());
         sliderXPTemp = ((float)totalGainedXP / ((float)level * UserDatabase.Instance.levelLimiter)) + xp;
     }

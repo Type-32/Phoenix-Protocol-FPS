@@ -44,6 +44,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         internalUI.ToggleMatchEndUI(false);
+        internalUI.TDM_ToggleMatchEndUI(false, false, false);
         internalUI.ToggleMatchEndStats(false, 0f);
         gameStarted = true;
         gameEnded = false;
@@ -278,7 +279,18 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     void TeamDeathmatchFunctions()
     {
-        
+        if(teamBluePoints >= maxKillLimit && teamBluePoints >= teamRedPoints)
+        {
+            TDMWin(true);
+        }
+        else if(teamRedPoints >= maxKillLimit && teamRedPoints >= teamBluePoints)
+        {
+            TDMWin(false);
+        }
+    }
+    public void TDMWin(bool winnerIsTeam)
+    {
+        pv.RPC(nameof(RPC_TDMWinMatch), RpcTarget.All, winnerIsTeam);
     }
     public void FFAWin(string winnerName)
     {
@@ -305,6 +317,26 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 plr.ui.AddTargetIndicator(p.gameObject, UIManager.TargetIndicatorType.Hostile, Color.red);
             }
         }
+    }
+    [PunRPC]
+    void RPC_TDMWinMatch(bool winnerIsTeam)
+    {
+        gameStarted = false;
+        gameEnded = true;
+        Cursor.lockState = CursorLockMode.None;
+        internalUI.TDM_ToggleMatchEndUI(true, winnerIsTeam, localClientPlayer.IsTeam);
+        internalUI.SetMatchEndMessage((winnerIsTeam ? "Blue Team" : "Red Team") + " Won the match!");
+        //StartCoroutine(QuitEveryPlayer(3f));
+        if (localClientPlayer.controller != null)
+        {
+            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die();
+        }
+        localClientPlayer.CloseMenu();
+        internalUI.ToggleMatchEndStats(true, 2f);
+        int gainedCoins = (int)(localClientPlayer.totalGainedXP * (5f / 6f));
+        internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
+        UserDatabase.Instance.AddUserLevelXP(localClientPlayer.totalGainedXP);
+        UserDatabase.Instance.AddUserCurrency(gainedCoins);
     }
     [PunRPC]
     public void RPC_FFAWinMatch(string winnerName)
