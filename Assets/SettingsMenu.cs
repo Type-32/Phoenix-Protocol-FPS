@@ -26,9 +26,9 @@ public class SettingsMenu : MonoBehaviour
         data.QualityIndex = qualityDropdown.value;
         data.ResolutionIndex = resolutionDropdown.value;
 
-        //Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
+        //Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Application.persistentDataPath + "/SettingsOptions.json", json);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"), json);
         //Debug.LogWarning("Writing Settings Options To Files...");
     }
     public void InitializeSettingsOptionsToJSON()
@@ -41,15 +41,24 @@ public class SettingsMenu : MonoBehaviour
         data.QualityIndex = 1;
         data.ResolutionIndex = -1;
 
-        //Debug.Log("Persistent Data Path: " + Application.persistentDataPath + "/SettingsOptions.json");
+        //Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Application.persistentDataPath + "/SettingsOptions.json", json);
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"))) File.CreateText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json")).Close();
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"), json);
         //Debug.LogWarning("Writing Settings Options To Files...");
     }
     public void ReadSettingsOptionsFromJSON()
     {
-        if (!File.Exists(Application.persistentDataPath + "/SettingsOptions.json")) InitializeSettingsOptionsToJSON();
-        string json = File.ReadAllText(Application.persistentDataPath + "/SettingsOptions.json");
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"))) InitializeSettingsOptionsToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "SettingsOptions.json")))
+        {
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
+            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+            {
+                InitializeSettingsOptionsToJSON();
+            }
+        }
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
         //Debug.LogWarning("Reading Settings Options To Files...");
         SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
         SetFieldOfView(jsonData.FieldOfView);
@@ -153,8 +162,16 @@ public class SettingsMenu : MonoBehaviour
     }
     public void SetDefaultOptionValues()
     {
-        if (!File.Exists(Application.persistentDataPath + "/SettingsOptions.json")) InitializeSettingsOptionsToJSON();
-        string json = File.ReadAllText(Application.persistentDataPath + "/SettingsOptions.json");
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"))) InitializeSettingsOptionsToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "SettingsOptions.json")))
+        {
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
+            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+            {
+                InitializeSettingsOptionsToJSON();
+            }
+        }
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
         //Debug.LogWarning("Reading Settings Options To Files...");
         SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
 

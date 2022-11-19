@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class LoadoutSelectionScript : MonoBehaviour
 {
+    public UserDatabase database;
+    [Space]
     public GameObject loadoutSelectionItemPrefab;
     public GameObject loadoutWeaponSelectionItemPrefab;
     [Space]
@@ -66,13 +68,31 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         return -1;
     }
+    public void InitializeLoadoutDataToJSON()
+    {
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"))) database.InitializeUserDataToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json")))
+        {
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+            {
+                database.InitializeUserDataToJSON();
+            }
+        }
+        LoadoutDataJSON data = new();
+        data = GlobalDatabase.singleton.emptyLoadoutDataJSON;
+        string json = JsonUtility.ToJson(data, true);
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"))) File.CreateText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json")).Close();
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
+        Debug.LogWarning("Initializing Loadout Data To Files...");
+    }
     public void WriteLoadoutDataToJSON()
     {
         LoadoutDataJSON data = new();
         data = GlobalDatabase.singleton.emptyLoadoutDataJSON;
         data.SelectedSlot = selectedLoadoutIndex;
         //string json = JsonUtility.ToJson(data, true);
-        //File.WriteAllText(Application.persistentDataPath + "/LoadoutDataConfig.json", json);
+        //File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
 
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
@@ -94,16 +114,24 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Application.persistentDataPath + "/LoadoutDataConfig.json", json);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
         Debug.LogWarning("Writing Loadout Data To Files...");
     }
     public void ReadLoadoutDataFromJSON()
     {
-        if (!File.Exists(Application.persistentDataPath + "/LoadoutDataConfig.json")) WriteLoadoutDataToJSON();
-        string json = File.ReadAllText(Application.persistentDataPath + "/LoadoutDataConfig.json");
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"))) InitializeLoadoutDataToJSON();
+        if(File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json")))
+        {
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
+            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+            {
+                InitializeLoadoutDataToJSON();
+            }
+        }
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
         Debug.LogWarning("Reading Loadout Data To Files...");
         LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
-        json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
         selectedLoadoutIndex = jsonData.SelectedSlot;
         selectedMainWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon1;
@@ -281,7 +309,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void InstantiateLoadoutWeaponSelections()
     {
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
         if(loadoutWeaponSelects.Count != 0)
         {
@@ -293,7 +321,17 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
-            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
+            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i))
+            {
+                if (!jsonUserData.shopData.availableWeaponIndexes.Contains(i) && !jsonUserData.shopData.unlockedWeaponIndexes.Contains(i))
+                {
+                    jsonUserData.shopData.availableWeaponIndexes.Add(i);
+                }
+                else
+                {
+                    continue;
+                }
+            }
             LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
             //loadoutDataList[i].loadoutIndex = i;
             loadoutWeaponSelects.Add(temp);

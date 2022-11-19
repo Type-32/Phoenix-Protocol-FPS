@@ -40,8 +40,8 @@ public class ShopMenuScript : MonoBehaviour
 
     void Start()
     {
-        if (!File.Exists(Application.persistentDataPath + "/UserDataConfig.json")) UserDatabase.Instance.InitializeUserDataToJSON();
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"))) UserDatabase.Instance.InitializeUserDataToJSON();
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         //Debug.LogWarning("Reading User Data To Files...");
         UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
@@ -147,7 +147,7 @@ public class ShopMenuScript : MonoBehaviour
     {
         if (data != null)
         {
-            string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
             //Debug.LogWarning("Reading User Data To Files...");
             UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
             jsonData = JsonUtility.FromJson<UserDataJSON>(json);

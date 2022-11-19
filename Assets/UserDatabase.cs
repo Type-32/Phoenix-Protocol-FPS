@@ -22,8 +22,16 @@ public class UserDatabase : MonoBehaviour
     }
     public void ReadUserDataFromJSON()
     {
-        if (!File.Exists(Application.persistentDataPath + "/UserDataConfig.json")) InitializeUserDataToJSON();
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"))) InitializeUserDataToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json")))
+        {
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+            {
+                InitializeUserDataToJSON();
+            }
+        }
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         //Debug.LogWarning("Reading User Data To Files...");
         UserDataJSON jsonData = emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
@@ -44,13 +52,13 @@ public class UserDatabase : MonoBehaviour
         data = emptyUserDataJSON;
 
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
         //Debug.LogWarning("Writing User Data To Files...");
     }
     public void WriteInputDataToJSON(UserDataJSON data)
     {
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
         //Debug.LogWarning("Writing User Data To Files...");
     }
     public void InitializeUserDataToJSON()
@@ -59,13 +67,13 @@ public class UserDatabase : MonoBehaviour
         data = emptyUserDataJSON;
 
         string json = JsonUtility.ToJson(data, true);
-        File.Create(Application.persistentDataPath + "/UserDataConfig.json");
-        File.WriteAllText(Application.persistentDataPath + "/UserDataConfig.json", json);
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"))) File.CreateText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json")).Close();
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
         //Debug.LogWarning("Initializing User Data To Files...");
     }
     public void AddUserCurrency(int amount)
     {
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         jsonData.userCoins += amount;
         if (RoomManager.Instance.currentSceneIndex == 0)
@@ -76,7 +84,7 @@ public class UserDatabase : MonoBehaviour
     }
     public bool AddUserLevelXP(int amount)
     {
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         int levelLim = jsonData.userLevel * UserDatabase.Instance.levelLimiter;
         string unlockedContent = "";
@@ -115,19 +123,19 @@ public class UserDatabase : MonoBehaviour
     }
     public int GetUserXPValue()
     {
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         return jsonData.userLevelXP;
     }
     public int GetUserXPLevelValue()
     {
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         return jsonData.userLevel;
     }
     public int GetUserCoinValue()
     {
-        string json = File.ReadAllText(Application.persistentDataPath + "/UserDataConfig.json");
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         return jsonData.userCoins;
     }
