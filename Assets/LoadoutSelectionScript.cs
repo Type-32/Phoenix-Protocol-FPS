@@ -338,6 +338,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
             temp.weaponIndex = i;
             temp.customButtonsHolder = this.customButtonsHolder;
+            database.WriteInputDataToJSON(jsonUserData);
         }
     }
 

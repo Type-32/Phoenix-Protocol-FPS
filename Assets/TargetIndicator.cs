@@ -14,6 +14,7 @@ public class TargetIndicator : MonoBehaviour
     private new Camera camera;
     private RectTransform holderRect;
     private RectTransform rect;
+    public CanvasGroup canvasGroup;
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
@@ -44,8 +45,10 @@ public class TargetIndicator : MonoBehaviour
     {
         if (target == null)
         {
+            canvasGroup.alpha = 0f;
             return;
         }
+        canvasGroup.alpha = 1f;
         SetPosition();
     }
     protected void SetPosition()
