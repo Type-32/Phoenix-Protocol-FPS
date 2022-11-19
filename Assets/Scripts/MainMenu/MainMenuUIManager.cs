@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Michsky.MUIP;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class MainMenuUIManager : MonoBehaviour
@@ -138,6 +139,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseUpdateLogsMenu();
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
+        AddPopup("test", "testlol");
 
     }
     private void OnEnable()
@@ -663,10 +665,14 @@ public class MainMenuUIManager : MonoBehaviour
     }
     public void AddPopup(string title, string content)
     {
-        PopupWindowItem item = Instantiate(popupWindowItemPrefab, popupHolder).GetComponent<PopupWindowItem>();
-        item.SetInfo(title, content);
-        popupWindows.Add(item);
-        Debug.Log("Popup Instantiated");
+        //PopupWindowItem item = Instantiate(popupWindowItemPrefab, popupHolder).GetComponent<PopupWindowItem>();
+        ModalWindowManager item = new ModalWindowManager();
+        item.titleText = title;
+        item.descriptionText = content;
+        item.UpdateUI();
+        item.Open();
+        //popupWindows.Add(item)
+        //Debug.Log("Popup Instantiated");
     }
     public void AddQueuedPopup(string title, string content, PopupQueue queueType)
     {
