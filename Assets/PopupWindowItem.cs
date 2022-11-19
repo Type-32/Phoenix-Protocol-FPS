@@ -14,6 +14,6 @@ public class PopupWindowItem : MonoBehaviour
     }
     public void OnClickClose()
     {
-        MainMenuUIManager.instance.RemovePopup(this);
+        //MainMenuUIManager.instance.RemovePopup(this);
     }
 }

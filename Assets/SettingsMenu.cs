@@ -4,16 +4,16 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using Michsky.MUIP;
 
 public class SettingsMenu : MonoBehaviour
 {
     public AudioMixer audioMixer;
-    public Dropdown resolutionDropdown;
-    public Dropdown qualityDropdown;
+    public CustomDropdown resolutionDropdown;
+    public CustomDropdown qualityDropdown;
     public Slider volumeSlider;
     public Slider sensitivitySlider;
     public Slider fieldOfViewSlider;
-    public Text fieldOfViewValue;
     public Toggle fullscreenToggle;
 
     public void WriteSettingsOptionsToJSON()
@@ -23,8 +23,8 @@ public class SettingsMenu : MonoBehaviour
         data.FieldOfView = fieldOfViewSlider.value;
         data.Fullscreen = fullscreenToggle.isOn;
         data.MouseSensitivity = sensitivitySlider.value;
-        data.QualityIndex = qualityDropdown.value;
-        data.ResolutionIndex = resolutionDropdown.value;
+        data.QualityIndex = qualityDropdown.selectedItemIndex;
+        data.ResolutionIndex = resolutionDropdown.selectedItemIndex;
 
         //Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
         string json = JsonUtility.ToJson(data, true);
@@ -82,15 +82,14 @@ public class SettingsMenu : MonoBehaviour
     }
     public void SetFieldOfView(float fov)
     {
-        fieldOfViewValue.text = fov.ToString();
         fieldOfViewSlider.value = fov;
         //WriteSettingsOptionsToJSON();
     }
     public void SetQuality(int qualityIndex)
     {
-        qualityDropdown.value = qualityIndex;
+        qualityDropdown.ChangeDropdownInfo(qualityIndex);
         QualitySettings.SetQualityLevel(qualityIndex);
-        qualityDropdown.RefreshShownValue();
+        //qualityDropdown.SetupDropdown();
         //WriteSettingsOptionsToJSON();
     }
     public void SetFullscreen(bool isFullscreen)
@@ -103,12 +102,11 @@ public class SettingsMenu : MonoBehaviour
     {
         //Debug.LogWarning("Resolution Index: " + resolutionIndex);
         //Debug.LogWarning("Available Resolutions: " + resolutions.Length);
-        resolutionDropdown.value = resolutionIndex;
+        resolutionDropdown.selectedItemIndex = resolutionIndex;
         resolutions = Screen.resolutions;
         Resolution resolution = resolutions[resolutionIndex == -1 ? resolutions.Length - 1 : resolutionIndex >= resolutions.Length ? resolutions.Length - 1 : resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         //WriteSettingsOptionsToJSON();
-        resolutionDropdown.RefreshShownValue();
     }
 
     
@@ -142,22 +140,22 @@ public class SettingsMenu : MonoBehaviour
         fieldOfViewSlider.minValue = 75f;
         fieldOfViewSlider.maxValue = 100f;
         resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();
+        resolutionDropdown.items.Clear();
+        resolutionDropdown.UpdateItemLayout();
         List<string> resOptions = new List<string>();
         int currentResIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRate;
-            resOptions.Add(option);
+            resolutionDropdown.CreateNewItem(option);
             if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
             {
                 currentResIndex = i;
             }
         }
-        resolutionDropdown.AddOptions(resOptions);
-        resolutionDropdown.value = currentResIndex;
-        resolutionDropdown.RefreshShownValue();
-        qualityDropdown.RefreshShownValue();
+        resolutionDropdown.ChangeDropdownInfo(currentResIndex);
+        resolutionDropdown.UpdateItemLayout();
+        //qualityDropdown.SetupDropdown();
         SetDefaultOptionValues();
     }
     public void SetDefaultOptionValues()
@@ -187,7 +185,7 @@ public class SettingsMenu : MonoBehaviour
         SetSensitivity(jsonData.MouseSensitivity);
 
         SetFieldOfView(jsonData.FieldOfView);
-        qualityDropdown.RefreshShownValue();
-        resolutionDropdown.RefreshShownValue();
+        //qualityDropdown.SetupDropdown();
+        //resolutionDropdown.RefreshShownValue();
     }
 }

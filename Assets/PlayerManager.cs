@@ -569,8 +569,8 @@ public class PlayerManager : MonoBehaviour
             data.FieldOfView = settingsMenu.fieldOfViewSlider.value;
             data.Fullscreen = settingsMenu.fullscreenToggle.isOn;
             data.MouseSensitivity = settingsMenu.sensitivitySlider.value;
-            data.QualityIndex = settingsMenu.qualityDropdown.value;
-            data.ResolutionIndex = settingsMenu.resolutionDropdown.value;
+            data.QualityIndex = settingsMenu.qualityDropdown.selectedItemIndex;
+            data.ResolutionIndex = settingsMenu.resolutionDropdown.selectedItemIndex;
 
             Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
             string json = JsonUtility.ToJson(data, true);

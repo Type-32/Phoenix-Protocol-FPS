@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Michsky.MUIP;
 
 public class LoadoutPreviewUI : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class LoadoutPreviewUI : MonoBehaviour
     [SerializeField] LoadoutSelectionScript loadoutSelection;
     public Text[] texts;
     public Image[] images;
-    public Button[] buttons;
+    public ButtonManager[] buttons;
     public Sprite nullWeaponIcon;
 
     public void SetWeaponSlotInfo(int index, WeaponData weaponData)

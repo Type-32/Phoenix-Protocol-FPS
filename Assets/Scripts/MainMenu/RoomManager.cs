@@ -46,19 +46,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         else if (scene.buildIndex == 0)
         {
-            if (MainMenuUIManager.instance.queuedPopups.Count > 0)
-            {
-                for (int i = 0; i < MainMenuUIManager.instance.queuedPopups.Count; i++)
-                {
-                    if (MainMenuUIManager.instance.queuedPopups[i].queueType == MainMenuUIManager.PopupQueue.OnMainMenuLoad)
-                    {
-                        MainMenuUIManager.instance.AddPopup(MainMenuUIManager.instance.queuedPopups[i].title, MainMenuUIManager.instance.queuedPopups[i].content);
-                        MainMenuUIManager.instance.queuedPopups.Remove(MainMenuUIManager.instance.queuedPopups[i]);
-                        Debug.Log("Removing used queued popup");
-                    }
-                }
-                MainMenuUIManager.instance.queuedPopups.Clear();
-            }
+            CheckQueue();
         }
         else
         {
@@ -94,5 +82,34 @@ public class RoomManager : MonoBehaviourPunCallbacks
         //temp.CloseAllMenus();
         //StartCoroutine(temp.CloseMainMenuDelayed(0.2f));
         Destroy(gameObject);
+    }
+    public void CheckQueue()
+    {
+        if (MainMenuUIManager.instance.queuedModalWindows.Count > 0)
+        {
+            for (int i = 0; i < MainMenuUIManager.instance.queuedModalWindows.Count; i++)
+            {
+                if (MainMenuUIManager.instance.queuedModalWindows[i].queueType == MainMenuUIManager.PopupQueue.OnMainMenuLoad)
+                {
+                    MainMenuUIManager.instance.AddModalWindow(MainMenuUIManager.instance.queuedModalWindows[i].title, MainMenuUIManager.instance.queuedModalWindows[i].content);
+                    MainMenuUIManager.instance.queuedModalWindows.Remove(MainMenuUIManager.instance.queuedModalWindows[i]);
+                    Debug.Log("Removing queued modal window from queue list");
+                }
+            }
+            MainMenuUIManager.instance.queuedModalWindows.Clear();
+        }
+        if (MainMenuUIManager.instance.queuedNotifications.Count > 0)
+        {
+            for (int i = 0; i < MainMenuUIManager.instance.queuedNotifications.Count; i++)
+            {
+                if (MainMenuUIManager.instance.queuedNotifications[i].queueType == MainMenuUIManager.PopupQueue.OnMainMenuLoad)
+                {
+                    MainMenuUIManager.instance.AddNotification(MainMenuUIManager.instance.queuedNotifications[i].title, MainMenuUIManager.instance.queuedNotifications[i].content);
+                    MainMenuUIManager.instance.queuedNotifications.Remove(MainMenuUIManager.instance.queuedNotifications[i]);
+                    Debug.Log("Removing queued notification from queue list");
+                }
+            }
+            MainMenuUIManager.instance.queuedNotifications.Clear();
+        }
     }
 }

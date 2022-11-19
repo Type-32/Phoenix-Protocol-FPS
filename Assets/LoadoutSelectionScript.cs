@@ -353,6 +353,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         DisableAllSelectedVisuals();
         loadoutItems[selectedLoadoutIndex].ToggleSelectVisual(true);
         EnablePreview();
+        MainMenuUIManager.instance.AddNotification("Loadout Selection", "You have selected Loadout Number " + (selectedLoadoutIndex + 1) + ".");
         //WriteLoadoutDataToJSON();
     }
     public void DisableAllSelectedVisuals()

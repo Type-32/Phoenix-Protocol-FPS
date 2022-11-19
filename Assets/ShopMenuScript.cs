@@ -111,7 +111,7 @@ public class ShopMenuScript : MonoBehaviour
             }
         }
         UserDatabase.Instance.WriteInputDataToJSON(jsonData);
-        if (informPopupNeeded) MainMenuUIManager.instance.AddPopup("Unlocking Content", content);
+        if (informPopupNeeded) MainMenuUIManager.instance.AddModalWindow("Unlocking Content", content);
     }
     public void SetPreviewInfo(WeaponData data, bool showPurchaseButton)
     {
@@ -179,7 +179,7 @@ public class ShopMenuScript : MonoBehaviour
             jsonData = JsonUtility.FromJson<UserDataJSON>(json);
             if(jsonData.userCoins >= data.purchasePrice)
             {
-                MainMenuUIManager.instance.AddPopup("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
+                MainMenuUIManager.instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
                 FindForWeaponDataInList(data).SetItemData(data, true, true);
                 jsonData.userCoins -= data.purchasePrice;
                 //jsonData.shopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
@@ -193,7 +193,7 @@ public class ShopMenuScript : MonoBehaviour
             }
             else
             {
-                MainMenuUIManager.instance.AddPopup("Purchase Result", "Cannot Purchase Weapon! You need more money!");
+                MainMenuUIManager.instance.AddNotification("Purchase Result", "Cannot Purchase Weapon! You need more money!");
             }
         }
     }

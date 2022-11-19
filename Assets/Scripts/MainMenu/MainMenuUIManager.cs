@@ -66,6 +66,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private int maxKillLimitNumber = 30;
     [SerializeField] private bool roomVisibility = true;
     [SerializeField] private Transform popupHolder;
+    [SerializeField] private Transform notificationHolder;
 
     [Header("Room Visual")]
     [SerializeField] Text maxPlayers;
@@ -97,9 +98,12 @@ public class MainMenuUIManager : MonoBehaviour
     };
     [Space]
     [Header("Popups")]
-    public List<PopupWindowItem> popupWindows = new();
-    public List<PopupData> queuedPopups = new();
-    public GameObject popupWindowItemPrefab;
+    public List<ModalWindowManager> modalWindowList = new();
+    public List<PopupData> queuedModalWindows = new();
+    public List<NotificationManager> notificationList = new();
+    public List<PopupData> queuedNotifications = new();
+    public GameObject modalWindowPrefab;
+    public GameObject notificationPrefab;
 
     [Space]
     [Header("User Stats")]
@@ -139,7 +143,7 @@ public class MainMenuUIManager : MonoBehaviour
         CloseUpdateLogsMenu();
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
-        AddPopup("test", "testlol");
+        //AddPopup("test", "testlol");
 
     }
     private void OnEnable()
@@ -663,10 +667,10 @@ public class MainMenuUIManager : MonoBehaviour
         openedPopupMenu = value;
         popupMenu.SetActive(value);
     }
-    public void AddPopup(string title, string content)
+    public void AddModalWindow(string title, string content)
     {
-        //PopupWindowItem item = Instantiate(popupWindowItemPrefab, popupHolder).GetComponent<PopupWindowItem>();
-        ModalWindowManager item = new ModalWindowManager();
+        ModalWindowManager item = Instantiate(modalWindowPrefab, popupHolder).GetComponent<ModalWindowManager>();
+        item.gameObject.SetActive(true);
         item.titleText = title;
         item.descriptionText = content;
         item.UpdateUI();
@@ -674,19 +678,49 @@ public class MainMenuUIManager : MonoBehaviour
         //popupWindows.Add(item)
         //Debug.Log("Popup Instantiated");
     }
-    public void AddQueuedPopup(string title, string content, PopupQueue queueType)
+    public void QueueModalWindow(string title, string content, PopupQueue queueType)
     {
         PopupData temp;
         temp.title = title;
         temp.content = content;
         temp.queueType = queueType;
-        queuedPopups.Add(temp);
+        queuedModalWindows.Add(temp);
     }
-    public bool RemovePopup(PopupWindowItem i)
+    public bool RemoveModalWindow(ModalWindowManager i)
     {
-        if (popupWindows.Contains(i))
+        if (modalWindowList.Contains(i))
         {
-            popupWindows.Remove(i);
+            modalWindowList.Remove(i);
+            Destroy(i.gameObject);
+            return true;
+        }
+        return false;
+    }
+    public void AddNotification(string title, string content)
+    {
+        NotificationManager item = Instantiate(notificationPrefab, notificationHolder).GetComponent<NotificationManager>();
+        item.gameObject.SetActive(true);
+        item.title = title;
+        item.description = content;
+        item.UpdateUI();
+        item.Open();
+        Destroy(item.gameObject, 5f);
+        //popupWindows.Add(item)
+        //Debug.Log("Popup Instantiated");
+    }
+    public void QueueNotification(string title, string content, PopupQueue queueType)
+    {
+        PopupData temp;
+        temp.title = title;
+        temp.content = content;
+        temp.queueType = queueType;
+        queuedNotifications.Add(temp);
+    }
+    public bool RemoveNotification(NotificationManager i)
+    {
+        if (notificationList.Contains(i))
+        {
+            notificationList.Remove(i);
             Destroy(i.gameObject);
             return true;
         }
