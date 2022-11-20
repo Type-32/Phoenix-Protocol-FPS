@@ -1,0 +1,71 @@
+	
+
+
+
+
+
+			#pragma target 5.0
+			#pragma multi_compile_instancing
+		#if URP
+			#pragma prefer_hlslcc gles
+			#pragma exclude_renderers d3d11_9x
+		#endif		
+			#pragma fragment fragment_shader
+		#if GEOMETRY
+			#define GEOMETRY
+			#pragma vertex vertex_shader
+			#pragma geometry geometry_shader
+		#endif		
+		#if QUAD_TESS
+			#define GRASS_TESSELATION
+			#pragma vertex TessVertex
+			#pragma hull GrassHull
+			#pragma domain GrassDomain
+		#endif							
+		#if SURF_TESS
+			#define SURFACE_TESSELATION
+			#pragma vertex TessVertex
+			#pragma hull GrassHull
+			#pragma domain GrassDomain
+		#endif
+		#if MESH_BUFFER
+			#define MESH_BUFFER
+			#pragma vertex mesh_vertex_shader
+		#endif
+		#if !GLOBAL_KEYWORDS
+			#pragma shader_feature_local SEMI_TRANSPARENT
+			#pragma shader_feature_local RENDERMODE_MESH
+			#pragma shader_feature_local BAKED_HEIGHTMAP
+			#pragma shader_feature_local GF_USE_DITHER
+			#pragma shader_feature_local GF_SPECULAR
+			#pragma shader_feature_local GF_PPLIGHTS
+			#pragma shader_feature_local GF_NORMAL_MAP
+		
+		#if !SURF_TESS
+			#pragma shader_feature_local BILLBOARD
+			#pragma shader_feature_local MULTI_SEGMENT
+		#endif
+		#endif
+		#if GLOBAL_KEYWORDS
+			#pragma shader_feature SEMI_TRANSPARENT
+			#pragma shader_feature RENDERMODE_MESH
+			#pragma shader_feature BAKED_HEIGHTMAP
+			#pragma shader_feature GF_USE_DITHER
+			#pragma shader_feature GF_SPECULAR
+			#pragma shader_feature GF_PPLIGHTS
+			#pragma shader_feature GF_NORMAL_MAP
+		
+		#if !SURF_TESS
+			#pragma shader_feature BILLBOARD
+			#pragma shader_feature MULTI_SEGMENT
+		#endif
+		#endif
+		#if !SRP
+			#include "UnityCG.cginc"
+			#include "AutoLight.cginc"
+		#endif
+		#if URP
+			#define SRP
+			#define URP
+		#endif
+			#include "../GrassPrograms.cginc"

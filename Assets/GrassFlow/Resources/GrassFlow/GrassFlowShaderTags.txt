@@ -1,0 +1,17 @@
+	
+
+
+
+			AlphaToMask[_ALPHA_TO_MASK]
+
+		#if MESH_BUFFER
+			Cull [_Cull]
+		#endif
+		#if SURF_TESS
+			Cull [_Cull]
+		#endif		
+		#if !SURF_TESS
+		#if !MESH_BUFFER
+			Cull Off
+		#endif
+		#endif

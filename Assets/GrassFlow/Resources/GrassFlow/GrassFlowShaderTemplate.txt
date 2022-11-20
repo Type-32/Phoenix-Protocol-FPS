@@ -1,0 +1,333 @@
+Shader "GrassFlow/[NAME]" {
+	Properties {
+
+
+		//---------------------------------------------------------------------------------
+		//----------------------------GRASS PROPS--------------------------------------
+		//---------------------------------------------------------------------------------
+		[Space(15)]
+		[HideInInspector] _CollapseStart("Grass Properties", Float) = 1
+		[HDR]_Color("Grass Color", Color) = (1,1,1,1)
+		bladeHeight("Blade Height", Float) = 1.0
+	#if !SURF_TESS
+		bladeWidth("Blade Width", Float) = 0.05
+		bladeSharp("Blade Sharpness", Float) = 0.3
+		[Toggle(BILLBOARD)]
+		_BILLBOARD("Billboard", Float) = 1
+	#endif
+		seekSun("Seek Sun", Float) = 0.6
+		topViewPush("Top View Adjust", Float) = 0.5
+		flatnessMult("Flatness Adjust", Float) = 1.25
+		[HDR]flatTint("Flatness Tint", Color) = (1,1,1, 0.15)
+		variance("Variances (p,h,c,w)", Vector) = (0.4, 0.4, 0.4, 0.4)	
+		_CollapseEnd("Grass Properties", Float) = 0
+
+
+
+		//---------------------------------------------------------------------------------
+		//----------------------------LIGHTING--------------------------------------
+		//---------------------------------------------------------------------------------
+		[HideInInspector] _CollapseStart("Lighting Properties", Float) = 0
+	#if !DEFERRED
+	#if URP
+		[ToggleOff(_RECEIVE_SHADOWS_OFF)] _ReceiveShadows("Receive Shadows", Float) = 1.0
+	#endif
+		[Toggle(GF_PPLIGHTS)] _ppLights("Per-Pixel Lights", Float) = 0
+	#endif
+
+		_AO("AO", Float) = 0.25
+		ambientCO("Ambient", Float) = 0.1
+
+		#if MESH_BUFFER
+		blendNormal("Blend Surface Normal", Float) = 0
+		#endif
+
+	#if !DEFERRED
+		ambientCOShadow("Shadow Ambient", Float) = 0.5
+		edgeLight("Edge On Light", Float) = 0.4
+		edgeLightSharp("Edge On Light Sharpness", Float) = 8
+
+		[HideInInspector] _CollapseStart("Specular", Float) = 0
+		[Toggle(GF_SPECULAR)]_GF_SPECULAR("Enable Specular", Float) = 0
+		specSmooth("Smoothness", Float) = 0.16
+		specularMult("Specular Mult", Float) = 2
+		specHeight("Specular Height Adjust", Float) = 0.5
+		specTint("Specular Tint", Color) = (1,1,1,1)
+		_CollapseEnd("Specular", Float) = 0
+	#endif
+	#if DEFERRED
+		_Metallic("Metallic", Range(0, 1)) = 0
+		_Gloss("Specular", Range(0, 1)) = 0.0
+	#endif
+
+		[HideInInspector] _CollapseStart("Normal Map", Float) = 0
+		[Toggle(GF_NORMAL_MAP)]_GF_NORMAL_MAP("Enable Normal Mapping", Float) = 0
+		[NoScaleOffset] bumpMap("Normal Map", 2D) = "bump" {}
+		normalStrength("Strength", Float) = 0.1
+		_CollapseEnd("Normal Map", Float) = 0
+
+		_CollapseEnd("Lighting Properties", Float) = 0
+
+
+
+	#if SURF_TESS
+		//---------------------------------------------------------------------------------
+		//----------------------------SURF_TESS--------------------------------------
+		//---------------------------------------------------------------------------------
+		[Space(15)]
+		[HideInInspector] _CollapseStart("Tesselation", Float) = 0
+		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling Mode", Float) = 2
+		tessDispScale("Tess Displace Parameter", Float) = 3
+		tessTexScale("Tess Texture Parameter", Float) = 1000
+		tessAmnt("Tess Factor", Range(1, 64)) = 20
+		tessAmntShadow("Shadows Tess Factor", Range(1, 64)) = 10
+		tessRange("Tess Range", Float) = 60
+		tessPow("Tess Range Sharpness", Float) = 1.25
+		tessClose("Tess Close Fade", Range(0.001, 1.5)) = 1.5
+		tessMin("Minimum Tess Factor", Range(1, 16)) = 2
+			
+		[NoScaleOffset] grassDisplacer("Grass Displace", 2D) = "gray"{}
+		[NoScaleOffset] randoMap("Rndm", 2D) = "gray"{}
+		_CollapseEnd("Tesselation", Float) = 0
+	#endif
+
+
+
+		//---------------------------------------------------------------------------------
+		//----------------------------LOD--------------------------------------
+		//---------------------------------------------------------------------------------
+		[Space(15)]
+		[HideInInspector] _CollapseStart("LOD Properties", Float) = 0		
+		[Toggle(ALPHA_TO_MASK)]
+		_ALPHA_TO_MASK("Alpha To Mask", Float) = 0
+		[Toggle(GF_USE_DITHER)]
+		_GF_USE_DITHER("Use Dither", Float) = 0
+	#if !SURF_TESS
+		widthLODscale("Width LOD Scale", Float) = 0.04
+	#endif
+	#if MESH_BUFFER
+		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling Mode", Float) = 2
+	#endif
+		grassFade("Grass Fade", Float) = 120
+		grassFadeSharpness("Fade Sharpness", Float) = 8
+		[HideInInspector]_LOD("LOD Params", Vector) = (20, 1.1, 0.2, 0.0)
+		_CollapseEnd("LOD Properties", Float) = 0
+
+
+
+		//---------------------------------------------------------------------------------
+		//----------------------------WIND--------------------------------------
+		//---------------------------------------------------------------------------------
+		[Space(15)]
+		[HideInInspector]_CollapseStart("Wind Properties", Float) = 0
+		[HDR]windTint("Wind Tint", Color) = (1,1,1, 0.15)
+		_noiseScale("Noise Scale", Vector) = (1,1,.7)
+		_noiseSpeed("Noise Speed", Vector) = (1.5,1,0.35)
+		windDir  ("Wind Direction", Vector) = (-0.7,-0.6,0.1)
+		_noiseScale2("Secondary Noise Scale", Vector) = (2,2,1)
+		_noiseSpeed2("Secondary Noise Speed", Vector) = (2.5,2,1.35)
+		windDir2 ("Secondary Wind Direction", Vector) = (0.5,0.5,1.2)
+		_CollapseEnd("Wind Properties", Float) = 0
+
+
+
+		//---------------------------------------------------------------------------------
+		//----------------------------BENDING--------------------------------------
+		//---------------------------------------------------------------------------------
+		[Space(15)]
+		[HideInInspector]_CollapseStart("Bendable Settings", Float) = 0
+	#if !SURF_TESS
+		[Toggle(MULTI_SEGMENT)]
+		_MULTI_SEGMENT("Enable Bending", Float) = 0
+	#endif
+		bladeLateralCurve("Curvature", Float) = 0
+		bladeVerticalCurve("Droop", Float) = 0
+		bladeStiffness("Floppyness", Float) = 0
+		_CollapseEnd("Bendable Settings", Float) = 0
+
+
+
+		//---------------------------------------------------------------------------------
+		//----------------------------MAPS--------------------------------------
+		//---------------------------------------------------------------------------------
+		[Space(15)]
+		[HideInInspector]_CollapseStart("Maps and Textures", Float) = 0
+		[Toggle] alphaLock("Discard Texture Alpha", Float) = 1
+		[Toggle(SEMI_TRANSPARENT)]
+		_SEMI_TRANSPARENT("Enable Alpha Clip", Float) = 0
+		alphaClip("Alpha Clip", Float) = 0.25
+		numTextures("Number of Textures", Int) = 1
+		textureAtlasScalingCutoff("Type Texture Scaling Cutoff", Int) = 16
+		_MainTex("Grass Texture", 2D) = "white"{}
+	#if DEFERRED
+		[NoScaleOffset] _SpecMap("Specular Map", 2D) = "white" {}
+		[NoScaleOffset] _OccMap("Occlusion Map", 2D) = "white" {}
+		[HideInInspector] occMult("Occlusion Strength", Float) = 1
+	#endif
+		colorMap("Grass Color Map", 2D) = "white"{}
+		dhfParamMap("Grass Parameter Map", 2D) = "white"{}
+		typeMap("Grass Type Map", 2D) = "black"{}		
+		//[PerRendererData] _chunkPos("ChunkPos", Vector)= (0,0,0,0)
+		[NoScaleOffset][HideInInspector] terrainNormalMap("Terrain Normal Map", 2D) = "black"{}
+		_CollapseEnd("Maps and Textures", Float) = 0
+
+	
+
+
+		//---------------------------------------------------------------------------------
+		//----------------------------HIDDEN SHADER VARIANT VALUES--------------------------------------
+		//---------------------------------------------------------------------------------
+		[HideInInspector]Pipe_Type("Pipe_Type", Float) = 0
+		[HideInInspector]Render_Type("Render_Type", Float) = 0
+		[HideInInspector]Render_Path("Render_Path", Float) = 0
+		[HideInInspector]Depth_Pass("Depth_Pass", Float) = 1
+		[HideInInspector]Forward_Add("Forward_Add", Float) = 0
+		[HideInInspector]Global_Keywords("Global_Keywords", Float) = 0
+		[HideInInspector]VERSION("VERSION", Float) = 10
+	}
+
+	SubShader{
+
+		#if !SRP
+		Tags{ "Queue" = "AlphaTest"}
+		#endif
+		#if URP
+		#if !DEFERRED
+		Tags{ "Queue" = "Transparent"}
+		#endif
+		#if DEFERRED
+		Tags{ "Queue" = "Geometry"}
+		#endif
+		#endif
+
+	#if FORWARD
+		pass {
+			Name "ForwardBasePass"
+
+			Blend SrcAlpha OneMinusSrcAlpha
+		#if !SRP
+			Tags {"LightMode" = "ForwardBase" }
+		#endif
+		#if URP
+			Tags {"LightMode" = "UniversalForward" }
+		#endif
+
+			#svpInclude "GrassFlowShaderTags"
+
+			CGPROGRAM //-----------------
+
+		#if !SRP
+			#pragma multi_compile_fwdbase
+		#endif
+			#pragma multi_compile_fog
+			
+			#svpInclude "GrassFlowSRPBasePragmas"
+			#svpInclude "GrassFlowShaderPragmas"
+
+			ENDCG
+		}// base pass
+	#endif
+
+	#if DEFERRED
+		pass {
+			Name "Deferred"
+
+		#if !SRP
+			Tags{ "LightMode" = "Deferred" }
+		#endif
+		#if URP
+			Tags{ "LightMode" = "UniversalGBuffer" }
+		#endif
+
+			#svpInclude "GrassFlowShaderTags"
+
+			CGPROGRAM //---------------------
+
+		#if !SRP
+			#include "UnityPBSLighting.cginc"
+		#endif
+			
+			#pragma multi_compile ___ UNITY_HDR_ON
+
+			#if URP
+			#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
+			#endif
+
+			#define DEFERRED
+
+			#svpInclude "GrassFlowShaderPragmas"
+
+			ENDCG
+		}// deferred pass
+	#endif
+
+	#if FORWARD_ADD
+		pass {
+			Blend one one
+			Tags {"LightMode" = "ForwardAdd" }
+
+			#svpInclude "GrassFlowShaderTags"
+
+			CGPROGRAM //-----------------
+
+			#pragma multi_compile_fwdadd_fullshadows
+			#pragma multi_compile_fog
+
+			#define FORWARD_ADD
+
+			#svpInclude "GrassFlowShaderPragmas"
+
+			ENDCG
+		}// forward add pass
+	#endif
+
+	#if DEPTH_PASS
+		pass {
+
+			Name "DepthPass"
+			Tags {"LightMode" = "ShadowCaster" }
+			ColorMask 0
+				
+			#svpInclude "GrassFlowShaderTags"
+
+			CGPROGRAM //------------------
+
+			#pragma multi_compile_shadowcaster			
+
+			#define GRASS_DEPTH
+			#define SHADOW_CASTER
+			#if SRP
+			#define SRP_SHADOWCASTER
+			#endif
+
+			#svpInclude "GrassFlowShaderPragmas"
+
+			ENDCG
+		}// depth pass
+	#if URP
+		pass {
+
+			Name "URP DepthPass"
+			Tags {"LightMode" = "DepthOnly" }
+			ColorMask 0
+				
+			#svpInclude "GrassFlowShaderTags"
+
+			CGPROGRAM //------------------
+
+			#pragma multi_compile_shadowcaster			
+
+			#define GRASS_DEPTH
+			#define SHADOW_CASTER
+
+			#svpInclude "GrassFlowShaderPragmas"
+
+			ENDCG
+		}// depth pass
+	#endif
+	#endif
+		
+	}
+
+	CustomEditor "GrassFlow.GrassShaderGUI"
+}
