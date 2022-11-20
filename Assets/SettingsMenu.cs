@@ -147,6 +147,7 @@ public class SettingsMenu : MonoBehaviour
         for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRate;
+            resolutionDropdown.selectedItemIndex = 0;
             resolutionDropdown.CreateNewItem(option);
             if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
             {

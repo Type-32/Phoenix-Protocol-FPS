@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Michsky.MUIP;
+using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class MainMenuUIManager : MonoBehaviour
@@ -35,7 +36,7 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Text roomTitle;
     [SerializeField] private Text findRoomIndicator;
     [SerializeField] private InputField findRoomInputField;
-    public InputField playerNameInputField;
+    public TMP_InputField playerNameInputField;
 
     [Space]
     [Header("Menu States")]
@@ -59,7 +60,7 @@ public class MainMenuUIManager : MonoBehaviour
 
     [Space]
     [Header("Room Creation")]
-    [SerializeField] private InputField roomInputField;
+    [SerializeField] private TMP_InputField roomInputField;
     [SerializeField] private int roomMapSelectionIndex;
     [SerializeField] private Gamemodes selectedGamemodes = Gamemodes.FFA;
     [SerializeField] private int maxPlayerCount = 10;
