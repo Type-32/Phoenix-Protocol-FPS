@@ -21,6 +21,7 @@ public class MainMenuUIManager : MonoBehaviour
         get
         {
             string tmp = Path.Combine(Application.dataPath, "*/", "Version.txt");
+            Debug.Log("Getting Local Game Version");
             return new Version((File.Exists(tmp) ? File.ReadAllText(tmp) : "0.0.0.unknown-version"));
         }
     }
@@ -156,6 +157,10 @@ public class MainMenuUIManager : MonoBehaviour
         CloseUpdateLogsMenu();
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
+        for(int i = 0; i < versionTexts.Count; i++)
+        {
+            versionTexts[i].text = "V" + LocalGameVersion.ToString();
+        }
         //AddPopup("test", "testlol");
 
     }
