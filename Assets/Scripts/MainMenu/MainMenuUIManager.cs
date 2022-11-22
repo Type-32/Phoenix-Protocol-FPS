@@ -20,8 +20,8 @@ public class MainMenuUIManager : MonoBehaviour
     {
         get
         {
-            string tmp = Path.Combine(Application.dataPath, "*/", "Version.txt");
-            Debug.Log("Getting Local Game Version");
+            string tmp = Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt");
+            Debug.Log("Getting Local Game Version from: " + Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt"));
             return new Version((File.Exists(tmp) ? File.ReadAllText(tmp) : "0.0.0.unknown-version"));
         }
     }
