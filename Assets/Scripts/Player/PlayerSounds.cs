@@ -61,45 +61,39 @@ public class PlayerSounds : MonoBehaviour
     public void RPC_InvokePlayerFootsteps(int viewID)
     {
         if (player.pv.ViewID != viewID) return;
-        if (Physics.Raycast(player.fpsCam.transform.position, Vector3.down, out RaycastHit hit, 4))
+        if (Physics.Raycast(player.groundCheck.position, Vector3.down, out RaycastHit hit, 1.5f))
         {
             switch (hit.collider.tag)
             {
                 case "Footsteps/Wood":
                     stats.footstepAS.clip = woodClips[Random.Range(0, woodClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Wool":
                     stats.footstepAS.clip = woolClips[Random.Range(0, woolClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Concrete":
                     stats.footstepAS.clip = concreteClips[Random.Range(0, concreteClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Metal":
                     stats.footstepAS.clip = metalClips[Random.Range(0, metalClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/Dirt":
                     stats.footstepAS.clip = dirtClips[Random.Range(0, dirtClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/ThinLiquid":
                     stats.footstepAS.clip = thinLiquidClips[Random.Range(0, thinLiquidClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
                 case "Footsteps/ThickLiquid":
                     stats.footstepAS.clip = thickLiquidClips[Random.Range(0, thickLiquidClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
                 default:
                     stats.footstepAS.clip = defaultClips[Random.Range(0, defaultClips.Length - 1)];
-                    stats.footstepAS.Play();
                     break;
             }
+            if(stats.footstepAS.clip != null) stats.footstepAS.Play();
         }
         footstepTimer = GetCurrentOffset;
+        //PhotonNetwork
     }
     public void InvokePlayerHurtAudio()
     {
