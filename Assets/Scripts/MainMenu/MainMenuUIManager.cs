@@ -1,5 +1,7 @@
 using System.Collections;
+using System.IO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -7,12 +9,21 @@ using Photon.Realtime;
 using Michsky.MUIP;
 using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using LauncherManifest;
 
 public class MainMenuUIManager : MonoBehaviour
 {
     public static MainMenuUIManager instance;
     [SerializeField] private Button multiplayerButton;
     [SerializeField] private Button createRoomButton;
+    public static Version LocalGameVersion
+    {
+        get
+        {
+            string tmp = Path.Combine(Application.dataPath, "*/", "Version.txt");
+            return new Version((File.Exists(tmp) ? File.ReadAllText(tmp) : "0.0.0.unknown-version"));
+        }
+    }
 
     [Space]
     [Header("Menus")]
@@ -86,6 +97,9 @@ public class MainMenuUIManager : MonoBehaviour
     public List<GameObject> KOTHPlayersOptions = new();
     public List<GameObject> DZPlayersOptions = new();
 
+    [Space,Header("Version Manifests")]
+    [SerializeField] private List<Text> versionTexts = new();
+
     public enum PopupQueue
     {
         OnMainMenuLoad,
@@ -120,8 +134,6 @@ public class MainMenuUIManager : MonoBehaviour
         KOTH = 3,
         DZ = 4
     }
-
-
     private void Awake()
     {
         instance = this;
