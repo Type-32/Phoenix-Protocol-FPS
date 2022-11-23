@@ -24,7 +24,7 @@ namespace LauncherManifest
         {
             get
             {
-                string tmp = Directory.GetParent(Application.dataPath).ToString();
+                string tmp = Directory.GetParent(Directory.GetCurrentDirectory()).ToString();
                 return tmp;
             }
         }
@@ -52,8 +52,8 @@ namespace LauncherManifest
         {
             get
             {
-                string tmp = Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt");
-                Debug.Log("Getting Local Game Version from: " + Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt"));
+                string tmp = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).ToString(), "Version.txt");
+                Debug.Log("Getting Local Game Version from: " + Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).ToString(), "Version.txt"));
                 return new Version((File.Exists(tmp) ? File.ReadAllText(tmp) : "0.0.0.unknown-version"));
             }
         }
