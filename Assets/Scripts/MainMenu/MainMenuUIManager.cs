@@ -16,16 +16,6 @@ public class MainMenuUIManager : MonoBehaviour
     public static MainMenuUIManager instance;
     [SerializeField] private Button multiplayerButton;
     [SerializeField] private Button createRoomButton;
-    public static Version LocalGameVersion
-    {
-        get
-        {
-            string tmp = Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt");
-            Debug.Log("Getting Local Game Version from: " + Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt"));
-            return new Version((File.Exists(tmp) ? File.ReadAllText(tmp) : "0.0.0.unknown-version"));
-        }
-    }
-
     [Space]
     [Header("Menus")]
     public GameObject mainMenu;
@@ -159,7 +149,11 @@ public class MainMenuUIManager : MonoBehaviour
         OpenMainMenu();
         for(int i = 0; i < versionTexts.Count; i++)
         {
-            versionTexts[i].text = "V" + LocalGameVersion.ToString();
+            versionTexts[i].text = "V" + LocalLaunchedClient.LocalGameVersion.ToString();
+        }
+        if(LauncherConfig.CompareLocalVersionWithCache())
+        {
+            
         }
         //AddPopup("test", "testlol");
 

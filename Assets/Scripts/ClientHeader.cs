@@ -1,12 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace LauncherManifest
 {
-    public class LauncherConfig {
-        public static string RELEASE_REPO = "https://repo.smartsheep.space/api/v1/repos/CRTL_Prototype_Studios/Project_Phoenix_Files/releases";
-        public static string VERSION_FETCH_KEY = "name";
+    public static class LauncherConfig {
+        public static string CloudReleaseRepo
+        {
+            get
+            {
+                return "https://repo.smartsheep.space/api/v1/repos/CRTL_Prototype_Studios/Project_Phoenix_Files/releases";
+            }
+        }
+        public static string CloudVersionFetchKey
+        {
+            get
+            {
+                return "name";
+            }
+        }
+        public static string LauncherFolderPath
+        {
+            get
+            {
+                string tmp = Directory.GetParent(Application.dataPath).ToString();
+                return tmp;
+            }
+        }
+        public static string LauncherVersionFilePath
+        {
+            get
+            {
+                string tmp = Path.Combine(LauncherFolderPath, "Version.txt");
+                return tmp;
+            }
+        }
+        public static bool CompareLocalVersionWithCache()
+        {
+            string localCacheVersion = PlayerPrefs.GetString("CachedLocalVersion");
+            Version temp = new Version(localCacheVersion);
+            return !temp.IsDifferentThan(LocalLaunchedClient.LocalGameVersion);
+        }
+        public static void UpdateCachedLocalVersion()
+        {
+            PlayerPrefs.SetString("CachedLocalVersion", LocalLaunchedClient.LocalGameVersion.ToString());
+        }
+    }
+    public static class LocalLaunchedClient{
+        public static Version LocalGameVersion
+        {
+            get
+            {
+                string tmp = Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt");
+                Debug.Log("Getting Local Game Version from: " + Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "Version.txt"));
+                return new Version((File.Exists(tmp) ? File.ReadAllText(tmp) : "0.0.0.unknown-version"));
+            }
+        }
     }
 
     public struct Version
