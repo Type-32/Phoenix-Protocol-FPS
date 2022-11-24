@@ -315,7 +315,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -659,7 +659,7 @@ Transform:
   m_Children:
   - {fileID: 6771240445776961051}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6530440251555232182
 MonoBehaviour:
@@ -821,17 +821,17 @@ MonoBehaviour:
   maxRotSwayIntensity: 5
   rotSmoothness: 5
   aimRotSwayIntensity: 0.0015
-  verticalRecoil: 1.5
+  verticalRecoil: 2.8
   horizontalRecoil: 0.2
   sphericalShake: 1.7
   positionRecoilRetaliation: 0.08
   positionRecoilVertical: 0
   transitionalSnappiness: 10
   recoilReturnSpeed: 14
-  positionTransitionalSnappiness: 8
-  positionRecoilReturnSpeed: 12
-  recoilX: -2.3
-  aimingRecoilX: 0.2
+  positionTransitionalSnappiness: 14
+  positionRecoilReturnSpeed: 18
+  recoilX: -3.4
+  aimingRecoilX: -0.24
   recoilY: 0.2
   recoilZ: 0.7
   kickBackZ: 0.26

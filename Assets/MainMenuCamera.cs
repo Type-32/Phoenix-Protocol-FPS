@@ -22,7 +22,7 @@ public class MainMenuCamera : MonoBehaviour
             transform.position = Vector3.Slerp(transform.position, originPoint.transform.position, Time.deltaTime * 5f);
             transform.rotation = Quaternion.Slerp(transform.rotation, originPoint.transform.rotation, Time.deltaTime * 5f);
         }
-        else if (MainMenuUIManager.instance.openedMultiplayerMenu)
+        else if (MainMenuUIManager.instance.openedMultiplayerMenu || MainMenuUIManager.instance.openedCreateRoomMenu || MainMenuUIManager.instance.openedRoomMenu || MainMenuUIManager.instance.openedFindRoomMenu)
         {
             transform.position = Vector3.Slerp(transform.position, multiplayerPoint.transform.position, Time.deltaTime * 5f);
             transform.rotation = Quaternion.Slerp(transform.rotation, multiplayerPoint.transform.rotation, Time.deltaTime * 5f);
