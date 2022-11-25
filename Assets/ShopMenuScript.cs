@@ -108,6 +108,8 @@ public class ShopMenuScript : MonoBehaviour
                 {
                     jsonData.shopData.availableWeaponIndexes.Add(i);
                 }
+                item.SetItemData(GlobalDatabase.singleton.allWeaponDatas[i], un, pur);
+                shopWeaponList.Add(item);
             }
         }
         UserDatabase.Instance.WriteInputDataToJSON(jsonData);

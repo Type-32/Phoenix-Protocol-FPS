@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Michsky.MUIP;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -201,12 +202,12 @@ public class Launcher : MonoBehaviourPunCallbacks
             {
                 if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.FFA)
                 {
-                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
+                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<ButtonManager>().isInteractable = true;
                 }else if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.TDM)
                 {
-                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<Button>().interactable = true;
+                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<ButtonManager>().isInteractable = true;
                 }
-                else startGameButton.GetComponent<Button>().interactable = false;
+                else startGameButton.GetComponent<ButtonManager>().isInteractable = false;
             }
         }
         return flag;

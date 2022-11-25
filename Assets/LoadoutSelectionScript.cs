@@ -326,19 +326,23 @@ public class LoadoutSelectionScript : MonoBehaviour
                 if (!jsonUserData.shopData.availableWeaponIndexes.Contains(i) && !jsonUserData.shopData.unlockedWeaponIndexes.Contains(i))
                 {
                     jsonUserData.shopData.availableWeaponIndexes.Add(i);
+                    continue;
                 }
                 else
                 {
                     continue;
                 }
             }
-            LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
-            //loadoutDataList[i].loadoutIndex = i;
-            loadoutWeaponSelects.Add(temp);
-            temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
-            temp.weaponIndex = i;
-            temp.customButtonsHolder = this.customButtonsHolder;
-            database.WriteInputDataToJSON(jsonUserData);
+            else
+            {
+                LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
+                //loadoutDataList[i].loadoutIndex = i;
+                loadoutWeaponSelects.Add(temp);
+                temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
+                temp.weaponIndex = i;
+                temp.customButtonsHolder = this.customButtonsHolder;
+                database.WriteInputDataToJSON(jsonUserData);
+            }
         }
     }
 
