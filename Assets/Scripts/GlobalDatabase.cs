@@ -25,4 +25,10 @@ public class GlobalDatabase : MonoBehaviour
         singleton = this;
         loadoutSelectionScript.ReadLoadoutDataFromJSON();
     }
+    public int FindIndexFromWeaponData(WeaponData data){
+        for (int i = 0; i < allWeaponDatas.Count; i++){
+            if(allWeaponDatas[i] == data) return i;
+        }
+        return -1;
+    }
 }
