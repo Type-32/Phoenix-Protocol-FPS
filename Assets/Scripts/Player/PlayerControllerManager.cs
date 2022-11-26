@@ -144,14 +144,15 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (timePassedAfterDamageTaken < 5f) timePassedAfterDamageTaken += Time.deltaTime;
         else
         {
-            if(stats.health < stats.healthLimit) stats.health += 1f;
+            if (stats.health < stats.healthLimit) stats.health += 1f;
         }
 
         if (playerManager.openedLoadoutMenu)
         {
             stats.playerMovementEnabled = false;
             stats.mouseMovementEnabled = false;
-        }else if (playerManager.openedOptions)
+        }
+        else if (playerManager.openedOptions)
         {
             stats.playerMovementEnabled = false;
             stats.mouseMovementEnabled = false;
@@ -209,9 +210,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         //if (stats.health - amount <= 0) Destroy(gameObject);
         return tempflag;
         //ui.ShowHealthBar(2f);
-        
+
     }
-    
+
     #region Body Materials
     public void SetBodyMaterialColor(Color color)
     {
@@ -262,10 +263,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     private void CrosshairNametagDetect()
     {
         RaycastHit hit;
-        if(Physics.Raycast(holder.transform.position, holder.transform.forward, out hit, stats.playerNametagDistance))
+        if (Physics.Raycast(holder.transform.position, holder.transform.forward, out hit, stats.playerNametagDistance))
         {
             PhotonView _pv = hit.collider.GetComponent<PhotonView>();
-            if(_pv != null)
+            if (_pv != null)
             {
                 ui.nametagIndicatorObject.SetActive(true);
                 ui.nametagIndicator.text = _pv.Owner.NickName;
@@ -340,7 +341,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     void RPC_SpawnDeathLoot(Vector3 pos, int randomIndex)
     {
         pos.y += 1.5f;
-        Instantiate(playerDeathLoots[randomIndex], pos, transform.rotation);
+        GameObject temp = Instantiate(playerDeathLoots[randomIndex], pos, transform.rotation);
+        Destroy(temp, 10f);
     }
     Transform tempTransform;
     [PunRPC]

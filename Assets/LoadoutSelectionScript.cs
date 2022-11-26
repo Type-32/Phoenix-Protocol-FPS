@@ -1,8 +1,10 @@
+using System.Runtime.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UserConfiguration;
 
 public class LoadoutSelectionScript : MonoBehaviour
 {
@@ -121,7 +123,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     {
         Debug.Log("Called ReadLoadoutDataFromJSON");
         if (!File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"))) InitializeLoadoutDataToJSON();
-        if(File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json")))
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json")))
         {
             string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
             if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
@@ -303,7 +305,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutItems.Add(temp);
             if (loadoutDataList[i].isDefault)
             {
-                if(i == selectedLoadoutIndex) temp.SelectLoadout();
+                if (i == selectedLoadoutIndex) temp.SelectLoadout();
                 temp.ToggleSelectVisual(true);
             }
         }
@@ -313,9 +315,9 @@ public class LoadoutSelectionScript : MonoBehaviour
     {
         string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
-        if(loadoutWeaponSelects.Count != 0)
+        if (loadoutWeaponSelects.Count != 0)
         {
-            for(int i = 0; i < loadoutWeaponSelects.Count; i++)
+            for (int i = 0; i < loadoutWeaponSelects.Count; i++)
             {
                 Destroy(loadoutWeaponSelects[i].gameObject);
             }
@@ -323,17 +325,10 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
-            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i))
+            WeaponValidation tp = WeaponSystem.ValidateWeapon(i, true);
+            if (tp != WeaponValidation.Valid)
             {
-                if (!jsonUserData.shopData.availableWeaponIndexes.Contains(i) && !jsonUserData.shopData.unlockedWeaponIndexes.Contains(i))
-                {
-                    jsonUserData.shopData.availableWeaponIndexes.Add(i);
-                    continue;
-                }
-                else
-                {
-                    continue;
-                }
+                continue;
             }
             else
             {

@@ -5,7 +5,8 @@ using System.IO;
 
 namespace LauncherManifest
 {
-    public static class LauncherConfig {
+    public static class LauncherConfig
+    {
         public static string CloudReleaseRepo
         {
             get
@@ -47,7 +48,8 @@ namespace LauncherManifest
             PlayerPrefs.SetString("CachedLocalVersion", LocalLaunchedClient.LocalGameVersion.ToString());
         }
     }
-    public static class LocalLaunchedClient{
+    public static class LocalLaunchedClient
+    {
         public static Version LocalGameVersion
         {
             get
@@ -110,7 +112,7 @@ namespace LauncherManifest
                     }
                     else
                     {
-                        if(verIndex != _otherVersion.verIndex)
+                        if (verIndex != _otherVersion.verIndex)
                         {
                             return true;
                         }
@@ -127,5 +129,105 @@ namespace LauncherManifest
 }
 namespace UserConfiguration
 {
-    
+    public enum WeaponValidation
+    {
+        NoRegistry,
+        FalseUnlockRegistry,
+        ErrorUnlockRegistry,
+        Valid
+    }
+    public static class WeaponSystem
+    {
+        public static WeaponValidation ValidateWeapon(int weaponIndex, bool correctValidation)
+        {
+            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+            UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+            if (!jsonData.shopData.availableWeaponIndexes.Contains(weaponIndex))
+            {
+                if (!jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex))
+                {
+                    if (!jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex))
+                    {
+                        return WeaponValidation.NoRegistry;
+                    }
+                    else
+                    {
+                        if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                        {
+                            if (correctValidation)
+                            {
+                                if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
+                                if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
+                                jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
+                            }
+                            return WeaponValidation.FalseUnlockRegistry;
+                        }
+                    }
+                }
+                else
+                {
+                    if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                    {
+                        if (correctValidation)
+                        {
+                            if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
+                            if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
+                            jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
+                        }
+                        return WeaponValidation.FalseUnlockRegistry;
+                    }
+                }
+            }
+            else
+            {
+                if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                {
+                    if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex) || jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex))
+                    {
+                        bool flag = false;
+                        if (correctValidation)
+                        {
+                            if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
+                            if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
+                        }
+                        return (!flag ? WeaponValidation.FalseUnlockRegistry : WeaponValidation.ErrorUnlockRegistry);
+                    }
+                }
+                else
+                {
+                    bool flag = false;
+                    if (correctValidation)
+                    {
+                        if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
+                        if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
+                    }
+                    return (!flag ? WeaponValidation.Valid : WeaponValidation.ErrorUnlockRegistry);
+                }
+            }
+            if (correctValidation) WriteToUserConfig(jsonData);
+            return WeaponValidation.Valid;
+        }
+        public static void WriteToUserConfig(UserDataJSON userData)
+        {
+            string json = JsonUtility.ToJson(userData, true);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
+        }
+        public static void WriteToUserConfig(string jsonString)
+        {
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), jsonString);
+        }
+    }
+    public static class UserSystem
+    {
+        [Tooltip("Read only. Returns the Locally Saved User XP Level.")]
+        public static int LocalUserLevel
+        {
+            get
+            {
+                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+                UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+                return jsonData.userLevel;
+            }
+        }
+    }
 }

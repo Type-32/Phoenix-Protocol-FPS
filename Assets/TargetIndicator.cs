@@ -8,7 +8,7 @@ public class TargetIndicator : MonoBehaviour
     // Start is called before the first frame update
     public Image indicatorImage;
     public Image offscreenImage;
-    public Sprite objective, friendly, hostile;
+    public Sprite objective, friendly, hostile, supply;
     public float outOfSightOffset = 45f;
     private GameObject target;
     private new Camera camera;
@@ -35,6 +35,9 @@ public class TargetIndicator : MonoBehaviour
             case UIManager.TargetIndicatorType.Friendly:
                 indicatorImage.sprite = friendly;
                 break;
+            case UIManager.TargetIndicatorType.Supply:
+                indicatorImage.sprite = supply;
+                break;
             case UIManager.TargetIndicatorType.None:
                 indicatorImage.sprite = null;
                 break;
@@ -54,11 +57,12 @@ public class TargetIndicator : MonoBehaviour
     protected void SetPosition()
     {
         Vector3 iPos = camera.WorldToScreenPoint(new Vector3(target.transform.position.x, target.transform.position.y + 1f, target.transform.position.z));
-        if(iPos.z >= 0f & iPos.x <= holderRect.rect.width * holderRect.rect.height & iPos.y <= holderRect.rect.height * holderRect.localScale.x & iPos.x >= 0f & iPos.y >= 0f)
+        if (iPos.z >= 0f & iPos.x <= holderRect.rect.width * holderRect.rect.height & iPos.y <= holderRect.rect.height * holderRect.localScale.x & iPos.x >= 0f & iPos.y >= 0f)
         {
             iPos.z = 0f;
             TargetOutOfSight(false, iPos);
-        }else if(iPos.z >= 0f)
+        }
+        else if (iPos.z >= 0f)
         {
             iPos = OutOfRangeIndicatorPosB(iPos);
             TargetOutOfSight(true, iPos);
@@ -78,7 +82,7 @@ public class TargetIndicator : MonoBehaviour
         iPos -= canvasCenter;
         float divX = (holderRect.rect.width / 2f - outOfSightOffset) / Mathf.Abs(iPos.x);
         float divY = (holderRect.rect.height / 2f - outOfSightOffset) / Mathf.Abs(iPos.y);
-        if(divX < divY)
+        if (divX < divY)
         {
             float angle = Vector3.SignedAngle(Vector3.right, iPos, Vector3.forward);
             iPos.x = Mathf.Sign(iPos.x) * (holderRect.rect.width * 0.5f - outOfSightOffset) * holderRect.localScale.x;
@@ -97,14 +101,14 @@ public class TargetIndicator : MonoBehaviour
     {
         if (oos)
         {
-            if(!offscreenImage.gameObject.activeSelf) offscreenImage.gameObject.SetActive(true);
-            if(indicatorImage.isActiveAndEnabled) indicatorImage.enabled = false;
+            if (!offscreenImage.gameObject.activeSelf) offscreenImage.gameObject.SetActive(true);
+            if (indicatorImage.isActiveAndEnabled) indicatorImage.enabled = false;
             offscreenImage.rectTransform.rotation = Quaternion.Euler(RotOutOfSightTargetIndicator(iPos));
         }
         else
         {
             if (offscreenImage.gameObject.activeSelf) offscreenImage.gameObject.SetActive(false);
-            if(!indicatorImage.isActiveAndEnabled) indicatorImage.enabled = true;
+            if (!indicatorImage.isActiveAndEnabled) indicatorImage.enabled = true;
         }
     }
     private Vector3 RotOutOfSightTargetIndicator(Vector3 iPos)

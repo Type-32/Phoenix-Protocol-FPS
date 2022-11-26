@@ -111,7 +111,7 @@ public class PlayerManager : MonoBehaviour
             pv.Owner.CustomProperties.TryAdd("kills", kills);
             pv.Owner.CustomProperties.TryAdd("deaths", deaths);
             pv.Owner.SetCustomProperties(th);
-            
+
         }
         spawnpointCamera = FindObjectOfType<SpawnpointCamera>();
         roomManager = FindObjectOfType<RoomManager>();
@@ -240,7 +240,7 @@ public class PlayerManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         if (randomSpawnpoint || spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
         spawnpointUI.ChooseSpawnpoint(selectedSPIndex);
-        
+
         transform.position = spawnpoint.position;
         transform.rotation = spawnpoint.rotation;
     }
@@ -252,18 +252,18 @@ public class PlayerManager : MonoBehaviour
         respawnButton.interactable = false;
         respawnUI.redeployButton.interactable = true;
         deathUI.SetActive(false);
-        
+
         Debug.Log("Instantiating Player Controller");
 
-        if(spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
+        if (spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
 
-        controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), spawnpoint.position, spawnpoint.rotation, 0, new object[] {pv.ViewID});
+        controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { pv.ViewID });
         controller.GetComponent<PlayerControllerManager>().playerManager = this;
         playerUI = controller.GetComponent<UIManager>();
         player = controller.GetComponent<PlayerControllerManager>();
         loadoutMenu.ui = controller.GetComponent<UIManager>();
         returnTemp = 2;
-        if(!openedOptions && player.pv.IsMine) Cursor.lockState = CursorLockMode.Locked;
+        if (!openedOptions && player.pv.IsMine) Cursor.lockState = CursorLockMode.Locked;
         deathGUICanvas.alpha = 0f;
         deathGUICanvas.gameObject.SetActive(false);
 
@@ -311,6 +311,7 @@ public class PlayerManager : MonoBehaviour
         if (randomSpawnpoint || spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
         spawnpointUI.ChooseSpawnpoint(selectedSPIndex);
         cmm.RefreshAllHostileIndicators();
+        cmm.RefreshAllSupplyIndicators();
     }
     public void SynchronizeValues(int kills, int deaths)
     {
@@ -436,7 +437,8 @@ public class PlayerManager : MonoBehaviour
             if (openedLoadoutMenu)
             {
                 CloseLoadoutMenu();
-            }else if (loadoutMenu.openedSelectionMenu)
+            }
+            else if (loadoutMenu.openedSelectionMenu)
             {
                 loadoutMenu.CloseSelectionMenu();
             }
@@ -445,7 +447,7 @@ public class PlayerManager : MonoBehaviour
                 OpenLoadoutMenu();
             }
         }
-        if(returnTemp <= 0f && hasRespawned && !respawning)
+        if (returnTemp <= 0f && hasRespawned && !respawning)
         {
             //CreateController();
         }
@@ -491,9 +493,9 @@ public class PlayerManager : MonoBehaviour
             return;
         }*/
         //if(respawnCountdown >=)
-        if(temp >= 1f)
+        if (temp >= 1f)
         {
-            if(respawnCountdown <= 0)
+            if (respawnCountdown <= 0)
             {
                 if (!randomSpawnpoint)
                 {
@@ -554,7 +556,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void OnChangedSensitivityValue(float value)
     {
-        if(controller != null) controller.GetComponent<PlayerStats>().SetPlayerSensitivity(value);
+        if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerSensitivity(value);
     }
     public void OnChangedFOVValue(float value)
     {
@@ -659,7 +661,7 @@ public class PlayerManager : MonoBehaviour
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0));
         totalGainedXP += 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0);
-        if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
+        if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex);
         else TDM_InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex, (bool)pv.Owner.CustomProperties["team"]);
         MinimapDotIdentifier[] tempget;
         tempget = FindObjectsOfType<MinimapDotIdentifier>();
@@ -694,7 +696,7 @@ public class PlayerManager : MonoBehaviour
         Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
         temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, InGameUI.instance.FindWeaponIcon(weaponIndex));
-        if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Free For All")
+        if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Free For All")
         {
             if (killerName == pv.Owner.NickName)
             {

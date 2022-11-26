@@ -119,9 +119,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             }
         }
         UpdateTopPlayerHUD((int)punTopPlayer.CustomProperties["kills"], punTopPlayer.NickName);
-        for(int i = 0; i < players.Count; i++)
+        for (int i = 0; i < players.Count; i++)
         {
-            if(punTopPlayer.UserId == players[i].pv.Owner.UserId) topPlayer = players[i];
+            if (punTopPlayer.UserId == players[i].pv.Owner.UserId) topPlayer = players[i];
         }
         Debug.Log("Received Pun Kill Update");
     }
@@ -129,9 +129,9 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         if (roomMode != MainMenuUIManager.Gamemodes.FFA) return;
         int temp = -100000;
-        for(int i = 0; i < players.Count; i++)
+        for (int i = 0; i < players.Count; i++)
         {
-            if((int)players[i].pv.Owner.CustomProperties["kills"] >= temp)
+            if ((int)players[i].pv.Owner.CustomProperties["kills"] >= temp)
             {
                 topPlayer = players[i];
                 temp = (int)players[i].pv.Owner.CustomProperties["kills"];
@@ -161,21 +161,21 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void AddPlayer(PlayerManager player)
     {
-        if(!players.Contains(player)) players.Add(player);
+        if (!players.Contains(player)) players.Add(player);
         OnPlayerListUpdate(players);
     }
     public void RemovePlayer(PlayerManager player)
     {
-        if(players.Contains(player)) players.Remove(player);
+        if (players.Contains(player)) players.Remove(player);
         OnPlayerListUpdate(players);
     }
     public void TeamDeathmatchKillLogic(int amount, bool team)
-    { 
+    {
         TDM_AddPoint(amount, team);
     }
     void TDM_AddPoint(int amount, bool team)
     {
-        if(localClientPlayer.pv.Owner.IsMasterClient)
+        if (localClientPlayer.pv.Owner.IsMasterClient)
         {
             if (localClientPlayer.IsTeam == true)
             {
@@ -202,13 +202,13 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            for(int i = 0; i < players.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
                 if (players[i].pv.Owner.IsMasterClient)
                 {
                     if (players[i].IsTeam == true)
                     {
-                        if(team == players[i].IsTeam)
+                        if (team == players[i].IsTeam)
                         {
                             teamBluePoints += amount;
                         }
@@ -257,20 +257,22 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         {
             FreeForAllFunctions();
         }
-        else if(roomMode == MainMenuUIManager.Gamemodes.TDM)
+        else if (roomMode == MainMenuUIManager.Gamemodes.TDM)
         {
 
-        }else if(roomMode == MainMenuUIManager.Gamemodes.KOTH)
+        }
+        else if (roomMode == MainMenuUIManager.Gamemodes.KOTH)
         {
 
-        }else if(roomMode == MainMenuUIManager.Gamemodes.DZ)
+        }
+        else if (roomMode == MainMenuUIManager.Gamemodes.DZ)
         {
 
         }
     }
     void FreeForAllFunctions()
     {
-        if(topPlayer.kills >= maxKillLimit)
+        if (topPlayer.kills >= maxKillLimit)
         {
             gameStarted = false;
             gameEnded = true;
@@ -279,11 +281,11 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     void TeamDeathmatchFunctions()
     {
-        if(teamBluePoints >= maxKillLimit && teamBluePoints >= teamRedPoints)
+        if (teamBluePoints >= maxKillLimit && teamBluePoints >= teamRedPoints)
         {
             TDMWin(true);
         }
-        else if(teamRedPoints >= maxKillLimit && teamRedPoints >= teamBluePoints)
+        else if (teamRedPoints >= maxKillLimit && teamRedPoints >= teamBluePoints)
         {
             TDMWin(false);
         }
@@ -300,21 +302,37 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         pv.RPC(nameof(RPC_RefreshHostileIndicators), RpcTarget.All);
     }
+    public void RefreshAllSupplyIndicators()
+    {
+        pv.RPC(nameof(RPC_RefreshSupplyIndicators), RpcTarget.All);
+    }
     [PunRPC]
     void RPC_RefreshHostileIndicators()
     {
-        if(localClientPlayer.controller != null)
+        if (localClientPlayer.controller != null)
         {
             PlayerControllerManager plr = localClientPlayer.controller.GetComponent<PlayerControllerManager>();
-            for (int i = 0; i < plr.ui.hostileTargetIndicators.Count; i++)
-            {
-                plr.ui.RemoveTargetIndicator(plr.ui.hostileTargetIndicators[i]);
-            }
+            for (int i = 0; i < plr.ui.hostileTargetIndicators.Count; i++) plr.ui.RemoveTargetIndicator(plr.ui.hostileTargetIndicators[i]);
             PlayerControllerManager[] plrArray = FindObjectsOfType<PlayerControllerManager>();
             foreach (PlayerControllerManager p in plrArray)
             {
                 if (p == plr) continue;
                 plr.ui.AddTargetIndicator(p.gameObject, UIManager.TargetIndicatorType.Hostile, Color.red);
+            }
+        }
+    }
+    [PunRPC]
+    void RPC_RefreshSupplyIndicators()
+    {
+        if (localClientPlayer.controller != null)
+        {
+            PlayerControllerManager plr = localClientPlayer.controller.GetComponent<PlayerControllerManager>();
+            for (int i = 0; i < plr.ui.supplyTargetIndicators.Count; i++) plr.ui.RemoveTargetIndicator(plr.ui.supplyTargetIndicators[i]);
+            Pickup[] plrArray = FindObjectsOfType<Pickup>();
+            foreach (Pickup p in plrArray)
+            {
+                if (p == plr) continue;
+                plr.ui.AddTargetIndicator(p.gameObject, UIManager.TargetIndicatorType.Supply, Color.white);
             }
         }
     }
@@ -347,7 +365,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         internalUI.ToggleMatchEndUI(true);
         internalUI.SetMatchEndMessage(winnerName + " Won the match!");
         //StartCoroutine(QuitEveryPlayer(3f));
-        if(localClientPlayer.controller != null)
+        if (localClientPlayer.controller != null)
         {
             localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die();
         }
@@ -362,13 +380,13 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if(players[i].pv.IsMine) players[i].DisconnectPlayer();
+            if (players[i].pv.IsMine) players[i].DisconnectPlayer();
         }
     }
     public IEnumerator QuitEveryPlayer(float delay)
     {
         yield return new WaitForSeconds(delay);
-        for(int i = 0; i < players.Count; i++)
+        for (int i = 0; i < players.Count; i++)
         {
             players[i].DisconnectPlayer();
         }
@@ -450,7 +468,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         PlayerManager[] tps = FindObjectsOfType<PlayerManager>();
         for (int i = 0; i < tps.Length; i++)
         {
-            if(tps[i].pv.ViewID == userID)
+            if (tps[i].pv.ViewID == userID)
             {
                 return tps[i];
             }
@@ -472,7 +490,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     void RPC_FindForPlayerID(string id)
     {
         PlayerManager[] tmp = FindObjectsOfType<PlayerManager>();
-        for(int i = 0; i < tmp.Length; i++)
+        for (int i = 0; i < tmp.Length; i++)
         {
             if (tmp[i].pv.Owner.UserId == id) topPlayer = tmp[i];
         }

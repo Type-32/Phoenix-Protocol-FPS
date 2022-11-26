@@ -21,8 +21,8 @@ public class UIManager : MonoBehaviour
     public Transform hurtIndicatorHolder;
     public GameObject hurtIndicatorPrefab;
     public GameObject targetIndicatorHUD;
-    public RectTransform hostileTIHolder, friendlyTIHolder, objectiveTIHolder;
-    public CanvasGroup hostileTIGroup, friendlyTIGroup, objectiveTIGroup;
+    public RectTransform hostileTIHolder, friendlyTIHolder, objectiveTIHolder, supplyTIHolder;
+    public CanvasGroup hostileTIGroup, friendlyTIGroup, objectiveTIGroup, supplyTGroup;
     public GameObject targetIndicatorPrefab;
 
     [Space]
@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour
     public static Action<ValueTransform> CreateIndicator = delegate { };
     public static Func<ValueTransform, bool> CheckIfObjectInSight = null;
     private Dictionary<ValueTransform, HurtIndicatorBehavior> Indicators = new();
+    public List<TargetIndicator> supplyTargetIndicators = new();
     public List<TargetIndicator> objectiveTargetIndicators = new();
     public List<TargetIndicator> friendlyTargetIndicators = new();
     public List<TargetIndicator> hostileTargetIndicators = new();
@@ -71,7 +72,7 @@ public class UIManager : MonoBehaviour
             return;
         }
         HurtIndicatorBehavior newIndicator = Instantiate(hurtIndicatorPrefab, hurtIndicatorHolder).GetComponent<HurtIndicatorBehavior>();
-        newIndicator.RegisterData(target, player.transform, new Action( () => { Indicators.Remove(target); }));
+        newIndicator.RegisterData(target, player.transform, new Action(() => { Indicators.Remove(target); }));
         Indicators.Add(target, newIndicator);
     }
     bool InSight(ValueTransform t)
@@ -94,11 +95,11 @@ public class UIManager : MonoBehaviour
     {
         if (!player.pv.IsMine) return;
         Cursor.lockState = CursorLockMode.Locked;
-        
+
         //interactionIndicator = FindObjectOfType<InteractionIndicatorScript>().gameObject;
     }
 
-    
+
     void Update()
     {
         if (!player.pv.IsMine) return;
@@ -148,7 +149,8 @@ public class UIManager : MonoBehaviour
         None,
         Objective,
         Hostile,
-        Friendly
+        Friendly,
+        Supply
     }
     public void AddTargetIndicator(GameObject target, TargetIndicatorType type, Color color)
     {
@@ -156,7 +158,6 @@ public class UIManager : MonoBehaviour
         {
             case TargetIndicatorType.None:
                 return;
-                break;
             case TargetIndicatorType.Hostile:
                 TargetIndicator indicator1 = Instantiate(targetIndicatorPrefab, hostileTIHolder).GetComponent<TargetIndicator>();
                 indicator1.InitializeIndicator(target, type, color, player.fpsCam.playerMainCamera, hostileTIHolder);
@@ -171,6 +172,11 @@ public class UIManager : MonoBehaviour
                 TargetIndicator indicator3 = Instantiate(targetIndicatorPrefab, objectiveTIHolder).GetComponent<TargetIndicator>();
                 indicator3.InitializeIndicator(target, type, color, player.fpsCam.playerMainCamera, objectiveTIHolder);
                 objectiveTargetIndicators.Add(indicator3);
+                break;
+            case TargetIndicatorType.Supply:
+                TargetIndicator indicator4 = Instantiate(targetIndicatorPrefab, supplyTIHolder).GetComponent<TargetIndicator>();
+                indicator4.InitializeIndicator(target, type, color, player.fpsCam.playerMainCamera, supplyTIHolder);
+                supplyTargetIndicators.Add(indicator4);
                 break;
         }
     }
