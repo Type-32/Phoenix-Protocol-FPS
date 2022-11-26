@@ -119,6 +119,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void ReadLoadoutDataFromJSON()
     {
+        Debug.Log("Called ReadLoadoutDataFromJSON");
         if (!File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"))) InitializeLoadoutDataToJSON();
         if(File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json")))
         {
@@ -290,6 +291,7 @@ public class LoadoutSelectionScript : MonoBehaviour
 
     public void InstantiateLoadoutSelections()
     {
+        Debug.Log("Called Loadout Instantiation");
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
             LoadoutSelectionItem temp = Instantiate(loadoutSelectionItemPrefab, loadoutButtonsHolder).GetComponent<LoadoutSelectionItem>();
@@ -301,7 +303,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutItems.Add(temp);
             if (loadoutDataList[i].isDefault)
             {
-                temp.SelectLoadout();
+                if(i == selectedLoadoutIndex) temp.SelectLoadout();
                 temp.ToggleSelectVisual(true);
             }
         }
