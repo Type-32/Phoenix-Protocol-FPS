@@ -326,6 +326,8 @@ public class LoadoutSelectionScript : MonoBehaviour
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
             WeaponValidation tp = WeaponSystem.ValidateWeapon(i, true);
+            UserDatabase.Instance.ReadUserDataFromJSON();
+            Debug.Log("tp with " + tp.ToString());
             if (tp != WeaponValidation.Valid)
             {
                 continue;

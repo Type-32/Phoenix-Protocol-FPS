@@ -142,13 +142,29 @@ namespace UserConfiguration
         {
             string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
             UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+            WeaponValidation result = WeaponValidation.Valid;
             if (!jsonData.shopData.availableWeaponIndexes.Contains(weaponIndex))
             {
                 if (!jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex))
                 {
                     if (!jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex))
                     {
-                        return WeaponValidation.NoRegistry;
+                        Debug.Log("Returned " + WeaponValidation.NoRegistry.ToString());
+                        if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                        {
+                            if (correctValidation)
+                            {
+                                jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
+                            }
+                        }
+                        else
+                        {
+                            if (correctValidation)
+                            {
+                                jsonData.shopData.unlockedWeaponIndexes.Add(weaponIndex);
+                            }
+                        }
+                        result = WeaponValidation.NoRegistry;
                     }
                     else
                     {
@@ -160,7 +176,7 @@ namespace UserConfiguration
                                 if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
                                 jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
                             }
-                            return WeaponValidation.FalseUnlockRegistry;
+                            result = WeaponValidation.FalseUnlockRegistry;
                         }
                     }
                 }
@@ -170,11 +186,14 @@ namespace UserConfiguration
                     {
                         if (correctValidation)
                         {
+                            Debug.Log("Owned Index Count Before " + jsonData.shopData.ownedWeaponIndexes.Count);
                             if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
                             if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
                             jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
+                            UserDatabase.Instance.WriteInputDataToJSON(jsonData);
+                            Debug.Log("Owned Index Count After " + jsonData.shopData.ownedWeaponIndexes.Count);
                         }
-                        return WeaponValidation.FalseUnlockRegistry;
+                        result = WeaponValidation.FalseUnlockRegistry;
                     }
                 }
             }
@@ -190,31 +209,19 @@ namespace UserConfiguration
                             if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
                             if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
                         }
-                        return (!flag ? WeaponValidation.FalseUnlockRegistry : WeaponValidation.ErrorUnlockRegistry);
+                        result = (!flag ? WeaponValidation.FalseUnlockRegistry : WeaponValidation.ErrorUnlockRegistry);
                     }
-                }
-                else
-                {
-                    bool flag = false;
-                    if (correctValidation)
-                    {
-                        if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
-                        if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
-                    }
-                    return (!flag ? WeaponValidation.Valid : WeaponValidation.ErrorUnlockRegistry);
                 }
             }
-            if (correctValidation) WriteToUserConfig(jsonData);
-            return WeaponValidation.Valid;
+            if (correctValidation) UserDatabase.Instance.WriteInputDataToJSON(jsonData);
+            Debug.Log("Returned " + result.ToString());
+            return result;
         }
         public static void WriteToUserConfig(UserDataJSON userData)
         {
+            Debug.Log("Correcting Weapon Validation");
             string json = JsonUtility.ToJson(userData, true);
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
-        }
-        public static void WriteToUserConfig(string jsonString)
-        {
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), jsonString);
         }
     }
     public static class UserSystem
