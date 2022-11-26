@@ -125,3 +125,7 @@ namespace LauncherManifest
         }
     }
 }
+namespace UserConfiguration
+{
+    
+}
