@@ -38,7 +38,7 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
     }
     public Sprite FindIconFromAttachmentIndex(int index)
     {
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
         {
             if (index == i) return GlobalDatabase.singleton.allWeaponAttachmentDatas[i].attachmentIcon;
         }
@@ -76,5 +76,10 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Left, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Up, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Underbarrel, loadoutSelection.forSelectedSlot);
+        OnClearCustomization(loadoutSelection.forSelectedSlot);
+    }
+    public void OnClearCustomization(int forIndex)
+    {
+        loadoutSelection.loadoutPreviewUI.ClearPreviewAttachments(forIndex);
     }
 }

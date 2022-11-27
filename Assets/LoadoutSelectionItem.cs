@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UserConfiguration;
 
 public class LoadoutSelectionItem : MonoBehaviour
 {
@@ -43,10 +44,13 @@ public class LoadoutSelectionItem : MonoBehaviour
                 tempIndex2 = i;
             }
         }
+        LoadoutDataJSON tmp = WeaponSystem.LoadoutJsonData;
+        tmp.SelectedSlot = loadoutIndex;
+        Debug.Log(tmp.Slots[tmp.SelectedSlot].SlotName + " Selected the Slot name");
+        WeaponSystem.WriteToLoadoutConfig(tmp);
         loadoutSelection.OnSelectLoadoutCallback(loadoutIndex, tempIndex1, tempIndex2, 0, 0);
         selectionVisual.SetActive(true);
         //loadoutSelection.WriteLoadoutDataToJSON();
-        Launcher.Instance.SetLoadoutValuesToPlayer();
     }
     public void SetLoadoutName(string content)
     {

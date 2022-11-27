@@ -59,6 +59,18 @@ public class LoadoutPreviewUI : MonoBehaviour
         SetPreviewAttachments(index, weaponData);
         loadoutSelection.WriteLoadoutDataToJSON();
     }
+    public void ClearPreviewAttachments(int index)
+    {
+        int tmp = (index <= 1 ? index : 0);
+        Transform[] ar = attachPreviewHolders[tmp].GetComponentsInChildren<Transform>();
+        for (int i = 0; i < ar.Length; i++)
+        {
+            if (ar[i] != attachPreviewHolders[tmp])
+            {
+                Destroy(ar[i].gameObject);
+            }
+        }
+    }
     public void SetPreviewAttachments(int index, WeaponData weaponData)
     {
         Debug.Log("Setting Attachments Preview");
@@ -122,6 +134,7 @@ public class LoadoutPreviewUI : MonoBehaviour
         loadoutSelection.loadoutCustomization.AttachmentUIItemInstantiation();
         loadoutSelection.ToggleCustomizationMenu(true);
         loadoutSelection.ToggleCustomizeButtonsUI(true);
+        loadoutSelection.ToggleCustomizeSelectionUI(false);
         //loadoutSelection.DisablePreview();
         //loadoutSelection.CloseLoadoutButtonsVisual();
         customizeWeaponIcon.sprite = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index].itemIcon;

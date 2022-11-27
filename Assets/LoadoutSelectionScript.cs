@@ -97,6 +97,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     {
         LoadoutDataJSON data = new();
         data = GlobalDatabase.singleton.emptyLoadoutDataJSON;
+        data = WeaponSystem.LoadoutJsonData;
         data.SelectedSlot = selectedLoadoutIndex;
         //string json = JsonUtility.ToJson(data, true);
         //File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
@@ -307,6 +308,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             temp.DeselectLoadout();
             temp.loadoutIndex = i;
             loadoutDataList[i].loadoutIndex = i;
+            loadoutDataList[i].loadoutName = tp.Slots[i].SlotName;
             temp.SetLoadoutName(tp.Slots[i].SlotName);
             loadoutItems.Add(temp);
             if (loadoutDataList[i].isDefault)
@@ -331,6 +333,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
+            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
             LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
             //loadoutDataList[i].loadoutIndex = i;
             loadoutWeaponSelects.Add(temp);
@@ -352,7 +355,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         DisableAllSelectedVisuals();
         loadoutItems[selectedLoadoutIndex].ToggleSelectVisual(true);
         EnablePreview();
-        MainMenuUIManager.instance.AddNotification("Loadout Selection", "You have selected Loadout Number " + (selectedLoadoutIndex + 1) + ".");
+        MainMenuUIManager.instance.AddNotification("Loadout Selection", "You have selected Loadout " + loadoutDataList[selectedLoadoutIndex].loadoutName + ".");
         //WriteLoadoutDataToJSON();
     }
     public void DisableAllSelectedVisuals()
