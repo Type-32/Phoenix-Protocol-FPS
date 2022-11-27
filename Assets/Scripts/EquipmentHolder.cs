@@ -12,11 +12,9 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     public int weaponIndex = 0;
     public int previousWeaponIndex = -1;
     [SerializeField] private UIManager uiManager;
-    //[SerializeField] WeaponData[] weapons;
-    //[SerializeField] ThrowablesData[] equipments;
     public bool inversedScrollWheel = true;
-    public Gun[] weaponSlots;
-    public Item[] equipmentSlots;
+    public Gun[] weaponSlots = new Gun[2];
+    public Equipment[] equipmentSlots = new Equipment[2];
     // Start is called before the first frame update
     private void Awake()
     {
@@ -32,6 +30,10 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                 //weaponSlots[i].InitializeAwake();
                 //weaponSlots[i].InitializeStart();
             }
+            for (int i = 0; i < 2; i++)
+            {
+                InstantiateEquipment(GlobalDatabase.singleton.allEquipmentDatas[i == 0 ? 0 : 0], i);
+            }
             Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             for (int i = 0; i < muzzle1.Length; i++) muzzle1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
@@ -43,17 +45,17 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] list3 = weaponSlots[0].gun.attachment.attachmentHolder.GetComponentsInChildren<Transform>();
             Transform[] list4 = weaponSlots[1].gun.attachment.attachmentHolder.GetComponentsInChildren<Transform>();
             Debug.Log("Init Start Line 51");
-            EquipWeapon(0);
+            EquipItem(0);
             for (int i = 0; i < list1.Length; i++) list1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             for (int i = 0; i < list2.Length; i++) list2[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
 
             for (int i = 0; i < list3.Length; i++)
-            { 
-                list3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem"); 
+            {
+                list3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             }
             for (int i = 0; i < list4.Length; i++)
-            { 
-                list4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem"); 
+            {
+                list4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             }
 
             Transform[] obj1 = weaponSlots[0].gun.handsVisual.GetComponentsInChildren<Transform>();
@@ -62,8 +64,22 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             for (int i = 0; i < obj2.Length; i++) Destroy(obj2[i].gameObject);
             Destroy(weaponSlots[0].gun.handsVisual);
             Destroy(weaponSlots[1].gun.handsVisual);
-            weaponSlots[0].gun.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
-            weaponSlots[1].gun.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+            weaponSlots[0].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+            weaponSlots[1].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+
+            Transform[] el1 = equipmentSlots[0].equipment.equipmentVisual.GetComponentsInChildren<Transform>();
+            Transform[] el2 = equipmentSlots[1].equipment.equipmentVisual.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < el1.Length; i++) el1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < el2.Length; i++) el2[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            Transform[] el3 = equipmentSlots[0].equipment.handsVisual.GetComponentsInChildren<Transform>();
+            Transform[] el4 = equipmentSlots[1].equipment.handsVisual.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < el3.Length; i++) Destroy(el3[i].gameObject);
+            for (int i = 0; i < el4.Length; i++) Destroy(el4[i].gameObject);
+            Destroy(equipmentSlots[0].equipment.handsVisual);
+            Destroy(equipmentSlots[1].equipment.handsVisual);
+            equipmentSlots[0].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+            equipmentSlots[1].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+
         }
         if (player.pv.IsMine)
         {
@@ -76,14 +92,23 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                     weaponSlots[i].InitializeStart();
                 }
             }
+            for (int i = 0; i < 2; i++)
+            {
+                if (player.playerManager.slotHolderScript.slotEquipmentData[i] != null)
+                {
+                    InstantiateEquipment(player.playerManager.slotHolderScript.slotEquipmentData[i], i);
+                    weaponSlots[i].InitializeAwake();
+                    weaponSlots[i].InitializeStart();
+                }
+            }
             Debug.Log("Init Start Line 36");
-            EquipWeapon(0);
+            EquipItem(0);
         }
         else
         {
             Camera[] temp = GetComponentsInChildren<Camera>();
             for (int i = 0; i < temp.Length; i++)
-            Destroy(temp[i].gameObject);
+                Destroy(temp[i].gameObject);
         }
         //SelectWeapon();
     }
@@ -97,27 +122,22 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         KeySwitchWeapon();
         ScrollWheelSwitchWeapon();
     }
-    public void SelectWeapon()
-    {
-        for(int i = 0; i < 2; i++)
-        {
-            if(i == weaponIndex)
-            {
-                EquipWeapon(i);
-            }
-            else
-            {
-                weaponSlots[i].item.SetActive(false);
-            }
-        }
-    }
     void KeySwitchWeapon()
     {
         for (int i = 0; i < weaponSlots.Length; i++)
         {
-            if (Input.GetKeyDown((i + 1).ToString()))
+            int ke = i + 1;
+            if (Input.GetKeyDown(ke.ToString()) && ke <= 2 && ke >= 1)
             {
-                EquipWeapon(i);
+                EquipItem(i);
+            }
+        }
+        for (int i = 2; i < equipmentSlots.Length + 2; i++)
+        {
+            int ke = i + 1;
+            if (Input.GetKeyDown(ke.ToString()) && ke <= 4 && ke >= 3)
+            {
+                EquipItem(i);
             }
         }
     }
@@ -127,45 +147,70 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         {
             if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
             {
-                if (weaponIndex >= weaponSlots.Length - 1) EquipWeapon(0);
-                else EquipWeapon(weaponIndex + 1);
+                if (weaponIndex >= weaponSlots.Length - 1) EquipItem(0);
+                else EquipItem(weaponIndex + 1);
             }
             else if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
             {
-                if (weaponIndex <= 0) EquipWeapon(weaponSlots.Length - 1);
-                else EquipWeapon(weaponIndex - 1);
+                if (weaponIndex <= 0) EquipItem(weaponSlots.Length - 1);
+                else EquipItem(weaponIndex - 1);
             }
         }
         else
         {
             if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
             {
-                if (weaponIndex >= weaponSlots.Length - 1) EquipWeapon(0);
-                else EquipWeapon(weaponIndex + 1);
+                if (weaponIndex >= weaponSlots.Length - 1) EquipItem(0);
+                else EquipItem(weaponIndex + 1);
             }
             else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
             {
-                if (weaponIndex <= 0) EquipWeapon(weaponSlots.Length - 1);
-                else EquipWeapon(weaponIndex - 1);
+                if (weaponIndex <= 0) EquipItem(weaponSlots.Length - 1);
+                else EquipItem(weaponIndex - 1);
             }
         }
     }
-    public void EquipWeapon(int _index)
+    public void EquipItem(int _index)
     {
-        if (_index == previousWeaponIndex) return;
-        weaponIndex = _index;
-        weaponSlots[_index].gameObject.SetActive(true);
-        if(previousWeaponIndex != -1)
+        if (_index <= 1)
         {
-            weaponSlots[previousWeaponIndex].gameObject.SetActive(false);
-        }
-        previousWeaponIndex = weaponIndex;
+            Debug.Log("Using Weapon " + _index);
+            if (_index == previousWeaponIndex) return;
+            weaponIndex = _index;
+            weaponSlots[_index].gameObject.SetActive(true);
+            if (previousWeaponIndex != -1)
+            {
+                if (previousWeaponIndex >= 2) equipmentSlots[previousWeaponIndex - 2].gameObject.SetActive(false);
+                else weaponSlots[previousWeaponIndex].gameObject.SetActive(false);
+            }
+            previousWeaponIndex = weaponIndex;
 
-        if (player.pv.IsMine)
+            if (player.pv.IsMine)
+            {
+                Hashtable hash = new Hashtable();
+                hash.Add("weaponIndex", weaponIndex);
+                PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            }
+        }
+        else
         {
-            Hashtable hash = new Hashtable();
-            hash.Add("weaponIndex", weaponIndex);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            Debug.Log("Using Equipment " + _index);
+            if (_index == previousWeaponIndex) return;
+            weaponIndex = _index;
+            equipmentSlots[_index - 2].gameObject.SetActive(true);
+            if (previousWeaponIndex != -1)
+            {
+                if (previousWeaponIndex < 2) weaponSlots[previousWeaponIndex].gameObject.SetActive(false);
+                else equipmentSlots[previousWeaponIndex - 2].gameObject.SetActive(false);
+            }
+            previousWeaponIndex = weaponIndex;
+
+            if (player.pv.IsMine)
+            {
+                Hashtable hash = new Hashtable();
+                hash.Add("weaponIndex", weaponIndex);
+                PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            }
         }
     }
     public bool InstantiateWeapon(WeaponData data, int index)
@@ -179,29 +224,37 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         weaponSlots[index].InitializeAwake();
         weaponSlots[index].InitializeStart();
         weaponSlots[index].item.SetActive(false);
-        EquipWeapon(index);
+        EquipItem(index);
         temp.GetComponent<GunManager>().attachment.EnableGunAttachments(index);
         return true;
     }
-    public bool InstantiateEquipment(ThrowablesData data, int index)
+    public bool InstantiateEquipment(EquipmentData data, int index)
     {
         if (equipmentSlots.Length > 2) return false;
-        GameObject temp = Instantiate(data.throwablesPrefab, transform);
+        GameObject temp = Instantiate(data.equipmentPrefab, transform);
+        temp.GetComponent<EquipmentManager>().player = player;
+        equipmentSlots[index] = temp.GetComponent<EquipmentManager>();
         equipmentSlots[index].item = temp;
+        equipmentSlots[index].itemData = data;
+        equipmentSlots[index].InitializeAwake();
+        equipmentSlots[index].InitializeStart();
+        equipmentSlots[index].item.SetActive(false);
+        EquipItem(index + 2);
         return true;
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if(!player.pv.IsMine && targetPlayer == player.pv.Owner && changedProps.ContainsKey("weaponIndex"))
+        if (!player.pv.IsMine && targetPlayer == player.pv.Owner && changedProps.ContainsKey("weaponIndex"))
         {
-            EquipWeapon((int)changedProps["weaponIndex"]);
+            EquipItem((int)changedProps["weaponIndex"]);
             //player.playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
         }
     }
     public void WeaponFunction()
     {
         if (!player.pv.IsMine) return;
-        weaponSlots[weaponIndex].Use();
+        if (weaponIndex < 2) weaponSlots[weaponIndex].Use();
+        else equipmentSlots[weaponIndex - 2].Use();
     }
     public void InitializeAwakeOnGuns()
     {

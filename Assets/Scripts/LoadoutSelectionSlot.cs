@@ -38,7 +38,7 @@ public class LoadoutSelectionSlot : MonoBehaviourPunCallbacks
         if (playerManager.pv.IsMine)
         {
             Hashtable hash = new Hashtable();
-            for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
             {
                 if (GlobalDatabase.singleton.allWeaponDatas[i] == weaponData) hash.Add("weaponDataChanged", i);
             }

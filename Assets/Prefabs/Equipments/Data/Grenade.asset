@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57b3b3d3aff91994180f344ead56e235, type: 3}
+  m_Name: Grenade
+  m_EditorClassIdentifier: 
+  itemName: Grenade
+  itemDescription: Explodes.
+  itemIcon: {fileID: 21300000, guid: 9ecc47dead6ca6e4cb58d16ba1a35473, type: 3}
+  equippedByDefault: 0
+  unlockingLevel: 1
+  requiresPurchase: 0
+  purchasePrice: 100
+  equipmentPrefab: {fileID: 6788626819295025767, guid: 2f603b6f3f5c6d448b33b64c1e081e01,
+    type: 3}
+  equipmentType: 8
+  initialCount: 2
+  damage: 120
+  areaOfInfluence: 5
+  influenceForce: 10
+  recoveryTime: 0.5
+  explosionDelay: 3
+  throwForce: 5
+  throwUpwardForce: 2
+  isExplosive: 1
+  explosionOnImpact: 0
+  collidingClips: []
+  triggeredClips: []

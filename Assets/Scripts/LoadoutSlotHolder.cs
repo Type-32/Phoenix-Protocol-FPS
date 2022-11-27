@@ -11,14 +11,22 @@ public class LoadoutSlotHolder : MonoBehaviourPunCallbacks
 {
     [SerializeField] LoadoutMenu loadoutMenu;
     [SerializeField] PlayerManager playerManager;
-    public WeaponData[] slotWeaponData;
+    public WeaponData[] slotWeaponData = new WeaponData[2];
+    public EquipmentData[] slotEquipmentData = new EquipmentData[2];
     public Image[] slotIcons;
     public Text[] slotNames;
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (!playerManager.pv.IsMine && targetPlayer == playerManager.pv.Owner && (changedProps.ContainsKey("weaponDataChangedMode") && changedProps.ContainsKey("weaponDataChanged")))
         {
-            playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+            if ((int)changedProps["weaponDataChangedMode"] < 2)
+            {
+                playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+            }
+            else
+            {
+                playerManager.slotHolderScript.slotEquipmentData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allEquipmentDatas[(int)changedProps["weaponDataChanged"]];
+            }
         }
     }
 

@@ -14,7 +14,7 @@ public class WeaponData : ItemData
     [Header("Weapon Stats")]
     public int maxAmmoPerMag = 20;
     public int magazineCount = 3;
-    [Range(0f,200f)] public float damage = 30f;
+    [Range(0f, 200f)] public float damage = 30f;
     public float range = 100f;
     public float reloadTime = 3f;
     public float impactForce = 10f;
