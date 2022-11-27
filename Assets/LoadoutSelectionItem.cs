@@ -32,7 +32,7 @@ public class LoadoutSelectionItem : MonoBehaviour
     {
         int tempIndex1 = 0;
         int tempIndex2 = 0;
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
             if (GlobalDatabase.singleton.allWeaponDatas[i] == itemLoadoutData.weaponData[0])
             {
@@ -51,5 +51,10 @@ public class LoadoutSelectionItem : MonoBehaviour
     public void SetLoadoutName(string content)
     {
         loadoutSelectionItemName.text = content;
+    }
+    public void RenameLoadout()
+    {
+        loadoutSelection.ToggleRenameUI(true);
+        loadoutSelection.forRenamingSlot = loadoutIndex;
     }
 }

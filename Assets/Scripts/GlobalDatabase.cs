@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UserConfiguration;
 
 public class GlobalDatabase : MonoBehaviour
 {
@@ -24,10 +25,16 @@ public class GlobalDatabase : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         singleton = this;
         loadoutSelectionScript.ReadLoadoutDataFromJSON();
+        for (int i = 0; i < allWeaponDatas.Count; i++)
+        {
+            WeaponSystem.ValidateWeapon(i, true);
+        }
     }
-    public int FindIndexFromWeaponData(WeaponData data){
-        for (int i = 0; i < allWeaponDatas.Count; i++){
-            if(allWeaponDatas[i] == data) return i;
+    public int FindIndexFromWeaponData(WeaponData data)
+    {
+        for (int i = 0; i < allWeaponDatas.Count; i++)
+        {
+            if (allWeaponDatas[i] == data) return i;
         }
         return -1;
     }

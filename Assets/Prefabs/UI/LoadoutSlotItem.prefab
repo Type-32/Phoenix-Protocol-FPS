@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 5630304263275912214}
   - component: {fileID: 5630304263275912212}
   - component: {fileID: 1507427991}
+  - component: {fileID: 2034630173016610928}
+  - component: {fileID: 5067833967457877245}
+  - component: {fileID: 2682073918438330323}
   m_Layer: 5
   m_Name: LoadoutSlotItem
   m_TagString: Untagged
@@ -153,6 +156,80 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!95 &2034630173016610928
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630304263275912208}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5067833967457877245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630304263275912208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe4f202dc85015b48aa586eba6d38692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contextManager: {fileID: 0}
+  itemParent: {fileID: 0}
+  useIn3D: 0
+  contexItems:
+  - itemText: Rename
+    itemIcon: {fileID: 21300000, guid: 963c222ecbbd16f41aad4a3fc3a42c5e, type: 3}
+    contextItemType: 0
+    subMenuItems: []
+    onClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 5630304263275912212}
+          m_TargetAssemblyTypeName: LoadoutSelectionItem, Assembly-CSharp
+          m_MethodName: RenameLoadout
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &2682073918438330323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630304263275912208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81a9e081a4afa64dae6b9d42bc38c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Right Click to Rename
+  delay: 0.5
+  tooltipRect: {fileID: 0}
+  descriptionText: {fileID: 0}
+  forceToUpdate: 0
+  useIn3D: 0
+  tooltipAnimator: {fileID: 0}
 --- !u!1 &5630304264498425588
 GameObject:
   m_ObjectHideFlags: 0

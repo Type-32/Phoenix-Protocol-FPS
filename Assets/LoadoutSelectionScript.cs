@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UserConfiguration;
+using TMPro;
 
 public class LoadoutSelectionScript : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class LoadoutSelectionScript : MonoBehaviour
     public GameObject loadoutButtonsUI;
     public GameObject loadoutWeaponSelectionUI;
     public GameObject loadoutAttachmentSelections;
+    public GameObject renameVisual;
+    public TMP_InputField renameInputField;
 
     [Space]
     public Transform loadoutButtonsHolder;
@@ -26,6 +29,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     public List<LoadoutSelectionItem> loadoutItems = new List<LoadoutSelectionItem>();
     public List<LoadoutWeaponSelectionItem> loadoutWeaponSelects = new List<LoadoutWeaponSelectionItem>();
     [HideInInspector] public int forSelectedSlot = 0;
+    [HideInInspector] public int forRenamingSlot = 0;
 
     [Space]
     public int selectedLoadoutIndex;
@@ -59,6 +63,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         loadoutPreviewUI.QuitCustomizationUI();
         DisablePreview();
         loadoutItems[selectedLoadoutIndex].ToggleSelectVisual(true);
+        ToggleRenameUI(false);
         DisableWeaponSelection();
         MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
     }
@@ -293,6 +298,7 @@ public class LoadoutSelectionScript : MonoBehaviour
 
     public void InstantiateLoadoutSelections()
     {
+        LoadoutDataJSON tp = WeaponSystem.LoadoutJsonData;
         Debug.Log("Called Loadout Instantiation");
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
@@ -301,7 +307,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             temp.DeselectLoadout();
             temp.loadoutIndex = i;
             loadoutDataList[i].loadoutIndex = i;
-            temp.SetLoadoutName(loadoutDataList[i].loadoutName);
+            temp.SetLoadoutName(tp.Slots[i].SlotName);
             loadoutItems.Add(temp);
             if (loadoutDataList[i].isDefault)
             {
@@ -325,23 +331,13 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
-            WeaponValidation tp = WeaponSystem.ValidateWeapon(i, true);
-            UserDatabase.Instance.ReadUserDataFromJSON();
-            Debug.Log("tp with " + tp.ToString());
-            if (tp != WeaponValidation.Valid)
-            {
-                continue;
-            }
-            else
-            {
-                LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
-                //loadoutDataList[i].loadoutIndex = i;
-                loadoutWeaponSelects.Add(temp);
-                temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
-                temp.weaponIndex = i;
-                temp.customButtonsHolder = this.customButtonsHolder;
-                database.WriteInputDataToJSON(jsonUserData);
-            }
+            LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
+            //loadoutDataList[i].loadoutIndex = i;
+            loadoutWeaponSelects.Add(temp);
+            temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
+            temp.weaponIndex = i;
+            temp.customButtonsHolder = this.customButtonsHolder;
+            database.WriteInputDataToJSON(jsonUserData);
         }
     }
 
@@ -398,6 +394,14 @@ public class LoadoutSelectionScript : MonoBehaviour
     {
         loadoutAttachmentSelections.SetActive(value);
     }
+    public void ToggleRenameUI(bool value)
+    {
+        renameVisual.SetActive(value);
+        if (!value)
+        {
+            renameInputField.text = "";
+        }
+    }
     public void ToggleCustomizeButtonsUI(bool value)
     {
         customButtonsHolder.gameObject.SetActive(value);
@@ -416,5 +420,13 @@ public class LoadoutSelectionScript : MonoBehaviour
 
         if (loadoutCustomization.rightbarrelObjects.Count <= 0) customButtonsHolder.buttons[4].SetActive(false);
         else customButtonsHolder.buttons[4].SetActive(value);
+    }
+    public void ConfirmRename()
+    {
+        LoadoutDataJSON tmp = WeaponSystem.LoadoutJsonData;
+        loadoutItems[forRenamingSlot].SetLoadoutName(renameInputField.text);
+        tmp.Slots[forRenamingSlot].SlotName = renameInputField.text;
+        WeaponSystem.WriteToLoadoutConfig(tmp);
+        ToggleRenameUI(false);
     }
 }

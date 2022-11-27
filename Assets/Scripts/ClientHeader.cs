@@ -141,7 +141,9 @@ namespace UserConfiguration
         public static WeaponValidation ValidateWeapon(int weaponIndex, bool correctValidation)
         {
             string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+            string loadout = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
             UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+            LoadoutDataJSON loadoutJsonData = JsonUtility.FromJson<LoadoutDataJSON>(loadout);
             WeaponValidation result = WeaponValidation.Valid;
             if (!jsonData.shopData.availableWeaponIndexes.Contains(weaponIndex))
             {
@@ -175,6 +177,17 @@ namespace UserConfiguration
                                 if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
                                 if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
                                 jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
+                                for (int i = 0; i < loadoutJsonData.Slots.Length; i++)
+                                {
+                                    if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
+                                    {
+                                        loadoutJsonData.Slots[i].Weapon1 = 0;
+                                    }
+                                    if (loadoutJsonData.Slots[i].Weapon2 == weaponIndex)
+                                    {
+                                        loadoutJsonData.Slots[i].Weapon2 = 2;
+                                    }
+                                }
                             }
                             result = WeaponValidation.FalseUnlockRegistry;
                         }
@@ -190,7 +203,18 @@ namespace UserConfiguration
                             if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
                             if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
                             jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
-                            UserDatabase.Instance.WriteInputDataToJSON(jsonData);
+                            //UserDatabase.Instance.WriteInputDataToJSON(jsonData);
+                            for (int i = 0; i < loadoutJsonData.Slots.Length; i++)
+                            {
+                                if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
+                                {
+                                    loadoutJsonData.Slots[i].Weapon1 = 0;
+                                }
+                                if (loadoutJsonData.Slots[i].Weapon2 == weaponIndex)
+                                {
+                                    loadoutJsonData.Slots[i].Weapon2 = 2;
+                                }
+                            }
                             Debug.Log("Owned Index Count After " + jsonData.shopData.ownedWeaponIndexes.Count);
                         }
                         result = WeaponValidation.FalseUnlockRegistry;
@@ -208,20 +232,45 @@ namespace UserConfiguration
                         {
                             if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
                             if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
+                            for (int i = 0; i < loadoutJsonData.Slots.Length; i++)
+                            {
+                                if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
+                                {
+                                    loadoutJsonData.Slots[i].Weapon1 = 0;
+                                }
+                                if (loadoutJsonData.Slots[i].Weapon2 == weaponIndex)
+                                {
+                                    loadoutJsonData.Slots[i].Weapon2 = 2;
+                                }
+                            }
                         }
                         result = (!flag ? WeaponValidation.FalseUnlockRegistry : WeaponValidation.ErrorUnlockRegistry);
                     }
                 }
             }
-            if (correctValidation) UserDatabase.Instance.WriteInputDataToJSON(jsonData);
+            if (correctValidation) { UserSystem.WriteToUserConfig(jsonData); WriteToLoadoutConfig(loadoutJsonData); }
             Debug.Log("Returned " + result.ToString());
             return result;
         }
-        public static void WriteToUserConfig(UserDataJSON userData)
+        public static void WriteToLoadoutConfig(LoadoutDataJSON loadoutData)
         {
             Debug.Log("Correcting Weapon Validation");
-            string json = JsonUtility.ToJson(userData, true);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
+            string json = JsonUtility.ToJson(loadoutData, true);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
+        }
+        public static void WriteToLoadoutConfig(string jsonString)
+        {
+            Debug.Log("Correcting Weapon Validation");
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), jsonString);
+        }
+        public static LoadoutDataJSON LoadoutJsonData
+        {
+            get
+            {
+                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
+                LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
+                return jsonData;
+            }
         }
     }
     public static class UserSystem
@@ -235,6 +284,25 @@ namespace UserConfiguration
                 UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
                 return jsonData.userLevel;
             }
+        }
+        public static UserDataJSON UserJsonData
+        {
+            get
+            {
+                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+                UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+                return jsonData;
+            }
+        }
+        public static void WriteToUserConfig(UserDataJSON userData)
+        {
+            Debug.Log("Correcting Weapon Validation");
+            string json = JsonUtility.ToJson(userData, true);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
+        }
+        public static void WriteToUserConfig(string jsonString)
+        {
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), jsonString);
         }
     }
 }
