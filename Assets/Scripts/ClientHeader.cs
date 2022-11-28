@@ -305,4 +305,39 @@ namespace UserConfiguration
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), jsonString);
         }
     }
+    public static class Database
+    {
+        public static WeaponData FindWeaponData(int index)
+        {
+            if (index < GlobalDatabase.singleton.allWeaponDatas.Count)
+            {
+                return GlobalDatabase.singleton.allWeaponDatas[index];
+            }
+            return null;
+        }
+        public static int FindWeaponDataIndex(WeaponData data)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            {
+                if (GlobalDatabase.singleton.allWeaponDatas[i] == data) return i;
+            }
+            return -1;
+        }
+        public static EquipmentData FindEquipmentdata(int index)
+        {
+            if (index < GlobalDatabase.singleton.allWeaponDatas.Count)
+            {
+                return GlobalDatabase.singleton.allEquipmentDatas[index];
+            }
+            return null;
+        }
+        public static int FindEquipmentDataIndex(EquipmentData data)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+            {
+                if (GlobalDatabase.singleton.allEquipmentDatas[i] == data) return i;
+            }
+            return -1;
+        }
+    }
 }
