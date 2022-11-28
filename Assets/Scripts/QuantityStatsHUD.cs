@@ -75,6 +75,7 @@ public class QuantityStatsHUD : MonoBehaviour
 
             currentAmmo.text = stat.currentAmmo.ToString();
             //weaponTypeIcon.sprite = stat.weaponType == WeaponType.AssaultRifle ? assaultRifleIcon : stat.weaponType == WeaponType.MarksmanRifle ? marksmanRifleIcon : stat.weaponType == WeaponType.Pistol ? pistolIcon : stat.weaponType == WeaponType.Shotgun ? shotgunIcon : stat.weaponType == WeaponType.Melee ? meleeIcon : null;
+            weaponTypeIcon.sprite = stat.weaponIcon;
             if (weaponTypeIcon.sprite == null) weaponTypeIcon.enabled = false;
             else weaponTypeIcon.enabled = true;
         }

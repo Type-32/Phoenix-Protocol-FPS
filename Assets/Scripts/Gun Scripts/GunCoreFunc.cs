@@ -122,7 +122,7 @@ public class GunCoreFunc : MonoBehaviour
         if (!gun.stats.gunInteractionEnabled) return;
         if (stats.fireMode == QuantityStatsHUD.FireMode.Automatic)
         {
-            if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
+            if ((Input.GetButton("Fire1") || (Input.GetKey(KeyCode.Slash))) && Time.time >= nextTimeToFire)
             {
                 ShootUnderRestriction();
             }
@@ -137,7 +137,7 @@ public class GunCoreFunc : MonoBehaviour
         }
         else if (stats.fireMode == QuantityStatsHUD.FireMode.Single)
         {
-            if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
+            if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && Time.time >= nextTimeToFire)
             {
                 ShootUnderRestriction();
             }
@@ -147,7 +147,7 @@ public class GunCoreFunc : MonoBehaviour
     {
         if (stats.fireMode != QuantityStatsHUD.FireMode.SniperSingle) stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
         if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
-        if (Input.GetButtonDown("Fire1") && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+        if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
         {
             Shoot(gun.stats.range, gun.stats.damage);
             //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
@@ -158,7 +158,7 @@ public class GunCoreFunc : MonoBehaviour
     {
         if (stats.fireMode != QuantityStatsHUD.FireMode.Shotgun) stats.fireMode = QuantityStatsHUD.FireMode.Shotgun;
         if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
-        if (Input.GetButtonDown("Fire1") && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+        if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
         {
             if (gun.stats.ammo <= 0 || stats.isSprinting) return;
             for (int i = 0; i < gun.stats.weaponData.pelletsPerFire; i++) Shoot(gun.stats.range, gun.stats.weaponData.damagePerPellet);
@@ -198,19 +198,20 @@ public class GunCoreFunc : MonoBehaviour
 
     void Shoot(float range, float damage)
     {
-        if(gun.stats.ammo <= 0 || stats.isSprinting) return;
-        if(gun.shellEject != null && !gun.stats.weaponData.ejectCasingAfterRechamber) gun.shellEject.GetComponent<ParticleSystem>().Play();
+        if (gun.stats.ammo <= 0 || stats.isSprinting) return;
+        if (gun.shellEject != null && !gun.stats.weaponData.ejectCasingAfterRechamber) gun.shellEject.GetComponent<ParticleSystem>().Play();
         if (gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle) StartCoroutine(Rechamber());
 
         float decreasedKickback = 0f;
-        if(gun.player.holder.weaponIndex == 0)
+        if (gun.player.holder.weaponIndex == 0)
         {
-            if((int)PhotonNetwork.LocalPlayer.CustomProperties["SMWA_UnderbarrelIndex1"] != -1)
+            if ((int)PhotonNetwork.LocalPlayer.CustomProperties["SMWA_UnderbarrelIndex1"] != -1)
             {
                 float temp = stats.kickBackZ;
                 decreasedKickback = temp - (temp * 0.4f);
                 anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ - (stats.recoilZ * 0.35f), decreasedKickback);
-            }else anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
+            }
+            else anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
         }
         else
         {
@@ -219,12 +220,13 @@ public class GunCoreFunc : MonoBehaviour
                 float temp = stats.kickBackZ;
                 decreasedKickback = temp - (temp * 0.4f);
                 anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ - (stats.recoilZ * 0.35f), decreasedKickback);
-            }else anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
+            }
+            else anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
         }
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
 
         anim.animate.SetTrigger("isFiring");
-        if(gun.stats.weaponData.weaponType != QuantityStatsHUD.WeaponType.Shotgun) gun.stats.ammo--;
+        if (gun.stats.weaponData.weaponType != QuantityStatsHUD.WeaponType.Shotgun) gun.stats.ammo--;
         gun.player.InvokeGunEffects();
         RaycastHit hit;
         Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
@@ -242,14 +244,15 @@ public class GunCoreFunc : MonoBehaviour
         }
         ray.origin = gun.fpsCam.transform.position;
         ray.direction = shootDirection;
-        if (Physics.Raycast(ray, out hit, range)){
+        if (Physics.Raycast(ray, out hit, range))
+        {
             //Debug.Log(hit.transform.name);
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
             if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
             {
-                if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
+                if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
                 {
-                    if(hit.collider.gameObject.GetComponent<PlayerControllerManager>().IsTeam != gun.player.IsTeam)
+                    if (hit.collider.gameObject.GetComponent<PlayerControllerManager>().IsTeam != gun.player.IsTeam)
                     {
                         bool hitmarkerFlag = false;
                         hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation);
@@ -390,7 +393,8 @@ public class GunCoreFunc : MonoBehaviour
         }
     }
 
-    public void SpawnPickup(){
+    public void SpawnPickup()
+    {
         GameObject temp = Instantiate(gun.pickup, gameObject.transform.position, gameObject.transform.rotation);
         Debug.Log("Gun Dropped From Control ");
         temp.GetComponent<GunStats>().weaponData = gun.stats.weaponData;

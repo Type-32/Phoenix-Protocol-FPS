@@ -68,7 +68,7 @@ public class MouseLookScript : MonoBehaviour
     }
     void CameraInput()
     {
-        
+
         if (player.stats.isAiming)
         {
             mouseSensitivityValve = aimingSensitivity;
@@ -79,8 +79,8 @@ public class MouseLookScript : MonoBehaviour
         }
         if (player.stats.mouseMovementEnabled)
         {
-            mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivityValve * Time.deltaTime;
-            mouseY += Input.GetAxisRaw("Mouse Y") * mouseSensitivityValve * Time.deltaTime;
+            mouseX = Input.GetAxisRaw("Mouse X") + ((Input.GetKey("left") ? -1f : 0f) + (Input.GetKey("right") ? 1f : 0f)) * mouseSensitivityValve * Time.deltaTime;
+            mouseY += Input.GetAxisRaw("Mouse Y") + ((Input.GetKey("down") ? -1f : 0f) + (Input.GetKey("up") ? 1f : 0f)) * mouseSensitivityValve * Time.deltaTime;
         }
         mouseY = Mathf.Clamp(mouseY, player.stats.ClampCamRotX, player.stats.ClampCamRotZ);
         //xRot -= mouseY;

@@ -10,12 +10,11 @@ public class EquipmentCore : MonoBehaviour
     public bool throwAvailable = true;
     public void EquipmentCoreFunc()
     {
-        Debug.Log("Is Running");
-        if (Input.GetButtonDown("Fire1") && equip.stats.interactionEnabled && equip.stats.count > 0 && throwAvailable)
+        if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash))) && equip.stats.interactionEnabled && equip.stats.count > 0 && throwAvailable)
         {
             throwState = true;
         }
-        if (Input.GetButtonUp("Fire1") && equip.stats.interactionEnabled && equip.stats.count > 0 && throwState)
+        if ((Input.GetButtonUp("Fire1") || (Input.GetKeyUp(KeyCode.Slash))) && equip.stats.interactionEnabled && equip.stats.count > 0 && throwState)
         {
             Throw();
             equip.animate.animate.SetTrigger("isThrowing");

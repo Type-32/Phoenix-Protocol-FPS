@@ -17,8 +17,9 @@ public class EquipmentLogic : MonoBehaviour
     }
     void EquipmentMovementLogic()
     {
-        if (equip.stats.interactionEnabled) { }
-        else return;
+        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)) equip.stats.isWalking = true;
+        else equip.stats.isWalking = false;
+
         if (Input.GetKey("left shift") && !equip.stats.isHolding && !equip.player.stats.isCrouching && equip.stats.isWalking) equip.stats.isSprinting = true;
         else equip.stats.isSprinting = false;
     }

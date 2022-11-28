@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UserConfiguration;
 
 public class EquipmentHolder : MonoBehaviourPunCallbacks
 {
@@ -97,8 +98,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                 if (player.playerManager.slotHolderScript.slotEquipmentData[i] != null)
                 {
                     InstantiateEquipment(player.playerManager.slotHolderScript.slotEquipmentData[i], i);
-                    weaponSlots[i].InitializeAwake();
-                    weaponSlots[i].InitializeStart();
+                    equipmentSlots[i].InitializeAwake();
+                    equipmentSlots[i].InitializeStart();
                 }
             }
             Debug.Log("Init Start Line 36");

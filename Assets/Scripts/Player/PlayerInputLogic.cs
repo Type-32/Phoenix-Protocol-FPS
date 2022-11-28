@@ -22,13 +22,13 @@ public class PlayerInputLogic : MonoBehaviour
 
         if (!stats.toggleAiming)
         {
-            if (Input.GetButton("Fire2")) stats.isAiming = true;
+            if (Input.GetButton("Fire2") || (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightBracket))) stats.isAiming = true;
             else stats.isAiming = false;
         }
         else
         {
-            if (Input.GetButtonDown("Fire2") && !stats.isAiming) stats.isAiming = true;
-            else if (Input.GetButtonDown("Fire2") && stats.isAiming) stats.isAiming = false;
+            if ((Input.GetButtonDown("Fire2") || (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.RightBracket))) && !stats.isAiming) stats.isAiming = true;
+            else if ((Input.GetButtonDown("Fire2") || (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.RightBracket))) && stats.isAiming) stats.isAiming = false;
         }
         if (Input.GetKeyDown("c"))
         {
@@ -44,13 +44,13 @@ public class PlayerInputLogic : MonoBehaviour
         }
         //player.cameraAnim.SetBool("isSliding", stats.isSliding);
         //player.cameraAnim.SetBool("isCrouching", stats.isCrouching);
-        if (Input.GetKey("left shift") && !stats.isAiming && !stats.isCrouching && Input.GetAxis("Vertical") > 0) 
+        if (Input.GetKey("left shift") && !stats.isAiming && !stats.isCrouching && Input.GetAxis("Vertical") > 0)
         {
-             stats.isSprinting = true;
-            
+            stats.isSprinting = true;
+
         }
         else { stats.isSprinting = false; }
-        
+
         if (Input.GetKey("space") && stats.onGround)
         {
             if (stats.isCrouching) stats.isCrouching = false;

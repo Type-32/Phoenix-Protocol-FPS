@@ -340,4 +340,32 @@ namespace UserConfiguration
             return -1;
         }
     }
+    public static class ShopSystem
+    {
+        public static string RewardConfigFilePath
+        {
+            get
+            {
+                string path = Path.Combine(Application.persistentDataPath, "RewardConfig.json");
+                if (File.Exists(path)) return path;
+                else
+                {
+                    File.Create(path).Close();
+                }
+                return null;
+            }
+        }
+        public static bool AddRewardCode(string rewardCode = null)
+        {
+            if (rewardCode != null)
+            {
+
+            }
+            else
+            {
+
+            }
+            return true;
+        }
+    }
 }

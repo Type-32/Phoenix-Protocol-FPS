@@ -24,7 +24,7 @@ public class PlayerControls : MonoBehaviour
     Vector3 smoothedPlayerInput;
     Vector3 smoothMoveVelocity;
     public float smoothTime = 1.5f;
-    float x,z;
+    float x, z;
     Vector3 posTemp;
     Quaternion rotTemp;
     [HideInInspector] public float slideTime = 0f;
@@ -87,7 +87,7 @@ public class PlayerControls : MonoBehaviour
                 }
             }
             else
-            { 
+            {
                 player.stats.isSliding = true;
             }
             if (slideTime > 0f)
@@ -136,7 +136,7 @@ public class PlayerControls : MonoBehaviour
     }
     void Movement()
     {
-        if(player.stats.onGround) speedValve = player.stats.isSliding ? slideValveSpeed : player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
+        if (player.stats.onGround) speedValve = player.stats.isSliding ? slideValveSpeed : player.stats.isSprinting ? player.stats.sprintSpeed : player.stats.isCrouching ? player.stats.crouchSpeed : player.stats.speed;
         if (player.stats.playerMovementEnabled)
         {
             playerInput = player.transform.right * x + transform.forward * z;
@@ -186,12 +186,12 @@ public class PlayerControls : MonoBehaviour
     {
         if (!player.stats.toggleAiming)
         {
-            player.stats.isAiming = Input.GetButton("Fire2") & !player.stats.isSliding ? true : false;
+            player.stats.isAiming = (Input.GetButton("Fire2") | Input.GetKey(KeyCode.RightShift) | Input.GetKey(KeyCode.RightBracket)) & !player.stats.isSliding ? true : false;
         }
         else
         {
-            if (Input.GetButtonDown("Fire2") && !player.stats.isAiming) player.stats.isAiming = true;
-            else if (Input.GetButtonDown("Fire2") && player.stats.isAiming) player.stats.isAiming = false;
+            if ((Input.GetButtonDown("Fire2") || (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.RightBracket))) && !player.stats.isAiming) player.stats.isAiming = true;
+            else if ((Input.GetButtonDown("Fire2") || (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.RightBracket))) && player.stats.isAiming) player.stats.isAiming = false;
         }
     }
     void CrouchingLogic()
@@ -246,10 +246,11 @@ public class PlayerControls : MonoBehaviour
         {
             player.stats.isSprinting = false;
         }
-        if(Input.GetKeyDown("left shift"))
+        if (Input.GetKeyDown("left shift"))
         {
             player.SynchronizePlayerState(player.stats.isSprinting, 0);
-        }else if(Input.GetKeyUp("left shift"))
+        }
+        else if (Input.GetKeyUp("left shift"))
         {
             player.SynchronizePlayerState(player.stats.isSprinting, 0);
         }
