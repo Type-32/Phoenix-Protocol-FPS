@@ -68,7 +68,7 @@ public class ProjectileBehaviour : MonoBehaviour
             flag = false;
         }
         GameObject tmp = Instantiate(explosionEffect, transform.position, Quaternion.identity);
-        Destroy(tmp, 5f);
+        Destroy(tmp, 8f);
         Collider[] includedObjects = Physics.OverlapSphere(transform.position, range);
         for (int i = 0; i < includedObjects.Length; i++)
         {
