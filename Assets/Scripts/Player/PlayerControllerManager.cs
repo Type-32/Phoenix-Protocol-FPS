@@ -195,11 +195,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         controls.aimingMouseSensitivity = stats.mouseSensitivity * 0.8f;
     }
 
-    public bool TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot)
+    public bool TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot, int weaponIndex, bool isWeapon)
     {
         bool tempflag = false;
         stats.health -= amount;
-        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor, targetPos, targetRot);
+        pv.RPC(nameof(RPC_TakeDamage), pv.Owner, amount, bypassArmor, targetPos, targetRot, weaponIndex, isWeapon);
         /*
         if (stats.health <= 0)//Lag compensation here for visual player death lag, but it didn't work
         {
@@ -306,7 +306,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void Die()
     {
-
         InvokePlayerDeathEffects();
         SpawnDeathLoot();
         DisableAllMinimapDots();
@@ -346,9 +345,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     Transform tempTransform;
     [PunRPC]
-    void RPC_TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot, PhotonMessageInfo info)
+    void RPC_TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot, int weaponIndex, bool isWeapon, PhotonMessageInfo info)
     {
-        Debug.Log("Took Damage " + amount + " from " + info.Sender.NickName + " using " + ((int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"]).ToString());
+        Debug.Log("Took Damage " + amount + " from " + info.Sender.NickName + " using " + (isWeapon ? "Weapon " : "Equipment ") + (weaponIndex.ToString()));
         //tempTransform.position = transform.position;
         //tempTransform.rotation = transform.rotation;
         //tempTransform.position = targetPos;
@@ -398,7 +397,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
-            PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, tm);
+            PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon);
             Die();
         }
         return;

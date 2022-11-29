@@ -73,6 +73,14 @@ public class InGameUI : MonoBehaviour
         }
         return null;
     }
+    public Sprite FindEquipmentIcon(int index)
+    {
+        for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+        {
+            if (i == index) return GlobalDatabase.singleton.allEquipmentDatas[i].itemIcon;
+        }
+        return null;
+    }
     public void SetMatchEndMessage(string msg)
     {
         endMatchMessage.text = msg;

@@ -9,6 +9,22 @@ public class WeaponData : ItemData
     public GameObject weaponPrefab;
     public QuantityStatsHUD.WeaponType weaponType;
     public GameObject weaponProjectile;
+    public int GlobalWeaponIndex
+    {
+        get
+        {
+            int temp = -1;
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            {
+                if (this == GlobalDatabase.singleton.allWeaponDatas[i])
+                {
+                    temp = i;
+                    break;
+                }
+            }
+            return temp;
+        }
+    }
 
     [Space]
     [Header("Weapon Stats")]

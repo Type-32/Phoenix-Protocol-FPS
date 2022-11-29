@@ -255,7 +255,7 @@ public class GunCoreFunc : MonoBehaviour
                     if (hit.collider.gameObject.GetComponent<PlayerControllerManager>().IsTeam != gun.player.IsTeam)
                     {
                         bool hitmarkerFlag = false;
-                        hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation);
+                        hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
                         if (!hitmarkerFlag)
                         {
                             gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
@@ -271,7 +271,7 @@ public class GunCoreFunc : MonoBehaviour
                 else
                 {
                     bool hitmarkerFlag = false;
-                    hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation);
+                    hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
                     if (!hitmarkerFlag)
                     {
                         gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);

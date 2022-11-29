@@ -8,6 +8,17 @@ public class EquipmentData : ItemData
 {
     public GameObject equipmentPrefab;
     public QuantityStatsHUD.WeaponType equipmentType;
+    public int GlobalEquipmentIndex
+    {
+        get
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+            {
+                if (this == GlobalDatabase.singleton.allEquipmentDatas[i]) return i;
+            }
+            return -1;
+        }
+    }
 
     [Space]
     [Header("Equipment Stats")]

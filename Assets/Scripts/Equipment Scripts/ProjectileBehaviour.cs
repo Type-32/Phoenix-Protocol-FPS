@@ -4,9 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class ProjectileBehaviour : MonoBehaviour
+public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
 {
+    public PhotonView pv;
     private GameObject explosionEffect;
     private Rigidbody body;
     private bool targetHit;
@@ -16,8 +19,9 @@ public class ProjectileBehaviour : MonoBehaviour
     private bool doesExplosion;
     private float range;
     private float explosionForce;
+    private int GlobalEquipmentIndex;
     float time;
-    public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range)
+    public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range, int equipmentIndex)
     {
         this.explosionOnImpact = explosionOnImpact;
         this.damage = damage;
@@ -26,6 +30,7 @@ public class ProjectileBehaviour : MonoBehaviour
         explosionEffect = obj;
         this.range = range;
         time = explosionDelay;
+        GlobalEquipmentIndex = equipmentIndex;
     }
     void Start()
     {
@@ -53,7 +58,7 @@ public class ProjectileBehaviour : MonoBehaviour
             }
         }
     }
-    void Explode()
+    public virtual void Explode()
     {
         RaycastHit c;
         Quaternion rot;
@@ -80,7 +85,7 @@ public class ProjectileBehaviour : MonoBehaviour
             {
                 if (includedObjects[i].GetComponent<IDamagable>() != null)
                 {
-                    includedObjects[i].GetComponent<IDamagable>().TakeDamage(damage, false, transform.position, transform.rotation);
+                    includedObjects[i].GetComponent<IDamagable>().TakeDamage(damage, false, transform.position, transform.rotation, GlobalEquipmentIndex, false);
                 }
                 if (includedObjects[i].GetComponent<Rigidbody>() != null)
                 {
@@ -96,5 +101,10 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         time -= time > 0 ? Time.fixedDeltaTime : 0f;
         CheckExplosion(doesExplosion, explosionOnImpact);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
     }
 }
