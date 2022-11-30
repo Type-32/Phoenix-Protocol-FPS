@@ -98,7 +98,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
                 }
             }
         }
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
     void FixedUpdate()
     {
