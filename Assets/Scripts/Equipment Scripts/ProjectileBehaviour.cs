@@ -39,6 +39,10 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     {
         body = GetComponent<Rigidbody>();
         time = explosionDelay;
+        if (pv == null)
+        {
+            pv = GetComponent<PhotonView>();
+        }
     }
     void OnCollisionEnter(Collision other)
     {
