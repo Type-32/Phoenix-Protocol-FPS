@@ -110,13 +110,16 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerMinimapDot.SetActive(false);
         }
     }
+    void FixedUpdate()
+    {
+        CrosshairNametagDetect();
+    }
     private void Update()
     {
         if (!pv.IsMine) return;
         if (transform.position.y < -35) Die();
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
-        CrosshairNametagDetect();
         if (Input.GetKeyDown("l"))
         {
             if (hidePlayerHUD)
@@ -266,10 +269,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (Physics.Raycast(holder.transform.position, holder.transform.forward, out hit, stats.playerNametagDistance))
         {
             PhotonView _pv = hit.collider.GetComponent<PhotonView>();
-            if (_pv != null)
+            ProjectileBehaviour _proj = hit.collider.GetComponent<ProjectileBehaviour>();
+            if (_pv != null && _proj == null)
             {
                 ui.nametagIndicatorObject.SetActive(true);
-                ui.nametagIndicator.text = (_pv.Owner.NickName == null ? "" : _pv.Owner.NickName);
+                ui.nametagIndicator.text = (_pv.Owner.NickName == null ? "Anonymous" : _pv.Owner.NickName);
             }
             else
             {

@@ -19,6 +19,7 @@ public class EquipmentData : ItemData
             return -1;
         }
     }
+    public string photonGameObjectString = "";
 
     [Space]
     [Header("Equipment Stats")]

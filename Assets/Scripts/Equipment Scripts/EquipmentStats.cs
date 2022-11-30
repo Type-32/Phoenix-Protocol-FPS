@@ -57,6 +57,7 @@ public class EquipmentStats : MonoBehaviour
     [HideInInspector] public bool isSliding = false;
     [HideInInspector] public bool isHolding = false;
     [HideInInspector] public bool isSprinting = false;
+    [HideInInspector] public string photonGameObjectString = "";
 
     public void InitializeEquipmentStats()
     {
@@ -65,5 +66,6 @@ public class EquipmentStats : MonoBehaviour
         influenceForce = equipmentData.influenceForce;
         recoveryTime = equipmentData.recoveryTime;
         count = equipmentData.initialCount;
+        photonGameObjectString = equipmentData.photonGameObjectString;
     }
 }

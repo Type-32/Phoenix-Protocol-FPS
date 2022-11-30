@@ -313,7 +313,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutItems.Add(temp);
             if (loadoutDataList[i].isDefault)
             {
-                if (i == selectedLoadoutIndex) temp.SelectLoadout();
+                if (i == tp.SelectedSlot) temp.SelectLoadout();
                 temp.ToggleSelectVisual(true);
             }
         }
