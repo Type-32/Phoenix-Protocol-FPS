@@ -88,6 +88,7 @@ public class PlayerManager : MonoBehaviour
     private Color randomPlayerColor;
     public RoomManager roomManager;
     public CurrentMatchManager cmm;
+    PlayerControllerManager tr = new();
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
@@ -292,7 +293,8 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerControllerManager>().IsTeam = IsTeam;
         cmm.RefreshAllHostileIndicators();
     }
-    public void Die(bool isSuicide, string killer = null)
+    private int trackingViewID = -1;
+    public void Die(bool isSuicide, int ViewID, string killer = null)
     {
         if (isSuicide)
         {
@@ -309,6 +311,17 @@ public class PlayerManager : MonoBehaviour
             killStatus.text = "You have";
             killerUsername.text = "Suicided";
         }
+        if (trackingViewID != -1)
+        {
+            PlayerControllerManager[] tmp = FindObjectsOfType<PlayerControllerManager>();
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                if (tmp[i].pv.ViewID == trackingViewID)
+                {
+                    tr = tmp[i];
+                }
+            }
+        }
         if (pv.IsMine) SynchronizeValues(kills, deaths);
         audioListener.enabled = true;
         streakKills = 0;
@@ -319,6 +332,7 @@ public class PlayerManager : MonoBehaviour
         deathInfoCanvas.alpha = 1f;
         deathGUICanvas.gameObject.SetActive(true);
         deathInfoCanvas.gameObject.SetActive(true);
+        trackingViewID = ViewID;
 
         transform.position = controller.transform.position;
         transform.rotation = controller.transform.rotation;
@@ -372,7 +386,7 @@ public class PlayerManager : MonoBehaviour
         if (!pv.IsMine) return;
         respawnUI.redeployButton.interactable = false;
         //RespawnPlayer();
-        Die(true);
+        Die(true, -1);
     }
     public void RespawnPlayer()
     {
@@ -497,6 +511,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
+                if (trackingViewID != -1) transform.LookAt(tr.transform, Vector3.up);
                 returnTemp += secondCount;
                 secondCount = 0;
             }
@@ -660,7 +675,7 @@ public class PlayerManager : MonoBehaviour
     #endregion
     public void LeaveGame()
     {
-        Die(true);
+        Die(true, -1);
         player.playerManager.CloseMenu();
         player.playerManager.CloseLoadoutMenu();
         player.playerManager.ToggleButtonHolder(true);

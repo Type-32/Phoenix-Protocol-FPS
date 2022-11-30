@@ -347,7 +347,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         //StartCoroutine(QuitEveryPlayer(3f));
         if (localClientPlayer.controller != null)
         {
-            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true);
+            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true, -1);
         }
         localClientPlayer.CloseMenu();
         internalUI.ToggleMatchEndStats(true, 2f);
@@ -367,7 +367,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         //StartCoroutine(QuitEveryPlayer(3f));
         if (localClientPlayer.controller != null)
         {
-            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true);
+            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true, -1);
         }
         localClientPlayer.CloseMenu();
         internalUI.ToggleMatchEndStats(true, 2f);
