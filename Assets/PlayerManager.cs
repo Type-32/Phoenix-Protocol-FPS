@@ -511,7 +511,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                if (trackingViewID != -1) transform.LookAt(tr.transform, Vector3.up);
+                //if (trackingViewID != -1) transform.LookAt(tr.transform, Vector3.up);
                 returnTemp += secondCount;
                 secondCount = 0;
             }
