@@ -46,6 +46,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     }
     void OnCollisionEnter(Collision other)
     {
+        if (!pv.IsMine) return;
         if (targetHit) return;
         else targetHit = true;
         CheckExplosion(doesExplosion, explosionOnImpact);
@@ -79,8 +80,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
         {
             flag = false;
         }
-        GameObject tmp = Instantiate(explosionEffect, transform.position, Quaternion.identity);
-        Destroy(tmp, 8f);
+        InstantiateExplosionEffect(transform.position, Quaternion.identity);
         Collider[] includedObjects = Physics.OverlapSphere(transform.position, range);
         for (int i = 0; i < includedObjects.Length; i++)
         {
@@ -106,12 +106,15 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     }
     void FixedUpdate()
     {
-        time -= time > 0 ? Time.fixedDeltaTime : 0f;
-        CheckExplosion(doesExplosion, explosionOnImpact);
         if (!pv.IsMine)
         {
             transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
+        }
+        else
+        {
+            time -= time > 0 ? Time.fixedDeltaTime : 0f;
+            CheckExplosion(doesExplosion, explosionOnImpact);
         }
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -127,4 +130,16 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
             realRotation = (Quaternion)stream.ReceiveNext();
         }
     }
+    #region RPC Calls
+    public void InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
+    {
+        pv.RPC(nameof(RPC_InstantiateExplosionEffect), RpcTarget.All, _pos, _rot);
+    }
+    [PunRPC]
+    void RPC_InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
+    {
+        GameObject tmp = Instantiate(explosionEffect, _pos, _rot);
+        Destroy(tmp, 10f);
+    }
+    #endregion
 }
