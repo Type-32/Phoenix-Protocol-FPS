@@ -246,7 +246,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             internalUI.UpdateTDMData(redAmount, blueAmount, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (gameEnded)
         {
@@ -347,7 +347,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         //StartCoroutine(QuitEveryPlayer(3f));
         if (localClientPlayer.controller != null)
         {
-            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die();
+            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true);
         }
         localClientPlayer.CloseMenu();
         internalUI.ToggleMatchEndStats(true, 2f);
@@ -367,7 +367,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         //StartCoroutine(QuitEveryPlayer(3f));
         if (localClientPlayer.controller != null)
         {
-            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die();
+            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true);
         }
         localClientPlayer.CloseMenu();
         internalUI.ToggleMatchEndStats(true, 2f);

@@ -37,6 +37,8 @@ public class PlayerManager : MonoBehaviour
     public GameObject loadout;
     public LoadoutMenu loadoutMenu;
     [SerializeField] CanvasGroup deathGUICanvas;
+    [SerializeField] CanvasGroup deathInfoCanvas;
+    [SerializeField] Text killStatus, killerUsername;
 
     [Space]
     public bool openedLoadoutMenu = false;
@@ -290,8 +292,23 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerControllerManager>().IsTeam = IsTeam;
         cmm.RefreshAllHostileIndicators();
     }
-    public void Die()
+    public void Die(bool isSuicide, string killer = null)
     {
+        if (isSuicide)
+        {
+            killStatus.text = "You have";
+            killerUsername.text = "Suicided";
+        }
+        if (killer != null)
+        {
+            killStatus.text = "Killed By";
+            killerUsername.text = killer;
+        }
+        else
+        {
+            killStatus.text = "You have";
+            killerUsername.text = "Suicided";
+        }
         if (pv.IsMine) SynchronizeValues(kills, deaths);
         audioListener.enabled = true;
         streakKills = 0;
@@ -299,7 +316,9 @@ public class PlayerManager : MonoBehaviour
         respawning = true;
         secondCount = 0;
         deathGUICanvas.alpha = 0f;
+        deathInfoCanvas.alpha = 1f;
         deathGUICanvas.gameObject.SetActive(true);
+        deathInfoCanvas.gameObject.SetActive(true);
 
         transform.position = controller.transform.position;
         transform.rotation = controller.transform.rotation;
@@ -353,7 +372,7 @@ public class PlayerManager : MonoBehaviour
         if (!pv.IsMine) return;
         respawnUI.redeployButton.interactable = false;
         //RespawnPlayer();
-        Die();
+        Die(true);
     }
     public void RespawnPlayer()
     {
@@ -470,6 +489,7 @@ public class PlayerManager : MonoBehaviour
             {
                 if (!hasRespawned)
                 {
+                    deathInfoCanvas.alpha = Mathf.Lerp(deathInfoCanvas.alpha, 0f, Time.deltaTime);
                     deathGUICanvas.alpha = Mathf.Lerp(deathGUICanvas.alpha, 1f, Time.deltaTime * 2);
                     transform.position = Vector3.Slerp(transform.position, spawnpointCamera.transform.position, Time.deltaTime * 3);
                     transform.rotation = Quaternion.Slerp(transform.rotation, spawnpointCamera.transform.rotation, Time.deltaTime * 3);
@@ -486,6 +506,7 @@ public class PlayerManager : MonoBehaviour
             if (hasRespawned)
             {
                 deathGUICanvas.alpha = Mathf.Lerp(deathGUICanvas.alpha, 0f, Time.deltaTime * 5);
+                deathInfoCanvas.alpha = Mathf.Lerp(deathInfoCanvas.alpha, 0f, Time.deltaTime);
                 transform.position = Vector3.Slerp(transform.position, spawnpoint.position, Time.deltaTime * 3);
                 transform.rotation = Quaternion.Slerp(transform.rotation, spawnpoint.rotation, Time.deltaTime * 3);
             }
@@ -639,7 +660,7 @@ public class PlayerManager : MonoBehaviour
     #endregion
     public void LeaveGame()
     {
-        Die();
+        Die(true);
         player.playerManager.CloseMenu();
         player.playerManager.CloseLoadoutMenu();
         player.playerManager.ToggleButtonHolder(true);

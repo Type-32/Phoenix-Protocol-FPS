@@ -118,7 +118,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     private void Update()
     {
         if (!pv.IsMine) return;
-        if (transform.position.y < -35) Die();
+        if (transform.position.y < -35) Die(true);
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
         if (Input.GetKeyDown("l"))
@@ -309,13 +309,13 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             pv.RPC(nameof(RPC_SpawnDeathLoot), RpcTarget.All, transform.position, randomIndex);
         }
     }
-    public void Die()
+    public void Die(bool isSuicide, string killer = null)
     {
         InvokePlayerDeathEffects();
         SpawnDeathLoot();
         DisableAllMinimapDots();
         usingStreakGifts = false;
-        playerManager.Die();
+        playerManager.Die(isSuicide, killer);
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;
     }
@@ -403,7 +403,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
             PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon);
-            Die();
+            Die(false, pv.Owner.NickName);
         }
         return;
     }
