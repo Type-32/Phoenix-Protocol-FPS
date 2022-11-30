@@ -112,6 +112,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     void FixedUpdate()
     {
+        if (!pv.IsMine) return;
         CrosshairNametagDetect();
     }
     private void Update()
