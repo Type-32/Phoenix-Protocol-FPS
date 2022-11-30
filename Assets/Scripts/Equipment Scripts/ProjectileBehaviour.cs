@@ -21,6 +21,9 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     private float explosionForce;
     private int GlobalEquipmentIndex;
     float time;
+
+    Vector3 realPosition = Vector3.zero;
+    Quaternion realRotation = Quaternion.identity;
     public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range, int equipmentIndex)
     {
         this.explosionOnImpact = explosionOnImpact;
@@ -101,10 +104,23 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     {
         time -= time > 0 ? Time.fixedDeltaTime : 0f;
         CheckExplosion(doesExplosion, explosionOnImpact);
+        if (!pv.IsMine)
+        {
+            transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
+        }
     }
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            realPosition = (Vector3)stream.ReceiveNext();
+            realRotation = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

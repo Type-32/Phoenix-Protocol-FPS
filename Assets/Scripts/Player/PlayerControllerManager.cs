@@ -269,7 +269,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             if (_pv != null)
             {
                 ui.nametagIndicatorObject.SetActive(true);
-                ui.nametagIndicator.text = _pv.Owner.NickName;
+                ui.nametagIndicator.text = (_pv.Owner.NickName == null ? "" : _pv.Owner.NickName);
             }
             else
             {

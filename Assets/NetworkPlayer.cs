@@ -13,13 +13,6 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
 
     Vector3 camRealPos = Vector3.zero;
     Quaternion camRealRot = Quaternion.identity;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (!player.pv.IsMine)
