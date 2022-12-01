@@ -35,7 +35,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public Recoil recoilScript;
     public Transform groundCheck;
     public GameObject playerDeathEffect;
-    public GameObject grenadeExplosionEffect, flashbangExplosionEffect;
     //public Camera cameraView;
 
     [Space]
@@ -245,17 +244,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
 
     }
-    public void InstantiateObjectThroughPlayer(int index, Vector3 _pos, Quaternion _rot)
-    {
-        pv.RPC(nameof(RPC_InstantiateObject), RpcTarget.All, _pos, _rot);
-    }
-    [PunRPC]
-    void RPC_InstantiateObject(int index, Vector3 _pos, Quaternion _rot)
-    {
-        GameObject inst = (index == 0 ? grenadeExplosionEffect : index == 1 ? flashbangExplosionEffect : null);
-        GameObject tmp = Instantiate(inst, _pos, _rot);
-        Destroy(tmp, 10f);
-    }
     private void DerivePlayerStatsToHUD()
     {
         if (ui == null) return;
@@ -415,7 +403,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
             PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon);
-            Die(false, pv.ViewID, pv.Owner.NickName);
+            Die(false, pv.ViewID, info.Sender.NickName);
         }
         return;
     }

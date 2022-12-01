@@ -24,13 +24,14 @@ public class PlayerManager : MonoBehaviour
     public LoadoutSlotHolder slotHolderScript;
     public ChoiceHolderScript choiceHolderScript;
     public AudioListener audioListener;
-    [SerializeField] bool hasRespawned = false;
-    [SerializeField] bool respawning = false;
-    [SerializeField] float temp;
-    [SerializeField] float secondFill = 0f;
-    [SerializeField] float secondCount = 0f;
-    [SerializeField] float returnTemp = 2f;
-    [SerializeField] int respawnCountdown = 4;
+    bool hasRespawned = false;
+    bool respawning = false;
+    float temp;
+    float secondFill = 0f;
+    float secondCount = 0f;
+    float returnTemp = 2f;
+    int respawnCountdown = 4;
+    public GameObject grenadeExplosionEffect, flashbangExplosionEffect;
 
     [Space]
     [Header("UI")]
@@ -261,6 +262,16 @@ public class PlayerManager : MonoBehaviour
 
         transform.position = spawnpoint.position;
         transform.rotation = spawnpoint.rotation;
+    }
+    public void InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
+    {
+        pv.RPC(nameof(RPC_InstantiateExplosionEffect), RpcTarget.All, _pos, _rot);
+    }
+    [PunRPC]
+    void RPC_InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
+    {
+        GameObject tmp = Instantiate(grenadeExplosionEffect, _pos, _rot);
+        Destroy(tmp, 10f);
     }
     void CreateController()
     {

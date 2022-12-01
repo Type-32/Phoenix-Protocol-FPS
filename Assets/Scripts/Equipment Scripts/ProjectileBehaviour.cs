@@ -83,8 +83,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
         {
             flag = false;
         }
-        GameObject tg = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", effectFileString), transform.position, Quaternion.identity);
-        StartCoroutine(DestroyAfterSeconds(6f, tg));
+        InstantiateExplosionEffect(transform.position, Quaternion.Euler(Vector3.up.x, Vector3.up.y, Vector3.up.z));
         Collider[] includedObjects = Physics.OverlapSphere(transform.position, range);
         for (int i = 0; i < includedObjects.Length; i++)
         {
@@ -134,9 +133,15 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
             realRotation = (Quaternion)stream.ReceiveNext();
         }
     }
-    IEnumerator DestroyAfterSeconds(float time, GameObject gm)
+    public void InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
     {
-        yield return new WaitForSeconds(time);
-        PhotonNetwork.Destroy(gm);
+        PlayerManager[] li = FindObjectsOfType<PlayerManager>();
+        for (int i = 0; i < li.Length; i++)
+        {
+            if (li[i].pv.ViewID == pv.ViewID)
+            {
+                li[i].InstantiateExplosionEffect(_pos, _rot);
+            }
+        }
     }
 }
