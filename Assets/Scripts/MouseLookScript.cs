@@ -68,15 +68,13 @@ public class MouseLookScript : MonoBehaviour
     }
     void CameraInput()
     {
-
-        if (player.stats.isAiming)
+        int sightIndex = player.holder.weaponIndex == 0 ? (int)player.pv.Owner.CustomProperties["SMWA_SightIndex1"] : player.holder.weaponIndex == 1 ? (int)player.pv.Owner.CustomProperties["SMWA_SightIndex2"] : -1;
+        float multiplier = 0f;
+        if (sightIndex != -1)
         {
-            mouseSensitivityValve = aimingSensitivity;
+            multiplier = sightIndex == 1 ? 0.8f : sightIndex == 2 ? 0.7f : sightIndex == 3 ? 0.6f : 1f;
         }
-        else
-        {
-            mouseSensitivityValve = regularSensitivity;
-        }
+        mouseSensitivityValve = player.stats.isAiming ? (aimingSensitivity * multiplier) : regularSensitivity;
         if (player.stats.mouseMovementEnabled)
         {
             mouseX = Input.GetAxisRaw("Mouse X") + ((Input.GetKey("left") ? -1f : 0f) + (Input.GetKey("right") ? 1f : 0f)) * mouseSensitivityValve * Time.deltaTime;
