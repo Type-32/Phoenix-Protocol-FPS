@@ -72,7 +72,7 @@ public class MouseLookScript : MonoBehaviour
         float multiplier = 0f;
         if (sightIndex != -1)
         {
-            multiplier = sightIndex == 1 ? 0.8f : sightIndex == 2 ? 0.7f : sightIndex == 3 ? 0.6f : 1f;
+            multiplier = sightIndex == 1 ? 0.7f : sightIndex == 2 ? 0.5f : sightIndex == 3 ? 0.3f : 1f;
         }
         mouseSensitivityValve = player.stats.isAiming ? (aimingSensitivity * multiplier) : regularSensitivity;
         if (player.stats.mouseMovementEnabled)
