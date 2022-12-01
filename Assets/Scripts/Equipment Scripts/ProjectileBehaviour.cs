@@ -83,7 +83,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
         {
             flag = false;
         }
-        InstantiateExplosionEffect(transform.position, Quaternion.Euler(Vector3.up.x, Vector3.up.y, Vector3.up.z));
+        InstantiateExplosionEffect(transform.position, Quaternion.identity);
         Collider[] includedObjects = Physics.OverlapSphere(transform.position, range);
         for (int i = 0; i < includedObjects.Length; i++)
         {
@@ -135,13 +135,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     }
     public void InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
     {
-        PlayerManager[] li = FindObjectsOfType<PlayerManager>();
-        for (int i = 0; i < li.Length; i++)
-        {
-            if (li[i].pv.ViewID == pv.ViewID)
-            {
-                li[i].InstantiateExplosionEffect(_pos, _rot);
-            }
-        }
+        CurrentMatchManager cmm = FindObjectOfType<CurrentMatchManager>();
+        cmm.localClientPlayer.InstantiateExplosionEffect(_pos, _rot);
     }
 }

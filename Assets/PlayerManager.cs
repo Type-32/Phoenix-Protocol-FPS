@@ -272,6 +272,7 @@ public class PlayerManager : MonoBehaviour
     {
         GameObject tmp = Instantiate(grenadeExplosionEffect, _pos, _rot);
         Destroy(tmp, 10f);
+        Debug.Log("Calling Explosion Effect instantiation");
     }
     void CreateController()
     {
