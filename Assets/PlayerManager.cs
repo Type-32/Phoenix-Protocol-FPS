@@ -165,6 +165,8 @@ public class PlayerManager : MonoBehaviour
             CloseMenu();
             CloseLoadoutMenu();
             randomPlayerColor = Color.red;
+            deathInfoCanvas.alpha = 0f;
+            deathInfoCanvas.gameObject.SetActive(false);
         }
         else
         {
@@ -185,6 +187,7 @@ public class PlayerManager : MonoBehaviour
             //CreateController();
             OnJoiningOngoingRoom();
             //randomPlayerColor = Random.ColorHSV();
+            deathInfoCanvas.alpha = 0f;
         }
         //if (!pv.IsMine) return;
         openedInventory = false;
@@ -281,6 +284,8 @@ public class PlayerManager : MonoBehaviour
         if (!openedOptions && player.pv.IsMine) Cursor.lockState = CursorLockMode.Locked;
         deathGUICanvas.alpha = 0f;
         deathGUICanvas.gameObject.SetActive(false);
+        deathInfoCanvas.alpha = 0f;
+        deathInfoCanvas.gameObject.SetActive(false);
 
         settingsMenu.SettingsMenuAwakeFunction();
         //Player Related Settings
@@ -311,7 +316,7 @@ public class PlayerManager : MonoBehaviour
             killStatus.text = "You have";
             killerUsername.text = "Suicided";
         }
-        if (trackingViewID != -1)
+        if (trackingViewID != -1 && !isSuicide)
         {
             PlayerControllerManager[] tmp = FindObjectsOfType<PlayerControllerManager>();
             for (int i = 0; i < tmp.Length; i++)
