@@ -35,6 +35,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public Recoil recoilScript;
     public Transform groundCheck;
     public GameObject playerDeathEffect;
+    public GameObject grenadeExplosionEffect, flashbangExplosionEffect;
     //public Camera cameraView;
 
     [Space]
@@ -243,6 +244,17 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     private void TakeHitEffect()
     {
 
+    }
+    public void InstantiateObjectThroughPlayer(int index, Vector3 _pos, Quaternion _rot)
+    {
+        pv.RPC(nameof(RPC_InstantiateObject), RpcTarget.All, _pos, _rot);
+    }
+    [PunRPC]
+    void RPC_InstantiateObject(int index, Vector3 _pos, Quaternion _rot)
+    {
+        GameObject inst = (index == 0 ? grenadeExplosionEffect : index == 1 ? flashbangExplosionEffect : null);
+        GameObject tmp = Instantiate(inst, _pos, _rot);
+        Destroy(tmp, 10f);
     }
     private void DerivePlayerStatsToHUD()
     {

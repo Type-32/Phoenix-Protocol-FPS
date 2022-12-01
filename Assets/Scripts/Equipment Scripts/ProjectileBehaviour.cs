@@ -1,3 +1,4 @@
+using System.IO;
 using System.Net.NetworkInformation;
 using System.Transactions;
 using System.Collections;
@@ -21,10 +22,11 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     private float explosionForce;
     private int GlobalEquipmentIndex;
     float time;
+    string effectFileString = "";
 
     Vector3 realPosition = Vector3.zero;
     Quaternion realRotation = Quaternion.identity;
-    public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range, int equipmentIndex)
+    public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range, int equipmentIndex, string effectString)
     {
         this.explosionOnImpact = explosionOnImpact;
         this.damage = damage;
@@ -34,6 +36,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
         this.range = range;
         time = explosionDelay;
         GlobalEquipmentIndex = equipmentIndex;
+        effectFileString = effectString;
     }
     void Start()
     {
@@ -80,7 +83,8 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
         {
             flag = false;
         }
-        InstantiateExplosionEffect(transform.position, Quaternion.identity);
+        GameObject tg = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", effectFileString), transform.position, Quaternion.identity);
+        StartCoroutine(DestroyAfterSeconds(6f, tg));
         Collider[] includedObjects = Physics.OverlapSphere(transform.position, range);
         for (int i = 0; i < includedObjects.Length; i++)
         {
@@ -130,16 +134,9 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
             realRotation = (Quaternion)stream.ReceiveNext();
         }
     }
-    #region RPC Calls
-    public void InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
+    IEnumerator DestroyAfterSeconds(float time, GameObject gm)
     {
-        pv.RPC(nameof(RPC_InstantiateExplosionEffect), RpcTarget.All, _pos, _rot);
+        yield return new WaitForSeconds(time);
+        PhotonNetwork.Destroy(gm);
     }
-    [PunRPC]
-    void RPC_InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
-    {
-        GameObject tmp = Instantiate(explosionEffect, _pos, _rot);
-        Destroy(tmp, 10f);
-    }
-    #endregion
 }

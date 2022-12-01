@@ -20,6 +20,7 @@ public class EquipmentData : ItemData
         }
     }
     public string photonGameObjectString = "";
+    public string effectString = "";
 
     [Space]
     [Header("Equipment Stats")]

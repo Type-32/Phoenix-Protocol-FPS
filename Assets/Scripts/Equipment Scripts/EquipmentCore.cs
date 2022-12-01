@@ -31,7 +31,7 @@ public class EquipmentCore : MonoBehaviour
         Physics.Raycast(equip.fpsCam.transform.position, equip.fpsCam.transform.forward, out ht, 2f);
         GameObject projectile = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", equip.stats.photonGameObjectString), equip.stats.attackPoint.position, equip.fpsCam.transform.rotation);
         projectile.GetComponent<ProjectileBehaviour>().pv = equip.player.pv;
-        projectile.GetComponent<ProjectileBehaviour>().SetData(equip.stats.equipmentData.damage, equip.stats.equipmentData.isExplosive, equip.stats.equipmentData.explosionOnImpact, equip.stats.equipmentData.explosionDelay, equip.stats.equipmentData.influenceForce, equip.stats.explosionEffect, equip.stats.equipmentData.areaOfInfluence, equip.stats.equipmentData.GlobalEquipmentIndex);
+        projectile.GetComponent<ProjectileBehaviour>().SetData(equip.stats.equipmentData.damage, equip.stats.equipmentData.isExplosive, equip.stats.equipmentData.explosionOnImpact, equip.stats.equipmentData.explosionDelay, equip.stats.equipmentData.influenceForce, equip.stats.explosionEffect, equip.stats.equipmentData.areaOfInfluence, equip.stats.equipmentData.GlobalEquipmentIndex, equip.stats.equipmentData.effectString);
         Rigidbody projBody = projectile.GetComponent<Rigidbody>();
         Vector3 forceDir = equip.fpsCam.transform.forward;
         RaycastHit hit;
