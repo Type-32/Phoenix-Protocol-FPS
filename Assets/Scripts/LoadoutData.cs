@@ -7,7 +7,8 @@ public class LoadoutData : ScriptableObject
 {
     public string loadoutName = "Custom Loadout";
     public int loadoutIndex = 0;
-    public WeaponData[] weaponData;
+    public WeaponData[] weaponData = new WeaponData[2];
+    public EquipmentData[] equipmentData = new EquipmentData[2];
 
     public WeaponAttachmentData[] selectedBarrel;
     public int[] selectedBarrelIndex = { 0, 0 };
@@ -82,7 +83,7 @@ public class LoadoutData : ScriptableObject
             return true;
         }
     }
-    
+
     public struct SidebarrelSelection
     {
         SidebarrelData object1;
@@ -91,7 +92,7 @@ public class LoadoutData : ScriptableObject
         {
             if (index == 0)
             {
-                for(int i = 0; i <= 2; i++)
+                for (int i = 0; i <= 2; i++)
                 {
                     bool check = false;
                     check = object1.CheckExistence(i);
@@ -134,7 +135,7 @@ public class LoadoutData : ScriptableObject
 
     public void InitializeArrayData()
     {
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             selectedBarrel.SetValue(null, i);
             selectedSight.SetValue(null, i);
@@ -208,9 +209,9 @@ public class LoadoutData : ScriptableObject
     }
     public int FindAttachmentGlobalIndex(WeaponAttachmentData data)
     {
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
         {
-            if(data == GlobalDatabase.singleton.allWeaponAttachmentDatas[i])
+            if (data == GlobalDatabase.singleton.allWeaponAttachmentDatas[i])
             {
                 return i;
             }

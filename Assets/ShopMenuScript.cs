@@ -63,7 +63,7 @@ public class ShopMenuScript : MonoBehaviour
     {
         bool informPopupNeeded = false;
         string content = "You have unlocked the following content(s) in your last session: \n";
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
             ShopWeaponItem item = Instantiate(shopWeaponItemPrefab, shopWeaponItemHolder).GetComponent<ShopWeaponItem>();
             bool un = false, pur = false;
@@ -96,7 +96,7 @@ public class ShopMenuScript : MonoBehaviour
             }
             else
             {
-                if(jsonData.userLevel >= GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel)
+                if (jsonData.userLevel >= GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel)
                 {
                     un = true;
                     pur = false;
@@ -125,15 +125,15 @@ public class ShopMenuScript : MonoBehaviour
         previewFireRate.value = data.fireRate;
         previewRange.value = data.range;
         previewAmmo.value = data.maxAmmoPerMag;
-        if(attachList.Count != 0)
+        if (attachList.Count != 0)
         {
-            for(int i = 0; i < attachList.Count; i++)
+            for (int i = 0; i < attachList.Count; i++)
             {
                 Destroy(attachList[i].gameObject);
             }
             attachList.Clear();
         }
-        for(int i = 0; i < data.applicableAttachments.Count; i++)
+        for (int i = 0; i < data.applicableAttachments.Count; i++)
         {
             ShopAttachPreviewItem item = Instantiate(previewAttachItemPrefab, previewAttachItemHolder).GetComponent<ShopAttachPreviewItem>();
             attachList.Add(item);
@@ -179,7 +179,7 @@ public class ShopMenuScript : MonoBehaviour
             //Debug.LogWarning("Reading User Data To Files...");
             UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
             jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-            if(jsonData.userCoins >= data.purchasePrice)
+            if (jsonData.userCoins >= data.purchasePrice)
             {
                 MainMenuUIManager.instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
                 FindForWeaponDataInList(data).SetItemData(data, true, true);
@@ -190,7 +190,7 @@ public class ShopMenuScript : MonoBehaviour
                 MainMenuUIManager.instance.UpdateCoin(jsonData.userCoins);
 
                 UserDatabase.Instance.WriteInputDataToJSON(jsonData);
-                MainMenuUIManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutWeaponSelections();
+                MainMenuUIManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutItemSelections();
                 //Debug.LogWarning("Writing User Data To Files...");
             }
             else
@@ -201,9 +201,9 @@ public class ShopMenuScript : MonoBehaviour
     }
     public ShopWeaponItem FindForWeaponDataInList(WeaponData data)
     {
-        for(int i = 0; i < shopWeaponList.Count; i++)
+        for (int i = 0; i < shopWeaponList.Count; i++)
         {
-            if(shopWeaponList[i].weaponData == data)
+            if (shopWeaponList[i].weaponData == data)
             {
                 return shopWeaponList[i];
             }

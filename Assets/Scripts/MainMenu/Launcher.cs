@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Michsky.MUIP;
+using UserConfiguration;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -110,7 +111,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         MainMenuUIManager.instance.SetRoomTitle(PhotonNetwork.CurrentRoom.Name);
         Player[] players = PhotonNetwork.PlayerList;
 
-        foreach(Transform child in playerListContent)
+        foreach (Transform child in playerListContent)
         {
             Destroy(child.gameObject);
         }
@@ -150,7 +151,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             Destroy(trans.gameObject);
         }
-        for(int i = 0; i < roomList.Count; i++)
+        for (int i = 0; i < roomList.Count; i++)
         {
             rl.Add(roomList[i]);
             if (roomList[i].RemovedFromList)
@@ -162,13 +163,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         Debug.Log(rl.Count);
     }
-    
+
     public void FindRoomThroughCode()
     {
         int code = MainMenuUIManager.instance.GetRoomCodeInputField();
         for (int i = 0; i < rl.Count; i++)
         {
-            if((int)rl[i].CustomProperties["roomCode"] == code)
+            if ((int)rl[i].CustomProperties["roomCode"] == code)
             {
                 MainMenuUIManager.instance.SetFindRoomText("");
                 JoinRoom(rl[i]);
@@ -203,7 +204,8 @@ public class Launcher : MonoBehaviourPunCallbacks
                 if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.FFA)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<ButtonManager>().isInteractable = true;
-                }else if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.TDM)
+                }
+                else if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.TDM)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<ButtonManager>().isInteractable = true;
                 }
@@ -238,12 +240,16 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Hashtable temp = new Hashtable();
         //PhotonNetwork.LocalPlayer.CustomProperties = new Hashtable();
-        int selectedMainWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[0]);
-        int selectedSecondWeaponIndex = FindGlobalWeaponIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1]);
+        int selectedMainWeaponIndex = Database.FindWeaponDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[0]);
+        int selectedSecondWeaponIndex = Database.FindWeaponDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1]);
+        int selectedEquipmentIndex1 = Database.FindEquipmentDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[0]);
+        int selectedEquipmentIndex2 = Database.FindEquipmentDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[1]);
         //Debug.LogWarning(selectedMainWeaponIndex);
         //Debug.LogWarning(selectedSecondWeaponIndex);
         temp.Add("selectedMainWeaponIndex", selectedMainWeaponIndex);
         temp.Add("selectedSecondWeaponIndex", selectedSecondWeaponIndex);
+        temp.Add("selectedEquipmentIndex1", selectedEquipmentIndex1);
+        temp.Add("selectedEquipmentIndex2", selectedEquipmentIndex2);
 
         int SMWA_SightIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[0];
         int SMWA_SightIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[1];

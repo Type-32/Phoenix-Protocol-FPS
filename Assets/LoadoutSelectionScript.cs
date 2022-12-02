@@ -13,9 +13,11 @@ public class LoadoutSelectionScript : MonoBehaviour
     [Space]
     public GameObject loadoutSelectionItemPrefab;
     public GameObject loadoutWeaponSelectionItemPrefab;
+    public GameObject loadoutEquipmentSelectionItemPrefab;
     [Space]
     public GameObject loadoutButtonsUI;
     public GameObject loadoutWeaponSelectionUI;
+    public GameObject loadoutEquipmentSelectionUI;
     public GameObject loadoutAttachmentSelections;
     public GameObject renameVisual;
     public TMP_InputField renameInputField;
@@ -23,11 +25,13 @@ public class LoadoutSelectionScript : MonoBehaviour
     [Space]
     public Transform loadoutButtonsHolder;
     public Transform loadoutWeaponSelectsHolder;
+    public Transform loadoutEquipmentSelectsHolder;
     public LoadoutPreviewUI loadoutPreviewUI;
     public LoadoutCustomButtonsHolder customButtonsHolder;
     public LoadoutCustomization loadoutCustomization;
     public List<LoadoutSelectionItem> loadoutItems = new List<LoadoutSelectionItem>();
     public List<LoadoutWeaponSelectionItem> loadoutWeaponSelects = new List<LoadoutWeaponSelectionItem>();
+    public List<LoadoutEquipmentSelectionItem> loadoutEquipmentSelects = new List<LoadoutEquipmentSelectionItem>();
     [HideInInspector] public int forSelectedSlot = 0;
     [HideInInspector] public int forRenamingSlot = 0;
 
@@ -58,13 +62,14 @@ public class LoadoutSelectionScript : MonoBehaviour
         Debug.Log("Loadout Selection Script Start()");
         InstantiateLoadoutSelections();
         //SetLoadoutDataFromPrefs();
-        InstantiateLoadoutWeaponSelections();
+        InstantiateLoadoutItemSelections();
         OpenLoadoutButtonsVisual();
         loadoutPreviewUI.QuitCustomizationUI();
         DisablePreview();
         loadoutItems[selectedLoadoutIndex].ToggleSelectVisual(true);
         ToggleRenameUI(false);
         DisableWeaponSelection();
+        DisableEquipmentSelection();
         MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
     }
     public int FindGlobalWeaponIndex(WeaponData data)
@@ -109,6 +114,8 @@ public class LoadoutSelectionScript : MonoBehaviour
             //data.Slots[i].WeaponData2 = loadoutDataList[i].weaponData[1];
             data.Slots[i].Weapon1 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[0]);
             data.Slots[i].Weapon2 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[1]);
+            data.Slots[i].Equipment1 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[0]);
+            data.Slots[i].Equipment2 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[1]);
             data.Slots[i].WA_Sight1 = loadoutDataList[i].selectedSightIndex[0];
             data.Slots[i].WA_Sight2 = loadoutDataList[i].selectedSightIndex[1];
             data.Slots[i].WA_Barrel1 = loadoutDataList[i].selectedBarrelIndex[0];
@@ -145,6 +152,8 @@ public class LoadoutSelectionScript : MonoBehaviour
         selectedLoadoutIndex = jsonData.SelectedSlot;
         selectedMainWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon1;
         selectedSecondWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon2;
+        selectedEquipmentIndex1 = jsonData.Slots[selectedLoadoutIndex].Equipment1;
+        selectedEquipmentIndex2 = jsonData.Slots[selectedLoadoutIndex].Equipment2;
         bool checkChange = false;
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
@@ -167,7 +176,8 @@ public class LoadoutSelectionScript : MonoBehaviour
                 checkChange = true;
                 loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(2);
             }
-
+            loadoutDataList[i].equipmentData[0] = Database.FindEquipmentData(jsonData.Slots[i].Equipment1);
+            loadoutDataList[i].equipmentData[1] = Database.FindEquipmentData(jsonData.Slots[i].Equipment2);
             loadoutDataList[i].selectedSight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Sight1);
             loadoutDataList[i].selectedSight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Sight2);
             loadoutDataList[i].selectedBarrel[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Barrel1);
@@ -319,7 +329,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         //loadoutItems[selectedLoadoutIndex].SelectLoadout();
     }
-    public void InstantiateLoadoutWeaponSelections()
+    public void InstantiateLoadoutItemSelections()
     {
         string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
         UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
@@ -331,6 +341,14 @@ public class LoadoutSelectionScript : MonoBehaviour
             }
             loadoutWeaponSelects.Clear();
         }
+        if (loadoutEquipmentSelects.Count != 0)
+        {
+            for (int i = 0; i < loadoutEquipmentSelects.Count; i++)
+            {
+                Destroy(loadoutEquipmentSelects[i].gameObject);
+            }
+            loadoutEquipmentSelects.Clear();
+        }
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
             if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
@@ -339,6 +357,17 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutWeaponSelects.Add(temp);
             temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
             temp.weaponIndex = i;
+            temp.customButtonsHolder = this.customButtonsHolder;
+            database.WriteInputDataToJSON(jsonUserData);
+        }
+        for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+        {
+            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
+            LoadoutEquipmentSelectionItem temp = Instantiate(loadoutEquipmentSelectionItemPrefab, loadoutEquipmentSelectsHolder).GetComponent<LoadoutEquipmentSelectionItem>();
+            //loadoutDataList[i].loadoutIndex = i;
+            loadoutEquipmentSelects.Add(temp);
+            temp.equipmentData = GlobalDatabase.singleton.allEquipmentDatas[i];
+            temp.equipmentIndex = i;
             temp.customButtonsHolder = this.customButtonsHolder;
             database.WriteInputDataToJSON(jsonUserData);
         }
@@ -380,6 +409,14 @@ public class LoadoutSelectionScript : MonoBehaviour
     public void DisableWeaponSelection()
     {
         loadoutWeaponSelectionUI.SetActive(false);
+    }
+    public void EnableEquipmentSelection()
+    {
+        loadoutEquipmentSelectionUI.SetActive(true);
+    }
+    public void DisableEquipmentSelection()
+    {
+        loadoutEquipmentSelectionUI.SetActive(false);
     }
     public void CloseLoadoutButtonsVisual()
     {

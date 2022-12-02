@@ -40,9 +40,9 @@ public class LoadoutWeaponSelectionItem : MonoBehaviour
 
     public void OnClickButton()
     {
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
         {
-            if(GlobalDatabase.singleton.allWeaponDatas[i] == weaponData)
+            if (GlobalDatabase.singleton.allWeaponDatas[i] == weaponData)
             {
                 loadoutSelection.loadoutPreviewUI.SetWeaponSlotInfo(loadoutSelection.forSelectedSlot, weaponData);
             }

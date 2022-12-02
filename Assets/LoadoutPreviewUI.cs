@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Michsky.MUIP;
+using UserConfiguration;
 
 public class LoadoutPreviewUI : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class LoadoutPreviewUI : MonoBehaviour
     public GameObject attachPreviewPrefab;
     public Image customizeWeaponIcon;
     public Sprite nullWeaponIcon;
+    public Text[] e_texts;
+    public Image[] e_images;
 
     public void SetWeaponSlotInfo(int index, WeaponData weaponData)
     {
@@ -57,6 +60,45 @@ public class LoadoutPreviewUI : MonoBehaviour
             loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = null;
         }
         SetPreviewAttachments(index, weaponData);
+        loadoutSelection.WriteLoadoutDataToJSON();
+    }
+    public void SetEquipmentSlotInfo(int index, EquipmentData equipmentData)
+    {
+        Debug.Log("Setting EquipmentSlot Preview");
+        string temp = "";
+        switch (index)
+        {
+            case 0:
+                temp = "EQUIPMENT 1 - ";
+                break;
+            case 1:
+                temp = "EQUIPMENT 2 - ";
+                break;
+        }
+        if (equipmentData != null)
+        {
+            e_texts[index <= 1 ? index : 0].text = temp + equipmentData.itemName;
+            e_images[index <= 1 ? index : 0].sprite = equipmentData.itemIcon;
+            loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[index] = equipmentData;
+            if (index <= 1)
+            {
+                if (index == 0)
+                {
+                    loadoutSelection.selectedEquipmentIndex1 = Database.FindEquipmentDataIndex(equipmentData);
+                }
+                else
+                {
+                    loadoutSelection.selectedEquipmentIndex2 = Database.FindEquipmentDataIndex(equipmentData);
+                }
+            }
+        }
+        else
+        {
+            e_texts[index <= 1 ? index : 0].text = temp + "None";
+            e_images[index <= 1 ? index : 0].sprite = nullWeaponIcon;
+            //attachPreviewHolders[index <= 1 ? index : 0].gameObject.SetActive(false);
+            loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[index] = null;
+        }
         loadoutSelection.WriteLoadoutDataToJSON();
     }
     public void ClearPreviewAttachments(int index)
@@ -113,6 +155,8 @@ public class LoadoutPreviewUI : MonoBehaviour
     {
         SetWeaponSlotInfo(0, data.weaponData[0]);
         SetWeaponSlotInfo(1, data.weaponData[1]);
+        SetEquipmentSlotInfo(0, data.equipmentData[0]);
+        SetEquipmentSlotInfo(1, data.equipmentData[1]);
     }
     public void SetSelectionMenuSlotIndex(int index)
     {

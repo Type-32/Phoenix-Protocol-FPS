@@ -153,14 +153,10 @@ public class PlayerManager : MonoBehaviour
     {
         if (!pv.IsMine)
         {
-            //cameraObject.gameObject.SetActive(false);
-            //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
-            //Debug.Log(selectedMainWeaponIndex);
-            Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
             slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]);
             slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
             slotHolderScript.slotEquipmentData[0] = FindEquipmentDataFromIndex(0);
-            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex(0);
+            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
             deathUI.SetActive(false);
             hasRespawned = true;
             CloseMenu();

@@ -323,7 +323,7 @@ namespace UserConfiguration
             }
             return -1;
         }
-        public static EquipmentData FindEquipmentdata(int index)
+        public static EquipmentData FindEquipmentData(int index)
         {
             if (index < GlobalDatabase.singleton.allWeaponDatas.Count)
             {
