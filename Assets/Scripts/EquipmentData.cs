@@ -36,6 +36,7 @@ public class EquipmentData : ItemData
 
     [Space]
     [Header("Equipment Parameters")]
+    public bool dealDamage = true;
     public bool isExplosive = false;
     public bool explosionOnImpact = false;
 

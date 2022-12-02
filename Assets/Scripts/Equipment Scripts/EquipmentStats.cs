@@ -17,6 +17,7 @@ public class EquipmentStats : MonoBehaviour
     public bool interactionEnabled = true;
     public Transform attackPoint;
     public GameObject explosionEffect;
+    public bool dealDamage = true;
 
     [Space]
     [Header("Positional Equipment Sway")]
@@ -69,5 +70,6 @@ public class EquipmentStats : MonoBehaviour
         count = equipmentData.initialCount;
         photonGameObjectString = equipmentData.photonGameObjectString;
         effectString = equipmentData.effectString;
+        dealDamage = equipmentData.dealDamage;
     }
 }

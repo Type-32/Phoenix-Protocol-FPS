@@ -31,7 +31,7 @@ public class PlayerManager : MonoBehaviour
     float secondCount = 0f;
     float returnTemp = 2f;
     int respawnCountdown = 4;
-    public GameObject grenadeExplosionEffect, flashbangExplosionEffect;
+    public GameObject grenadeExplosionEffect, flashbangExplosionEffect, smokeScreenEffect;
 
     [Space]
     [Header("UI")]
@@ -267,8 +267,30 @@ public class PlayerManager : MonoBehaviour
     void RPC_InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
     {
         GameObject tmp = Instantiate(grenadeExplosionEffect, _pos, _rot);
-        Destroy(tmp, 10f);
+        Destroy(tmp, 5f);
         Debug.Log("Calling Explosion Effect instantiation");
+    }
+    public void InstantiateSmokeScreenEffect(Vector3 _pos, Quaternion _rot)
+    {
+        pv.RPC(nameof(RPC_InstantiateSmokeScreenEffect), RpcTarget.All, _pos, _rot);
+    }
+    [PunRPC]
+    void RPC_InstantiateSmokeScreenEffect(Vector3 _pos, Quaternion _rot)
+    {
+        GameObject tmp = Instantiate(smokeScreenEffect, _pos, _rot);
+        Destroy(tmp, 15f);
+        Debug.Log("Calling Smoke Screen Effect instantiation");
+    }
+    public void InstantiateFlashEffect(Vector3 _pos, Quaternion _rot)
+    {
+        pv.RPC(nameof(RPC_InstantiateFlashEffect), RpcTarget.All, _pos, _rot);
+    }
+    [PunRPC]
+    void RPC_InstantiateFlashEffect(Vector3 _pos, Quaternion _rot)
+    {
+        GameObject tmp = Instantiate(flashbangExplosionEffect, _pos, _rot);
+        Destroy(tmp, 3f);
+        Debug.Log("Calling Flash Effect instantiation");
     }
     void CreateController()
     {

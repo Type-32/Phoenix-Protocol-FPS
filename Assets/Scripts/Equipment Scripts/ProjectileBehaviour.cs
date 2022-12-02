@@ -21,12 +21,13 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     private float range;
     private float explosionForce;
     private int GlobalEquipmentIndex;
+    private bool dealDamage;
     float time;
     string effectFileString = "";
 
     Vector3 realPosition = Vector3.zero;
     Quaternion realRotation = Quaternion.identity;
-    public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range, int equipmentIndex, string effectString)
+    public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range, int equipmentIndex, string effectString, bool dealDamage)
     {
         this.explosionOnImpact = explosionOnImpact;
         this.damage = damage;
@@ -37,6 +38,7 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
         time = explosionDelay;
         GlobalEquipmentIndex = equipmentIndex;
         effectFileString = effectString;
+        this.dealDamage = dealDamage;
     }
     void Start()
     {
@@ -71,19 +73,9 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     }
     public virtual void Explode()
     {
-        RaycastHit c;
-        Quaternion rot;
-        bool flag = false;
-        if (Physics.Raycast(transform.position, Vector3.down, out c, 3f))
-        {
-            rot = Quaternion.LookRotation(-c.normal, Vector3.up);
-            flag = true;
-        }
-        else
-        {
-            flag = false;
-        }
-        InstantiateExplosionEffect(transform.position, Quaternion.identity);
+        if (effectFileString == "Explosion") InstantiateExplosionEffect(transform.position, Quaternion.identity);
+        else if (effectFileString == "Smoke Screen") InstantiateSmokeScreenEffect(transform.position, Quaternion.identity);
+        else if (effectFileString == "Flash") InstantiateFlashEffect(transform.position, Quaternion.identity);
         Collider[] includedObjects = Physics.OverlapSphere(transform.position, range);
         for (int i = 0; i < includedObjects.Length; i++)
         {
@@ -95,13 +87,13 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
             {
                 if (includedObjects[i].GetComponent<IDamagable>() != null)
                 {
-                    includedObjects[i].GetComponent<IDamagable>().TakeDamage(damage, false, transform.position, transform.rotation, GlobalEquipmentIndex, false);
+                    if (dealDamage) includedObjects[i].GetComponent<IDamagable>().TakeDamage(damage, false, transform.position, transform.rotation, GlobalEquipmentIndex, false);
                 }
                 if (includedObjects[i].GetComponent<Rigidbody>() != null)
                 {
                     Vector3 objectPos = includedObjects[i].transform.position;
                     Vector3 forceDirection = (objectPos - transform.position).normalized;
-                    includedObjects[i].GetComponent<Rigidbody>().AddForceAtPosition(forceDirection * explosionForce + Vector3.up * explosionForce, transform.position, ForceMode.Impulse);
+                    if (dealDamage) includedObjects[i].GetComponent<Rigidbody>().AddForceAtPosition(forceDirection * explosionForce + Vector3.up * explosionForce, transform.position, ForceMode.Impulse);
                 }
             }
         }
@@ -137,5 +129,15 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
     {
         CurrentMatchManager cmm = FindObjectOfType<CurrentMatchManager>();
         cmm.localClientPlayer.InstantiateExplosionEffect(_pos, _rot);
+    }
+    public void InstantiateSmokeScreenEffect(Vector3 _pos, Quaternion _rot)
+    {
+        CurrentMatchManager cmm = FindObjectOfType<CurrentMatchManager>();
+        cmm.localClientPlayer.InstantiateSmokeScreenEffect(_pos, _rot);
+    }
+    public void InstantiateFlashEffect(Vector3 _pos, Quaternion _rot)
+    {
+        CurrentMatchManager cmm = FindObjectOfType<CurrentMatchManager>();
+        cmm.localClientPlayer.InstantiateFlashEffect(_pos, _rot);
     }
 }
