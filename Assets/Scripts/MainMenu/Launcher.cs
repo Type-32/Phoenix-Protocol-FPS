@@ -203,13 +203,13 @@ public class Launcher : MonoBehaviourPunCallbacks
             {
                 if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.FFA)
                 {
-                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<ButtonManager>().isInteractable = true;
+                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.gameObject.SetActive(true);
                 }
                 else if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.TDM)
                 {
-                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.GetComponent<ButtonManager>().isInteractable = true;
+                    if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.gameObject.SetActive(true);
                 }
-                else startGameButton.GetComponent<ButtonManager>().isInteractable = false;
+                else startGameButton.gameObject.SetActive(false);
             }
         }
         return flag;
@@ -220,22 +220,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         startGameButton.SetActive(CheckIfStartAllowed());
     }
 
-    public int FindGlobalWeaponIndex(WeaponData data)
-    {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
-        {
-            if (GlobalDatabase.singleton.allWeaponDatas[i] == data) return i;
-        }
-        return -1;
-    }
-    public int FindGlobalAttachmentIndex(WeaponAttachmentData data)
-    {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
-        {
-            if (GlobalDatabase.singleton.allWeaponAttachmentDatas[i] == data) return i;
-        }
-        return -1;
-    }
     public void SetLoadoutValuesToPlayer()
     {
         Hashtable temp = new Hashtable();

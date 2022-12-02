@@ -43,11 +43,11 @@ public class LoadoutPreviewUI : MonoBehaviour
             {
                 if (index == 0)
                 {
-                    loadoutSelection.selectedMainWeaponIndex = Launcher.Instance.FindGlobalWeaponIndex(weaponData);
+                    loadoutSelection.selectedMainWeaponIndex = Database.FindWeaponDataIndex(weaponData);
                 }
                 else
                 {
-                    loadoutSelection.selectedSecondWeaponIndex = Launcher.Instance.FindGlobalWeaponIndex(weaponData);
+                    loadoutSelection.selectedSecondWeaponIndex = Database.FindWeaponDataIndex(weaponData);
                 }
             }
         }

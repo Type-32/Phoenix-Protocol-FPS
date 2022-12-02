@@ -339,6 +339,54 @@ namespace UserConfiguration
             }
             return -1;
         }
+        public static int FindAttachmentIndex(WeaponAttachmentData data)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+            {
+                if (GlobalDatabase.singleton.allWeaponAttachmentDatas[i] == data) return i;
+            }
+            return -1;
+        }
+        public static WeaponAttachmentData FindAttachment(int index)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+            {
+                if (i == index) return GlobalDatabase.singleton.allWeaponAttachmentDatas[i];
+            }
+            return null;
+        }
+        public static int FindLoadoutDataIndex(LoadoutData data)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allLoadoutDatas.Count; i++)
+            {
+                if (GlobalDatabase.singleton.allLoadoutDatas[i] == data) return i;
+            }
+            return -1;
+        }
+        public static LoadoutData FindLoadoutData(int index)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allLoadoutDatas.Count; i++)
+            {
+                if (i == index) return GlobalDatabase.singleton.allLoadoutDatas[i];
+            }
+            return null;
+        }
+        public static int FindWeaponAppearanceDataIndex(WeaponAppearanceData data)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            {
+                if (GlobalDatabase.singleton.allWeaponAppearanceDatas[i] == data) return i;
+            }
+            return -1;
+        }
+        public static WeaponAppearanceData FindWeaponAppearanceData(int index)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            {
+                if (i == index) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i];
+            }
+            return null;
+        }
     }
     public static class ShopSystem
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UserConfiguration;
 
 public class ShopMenuScript : MonoBehaviour
 {
@@ -185,7 +186,7 @@ public class ShopMenuScript : MonoBehaviour
                 FindForWeaponDataInList(data).SetItemData(data, true, true);
                 jsonData.userCoins -= data.purchasePrice;
                 //jsonData.shopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
-                jsonData.shopData.ownedWeaponIndexes.Add(Launcher.Instance.FindGlobalWeaponIndex(data));
+                jsonData.shopData.ownedWeaponIndexes.Add(Database.FindWeaponDataIndex(data));
                 purchasePreview.interactable = false;
                 MainMenuUIManager.instance.UpdateCoin(jsonData.userCoins);
 
