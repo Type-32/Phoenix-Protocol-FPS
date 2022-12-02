@@ -228,6 +228,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         int selectedSecondWeaponIndex = Database.FindWeaponDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1]);
         int selectedEquipmentIndex1 = Database.FindEquipmentDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[0]);
         int selectedEquipmentIndex2 = Database.FindEquipmentDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[1]);
+        Debug.Log("EQ 1: " + selectedEquipmentIndex1 + "    EQ 2: " + selectedEquipmentIndex2);
         //Debug.LogWarning(selectedMainWeaponIndex);
         //Debug.LogWarning(selectedSecondWeaponIndex);
         temp.Add("selectedMainWeaponIndex", selectedMainWeaponIndex);

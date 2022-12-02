@@ -155,8 +155,8 @@ public class PlayerManager : MonoBehaviour
         {
             slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]);
             slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
-            slotHolderScript.slotEquipmentData[0] = FindEquipmentDataFromIndex(0);
-            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
+            slotHolderScript.slotEquipmentData[0] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]);
+            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]);
             deathUI.SetActive(false);
             hasRespawned = true;
             CloseMenu();
@@ -179,8 +179,8 @@ public class PlayerManager : MonoBehaviour
             //Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
             slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedMainWeaponIndex"]);
             slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
-            slotHolderScript.slotEquipmentData[0] = FindEquipmentDataFromIndex(0);
-            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex(0);
+            slotHolderScript.slotEquipmentData[0] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]);
+            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]);
             //CreateController();
             OnJoiningOngoingRoom();
             //randomPlayerColor = Random.ColorHSV();

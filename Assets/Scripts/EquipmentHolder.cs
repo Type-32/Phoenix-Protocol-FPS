@@ -33,7 +33,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             }
             for (int i = 0; i < 2; i++)
             {
-                InstantiateEquipment(GlobalDatabase.singleton.allEquipmentDatas[i == 0 ? 0 : 0], i);
+                InstantiateEquipment(GlobalDatabase.singleton.allEquipmentDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex1"]) : ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex2"])], i);
             }
             Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();

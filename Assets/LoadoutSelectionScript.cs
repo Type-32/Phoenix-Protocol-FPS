@@ -362,7 +362,6 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
         {
-            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
             LoadoutEquipmentSelectionItem temp = Instantiate(loadoutEquipmentSelectionItemPrefab, loadoutEquipmentSelectsHolder).GetComponent<LoadoutEquipmentSelectionItem>();
             //loadoutDataList[i].loadoutIndex = i;
             loadoutEquipmentSelects.Add(temp);
