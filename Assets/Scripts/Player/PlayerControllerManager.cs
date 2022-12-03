@@ -250,7 +250,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         ui.healthBar.value = Mathf.Lerp(ui.healthBar.value, stats.health, 8 * Time.deltaTime);
         //ui.healthBarFill.color = Color.Lerp(ui.healthBarFill.color, (stats.health >= 50f) ? Color.green : (stats.health < 50f && stats.health >= 30f) ? Color.yellow : Color.red, 5 * Time.deltaTime);
         //ui.healthText.text = ((int)stats.health).ToString();
-        ui.armorBar.value = Mathf.Lerp(ui.armorBar.value, stats.armor, 8 * Time.deltaTime);
         ui.healthText.text = ((int)stats.health).ToString();
         ui.armorText.text = ((int)stats.armor).ToString();
         playerVolumeEffect.weight = 1f - (stats.health / 100f);
@@ -261,7 +260,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         if (ui == null) return;
         ui.healthBar.maxValue = stats.healthLimit;
-        ui.armorBar.maxValue = stats.armorLimit;
         stats.stress = 0;
     }
     private void CrosshairNametagDetect()

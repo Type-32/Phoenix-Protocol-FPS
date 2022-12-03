@@ -58,7 +58,7 @@ public class QuantityStatsHUD : MonoBehaviour
             ammoPool.enabled = true;
             firemodeIndicator.enabled = true;
 
-            currentAmmo.text = stat.currentAmmo.ToString();
+            currentAmmo.text = isReloading ? "-" : stat.currentAmmo.ToString();
             ammoPool.text = stat.ammoPool.ToString();
             firemodeIndicator.text = stat.firemode == FireMode.Automatic ? "bbb" : stat.firemode == FireMode.Burst ? "bb" : "b";
             //firemodeIndicator.color = stat.firemode == FireMode.Automatic ? Color.yellow : stat.firemode == FireMode.Burst ? Color.cyan : Color.green;
@@ -82,6 +82,7 @@ public class QuantityStatsHUD : MonoBehaviour
     }
     private void Update()
     {
+        /*
         if (reload)
         {
             weaponReloadSlider.value = Mathf.Lerp(weaponReloadSlider.value, 1f, _rd * Time.deltaTime);
@@ -91,6 +92,6 @@ public class QuantityStatsHUD : MonoBehaviour
         {
             weaponReloadSlider.value = 0f;
             weaponReloadSliderFill.color = fullGradient;
-        }
+        }*/
     }
 }

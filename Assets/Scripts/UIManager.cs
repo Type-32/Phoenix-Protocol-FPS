@@ -22,13 +22,12 @@ public class UIManager : MonoBehaviour
     public GameObject hurtIndicatorPrefab;
     public GameObject targetIndicatorHUD;
     public RectTransform hostileTIHolder, friendlyTIHolder, objectiveTIHolder, supplyTIHolder;
-    public CanvasGroup hostileTIGroup, friendlyTIGroup, objectiveTIGroup, supplyTGroup;
+    public CanvasGroup hostileTIGroup, friendlyTIGroup, objectiveTIGroup, supplyTIGroup;
     public GameObject targetIndicatorPrefab;
 
     [Space]
     [Header("HUD Stats")]
     public Slider healthBar;
-    public Slider armorBar;
     public Slider streakBackground;
     public Text healthText;
     public Text armorText;
