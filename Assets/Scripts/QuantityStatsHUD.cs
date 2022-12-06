@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,9 @@ public class QuantityStatsHUD : MonoBehaviour
     public Image weaponTypeIcon;
     public Slider weaponReloadSlider;
     public Image weaponReloadSliderFill;
+    public Image eq1;
+    public Image eq2;
+    public Text eqCounter1, eqCounter2;
     [SerializeField] Color reloadGradient;
     [SerializeField] Color fullGradient;
     public enum FireMode
@@ -46,8 +50,12 @@ public class QuantityStatsHUD : MonoBehaviour
     {
         public int currentAmmo;
         public int ammoPool;
+        public int eqCount1;
+        public int eqCount2;
         public FireMode firemode;
         public Sprite weaponIcon;
+        public Sprite eqIcon1;
+        public Sprite eqIcon2;
     };
     float _rd = 0f;
     bool reload = false;
@@ -67,6 +75,10 @@ public class QuantityStatsHUD : MonoBehaviour
             else weaponTypeIcon.enabled = true;
             reload = isReloading;
             _rd = reloadDuration;
+            eq1.sprite = stat.eqIcon1;
+            eq2.sprite = stat.eqIcon2;
+            eqCounter1.text = stat.eqCount1.ToString();
+            eqCounter2.text = stat.eqCount2.ToString();
         }
         else
         {
@@ -78,6 +90,10 @@ public class QuantityStatsHUD : MonoBehaviour
             weaponTypeIcon.sprite = stat.weaponIcon;
             if (weaponTypeIcon.sprite == null) weaponTypeIcon.enabled = false;
             else weaponTypeIcon.enabled = true;
+            eq1.sprite = stat.eqIcon1;
+            eq2.sprite = stat.eqIcon2;
+            eqCounter1.text = stat.eqCount1.ToString();
+            eqCounter2.text = stat.eqCount2.ToString();
         }
     }
     private void Update()

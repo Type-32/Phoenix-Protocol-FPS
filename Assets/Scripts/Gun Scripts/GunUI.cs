@@ -26,6 +26,10 @@ public class GunUI : MonoBehaviour
         temp.ammoPool = gun.stats.ammoPool;
         temp.firemode = gun.stats.fireMode;
         temp.weaponIcon = gun.stats.weaponData.itemIcon;
+        temp.eqCount1 = gun.player.holder.equipmentSlots[0].equipment.stats.count;
+        temp.eqCount2 = gun.player.holder.equipmentSlots[1].equipment.stats.count;
+        temp.eqIcon1 = gun.player.holder.equipmentSlots[0].equipment.stats.equipmentData.itemIcon;
+        temp.eqIcon2 = gun.player.holder.equipmentSlots[1].equipment.stats.equipmentData.itemIcon;
         ui.quantityHUD.SetAmmoHUDStats(temp, gun.stats.isReloading, gun.stats.weaponData.reloadTime, true);
 
         if (gun.stats.isAiming)

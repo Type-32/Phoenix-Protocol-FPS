@@ -220,6 +220,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         GameObject temp = Instantiate(data.weaponPrefab, transform);
         temp.GetComponent<GunManager>().player = player;
         weaponSlots[index] = temp.GetComponent<GunManager>();
+        weaponSlots[index].gun = temp.GetComponent<GunManager>();
         weaponSlots[index].item = temp;
         weaponSlots[index].itemData = data;
         weaponSlots[index].InitializeAwake();
@@ -235,6 +236,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         GameObject temp = Instantiate(data.equipmentPrefab, transform);
         temp.GetComponent<EquipmentManager>().player = player;
         equipmentSlots[index] = temp.GetComponent<EquipmentManager>();
+        equipmentSlots[index].equipment = temp.GetComponent<EquipmentManager>();
         equipmentSlots[index].item = temp;
         equipmentSlots[index].itemData = data;
         equipmentSlots[index].InitializeAwake();

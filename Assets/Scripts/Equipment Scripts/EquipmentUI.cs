@@ -24,6 +24,10 @@ public class EquipmentUI : MonoBehaviour
     {
         temp.currentAmmo = equipment.stats.count;
         temp.weaponIcon = equipment.stats.equipmentData.itemIcon;
+        temp.eqCount1 = equipment.player.holder.equipmentSlots[0].equipment.stats.count;
+        temp.eqCount2 = equipment.player.holder.equipmentSlots[1].equipment.stats.count;
+        temp.eqIcon1 = equipment.player.holder.equipmentSlots[0].equipment.stats.equipmentData.itemIcon;
+        temp.eqIcon2 = equipment.player.holder.equipmentSlots[1].equipment.stats.equipmentData.itemIcon;
         ui.quantityHUD.SetAmmoHUDStats(temp, false, equipment.stats.equipmentData.recoveryTime, false);
         equipment.ui.ui.crosshair.SetActive(true);
     }
