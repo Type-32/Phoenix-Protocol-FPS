@@ -56,8 +56,9 @@ public class MouseLookScript : MonoBehaviour
         {
             if (player.stats.isCrouching) transform.localPosition = new Vector3(transform.localPosition.x, 1.1f, transform.localPosition.z);
             else transform.localPosition = new Vector3(transform.localPosition.x, 1.461f, transform.localPosition.z);
-            return;
+
         }
+        if (!player.pv.IsMine) return;
         CameraInput();
         CameraMovement();
         transform.localPosition = Vector3.Lerp(transform.localPosition, temp, Time.deltaTime * 8);
@@ -72,13 +73,16 @@ public class MouseLookScript : MonoBehaviour
         float multiplier = 0f;
         if (sightIndex != -1)
         {
-            multiplier = sightIndex == 1 ? 0.7f : sightIndex == 2 ? 0.5f : sightIndex == 3 ? 0.3f : 1f;
+            multiplier = (sightIndex == 1 ? 0.8f : sightIndex == 2 ? 0.65f : sightIndex == 3 ? 0.5f : 1f);
         }
-        mouseSensitivityValve = player.stats.isAiming ? (aimingSensitivity * multiplier) : regularSensitivity;
+        //Debug.Log("Multiplier: " + multiplier);
+        mouseSensitivityValve = (player.stats.isAiming ? (aimingSensitivity * multiplier) : regularSensitivity);
+
         if (player.stats.mouseMovementEnabled)
         {
-            mouseX = Input.GetAxisRaw("Mouse X") + ((Input.GetKey("left") ? -1f : 0f) + (Input.GetKey("right") ? 1f : 0f)) * mouseSensitivityValve * Time.deltaTime;
-            mouseY += Input.GetAxisRaw("Mouse Y") + ((Input.GetKey("down") ? -1f : 0f) + (Input.GetKey("up") ? 1f : 0f)) * mouseSensitivityValve * Time.deltaTime;
+            mouseX = (Input.GetAxisRaw("Mouse X") + ((Input.GetKey("left") ? -1f : 0f) + (Input.GetKey("right") ? 1f : 0f))) * mouseSensitivityValve * Time.deltaTime;
+            //Debug.Log(mouseX);
+            mouseY += (Input.GetAxisRaw("Mouse Y") + ((Input.GetKey("down") ? -1f : 0f) + (Input.GetKey("up") ? 1f : 0f))) * mouseSensitivityValve * Time.deltaTime;
         }
         mouseY = Mathf.Clamp(mouseY, player.stats.ClampCamRotX, player.stats.ClampCamRotZ);
         //xRot -= mouseY;
@@ -90,6 +94,7 @@ public class MouseLookScript : MonoBehaviour
         {
             transform.localRotation = Quaternion.Euler(-mouseY, 0, 0);
             player.transform.Rotate(Vector3.up * mouseX);
+
             //itemLayerCamera.transform.localRotation = transform.localRotation;
         }
     }
