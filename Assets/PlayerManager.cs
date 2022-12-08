@@ -82,6 +82,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Kill Messages")]
     public Transform killMSGHolder;
     public GameObject killMSGPrefab;
+    public GameObject deadBodyPrefab;
 
     int selectedSPIndex = 0;
     Vector3 tempVelocity;
@@ -329,13 +330,13 @@ public class PlayerManager : MonoBehaviour
         cmm.RefreshAllHostileIndicators();
     }
     private int trackingViewID = -1;
+    [PunRPC]
+    void RPC_InstantiateDeadBody(Vector3 position, Quaternion rotation)
+    {
+        Destroy(Instantiate(deadBodyPrefab, position, rotation), 3f);
+    }
     public void Die(bool isSuicide, int ViewID, string killer = null)
     {
-        if (isSuicide)
-        {
-            killStatus.text = "You have";
-            killerUsername.text = "Suicided";
-        }
         if (killer != null)
         {
             killStatus.text = "Killed By";
@@ -345,6 +346,13 @@ public class PlayerManager : MonoBehaviour
         {
             killStatus.text = "You have";
             killerUsername.text = "Suicided";
+        }
+        if (isSuicide)
+        {
+            killStatus.text = "You have";
+            killerUsername.text = "Suicided";
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, (int)pv.Owner.CustomProperties["weaponIndex"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
+            else TDM_InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, (int)pv.Owner.CustomProperties["weaponIndex"], (bool)pv.Owner.CustomProperties["team"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
         }
         if (trackingViewID != -1 && !isSuicide)
         {
@@ -358,6 +366,7 @@ public class PlayerManager : MonoBehaviour
             }
         }
         if (pv.IsMine) SynchronizeValues(kills, deaths);
+        pv.RPC(nameof(RPC_InstantiateDeadBody), RpcTarget.All, controller.transform.position, controller.transform.rotation);
         audioListener.enabled = true;
         streakKills = 0;
         cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
@@ -429,7 +438,7 @@ public class PlayerManager : MonoBehaviour
         respawnButton.interactable = false;
         hasRespawned = false;
         //CompleteCountdown();
-        StartCoroutine(DelayedCompleteCountdown(2f));
+        StartCoroutine(DelayedCompleteCountdown(1.5f));
     }
 
     public void SetSpawnPositionReference(Transform obj, int index)
@@ -534,7 +543,7 @@ public class PlayerManager : MonoBehaviour
         if (respawning)
         {
             cameraObject.fieldOfView = Mathf.Lerp(cameraObject.fieldOfView, 60f, Time.deltaTime * 2);
-            if (returnTemp >= 2f)
+            if (returnTemp >= 1.5f)
             {
                 if (!hasRespawned)
                 {

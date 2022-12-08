@@ -12,16 +12,22 @@ public class EquipmentCore : MonoBehaviour
     public EquipmentManager equip;
     public bool throwState = false;
     public bool throwAvailable = true;
+    public IEnumerator ReturnToOriginalEquipment(float time)
+    {
+        yield return new WaitForSeconds(time);
+        equip.holder.EquipItem(equip.holder.previousIndex);
+    }
     public void EquipmentCoreFunc()
     {
-        if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash))) && equip.stats.interactionEnabled && equip.stats.count > 0 && throwAvailable && !equip.stats.isSliding && !equip.stats.isSprinting)
+        if (((Input.GetButton("Fire1") || Input.GetKey(KeyCode.Slash)) || (equip.inEquipmentState == 0 ? Input.GetKey(KeyCode.E) : Input.GetKey(KeyCode.G))) && equip.stats.interactionEnabled && equip.stats.count > 0 && throwAvailable && !equip.stats.isSliding && !equip.stats.isSprinting)
         {
             throwState = true;
         }
-        if ((Input.GetButtonUp("Fire1") || (Input.GetKeyUp(KeyCode.Slash))) && equip.stats.interactionEnabled && equip.stats.count > 0 && throwState)
+        if (((Input.GetButtonUp("Fire1") || Input.GetKeyUp(KeyCode.Slash)) || (equip.inEquipmentState == 0 ? Input.GetKeyUp(KeyCode.E) : Input.GetKeyUp(KeyCode.G))) && equip.stats.interactionEnabled && equip.stats.count > 0 && throwState)
         {
             Throw();
             equip.animate.animate.SetTrigger("isThrowing");
+            StartCoroutine(ReturnToOriginalEquipment(0.25f));
         }
     }
     public void Throw()

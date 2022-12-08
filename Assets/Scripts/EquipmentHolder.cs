@@ -12,6 +12,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     [SerializeField] PlayerControllerManager player;
     public int weaponIndex = 0;
     public int previousWeaponIndex = -1;
+    public int previousIndex = 0;
     [SerializeField] private UIManager uiManager;
     public bool inversedScrollWheel = true;
     public Gun[] weaponSlots = new Gun[2];
@@ -115,10 +116,17 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     }
 
     // Update is called once per frame
+    /*
     void Update()
     {
         if (!player.pv.IsMine) return;
 
+        if (player.playerManager.openedOptions || player.playerManager.openedLoadoutMenu) return;
+        //
+    }*/
+    void Update()
+    {
+        if (!player.pv.IsMine) return;
         if (player.playerManager.openedOptions || player.playerManager.openedLoadoutMenu) return;
         KeySwitchWeapon();
         ScrollWheelSwitchWeapon();
@@ -133,6 +141,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                 EquipItem(i);
             }
         }
+        /*
         for (int i = 2; i < equipmentSlots.Length + 2; i++)
         {
             int ke = i + 1;
@@ -140,6 +149,14 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             {
                 EquipItem(i);
             }
+        }*/
+        if (Input.GetKeyDown(KeyCode.E) && equipmentSlots[0] != null)
+        {
+            EquipItem(2);
+        }
+        if (Input.GetKeyDown(KeyCode.G) && equipmentSlots[1] != null)
+        {
+            EquipItem(3);
         }
     }
     void ScrollWheelSwitchWeapon()
@@ -176,7 +193,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         if (_index <= 1)
         {
             Debug.Log("Using Weapon " + _index);
-            if (_index == previousWeaponIndex) return;
+            if (_index == previousWeaponIndex || _index == -1) return;
             weaponIndex = _index;
             weaponSlots[_index].gameObject.SetActive(true);
             if (previousWeaponIndex != -1)
@@ -195,8 +212,10 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         }
         else
         {
+            if (equipmentSlots[_index - 2].equipment.stats.count < 1) return;
             Debug.Log("Using Equipment " + _index);
-            if (_index == previousWeaponIndex) return;
+            if (_index == previousWeaponIndex || _index == -1) return;
+            previousIndex = weaponIndex;
             weaponIndex = _index;
             equipmentSlots[_index - 2].gameObject.SetActive(true);
             if (previousWeaponIndex != -1)
@@ -241,6 +260,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         equipmentSlots[index].itemData = data;
         equipmentSlots[index].InitializeAwake();
         equipmentSlots[index].InitializeStart();
+        equipmentSlots[index].equipment.inEquipmentState = index;
         equipmentSlots[index].item.SetActive(false);
         EquipItem(index + 2);
         return true;

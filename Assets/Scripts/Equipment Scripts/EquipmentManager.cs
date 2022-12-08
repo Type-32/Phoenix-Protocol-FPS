@@ -21,6 +21,7 @@ public class EquipmentManager : Equipment
     public GameObject swayModel;
     public GameObject recoilModel;
     [HideInInspector] public Recoil camRecoil;
+    [HideInInspector] public int inEquipmentState;
     public override void Use()
     {
         DeterminatesFunction();
