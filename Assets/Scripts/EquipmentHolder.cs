@@ -64,8 +64,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] obj2 = weaponSlots[1].gun.handsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < obj1.Length; i++) Destroy(obj1[i].gameObject);
             for (int i = 0; i < obj2.Length; i++) Destroy(obj2[i].gameObject);
-            Destroy(weaponSlots[0].gun.handsVisual);
-            Destroy(weaponSlots[1].gun.handsVisual);
+            //Destroy(weaponSlots[0].gun.handsVisual);
+            //Destroy(weaponSlots[1].gun.handsVisual);
             weaponSlots[0].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             weaponSlots[1].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
@@ -77,8 +77,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] el4 = equipmentSlots[1].equipment.handsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < el3.Length; i++) Destroy(el3[i].gameObject);
             for (int i = 0; i < el4.Length; i++) Destroy(el4[i].gameObject);
-            Destroy(equipmentSlots[0].equipment.handsVisual);
-            Destroy(equipmentSlots[1].equipment.handsVisual);
+            //Destroy(equipmentSlots[0].equipment.handsVisual);
+            //Destroy(equipmentSlots[1].equipment.handsVisual);
             equipmentSlots[0].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
             equipmentSlots[1].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
