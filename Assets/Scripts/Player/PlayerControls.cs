@@ -255,14 +255,21 @@ public class PlayerControls : MonoBehaviour
             player.SynchronizePlayerState(player.stats.isSprinting, 0);
         }
     }
+    bool localVal = false;
     void WalkingLogic()
     {
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) { player.stats.isWalking = true; }
         else player.stats.isWalking = false;
-        if (Input.GetKeyDown("w") || Input.GetKeyUp("w")) player.SynchronizePlayerState(player.stats.isWalking, 3);
-        if (Input.GetKeyDown("a") || Input.GetKeyUp("a")) player.SynchronizePlayerState(player.stats.isWalking, 3);
-        if (Input.GetKeyDown("s") || Input.GetKeyUp("s")) player.SynchronizePlayerState(player.stats.isWalking, 3);
-        if (Input.GetKeyDown("d") || Input.GetKeyUp("d")) player.SynchronizePlayerState(player.stats.isWalking, 3);
+        if ((Mathf.Abs(Input.GetAxis("Horizontal")) + Mathf.Abs(Input.GetAxis("Vertical"))) == 0 && !localVal)
+        {
+            player.SynchronizePlayerState(player.stats.isWalking, 3);
+            localVal = true;
+        }
+        else
+        {
+            player.SynchronizePlayerState(player.stats.isWalking, 3);
+            localVal = false;
+        }
     }
     #endregion
     void ActivateSlide()
