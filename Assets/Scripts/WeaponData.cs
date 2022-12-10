@@ -58,6 +58,7 @@ public class WeaponData : ItemData
     public bool hasHipfireInaccuracy = true;
     public bool ejectCasingAfterRechamber = false;
     public bool reloadByBullet = false;
+    public bool useRechamberClipAudioList = true;
 
     [Space]
     [Header("Audio Clips")]
@@ -66,6 +67,15 @@ public class WeaponData : ItemData
     public List<AudioClip> silencedFireClips = new List<AudioClip>();
     public List<AudioClip> mechClips = new List<AudioClip>();
     public List<AudioClip> rechamberClips = new List<AudioClip>();
+    public AudioClip rechamberStart = default;
+    public AudioClip rechamberEnd = default;
+    public AudioClip pullBolt = default;
+    public AudioClip pullMagazine = default;
+    public AudioClip insertMagazine = default;
+    public AudioClip recoverBolt = default;
+    public AudioClip fullBolt = default;
+    public AudioClip slapGun = default;
+    public AudioClip insertRound = default;
 
     [Space]
     [Header("Customizations")]

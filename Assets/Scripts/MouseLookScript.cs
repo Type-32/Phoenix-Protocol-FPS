@@ -70,7 +70,7 @@ public class MouseLookScript : MonoBehaviour
     void CameraInput()
     {
         int sightIndex = player.holder.weaponIndex == 0 ? (int)player.pv.Owner.CustomProperties["SMWA_SightIndex1"] : player.holder.weaponIndex == 1 ? (int)player.pv.Owner.CustomProperties["SMWA_SightIndex2"] : -1;
-        float multiplier = 0f;
+        float multiplier = 1f;
         if (sightIndex != -1)
         {
             multiplier = (sightIndex == 1 ? 0.8f : sightIndex == 2 ? 0.65f : sightIndex == 3 ? 0.5f : 1f);

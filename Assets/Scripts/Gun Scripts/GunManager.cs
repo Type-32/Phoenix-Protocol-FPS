@@ -29,6 +29,8 @@ public class GunManager : Gun
     public GameObject pickup;
     public GameObject gunVisual;
     public GameObject handsVisual;
+    public Joint rightHandEnd;
+    public Joint leftHandEnd;
     public Recoil camRecoil;
 
     [Space]
@@ -82,7 +84,8 @@ public class GunManager : Gun
             stats.gunInteractionEnabled = true;
         }
     }
-    public void SelfDestruct(){
+    public void SelfDestruct()
+    {
         //ui.ui.currentAmmo.text = "??";
         //ui.ui.ammoPool.text = "??";
         //ui.ui.fireModeIndicator.text = "----";
@@ -120,7 +123,7 @@ public class GunManager : Gun
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out detect, 3f))
         {
             GunPickup temp = detect.transform.GetComponent<GunPickup>();
-            if(temp != null)
+            if (temp != null)
             {
                 GameObject transferredTemp = Instantiate(temp.mainGunObject, holder.transform);
                 GunStats tempStats = transferredTemp.GetComponent<GunStats>();

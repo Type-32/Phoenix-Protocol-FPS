@@ -331,7 +331,7 @@ public class GunCoreFunc : MonoBehaviour
         //Debug.Log("Rechambering!");
         yield return new WaitForSeconds(gun.stats.weaponData.rechamberDelay);
         anim.animate.SetTrigger("rechamberAnim");
-        gun.audio.PlayRechamberSound();
+        if (gun.stats.weaponData.useRechamberClipAudioList) gun.audio.PlayRechamberSound();
         StartCoroutine(PlayShellEject(gun.stats.weaponData.shellEjectionDelay));
     }
     IEnumerator PlayShellEject(float delay)

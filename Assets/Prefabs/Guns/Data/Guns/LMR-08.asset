@@ -16,26 +16,26 @@ MonoBehaviour:
   itemDescription: Sniper Rifle
   itemIcon: {fileID: 21300000, guid: 18604e2c1148aa246a4d5c33c54c7b7e, type: 3}
   equippedByDefault: 0
-  unlockingLevel: 16
+  unlockingLevel: 12
   requiresPurchase: 1
-  purchasePrice: 7200
+  purchasePrice: 7500
   weaponPrefab: {fileID: 6788626819295025767, guid: 7c8bab39aa7dc4e4baccabe37ff8d970,
     type: 3}
   weaponType: 7
   weaponProjectile: {fileID: 0}
   maxAmmoPerMag: 5
-  magazineCount: 2
+  magazineCount: 3
   damage: 90
   range: 300
   reloadTime: 5
-  impactForce: 12
+  impactForce: 20
   fireRate: 1.2
-  FOVMultiplier: 2.8
+  FOVMultiplier: 3
   hipfireSpread: 0.8
   rechamberDelay: 0.5
   shellEjectionDelay: 0.25
   boltRecoveryDuration: 1.4
-  aimSpeed: 1.6
+  aimSpeed: 0.233
   damagePerPellet: 10
   pelletsPerFire: 1
   reloadTimePerPellet: 0.8
@@ -70,13 +70,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cf3596975f469b348870b80dee3ff5eb, type: 3}
   rechamberClips:
   - {fileID: 8300000, guid: 32d4b9551d02b884cb735371dc03252f, type: 3}
+  rechamberStart: {fileID: 8300000, guid: 1e9afa7c9747092408af554bfffb685d, type: 3}
+  rechamberEnd: {fileID: 0}
+  pullBolt: {fileID: 0}
+  pullMagazine: {fileID: 0}
+  insertMagazine: {fileID: 0}
+  recoverBolt: {fileID: 8300000, guid: 025868c0583eb3148a96fa8165f3baf1, type: 3}
+  fullBolt: {fileID: 0}
+  slapGun: {fileID: 0}
+  insertRound: {fileID: 0}
   applicableVariants: []
   applicableAttachments:
-  - {fileID: 11400000, guid: ad8463e9fe5f6094c8249b9ad91b59da, type: 2}
-  - {fileID: 11400000, guid: 18c69c5a9f561a04eb7b4cf7de51fda1, type: 2}
-  - {fileID: 11400000, guid: 5d4ea03721058124f90295b220f740d0, type: 2}
   - {fileID: 11400000, guid: 8eb85bee56b46524fb589d5f002ebe45, type: 2}
   - {fileID: 11400000, guid: 86643a13bae856049889c6151d4d574d, type: 2}
   - {fileID: 11400000, guid: 8fcd0292106c55f4d876bd2db0c1b8ac, type: 2}
   - {fileID: 11400000, guid: 40f4c67b7e568b9449ed65d37ab095e3, type: 2}
   - {fileID: 11400000, guid: eaa3091aa3f59c1458f80c48eac2633e, type: 2}
+  - {fileID: 11400000, guid: 18c69c5a9f561a04eb7b4cf7de51fda1, type: 2}

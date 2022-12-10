@@ -49,14 +49,14 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [Header("Multiplayer")]
     public PhotonView pv;
     public PlayerManager playerManager;
-    public List<GameObject> playerDeathLoots = new();
+    public List<GameObject> playerDeathLoots;
 
     private bool hasArmor = false;
     public bool IsTeam = false;
     private float timePassedAfterDamageTaken = 5f;
     public bool usingStreakGifts = false;
     public GameObject playerMinimapDot;
-    public List<GameObject> allMinimapDots = new();
+    public List<GameObject> allMinimapDots;
     public bool hidePlayerHUD = false;
 
     [SerializeField] int weaponIndex1;

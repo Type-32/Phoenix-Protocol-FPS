@@ -11,6 +11,7 @@ using Photon.Realtime;
 public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
 {
     public PhotonView pv;
+    public AudioSource collisionClip;
     private GameObject explosionEffect;
     private Rigidbody body;
     private bool targetHit;
@@ -27,6 +28,10 @@ public class ProjectileBehaviour : MonoBehaviourPun, IPunObservable
 
     Vector3 realPosition = Vector3.zero;
     Quaternion realRotation = Quaternion.identity;
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (collisionClip.clip != null && collisionClip != null) collisionClip.Play();
+    }
     public void SetData(float damage, bool doesExplosion, bool explosionOnImpact, float explosionDelay, float explosionForce, GameObject obj, float range, int equipmentIndex, string effectString, bool dealDamage)
     {
         this.explosionOnImpact = explosionOnImpact;

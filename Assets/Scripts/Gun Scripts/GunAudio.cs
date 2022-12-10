@@ -22,8 +22,92 @@ public class GunAudio : MonoBehaviour
     }
     public void PlayRechamberSound()
     {
-        if (gun.stats.weaponData.rechamberClips.Count != 0) gun.mechSoundSource.clip = gun.stats.weaponData.mechClips.Count - 1 > 0 ? gun.stats.weaponData.rechamberClips[Random.Range(0, gun.stats.weaponData.rechamberClips.Count - 1)] : gun.stats.weaponData.rechamberClips[0];
+        if (gun.stats.weaponData.rechamberClips.Count != 0) gun.mechSoundSource.clip = gun.stats.weaponData.rechamberClips.Count - 1 > 0 ? gun.stats.weaponData.rechamberClips[Random.Range(0, gun.stats.weaponData.rechamberClips.Count - 1)] : gun.stats.weaponData.rechamberClips[0];
         if (gun.mechSoundSource.clip == null) Debug.LogWarning("No Gunfire Mech Sound Source Present for Gun " + gun.stats.weaponData.itemName);
-        if (gun.stats.weaponData.mechClips.Count != 0) gun.mechSoundSource.Play();
+        if (gun.mechSoundSource.clip != null) gun.mechSoundSource.Play();
     }
+
+    #region Single Sounds
+    public void PlayRechamberStart()
+    {
+        if (gun.stats.weaponData.rechamberStart != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.rechamberStart;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlayRechamberEnd()
+    {
+        if (gun.stats.weaponData.rechamberEnd != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.rechamberEnd;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlayPullBolt()
+    {
+        if (gun.stats.weaponData.pullBolt != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.pullBolt;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlayPullMagazine()
+    {
+        if (gun.stats.weaponData.pullMagazine != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.pullMagazine;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlayRecoverBolt()
+    {
+        if (gun.stats.weaponData.recoverBolt != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.recoverBolt;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlayInsertMagazine()
+    {
+        if (gun.stats.weaponData.insertMagazine != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.insertMagazine;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlayFullBolt()
+    {
+        if (gun.stats.weaponData.fullBolt != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.fullBolt;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlaySlapGun()
+    {
+        if (gun.stats.weaponData.slapGun != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.slapGun;
+            gun.mechSoundSource.Play();
+        }
+    }
+    public void PlayInsertRound()
+    {
+        if (gun.stats.weaponData.insertRound != null)
+        {
+            gun.mechSoundSource.Stop();
+            gun.mechSoundSource.clip = gun.stats.weaponData.insertRound;
+            gun.mechSoundSource.Play();
+        }
+    }
+    #endregion
 }

@@ -90,7 +90,7 @@ public class PlayerManager : MonoBehaviour
     private Color randomPlayerColor;
     public RoomManager roomManager;
     public CurrentMatchManager cmm;
-    PlayerControllerManager tr = new();
+    PlayerControllerManager tr;
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {

@@ -15,19 +15,17 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     public Scoreboard scoreboard;
     public Player player;
     private int cachedPlayerKill;
-    private int cachedPlayerDeath;
     public void Initialize(Player player, Scoreboard scbd)
     {
         this.player = player;
         scoreboard = scbd;
         usernameText.text = player.NickName;
         cachedPlayerKill = 0;
-        cachedPlayerDeath = 0;
         UpdateStats();
     }
     void UpdateStats()
     {
-        if(scoreboard.matchManager.roomMode == MainMenuUIManager.Gamemodes.FFA)
+        if (scoreboard.matchManager.roomMode == MainMenuUIManager.Gamemodes.FFA)
         {
             if (player.CustomProperties.TryGetValue("kills", out object kills))
             {
@@ -38,7 +36,8 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
             {
                 deathsText.text = deaths.ToString();
             }
-        }else if (scoreboard.matchManager.roomMode == MainMenuUIManager.Gamemodes.TDM)
+        }
+        else if (scoreboard.matchManager.roomMode == MainMenuUIManager.Gamemodes.TDM)
         {
             if (player.CustomProperties.TryGetValue("kills", out object kills))
             {
@@ -55,9 +54,9 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if(targetPlayer == player)
+        if (targetPlayer == player)
         {
-            if (changedProps.ContainsKey("kills") || changedProps.ContainsKey("deaths")) 
+            if (changedProps.ContainsKey("kills") || changedProps.ContainsKey("deaths"))
             {
                 UpdateStats();
             }

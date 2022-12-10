@@ -71,5 +71,7 @@ public class EquipmentStats : MonoBehaviour
         photonGameObjectString = equipmentData.photonGameObjectString;
         effectString = equipmentData.effectString;
         dealDamage = equipmentData.dealDamage;
+        throwForce = equipmentData.throwForce;
+        throwUpwardForce = equipmentData.throwUpwardForce;
     }
 }
