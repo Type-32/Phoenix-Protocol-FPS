@@ -50,6 +50,7 @@ MonoBehaviour:
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
   reloadByBullet: 0
+  useRechamberClipAudioList: 1
   bassClips:
   - {fileID: 8300000, guid: 4459840074db3e140a202363acfd9312, type: 3}
   fireClips:
@@ -74,6 +75,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fc768f71390c72a4f9f72ec8cd98a8c1, type: 3}
   - {fileID: 8300000, guid: dcb39896d7a892744b5b43781274eb93, type: 3}
   rechamberClips: []
+  rechamberStart: {fileID: 0}
+  rechamberEnd: {fileID: 0}
+  pullBolt: {fileID: 0}
+  pullMagazine: {fileID: 8300000, guid: 2476f2077d1106d44af79bfd2302915c, type: 3}
+  insertMagazine: {fileID: 8300000, guid: fe2b54d512ad4124ea54731b97810158, type: 3}
+  recoverBolt: {fileID: 0}
+  fullBolt: {fileID: 0}
+  slapGun: {fileID: 0}
+  insertRound: {fileID: 0}
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: 3757cbdc14ffd6d4c91b9b2d37b34d73, type: 2}
