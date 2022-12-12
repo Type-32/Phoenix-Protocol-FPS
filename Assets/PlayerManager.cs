@@ -83,6 +83,7 @@ public class PlayerManager : MonoBehaviour
     public Transform killMSGHolder;
     public GameObject killMSGPrefab;
     public GameObject deadBodyPrefab;
+    public Sprite skullIcon;
 
     int selectedSPIndex = 0;
     Vector3 tempVelocity;
@@ -351,8 +352,8 @@ public class PlayerManager : MonoBehaviour
         {
             killStatus.text = "You have";
             killerUsername.text = "Suicided";
-            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, (int)pv.Owner.CustomProperties["weaponIndex"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
-            else TDM_InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, (int)pv.Owner.CustomProperties["weaponIndex"], (bool)pv.Owner.CustomProperties["team"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
+            else TDM_InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, (bool)pv.Owner.CustomProperties["team"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
         }
         if (trackingViewID != -1 && !isSuicide)
         {
@@ -785,9 +786,8 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool isWeapon)
     {
-        Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
-        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)));
+        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
         if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Free For All")
         {
             if (pv.Owner.NickName == killerName)
@@ -807,7 +807,7 @@ public class PlayerManager : MonoBehaviour
     public void RPC_TDM_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool killerIsTeam, bool isWeapon)
     {
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
-        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)));
+        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
         if (cmm.localClientPlayer.IsTeam == killerIsTeam)
         {
             temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);

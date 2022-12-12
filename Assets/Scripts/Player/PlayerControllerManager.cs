@@ -350,6 +350,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [PunRPC]
     void RPC_TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot, int weaponIndex, bool isWeapon, PhotonMessageInfo info)
     {
+        //if (info.Sender == pv.Owner) return;
         Debug.Log("Took Damage " + amount + " from " + info.Sender.NickName + " using " + (isWeapon ? "Weapon " : "Equipment ") + (weaponIndex.ToString()));
         //tempTransform.position = transform.position;
         //tempTransform.rotation = transform.rotation;
