@@ -403,7 +403,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
             if (info.Sender != pv.Owner) PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon);
             if (info.Sender != pv.Owner) Die(false, pv.ViewID, info.Sender.NickName);
-            else Die(true, pv.ViewID, pv.Owner.NickName);
+            else if (info.Sender == pv.Owner && !isWeapon) Die(true, pv.ViewID, pv.Owner.NickName);
         }
         return;
     }
