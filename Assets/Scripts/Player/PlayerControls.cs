@@ -161,7 +161,7 @@ public class PlayerControls : MonoBehaviour
     }
     void CameraFOV()
     {
-        player.fpsCam.playerMainCamera.fieldOfView = player.stats.isSprinting ? Mathf.Lerp(player.fpsCam.playerMainCamera.fieldOfView, sprintFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime) : player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(player.fpsCam.playerMainCamera.fieldOfView, normalFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime);
+        player.fpsCam.playerMainCamera.fieldOfView = player.stats.isSprinting ? Mathf.Lerp(player.fpsCam.playerMainCamera.fieldOfView, sprintFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime) : Mathf.Lerp(player.fpsCam.playerMainCamera.fieldOfView, normalFOV, player.stats.sprintFOVChangeDuration * Time.deltaTime);
     }
     void KeybindedActions()
     {
@@ -231,6 +231,11 @@ public class PlayerControls : MonoBehaviour
     {
         if (Input.GetKey("space") && player.stats.onGround)
         {
+            if (player.stats.isSliding)
+            {
+                ActivateSlide();
+                //player.stats.onGround = true;
+            }
             if (player.stats.isCrouching) player.stats.isCrouching = false;
             else player.stats.isJumping = true;
         }

@@ -148,7 +148,7 @@ public class GunManager : Gun
 
         if (gun.stats.isReloading) return;
         core.ReloadMechanics();
-        core.ShootUnderFiremode();
+        if (!gun.player.stats.isSliding) core.ShootUnderFiremode();
     }
     void FindingReferences()
     {
