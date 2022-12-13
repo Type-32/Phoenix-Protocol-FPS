@@ -488,24 +488,40 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             //Debug.LogWarning("Colliders Found");
             GameObject bulletImpactObject = Instantiate(holder.weaponSlots[holder.weaponIndex].bulletImpactPrefab, hitPosition + hitNormal * 0.01f, Quaternion.LookRotation(-hitNormal, Vector3.up));
             Destroy(bulletImpactObject, 5f);
-            bulletImpactObject.transform.SetParent(colliders[0].transform);
+            if (colliders[0].GetComponent<PlayerControllerManager>() == null) bulletImpactObject.transform.SetParent(colliders[0].transform);
             if (colliders[0].GetComponent<PlayerControllerManager>() != null) Destroy(bulletImpactObject);
             //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
         }
     }
     [PunRPC]
-    public void RPC_InvokeGunEffects(int viewID)
+    public void RPC_InvokeGunEffects(int viewID = 0)
     {
         if (pv.ViewID != viewID) return;
-        if (holder.weaponIndex == 0)
+        if (pv.IsMine)
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
-            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+            if (holder.weaponIndex == 0)
+            {
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+                else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+            }
+            else
+            {
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+                else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+            }
         }
         else
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
-            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
+            if (holder.weaponIndex == 0)
+            {
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(false);
+                else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(true);
+            }
+            else
+            {
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(false);
+                else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(true);
+            }
         }
 
         if (holder.weaponIndex == 0)

@@ -64,9 +64,10 @@ public class WeaponData : ItemData
     [Header("Audio Clips")]
     public List<AudioClip> bassClips = new List<AudioClip>();
     public List<AudioClip> fireClips = new List<AudioClip>();
-    public List<AudioClip> NPC_FireClips = new List<AudioClip>();
     public List<AudioClip> silencedFireClips = new List<AudioClip>();
     public List<AudioClip> mechClips = new List<AudioClip>();
+    public List<AudioClip> NPC_FireClips = new List<AudioClip>();
+    public List<AudioClip> NPC_SilencedFireClips = new List<AudioClip>();
     public List<AudioClip> rechamberClips = new List<AudioClip>();
     public AudioClip rechamberStart = default;
     public AudioClip rechamberEnd = default;
