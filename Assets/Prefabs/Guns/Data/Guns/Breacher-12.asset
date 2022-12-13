@@ -50,6 +50,7 @@ MonoBehaviour:
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
   reloadByBullet: 0
+  useRechamberClipAudioList: 1
   bassClips:
   - {fileID: 8300000, guid: 70f003884f42da04bb26a6cef4aeaa69, type: 3}
   fireClips:
@@ -77,7 +78,33 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f4f4a30eb84f39d4facbf6b9af49ddd8, type: 3}
   - {fileID: 8300000, guid: b43410459ddb56849b1c126090775947, type: 3}
   - {fileID: 8300000, guid: c630bccc959f05d4682503600af8f25c, type: 3}
+  NPC_FireClips:
+  - {fileID: 8300000, guid: 946a58e6f8fa22645ac064aeb58318e8, type: 3}
+  - {fileID: 8300000, guid: fffd03e7b4d60b64a9525a3fa5090402, type: 3}
+  - {fileID: 8300000, guid: e18c443b4d44ed64b950025a32e02163, type: 3}
+  - {fileID: 8300000, guid: 558edfe59af41004a968de9b50ec6c09, type: 3}
+  - {fileID: 8300000, guid: e3ae2a2a338efe145997ce4916142b50, type: 3}
+  - {fileID: 8300000, guid: 016de8dfbbce72a48aac4078cc96befe, type: 3}
+  NPC_SilencedFireClips:
+  - {fileID: 8300000, guid: 0309f4770b2338843985fa1a7922c140, type: 3}
+  - {fileID: 8300000, guid: 1b78a6a4c8d45b24083b8df138277c3c, type: 3}
+  - {fileID: 8300000, guid: 69111b9f9d9824c43854ce9ac2447926, type: 3}
+  - {fileID: 8300000, guid: ab63a954c029e7f4f8e946fe2998a5e9, type: 3}
+  - {fileID: 8300000, guid: d631f940c1be43e44892fec9d5591208, type: 3}
+  - {fileID: 8300000, guid: 42c2f2ad9fbcff24091309d5349bbf45, type: 3}
   rechamberClips: []
+  rechamberStart: {fileID: 0}
+  rechamberEnd: {fileID: 0}
+  pullBolt: {fileID: 0}
+  pullMagazine: {fileID: 0}
+  insertMagazine: {fileID: 0}
+  recoverBolt: {fileID: 0}
+  fullBolt: {fileID: 0}
+  slapGun: {fileID: 0}
+  insertRound: {fileID: 0}
+  raiseGun: {fileID: 0}
+  aimIn: {fileID: 0}
+  aimOut: {fileID: 0}
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: eaa3091aa3f59c1458f80c48eac2633e, type: 2}

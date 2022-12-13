@@ -50,6 +50,7 @@ MonoBehaviour:
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
   reloadByBullet: 0
+  useRechamberClipAudioList: 1
   bassClips:
   - {fileID: 8300000, guid: 86fbbbea1d3cbd94891228354a8c8003, type: 3}
   fireClips:
@@ -73,7 +74,33 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 600a07eb8255a834ab34ef92cbc56716, type: 3}
   - {fileID: 8300000, guid: 27dc5a50683c0b64e8d686b1ad0607f1, type: 3}
   - {fileID: 8300000, guid: de685e593e106a2409025a64a397fac1, type: 3}
+  NPC_FireClips:
+  - {fileID: 8300000, guid: 9f7c7803ddf4d11469034f1695995357, type: 3}
+  - {fileID: 8300000, guid: 5e320f48b01eba843910f5d997c0aae7, type: 3}
+  - {fileID: 8300000, guid: c878259118dc2514c810ac89a51f8fb6, type: 3}
+  - {fileID: 8300000, guid: cb835a698bec2574a80de3f702918899, type: 3}
+  - {fileID: 8300000, guid: c38a7d9c7062cea488c32e86e47d9e23, type: 3}
+  - {fileID: 8300000, guid: 12ebe456891250f4a9dc60e404e4a541, type: 3}
+  NPC_SilencedFireClips:
+  - {fileID: 8300000, guid: ba7cd7536a831874eb30751768dd82f8, type: 3}
+  - {fileID: 8300000, guid: 6bf0a6139ee6ba741968f9aa4d2779f7, type: 3}
+  - {fileID: 8300000, guid: 0468f81cf4e9a8148ad138388e911d36, type: 3}
+  - {fileID: 8300000, guid: e77e59af28282aa4eb04cd0d59c591db, type: 3}
+  - {fileID: 8300000, guid: 2b40e2665e2a2f14e8e68bd99075b438, type: 3}
+  - {fileID: 8300000, guid: 1635cefaaa24c46489f0e2910835c6d6, type: 3}
   rechamberClips: []
+  rechamberStart: {fileID: 8300000, guid: 313cce60f64aca54380ec3dfb7aebd52, type: 3}
+  rechamberEnd: {fileID: 8300000, guid: 581d13d42ad33c347ac2eecf767340cb, type: 3}
+  pullBolt: {fileID: 0}
+  pullMagazine: {fileID: 8300000, guid: dfcb23a3ca054094fbda7cf1401cfa0a, type: 3}
+  insertMagazine: {fileID: 8300000, guid: 3cdf3cdfdc9fedb41bd62a64f073454d, type: 3}
+  recoverBolt: {fileID: 0}
+  fullBolt: {fileID: 0}
+  slapGun: {fileID: 8300000, guid: b741a3d79f5a3c747b84247d72bb5713, type: 3}
+  insertRound: {fileID: 0}
+  raiseGun: {fileID: 0}
+  aimIn: {fileID: 0}
+  aimOut: {fileID: 0}
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: ad8463e9fe5f6094c8249b9ad91b59da, type: 2}

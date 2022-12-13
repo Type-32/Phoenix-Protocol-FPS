@@ -50,6 +50,7 @@ MonoBehaviour:
   hasHipfireInaccuracy: 1
   ejectCasingAfterRechamber: 0
   reloadByBullet: 0
+  useRechamberClipAudioList: 1
   bassClips:
   - {fileID: 8300000, guid: 661909432356a5f4b93d1f70bd6ad9d8, type: 3}
   fireClips:
@@ -72,7 +73,33 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 78bf7161a2b561a499e39eb1b5ed9e64, type: 3}
   - {fileID: 8300000, guid: 6f2ff7c64fe77d24598dd9c1ebc66818, type: 3}
   - {fileID: 8300000, guid: b0d4f4818505c494d8002556c34d9f3f, type: 3}
+  NPC_FireClips:
+  - {fileID: 8300000, guid: 8155bada5312eb94e86e0e5f4b7c69ac, type: 3}
+  - {fileID: 8300000, guid: 584c5f91300ded942abcbf5db308aa4b, type: 3}
+  - {fileID: 8300000, guid: a2e6d8e6855c0c54e9bdb0e2d30bb857, type: 3}
+  - {fileID: 8300000, guid: 4aa6ec289a4537f4189f99ef815e6828, type: 3}
+  - {fileID: 8300000, guid: 69648ce5c5c4bed4a9b1ee513966c53a, type: 3}
+  - {fileID: 8300000, guid: 9eeaac5db3d5a4b4bbff6af1915d3548, type: 3}
+  NPC_SilencedFireClips:
+  - {fileID: 8300000, guid: 57804e2e17292294896c12b0685b9cfd, type: 3}
+  - {fileID: 8300000, guid: 8d1df7c7cf550a84381dd6085a9752b8, type: 3}
+  - {fileID: 8300000, guid: 0d872eed011bfda47a62d87f9f6373d8, type: 3}
+  - {fileID: 8300000, guid: e61a1e8302305f64bbf456a4598d6bdb, type: 3}
+  - {fileID: 8300000, guid: 1b7eaca4ff8fce04aa67fae4231f1480, type: 3}
+  - {fileID: 8300000, guid: 79dce0abc76747f46bd108e7f3a8ce64, type: 3}
   rechamberClips: []
+  rechamberStart: {fileID: 8300000, guid: 9fd9ca705a61b7b4abcd7cb4ef854820, type: 3}
+  rechamberEnd: {fileID: 8300000, guid: 74b6671d1340fff4b9d9822c87793da1, type: 3}
+  pullBolt: {fileID: 0}
+  pullMagazine: {fileID: 8300000, guid: cc434a9b58356b24f9547971ef836667, type: 3}
+  insertMagazine: {fileID: 8300000, guid: 13504fcffff5f2547ac9fd1cd67efe7d, type: 3}
+  recoverBolt: {fileID: 0}
+  fullBolt: {fileID: 0}
+  slapGun: {fileID: 0}
+  insertRound: {fileID: 0}
+  raiseGun: {fileID: 0}
+  aimIn: {fileID: 0}
+  aimOut: {fileID: 0}
   applicableVariants: []
   applicableAttachments:
   - {fileID: 11400000, guid: 3757cbdc14ffd6d4c91b9b2d37b34d73, type: 2}
