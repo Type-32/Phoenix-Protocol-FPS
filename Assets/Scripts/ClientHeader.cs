@@ -304,6 +304,34 @@ namespace UserConfiguration
         {
             File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), jsonString);
         }
+        public static string UserDataConfigKey
+        {
+            get
+            {
+                return "UserDataConfig.json";
+            }
+        }
+        public static string LoadoutDataConfigKey
+        {
+            get
+            {
+                return "LoadoutDataConfig.json";
+            }
+        }
+        public static string RewardDataConfigKey
+        {
+            get
+            {
+                return "RewardConfig.json";
+            }
+        }
+        public static string SettingsOptionsKey
+        {
+            get
+            {
+                return "SettingsOptions.json";
+            }
+        }
     }
     public static class Database
     {

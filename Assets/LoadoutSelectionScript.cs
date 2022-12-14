@@ -82,10 +82,10 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void InitializeLoadoutDataToJSON()
     {
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"))) database.InitializeUserDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json")))
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey))) database.InitializeUserDataToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey)))
         {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
             if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
             {
                 database.InitializeUserDataToJSON();
@@ -94,8 +94,8 @@ public class LoadoutSelectionScript : MonoBehaviour
         LoadoutDataJSON data = new();
         data = GlobalDatabase.singleton.emptyLoadoutDataJSON;
         string json = JsonUtility.ToJson(data, true);
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"))) File.CreateText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json")).Close();
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey)).Close();
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey), json);
         Debug.LogWarning("Initializing Loadout Data To Files...");
     }
     public void WriteLoadoutDataToJSON()
@@ -105,7 +105,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         data = WeaponSystem.LoadoutJsonData;
         data.SelectedSlot = selectedLoadoutIndex;
         //string json = JsonUtility.ToJson(data, true);
-        //File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
+        //File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey), json);
 
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
@@ -129,25 +129,25 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey), json);
         Debug.LogWarning("Writing Loadout Data To Files...");
     }
     public void ReadLoadoutDataFromJSON()
     {
         Debug.Log("Called ReadLoadoutDataFromJSON");
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"))) InitializeLoadoutDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json")))
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey))) InitializeLoadoutDataToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey)))
         {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey));
             if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
             {
                 InitializeLoadoutDataToJSON();
             }
         }
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey));
         Debug.LogWarning("Reading Loadout Data To Files...");
         LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
-        json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+        json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
         UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
         selectedLoadoutIndex = jsonData.SelectedSlot;
         selectedMainWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon1;
@@ -331,7 +331,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void InstantiateLoadoutItemSelections()
     {
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
         UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
         if (loadoutWeaponSelects.Count != 0)
         {

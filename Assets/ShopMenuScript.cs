@@ -41,16 +41,16 @@ public class ShopMenuScript : MonoBehaviour
 
     void Start()
     {
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"))) UserDatabase.Instance.InitializeUserDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, "UserDataConfig.json")))
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey))) UserDatabase.Instance.InitializeUserDataToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey)))
         {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
             if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
             {
                 UserDatabase.Instance.InitializeUserDataToJSON();
             }
         }
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
         //Debug.LogWarning("Reading User Data To Files...");
         UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
@@ -176,7 +176,7 @@ public class ShopMenuScript : MonoBehaviour
     {
         if (data != null)
         {
-            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
+            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
             //Debug.LogWarning("Reading User Data To Files...");
             UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
             jsonData = JsonUtility.FromJson<UserDataJSON>(json);

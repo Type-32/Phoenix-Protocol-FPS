@@ -8,6 +8,8 @@ using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using LauncherManifest;
+using UserConfiguration;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -321,7 +323,7 @@ public class PlayerManager : MonoBehaviour
 
         settingsMenu.SettingsMenuAwakeFunction();
         //Player Related Settings
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey));
         SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
 
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(jsonData.MouseSensitivity);
@@ -667,17 +669,17 @@ public class PlayerManager : MonoBehaviour
             data.QualityIndex = settingsMenu.qualityDropdown.selectedItemIndex;
             data.ResolutionIndex = settingsMenu.resolutionDropdown.selectedItemIndex;
 
-            Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
+            Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey));
             string json = JsonUtility.ToJson(data, true);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"), json);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey), json);
             if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerSensitivity(data.MouseSensitivity);
             if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerFOV(data.FieldOfView);
             Debug.LogWarning("Writing Settings Options To Files...");
         }
         else
         {
-            if (!File.Exists(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"))) settingsMenu.WriteSettingsOptionsToJSON();
-            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "SettingsOptions.json"));
+            if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey))) settingsMenu.WriteSettingsOptionsToJSON();
+            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey));
             Debug.LogWarning("Reading Settings Options To Files...");
             SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);
             settingsMenu.SetFieldOfView(jsonData.FieldOfView);

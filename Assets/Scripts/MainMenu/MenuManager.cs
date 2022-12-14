@@ -30,6 +30,7 @@ public class MenuManager : MonoBehaviour
     public GameObject loadoutSelectionMenu;
     public GameObject popupMenu;
     public GameObject shopMenu;
+    public List<GameObject> menuList = new();
 
     [Space]
     [Header("Misc Components")]
