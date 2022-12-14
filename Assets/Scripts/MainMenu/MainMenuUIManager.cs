@@ -88,7 +88,7 @@ public class MainMenuUIManager : MonoBehaviour
     public List<GameObject> KOTHPlayersOptions = new();
     public List<GameObject> DZPlayersOptions = new();
 
-    [Space, Header("Version Manifests")]
+    [Space,Header("Version Manifests")]
     [SerializeField] private List<Text> versionTexts = new();
 
     public enum PopupQueue
@@ -147,13 +147,13 @@ public class MainMenuUIManager : MonoBehaviour
         CloseUpdateLogsMenu();
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
-        for (int i = 0; i < versionTexts.Count; i++)
+        for(int i = 0; i < versionTexts.Count; i++)
         {
             versionTexts[i].text = "V" + LocalLaunchedClient.LocalGameVersion.ToString();
         }
-        if (LauncherConfig.CompareLocalVersionWithCache())
+        if(LauncherConfig.CompareLocalVersionWithCache())
         {
-
+            
         }
         //AddPopup("test", "testlol");
 
@@ -434,7 +434,7 @@ public class MainMenuUIManager : MonoBehaviour
     }
     public string SetConnectionIndicatorText(string content)
     {
-        if (content != null) connectionIndicator.text = content;
+        if(content != null) connectionIndicator.text = content;
         else return connectionIndicator.text;
         return null;
     }
