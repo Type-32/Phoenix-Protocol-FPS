@@ -23,7 +23,7 @@ public class PlayerNameManager : MonoBehaviour
     {
         SetPlayerName();
         PlayerPrefs.SetString("Username", GetPlayerFieldName());
-        MenuManager.instance.UpdateName(GetPlayerFieldName());
+        MainMenuUIManager.instance.UpdateName(GetPlayerFieldName());
     }
     public void SetPlayerName()
     {
@@ -33,10 +33,10 @@ public class PlayerNameManager : MonoBehaviour
 
     public string GetPlayerFieldName()
     {
-        return MenuManager.instance.playerNameInputField.text;
+        return MainMenuUIManager.instance.playerNameInputField.text;
     }
     public void SetPlayerFieldName(string value)
     {
-        MenuManager.instance.playerNameInputField.text = value;
+        MainMenuUIManager.instance.playerNameInputField.text = value;
     }
 }

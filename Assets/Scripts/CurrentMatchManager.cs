@@ -15,7 +15,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public List<Player> punPlayers = new();
     public bool gameStarted = false;
     public bool gameEnded = false;
-    public MenuManager.Gamemodes roomMode;
+    public MainMenuUIManager.Gamemodes roomMode;
     public float totalTime = 0f;
     public int maxKillLimit;
     public Scoreboard scoreboard;
@@ -51,28 +51,28 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         switch (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"])
         {
             case "Free For All":
-                roomMode = MenuManager.Gamemodes.FFA;
+                roomMode = MainMenuUIManager.Gamemodes.FFA;
                 internalUI.ToggleFFA_UI(true);
                 internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleKOTH_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "Team Deathmatch":
-                roomMode = MenuManager.Gamemodes.TDM;
+                roomMode = MainMenuUIManager.Gamemodes.TDM;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(true);
                 internalUI.ToggleKOTH_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "King of the Hills":
-                roomMode = MenuManager.Gamemodes.KOTH;
+                roomMode = MainMenuUIManager.Gamemodes.KOTH;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleKOTH_UI(true);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "Drop Zones":
-                roomMode = MenuManager.Gamemodes.DZ;
+                roomMode = MainMenuUIManager.Gamemodes.DZ;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleKOTH_UI(false);
@@ -107,7 +107,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public void OnPlayerKillReceiveCallback()
     {
         punPlayers = scoreboard.LocalPlayerDatas;
-        if (roomMode != MenuManager.Gamemodes.FFA) return;
+        if (roomMode != MainMenuUIManager.Gamemodes.FFA) return;
         int temp = -100000;
         if (punTopPlayer == null) punTopPlayer = punPlayers[Random.Range(0, punPlayers.Count - 1)];
         for (int i = 0; i < players.Count; i++)
@@ -127,7 +127,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void OnPlayerKillUpdate()
     {
-        if (roomMode != MenuManager.Gamemodes.FFA) return;
+        if (roomMode != MainMenuUIManager.Gamemodes.FFA) return;
         int temp = -100000;
         for (int i = 0; i < players.Count; i++)
         {
@@ -142,7 +142,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     public void UpdatePlayerKillOnClient()
     {
-        if (roomMode != MenuManager.Gamemodes.FFA) return;
+        if (roomMode != MainMenuUIManager.Gamemodes.FFA) return;
         int temp = -100000;
         for (int i = 0; i < players.Count; i++)
         {
@@ -253,19 +253,19 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             return;
         }
         if (!gameStarted) return;
-        if (roomMode == MenuManager.Gamemodes.FFA)
+        if (roomMode == MainMenuUIManager.Gamemodes.FFA)
         {
             FreeForAllFunctions();
         }
-        else if (roomMode == MenuManager.Gamemodes.TDM)
+        else if (roomMode == MainMenuUIManager.Gamemodes.TDM)
         {
 
         }
-        else if (roomMode == MenuManager.Gamemodes.KOTH)
+        else if (roomMode == MainMenuUIManager.Gamemodes.KOTH)
         {
 
         }
-        else if (roomMode == MenuManager.Gamemodes.DZ)
+        else if (roomMode == MainMenuUIManager.Gamemodes.DZ)
         {
 
         }

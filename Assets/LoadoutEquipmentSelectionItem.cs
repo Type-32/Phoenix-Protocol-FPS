@@ -36,7 +36,7 @@ public class LoadoutEquipmentSelectionItem : MonoBehaviour
         loadoutSelection.DisableEquipmentSelection();
         loadoutSelection.OpenLoadoutButtonsVisual();
         Launcher.Instance.SetLoadoutValuesToPlayer();
-        MenuManager.instance.AddNotification("Weapon Selection", "You've selected " + equipmentData.itemName + " as your " + (loadoutSelection.forSelectedSlot == 0 ? "first equipment." : "second equipment."));
+        MainMenuUIManager.instance.AddNotification("Weapon Selection", "You've selected " + equipmentData.itemName + " as your " + (loadoutSelection.forSelectedSlot == 0 ? "first equipment." : "second equipment."));
     }
 
     public void SetEquipmentIcon(Sprite iconSprite)

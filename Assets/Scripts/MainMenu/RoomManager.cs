@@ -62,17 +62,17 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public void CloseAllMenus()
     {
-        MenuManager.instance.CloseMainMenu();
-        MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseFindRoomMenu();
-        MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseMultiplayerMenu();
-        MenuManager.instance.CloseRoomMenu();
-        MenuManager.instance.CloseSettingsMenu();
-        MenuManager.instance.CloseUpdateLogsMenu();
-        MenuManager.instance.CloseCreateRoomMenu();
-        MenuManager.instance.CloseLoadoutSelectionMenu();
-        MenuManager.instance.CloseCosmeticsMenu();
+        MainMenuUIManager.instance.CloseMainMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseFindRoomMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MainMenuUIManager.instance.CloseRoomMenu();
+        MainMenuUIManager.instance.CloseSettingsMenu();
+        MainMenuUIManager.instance.CloseUpdateLogsMenu();
+        MainMenuUIManager.instance.CloseCreateRoomMenu();
+        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+        MainMenuUIManager.instance.CloseCosmeticsMenu();
         //MainMenuUIManager.instance.OpenMultiplayerMenu();
         //CloseMainMenuDelayed(0.5f);
         Debug.Log("Loaded Scene from Room Manager");
@@ -80,7 +80,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public IEnumerator CloseMainMenuDelayed(float delay)
     {
         yield return new WaitForSeconds(delay);
-        MenuManager.instance.CloseMainMenu();
+        MainMenuUIManager.instance.CloseMainMenu();
     }
     public void SelfDestruction()
     {
@@ -91,31 +91,31 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public void CheckQueue()
     {
-        if (MenuManager.instance.queuedModalWindows.Count > 0)
+        if (MainMenuUIManager.instance.queuedModalWindows.Count > 0)
         {
-            for (int i = 0; i < MenuManager.instance.queuedModalWindows.Count; i++)
+            for (int i = 0; i < MainMenuUIManager.instance.queuedModalWindows.Count; i++)
             {
-                if (MenuManager.instance.queuedModalWindows[i].queueType == MenuManager.PopupQueue.OnMainMenuLoad)
+                if (MainMenuUIManager.instance.queuedModalWindows[i].queueType == MainMenuUIManager.PopupQueue.OnMainMenuLoad)
                 {
-                    MenuManager.instance.AddModalWindow(MenuManager.instance.queuedModalWindows[i].title, MenuManager.instance.queuedModalWindows[i].content);
-                    MenuManager.instance.queuedModalWindows.Remove(MenuManager.instance.queuedModalWindows[i]);
+                    MainMenuUIManager.instance.AddModalWindow(MainMenuUIManager.instance.queuedModalWindows[i].title, MainMenuUIManager.instance.queuedModalWindows[i].content);
+                    MainMenuUIManager.instance.queuedModalWindows.Remove(MainMenuUIManager.instance.queuedModalWindows[i]);
                     Debug.Log("Removing queued modal window from queue list");
                 }
             }
-            MenuManager.instance.queuedModalWindows.Clear();
+            MainMenuUIManager.instance.queuedModalWindows.Clear();
         }
-        if (MenuManager.instance.queuedNotifications.Count > 0)
+        if (MainMenuUIManager.instance.queuedNotifications.Count > 0)
         {
-            for (int i = 0; i < MenuManager.instance.queuedNotifications.Count; i++)
+            for (int i = 0; i < MainMenuUIManager.instance.queuedNotifications.Count; i++)
             {
-                if (MenuManager.instance.queuedNotifications[i].queueType == MenuManager.PopupQueue.OnMainMenuLoad)
+                if (MainMenuUIManager.instance.queuedNotifications[i].queueType == MainMenuUIManager.PopupQueue.OnMainMenuLoad)
                 {
-                    MenuManager.instance.AddNotification(MenuManager.instance.queuedNotifications[i].title, MenuManager.instance.queuedNotifications[i].content);
-                    MenuManager.instance.queuedNotifications.Remove(MenuManager.instance.queuedNotifications[i]);
+                    MainMenuUIManager.instance.AddNotification(MainMenuUIManager.instance.queuedNotifications[i].title, MainMenuUIManager.instance.queuedNotifications[i].content);
+                    MainMenuUIManager.instance.queuedNotifications.Remove(MainMenuUIManager.instance.queuedNotifications[i]);
                     Debug.Log("Removing queued notification from queue list");
                 }
             }
-            MenuManager.instance.queuedNotifications.Clear();
+            MainMenuUIManager.instance.queuedNotifications.Clear();
         }
     }
 }

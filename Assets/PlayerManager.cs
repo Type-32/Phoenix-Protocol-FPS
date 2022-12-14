@@ -465,17 +465,17 @@ public class PlayerManager : MonoBehaviour
         SceneManager.LoadScene(0);
         roomManager.SelfDestruction();
         Debug.Log("Self Destruction Occured");
-        MenuManager.instance.CloseMainMenu();
-        MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseFindRoomMenu();
-        MenuManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseMainMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
+        MainMenuUIManager.instance.CloseFindRoomMenu();
+        MainMenuUIManager.instance.CloseLoadingMenu();
         //MainMenuUIManager.instance.CloseMultiplayerMenu();
-        MenuManager.instance.CloseRoomMenu();
-        MenuManager.instance.CloseSettingsMenu();
-        MenuManager.instance.CloseUpdateLogsMenu();
-        MenuManager.instance.CloseCreateRoomMenu();
-        MenuManager.instance.CloseLoadoutSelectionMenu();
-        MenuManager.instance.CloseCosmeticsMenu();
+        MainMenuUIManager.instance.CloseRoomMenu();
+        MainMenuUIManager.instance.CloseSettingsMenu();
+        MainMenuUIManager.instance.CloseUpdateLogsMenu();
+        MainMenuUIManager.instance.CloseCreateRoomMenu();
+        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+        MainMenuUIManager.instance.CloseCosmeticsMenu();
         Debug.Log("Loaded Scene from Player Manager");
     }
     private void Update()
