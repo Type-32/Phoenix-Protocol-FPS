@@ -26,7 +26,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        MainMenuUIManager.instance.SetFindRoomText("");
+        MenuManager.instance.SetFindRoomText("");
     }
     private void Awake()
     {
@@ -43,31 +43,31 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined Lobby");
-        MainMenuUIManager.instance.JoiningMasterLobby(true);
+        MenuManager.instance.JoiningMasterLobby(true);
     }
     public void CreateRoom()
     {
-        if (string.IsNullOrEmpty(MainMenuUIManager.instance.GetRoomInputFieldText()))
+        if (string.IsNullOrEmpty(MenuManager.instance.GetRoomInputFieldText()))
         {
             Debug.LogWarning("Cannot Create a room with a null Input Field! ");
-            MainMenuUIManager.instance.SetInvalidInputFieldText("Invalid Name: Input Field Cannot be Null", Color.red);
-            MainMenuUIManager.instance.RoomInputFieldText(" ");
+            MenuManager.instance.SetInvalidInputFieldText("Invalid Name: Input Field Cannot be Null", Color.red);
+            MenuManager.instance.RoomInputFieldText(" ");
             return;
         }
         //roomInfo.CustomProperties.Add("roomIcon", roomIcon.sprite);
         //roomInfo.CustomProperties.Add("roomMode", roomMode.text);
         //roomInfo.CustomProperties.Add("roomHostName", roomHostName.text);
-        PhotonNetwork.CreateRoom(MainMenuUIManager.instance.GetRoomInputFieldText(), MainMenuUIManager.instance.GetGeneratedRoomOptions());
-        Debug.Log("Trying to create a room with the name " + MainMenuUIManager.instance.GetRoomInputFieldText());
-        MainMenuUIManager.instance.SetRoomTitle(MainMenuUIManager.instance.GetRoomInputFieldText());
-        MainMenuUIManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
-        MainMenuUIManager.instance.CloseCreateRoomMenu();
-        MainMenuUIManager.instance.OpenLoadingMenu();
+        PhotonNetwork.CreateRoom(MenuManager.instance.GetRoomInputFieldText(), MenuManager.instance.GetGeneratedRoomOptions());
+        Debug.Log("Trying to create a room with the name " + MenuManager.instance.GetRoomInputFieldText());
+        MenuManager.instance.SetRoomTitle(MenuManager.instance.GetRoomInputFieldText());
+        MenuManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
+        MenuManager.instance.CloseCreateRoomMenu();
+        MenuManager.instance.OpenLoadingMenu();
     }
     public void QuickMatch()
     {
-        MainMenuUIManager.instance.OpenLoadingMenu();
-        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.OpenLoadingMenu();
+        MenuManager.instance.CloseMultiplayerMenu();
         PhotonNetwork.JoinRandomRoom();
         SetLoadoutValuesToPlayer();
     }
@@ -77,21 +77,21 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        MainMenuUIManager.instance.CloseLoadingMenu();
-        MainMenuUIManager.instance.CloseMultiplayerMenu();
-        MainMenuUIManager.instance.OpenCreateRoomMenu();
+        MenuManager.instance.CloseLoadingMenu();
+        MenuManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.OpenCreateRoomMenu();
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        MainMenuUIManager.instance.CloseLoadingMenu();
-        MainMenuUIManager.instance.OpenMultiplayerMenu();
+        MenuManager.instance.CloseLoadingMenu();
+        MenuManager.instance.OpenMultiplayerMenu();
         Debug.Log("Failed to create room, Message: " + message);
-        MainMenuUIManager.instance.SetInvalidInputFieldText("Invalid Session, returned with message: " + message, Color.red);
+        MenuManager.instance.SetInvalidInputFieldText("Invalid Session, returned with message: " + message, Color.red);
     }
     public override void OnCreatedRoom()
     {
-        PhotonNetwork.CurrentRoom.SetCustomProperties(MainMenuUIManager.instance.GetGeneratedRoomOptions().CustomRoomProperties);
-        if ((bool)MainMenuUIManager.instance.GetGeneratedRoomOptions().CustomRoomProperties["roomVisibility"])
+        PhotonNetwork.CurrentRoom.SetCustomProperties(MenuManager.instance.GetGeneratedRoomOptions().CustomRoomProperties);
+        if ((bool)MenuManager.instance.GetGeneratedRoomOptions().CustomRoomProperties["roomVisibility"])
         {
             PhotonNetwork.CurrentRoom.IsVisible = true;
         }
@@ -104,11 +104,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         SetLoadoutValuesToPlayer();
         Debug.Log("Connected to Room");
-        MainMenuUIManager.instance.OpenRoomMenu();
-        MainMenuUIManager.instance.CloseFindRoomMenu();
-        MainMenuUIManager.instance.CloseMultiplayerMenu();
-        MainMenuUIManager.instance.CloseLoadingMenu();
-        MainMenuUIManager.instance.SetRoomTitle(PhotonNetwork.CurrentRoom.Name);
+        MenuManager.instance.OpenRoomMenu();
+        MenuManager.instance.CloseFindRoomMenu();
+        MenuManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.CloseLoadingMenu();
+        MenuManager.instance.SetRoomTitle(PhotonNetwork.CurrentRoom.Name);
         Player[] players = PhotonNetwork.PlayerList;
 
         foreach (Transform child in playerListContent)
@@ -131,18 +131,18 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("Disconnected from Room");
-        MainMenuUIManager.instance.CloseMainMenu();
-        MainMenuUIManager.instance.CloseLoadingMenu();
-        MainMenuUIManager.instance.CloseFindRoomMenu();
-        MainMenuUIManager.instance.CloseLoadingMenu();
-        MainMenuUIManager.instance.CloseMultiplayerMenu();
-        MainMenuUIManager.instance.CloseRoomMenu();
-        MainMenuUIManager.instance.CloseSettingsMenu();
-        MainMenuUIManager.instance.CloseUpdateLogsMenu();
-        MainMenuUIManager.instance.CloseCreateRoomMenu();
-        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
-        MainMenuUIManager.instance.CloseCosmeticsMenu();
-        MainMenuUIManager.instance.OpenMultiplayerMenu();
+        MenuManager.instance.CloseMainMenu();
+        MenuManager.instance.CloseLoadingMenu();
+        MenuManager.instance.CloseFindRoomMenu();
+        MenuManager.instance.CloseLoadingMenu();
+        MenuManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.CloseRoomMenu();
+        MenuManager.instance.CloseSettingsMenu();
+        MenuManager.instance.CloseUpdateLogsMenu();
+        MenuManager.instance.CloseCreateRoomMenu();
+        MenuManager.instance.CloseLoadoutSelectionMenu();
+        MenuManager.instance.CloseCosmeticsMenu();
+        MenuManager.instance.OpenMultiplayerMenu();
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
@@ -166,31 +166,31 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void FindRoomThroughCode()
     {
-        int code = MainMenuUIManager.instance.GetRoomCodeInputField();
+        int code = MenuManager.instance.GetRoomCodeInputField();
         for (int i = 0; i < rl.Count; i++)
         {
             if ((int)rl[i].CustomProperties["roomCode"] == code)
             {
-                MainMenuUIManager.instance.SetFindRoomText("");
+                MenuManager.instance.SetFindRoomText("");
                 JoinRoom(rl[i]);
                 return;
             }
         }
-        MainMenuUIManager.instance.SetFindRoomText("Room with Code " + code + " Not Found.");
+        MenuManager.instance.SetFindRoomText("Room with Code " + code + " Not Found.");
     }
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
-        MainMenuUIManager.instance.OpenLoadingMenu();
-        MainMenuUIManager.instance.CloseFindRoomMenu();
-        MainMenuUIManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.OpenLoadingMenu();
+        MenuManager.instance.CloseFindRoomMenu();
+        MenuManager.instance.CloseMultiplayerMenu();
         Debug.Log("Loading Room Info...");
     }
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-        MainMenuUIManager.instance.CloseRoomMenu();
-        MainMenuUIManager.instance.OpenLoadingMenu();
+        MenuManager.instance.CloseRoomMenu();
+        MenuManager.instance.OpenLoadingMenu();
     }
 
     public bool CheckIfStartAllowed()
@@ -201,11 +201,11 @@ public class Launcher : MonoBehaviourPunCallbacks
             flag = true;
             if (flag)
             {
-                if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.FFA)
+                if (MenuManager.instance.GetGamemode() == MenuManager.Gamemodes.FFA)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.gameObject.SetActive(true);
                 }
-                else if (MainMenuUIManager.instance.GetGamemode() == MainMenuUIManager.Gamemodes.TDM)
+                else if (MenuManager.instance.GetGamemode() == MenuManager.Gamemodes.TDM)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.gameObject.SetActive(true);
                 }
