@@ -31,6 +31,6 @@ public class MapListItemHolder : MonoBehaviour
     public void SetSelectedMap(int index, string mapName)
     {
         selectedMapIndex = index;
-        MainMenuUIManager.instance.OnSelectedMap(mapName);
+        MenuManager.instance.OnSelectedMap(mapName);
     }
 }

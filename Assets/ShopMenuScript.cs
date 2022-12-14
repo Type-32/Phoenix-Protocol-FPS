@@ -58,7 +58,7 @@ public class ShopMenuScript : MonoBehaviour
         weaponsMenu.SetActive(false);
         cratesMenu.SetActive(false);
         TogglePreviewUI(false);
-        MainMenuUIManager.instance.ToggleShopMenu(false);
+        MenuManager.instance.ToggleShopMenu(false);
     }
     public void InitializeWeaponsMenu(UserDataJSON jsonData)
     {
@@ -114,7 +114,7 @@ public class ShopMenuScript : MonoBehaviour
             }
         }
         UserDatabase.Instance.WriteInputDataToJSON(jsonData);
-        if (informPopupNeeded) MainMenuUIManager.instance.AddModalWindow("Unlocking Content", content);
+        if (informPopupNeeded) MenuManager.instance.AddModalWindow("Unlocking Content", content);
     }
     public void SetPreviewInfo(WeaponData data, bool showPurchaseButton)
     {
@@ -182,21 +182,21 @@ public class ShopMenuScript : MonoBehaviour
             jsonData = JsonUtility.FromJson<UserDataJSON>(json);
             if (jsonData.userCoins >= data.purchasePrice)
             {
-                MainMenuUIManager.instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
+                MenuManager.instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
                 FindForWeaponDataInList(data).SetItemData(data, true, true);
                 jsonData.userCoins -= data.purchasePrice;
                 //jsonData.shopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
                 jsonData.shopData.ownedWeaponIndexes.Add(Database.FindWeaponDataIndex(data));
                 purchasePreview.interactable = false;
-                MainMenuUIManager.instance.UpdateCoin(jsonData.userCoins);
+                MenuManager.instance.UpdateCoin(jsonData.userCoins);
 
                 UserDatabase.Instance.WriteInputDataToJSON(jsonData);
-                MainMenuUIManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutItemSelections();
+                MenuManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutItemSelections();
                 //Debug.LogWarning("Writing User Data To Files...");
             }
             else
             {
-                MainMenuUIManager.instance.AddNotification("Purchase Result", "Cannot Purchase Weapon! You need more money!");
+                MenuManager.instance.AddNotification("Purchase Result", "Cannot Purchase Weapon! You need more money!");
             }
         }
     }

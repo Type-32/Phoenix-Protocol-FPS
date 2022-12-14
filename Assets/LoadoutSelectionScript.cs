@@ -70,7 +70,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         ToggleRenameUI(false);
         DisableWeaponSelection();
         DisableEquipmentSelection();
-        MainMenuUIManager.instance.CloseLoadoutSelectionMenu();
+        MenuManager.instance.CloseLoadoutSelectionMenu();
     }
     public int FindGlobalWeaponIndex(WeaponData data)
     {
@@ -383,7 +383,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         DisableAllSelectedVisuals();
         loadoutItems[selectedLoadoutIndex].ToggleSelectVisual(true);
         EnablePreview();
-        MainMenuUIManager.instance.AddNotification("Loadout Selection", "You have selected Loadout " + loadoutDataList[selectedLoadoutIndex].loadoutName + ".");
+        MenuManager.instance.AddNotification("Loadout Selection", "You have selected Loadout " + loadoutDataList[selectedLoadoutIndex].loadoutName + ".");
         //WriteLoadoutDataToJSON();
     }
     public void DisableAllSelectedVisuals()

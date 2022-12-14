@@ -11,9 +11,9 @@ using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using LauncherManifest;
 
-public class MainMenuUIManager : MonoBehaviour
+public class MenuManager : MonoBehaviour
 {
-    public static MainMenuUIManager instance;
+    public static MenuManager instance;
     [SerializeField] private Button multiplayerButton;
     [SerializeField] private Button createRoomButton;
     [Space]
@@ -83,12 +83,8 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] Text selectedGamemode;
     [SerializeField] Text selectedMaxPlayers;
     [SerializeField] Text selectedMaxKillLimit;
-    public List<GameObject> FFAGamemodeOptions = new();
-    public List<GameObject> TDMPlayersOptions = new();
-    public List<GameObject> KOTHPlayersOptions = new();
-    public List<GameObject> DZPlayersOptions = new();
 
-    [Space,Header("Version Manifests")]
+    [Space, Header("Version Manifests")]
     [SerializeField] private List<Text> versionTexts = new();
 
     public enum PopupQueue
@@ -147,20 +143,20 @@ public class MainMenuUIManager : MonoBehaviour
         CloseUpdateLogsMenu();
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
-        for(int i = 0; i < versionTexts.Count; i++)
+        for (int i = 0; i < versionTexts.Count; i++)
         {
             versionTexts[i].text = "V" + LocalLaunchedClient.LocalGameVersion.ToString();
         }
-        if(LauncherConfig.CompareLocalVersionWithCache())
+        if (LauncherConfig.CompareLocalVersionWithCache())
         {
-            
+
         }
         //AddPopup("test", "testlol");
 
     }
     private void OnEnable()
     {
-        MainMenuUIManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue(), UserDatabase.Instance.GetUserCoinValue());
+        MenuManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue(), UserDatabase.Instance.GetUserCoinValue());
     }
 
     #region Main Menus
@@ -434,7 +430,7 @@ public class MainMenuUIManager : MonoBehaviour
     }
     public string SetConnectionIndicatorText(string content)
     {
-        if(content != null) connectionIndicator.text = content;
+        if (content != null) connectionIndicator.text = content;
         else return connectionIndicator.text;
         return null;
     }
