@@ -23,15 +23,15 @@ public class GunManager : Gun
     //public GadgetUsageScript gadgetFunc;
     public ParticleSystem muzzleFire;
     public GameObject shellEject;
-    public Transform shellEjectPos;
-    public GameObject bulletImpact;
-    public GameObject bulletImpactBlood;
+    //public Transform shellEjectPos;
+    //public GameObject bulletImpact;
+    //public GameObject bulletImpactBlood;
     public GameObject pickup;
     public GameObject gunVisual;
     public GameObject handsVisual;
     public GameObject thirdPersonHandsVisual;
-    public Joint rightHandEnd;
-    public Joint leftHandEnd;
+    //public Joint rightHandEnd;
+    //public Joint leftHandEnd;
     public Recoil camRecoil;
 
     [Space]
