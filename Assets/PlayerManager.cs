@@ -189,6 +189,7 @@ public class PlayerManager : MonoBehaviour
             OnJoiningOngoingRoom();
             //randomPlayerColor = Random.ColorHSV();
             deathInfoCanvas.alpha = 0f;
+            randomPlayerColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255), 1);
         }
         //if (!pv.IsMine) return;
         openedInventory = false;
@@ -329,6 +330,8 @@ public class PlayerManager : MonoBehaviour
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(jsonData.MouseSensitivity);
         controller.GetComponent<PlayerStats>().SetPlayerFOV(jsonData.FieldOfView);
         controller.GetComponent<PlayerControllerManager>().SetBodyMaterialColor(randomPlayerColor);
+        controller.GetComponent<PlayerControllerManager>().SetHeadMaterialColor(randomPlayerColor);
+        controller.GetComponent<PlayerControllerManager>().SetFeetMaterialColor(randomPlayerColor);
         controller.GetComponent<PlayerControllerManager>().IsTeam = IsTeam;
         cmm.RefreshAllHostileIndicators();
     }

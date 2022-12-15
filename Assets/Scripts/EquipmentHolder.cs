@@ -68,13 +68,11 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             {
                 Destroy(weaponSlots[0].gun.handsVisual);
                 weaponSlots[0].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-                weaponSlots[0].gun.transform.localPosition = new Vector3(weaponSlots[0].gun.transform.localPosition.x, weaponSlots[0].gun.transform.localPosition.y + 0.1f, weaponSlots[0].gun.transform.localPosition.z);
             }
             if (weaponSlots[1] != null)
             {
                 Destroy(weaponSlots[1].gun.handsVisual);
                 weaponSlots[1].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-                weaponSlots[1].gun.transform.localPosition = new Vector3(weaponSlots[1].gun.transform.localPosition.x, weaponSlots[1].gun.transform.localPosition.y + 0.1f, weaponSlots[1].gun.transform.localPosition.z);
             }
 
             Transform[] el1 = equipmentSlots[0].equipment.equipmentVisual.GetComponentsInChildren<Transform>();
@@ -90,14 +88,13 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             {
                 Destroy(equipmentSlots[0].equipment.handsVisual);
                 equipmentSlots[0].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-                equipmentSlots[0].equipment.transform.localPosition = new Vector3(equipmentSlots[0].equipment.transform.localPosition.x, equipmentSlots[0].equipment.transform.localPosition.y + 0.1f, equipmentSlots[0].equipment.transform.localPosition.z);
             }
             if (equipmentSlots[1] != null)
             {
                 Destroy(equipmentSlots[1].equipment.handsVisual);
                 equipmentSlots[1].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-                equipmentSlots[1].equipment.transform.localPosition = new Vector3(equipmentSlots[1].equipment.transform.localPosition.x, equipmentSlots[1].equipment.transform.localPosition.y + 0.1f, equipmentSlots[1].equipment.transform.localPosition.z);
             }
+            transform.position = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
         }
         if (player.pv.IsMine)
         {

@@ -21,8 +21,16 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
     [Space]
     [Header("Character Customization")]
-    [SerializeField] GameObject playerHead, playerBody, playerFeet1, playerFeet2;
-    [SerializeField] Material playerHeadMaterial, playerBodyMaterial, playerFeetMaterial;
+    [SerializeField] GameObject playerHead;
+    [SerializeField] GameObject playerBody;
+    [SerializeField] GameObject playerFeet1;
+    [SerializeField] GameObject playerFeet2;
+    [SerializeField] Material local_headMaterial;
+    [SerializeField] Material local_bodyMaterial;
+    [SerializeField] Material local_feetMaterial;
+    [SerializeField] Material global_headMaterial;
+    [SerializeField] Material global_bodyMaterial;
+    [SerializeField] Material global_feetMaterial;
 
 
     [Space]
@@ -108,6 +116,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerFeet2.SetActive(true);
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
             playerMinimapDot.SetActive(false);
+            SetBodyMaterialColor(Color.red);
+            SetFeetMaterialColor(Color.red);
+            SetHeadMaterialColor(Color.red);
         }
     }
     void FixedUpdate()
@@ -220,15 +231,33 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     #region Body Materials
     public void SetBodyMaterialColor(Color color)
     {
-        playerBodyMaterial.color = color;
+        local_bodyMaterial.color = color;
     }
     public void SetFeetMaterialColor(Color color)
     {
-        playerFeetMaterial.color = color;
+        local_feetMaterial.color = color;
     }
     public void SetHeadMaterialColor(Color color)
     {
-        playerHeadMaterial.color = color;
+        local_headMaterial.color = color;
+    }
+    [PunRPC]
+    public void RPC_SetGlobalBodyMaterialColor(float r, float g, float b)
+    {
+        Color color = new Color(r, g, b, 1);
+        global_bodyMaterial.color = color;
+    }
+    [PunRPC]
+    public void RPC_SetGlobalFeetMaterialColor(float r, float g, float b)
+    {
+        Color color = new Color(r, g, b, 1);
+        global_feetMaterial.color = color;
+    }
+    [PunRPC]
+    public void RPC_SetGlobalHeadMaterialColor(float r, float g, float b)
+    {
+        Color color = new Color(r, g, b, 1);
+        global_headMaterial.color = color;
     }
     #endregion
     public IEnumerator UseStreakGift(float duration, int cost)
