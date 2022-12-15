@@ -30,7 +30,7 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             //stream.SendNext(player.holder.transform.position);
-            stream.SendNext(player.holder.transform.localRotation);
+            stream.SendNext(player.holder.transform.rotation);
         }
         else
         {
