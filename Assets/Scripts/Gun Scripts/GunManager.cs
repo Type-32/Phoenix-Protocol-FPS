@@ -29,6 +29,7 @@ public class GunManager : Gun
     public GameObject pickup;
     public GameObject gunVisual;
     public GameObject handsVisual;
+    public GameObject thirdPersonHandsVisual;
     public Joint rightHandEnd;
     public Joint leftHandEnd;
     public Recoil camRecoil;

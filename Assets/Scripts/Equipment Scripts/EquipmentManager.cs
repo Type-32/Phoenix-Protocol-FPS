@@ -18,6 +18,7 @@ public class EquipmentManager : Equipment
     [HideInInspector] public MouseLookScript fpsCam;
     public GameObject equipmentVisual;
     public GameObject handsVisual;
+    public GameObject thirdPersonHandsVisual;
     public GameObject swayModel;
     public GameObject recoilModel;
     [HideInInspector] public Recoil camRecoil;

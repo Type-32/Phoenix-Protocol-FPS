@@ -64,10 +64,18 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] obj2 = weaponSlots[1].gun.handsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < obj1.Length; i++) obj1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             for (int i = 0; i < obj2.Length; i++) obj2[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
-            //Destroy(weaponSlots[0].gun.handsVisual);
-            //Destroy(weaponSlots[1].gun.handsVisual);
-            weaponSlots[0].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-            weaponSlots[1].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+            if (weaponSlots[0] != null)
+            {
+                Destroy(weaponSlots[0].gun.handsVisual);
+                weaponSlots[0].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                weaponSlots[0].gun.transform.localPosition = new Vector3(weaponSlots[0].gun.transform.localPosition.x, weaponSlots[0].gun.transform.localPosition.y + 0.1f, weaponSlots[0].gun.transform.localPosition.z);
+            }
+            if (weaponSlots[1] != null)
+            {
+                Destroy(weaponSlots[1].gun.handsVisual);
+                weaponSlots[1].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                weaponSlots[1].gun.transform.localPosition = new Vector3(weaponSlots[1].gun.transform.localPosition.x, weaponSlots[1].gun.transform.localPosition.y + 0.1f, weaponSlots[1].gun.transform.localPosition.z);
+            }
 
             Transform[] el1 = equipmentSlots[0].equipment.equipmentVisual.GetComponentsInChildren<Transform>();
             Transform[] el2 = equipmentSlots[1].equipment.equipmentVisual.GetComponentsInChildren<Transform>();
@@ -77,11 +85,19 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] el4 = equipmentSlots[1].equipment.handsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < el3.Length; i++) el3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             for (int i = 0; i < el4.Length; i++) el4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
-            //Destroy(equipmentSlots[0].equipment.handsVisual);
-            //Destroy(equipmentSlots[1].equipment.handsVisual);
-            equipmentSlots[0].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-            equipmentSlots[1].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
+            if (equipmentSlots[0] != null)
+            {
+                Destroy(equipmentSlots[0].equipment.handsVisual);
+                equipmentSlots[0].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                equipmentSlots[0].equipment.transform.localPosition = new Vector3(equipmentSlots[0].equipment.transform.localPosition.x, equipmentSlots[0].equipment.transform.localPosition.y + 0.1f, equipmentSlots[0].equipment.transform.localPosition.z);
+            }
+            if (equipmentSlots[1] != null)
+            {
+                Destroy(equipmentSlots[1].equipment.handsVisual);
+                equipmentSlots[1].equipment.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                equipmentSlots[1].equipment.transform.localPosition = new Vector3(equipmentSlots[1].equipment.transform.localPosition.x, equipmentSlots[1].equipment.transform.localPosition.y + 0.1f, equipmentSlots[1].equipment.transform.localPosition.z);
+            }
         }
         if (player.pv.IsMine)
         {
@@ -103,6 +119,10 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                     equipmentSlots[i].InitializeStart();
                 }
             }
+            if (weaponSlots[0] != null) Destroy(weaponSlots[0].gun.thirdPersonHandsVisual);
+            if (weaponSlots[1] != null) Destroy(weaponSlots[1].gun.thirdPersonHandsVisual);
+            if (equipmentSlots[0] != null) Destroy(equipmentSlots[0].equipment.thirdPersonHandsVisual);
+            if (equipmentSlots[1] != null) Destroy(equipmentSlots[1].equipment.thirdPersonHandsVisual);
             Debug.Log("Init Start Line 36");
             EquipItem(0);
         }
