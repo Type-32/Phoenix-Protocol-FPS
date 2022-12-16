@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5118941530907574807}
   - component: {fileID: 6655666917650446578}
   - component: {fileID: 8633986804219153559}
+  - component: {fileID: 7442274799968123368}
   m_Layer: 7
   m_Name: PlayerHead
   m_TagString: Untagged
@@ -97,6 +98,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7442274799968123368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503423415885529066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2380acbb665a4c4c9a81f6aa2ac5d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7939240843359642470}
+  part: 0
 --- !u!1 &692699609841304608
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +618,7 @@ GameObject:
   - component: {fileID: 2905801034864732911}
   - component: {fileID: 5273441574456439556}
   - component: {fileID: 4536644744439101240}
+  - component: {fileID: 2585671116365011794}
   m_Layer: 7
   m_Name: PlayerFeet2
   m_TagString: Untagged
@@ -688,6 +704,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2585671116365011794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4427454032901749418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2380acbb665a4c4c9a81f6aa2ac5d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7939240843359642470}
+  part: 2
 --- !u!1 &4958678738205994369
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,6 +1112,7 @@ GameObject:
   - component: {fileID: 6178626278493935985}
   - component: {fileID: 2911186999638298457}
   - component: {fileID: 5669953911394483327}
+  - component: {fileID: 8819593842432633531}
   m_Layer: 7
   m_Name: PlayerBody
   m_TagString: Untagged
@@ -1167,6 +1198,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8819593842432633531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5841272763987010567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2380acbb665a4c4c9a81f6aa2ac5d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7939240843359642470}
+  part: 1
 --- !u!1 &6079857253894057758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,6 +1682,7 @@ GameObject:
   - component: {fileID: 7419393651241672354}
   - component: {fileID: 6291352629471533601}
   - component: {fileID: 9052433020441336710}
+  - component: {fileID: 8092182947756510507}
   m_Layer: 7
   m_Name: PlayerFeet1
   m_TagString: Untagged
@@ -1722,6 +1768,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8092182947756510507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780626065572637225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2380acbb665a4c4c9a81f6aa2ac5d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7939240843359642470}
+  part: 2
 --- !u!1 &8315008379120153381
 GameObject:
   m_ObjectHideFlags: 0

@@ -111,6 +111,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         else
         {
+            body.enabled = false;
+            capsuleCollider.enabled = false;
             if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = playerManager.IsTeam;
             weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
             weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
