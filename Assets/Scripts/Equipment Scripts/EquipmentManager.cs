@@ -23,6 +23,22 @@ public class EquipmentManager : Equipment
     public GameObject recoilModel;
     [HideInInspector] public Recoil camRecoil;
     [HideInInspector] public int inEquipmentState;
+    public void SetFirstPersonViewHandsMaterial(Material mat)
+    {
+        MeshRenderer[] tmp = handsVisual.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            tmp[i].material = mat;
+        }
+    }
+    public void SetThirdPersonViewHandsMaterial(Material mat)
+    {
+        MeshRenderer[] tmp = thirdPersonHandsVisual.GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            tmp[i].material = mat;
+        }
+    }
     public override void Use()
     {
         DeterminatesFunction();

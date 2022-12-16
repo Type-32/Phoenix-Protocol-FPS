@@ -261,6 +261,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         weaponSlots[index].itemData = data;
         weaponSlots[index].InitializeAwake();
         weaponSlots[index].InitializeStart();
+        weaponSlots[index].gun.SetFirstPersonViewHandsMaterial(player.local_handMaterial);
+        weaponSlots[index].gun.SetThirdPersonViewHandsMaterial(player.global_handMaterial);
         weaponSlots[index].item.SetActive(false);
         EquipItem(index);
         temp.GetComponent<GunManager>().attachment.EnableGunAttachments(index);
@@ -278,6 +280,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         equipmentSlots[index].InitializeAwake();
         equipmentSlots[index].InitializeStart();
         equipmentSlots[index].equipment.inEquipmentState = index;
+        equipmentSlots[index].equipment.SetFirstPersonViewHandsMaterial(player.local_handMaterial);
+        equipmentSlots[index].equipment.SetThirdPersonViewHandsMaterial(player.global_handMaterial);
         equipmentSlots[index].item.SetActive(false);
         EquipItem(index + 2);
         return true;

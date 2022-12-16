@@ -28,9 +28,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [SerializeField] Material local_headMaterial;
     [SerializeField] Material local_bodyMaterial;
     [SerializeField] Material local_feetMaterial;
+    public Material local_handMaterial;
     [SerializeField] Material global_headMaterial;
     [SerializeField] Material global_bodyMaterial;
     [SerializeField] Material global_feetMaterial;
+    public Material global_handMaterial;
 
 
     [Space]
@@ -126,6 +128,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             SetGlobalBodyMaterialColor(Color.red.r, Color.red.g, Color.red.b);
             SetGlobalFeetMaterialColor(Color.red.r, Color.red.g, Color.red.b);
             SetGlobalHeadMaterialColor(Color.red.r, Color.red.g, Color.red.b);
+            SetGlobalHandMaterialColor(Color.red.r, Color.red.g, Color.red.b);
         }
     }
     void FixedUpdate()
@@ -248,6 +251,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         local_headMaterial.color = color;
     }
+    public void SetHandMaterialColor(Color color)
+    {
+        local_handMaterial.color = color;
+    }
     public void SetGlobalBodyMaterialColor(float r, float g, float b)
     {
         Color color = new Color(r, g, b, 1);
@@ -262,6 +269,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         Color color = new Color(r, g, b, 1);
         global_headMaterial.color = color;
+    }
+    public void SetGlobalHandMaterialColor(float r, float g, float b)
+    {
+        Color color = new Color(r, g, b, 1);
+        global_handMaterial.color = color;
     }
     #endregion
     public IEnumerator UseStreakGift(float duration, int cost)
