@@ -20,7 +20,14 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
             transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
             //player.holder.transform.position = Vector3.Lerp(player.holder.transform.position, camRealPos, 0.1f);
-            player.holder.transform.rotation = Quaternion.Lerp(player.holder.transform.rotation, camRealRot, 0.1f);
+            if (player.holder.transform.rotation.y >= 70f || player.holder.transform.rotation.y <= -70f)
+            {
+                player.bodyRotatePoint.transform.rotation = Quaternion.Lerp(player.bodyRotatePoint.transform.rotation, Quaternion.Euler(camRealRot.x, (camRealRot.y - player.holder.transform.rotation.y), camRealRot.z), 0.1f);
+            }
+            else
+            {
+                player.holder.transform.rotation = Quaternion.Lerp(player.holder.transform.rotation, camRealRot, 0.1f);
+            }
         }
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

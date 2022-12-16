@@ -59,6 +59,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [Header("Multiplayer")]
     public PhotonView pv;
     public PlayerManager playerManager;
+    public GameObject bodyRotatePoint;
     public List<GameObject> playerDeathLoots;
     private bool hasArmor = false;
     public bool IsTeam = false;
