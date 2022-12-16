@@ -93,10 +93,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerBody.SetActive(false);
             playerFeet1.SetActive(false);
             playerFeet2.SetActive(false);
-            playerHead.GetComponent<MeshRenderer>().material = local_headMaterial;
-            playerBody.GetComponent<MeshRenderer>().material = local_bodyMaterial;
-            playerFeet1.GetComponent<MeshRenderer>().material = local_feetMaterial;
-            playerFeet2.GetComponent<MeshRenderer>().material = local_feetMaterial;
+            if (local_headMaterial != null) playerHead.GetComponent<MeshRenderer>().material = local_headMaterial;
+            if (local_bodyMaterial != null) playerBody.GetComponent<MeshRenderer>().material = local_bodyMaterial;
+            if (local_feetMaterial != null) playerFeet1.GetComponent<MeshRenderer>().material = local_feetMaterial;
+            if (local_feetMaterial != null) playerFeet2.GetComponent<MeshRenderer>().material = local_feetMaterial;
             stats.enableNightVision = playerManager.nightVisionState;
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
             MinimapDotIdentifier[] tempget;
@@ -121,10 +121,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerBody.SetActive(true);
             playerFeet1.SetActive(true);
             playerFeet2.SetActive(true);
-            playerHead.GetComponent<MeshRenderer>().material = global_headMaterial;
-            playerBody.GetComponent<MeshRenderer>().material = global_bodyMaterial;
-            playerFeet1.GetComponent<MeshRenderer>().material = global_feetMaterial;
-            playerFeet2.GetComponent<MeshRenderer>().material = global_feetMaterial;
+            if (global_headMaterial != null) playerHead.GetComponent<MeshRenderer>().material = global_headMaterial;
+            if (global_bodyMaterial != null) playerBody.GetComponent<MeshRenderer>().material = global_bodyMaterial;
+            if (global_feetMaterial != null) playerFeet1.GetComponent<MeshRenderer>().material = global_feetMaterial;
+            if (global_feetMaterial != null) playerFeet2.GetComponent<MeshRenderer>().material = global_feetMaterial;
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
             playerMinimapDot.SetActive(false);
             SetGlobalBodyMaterialColor(Color.red.r, Color.red.g, Color.red.b);
@@ -243,37 +243,45 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     #region Body Materials
     public void SetBodyMaterialColor(Color color)
     {
+        if (local_bodyMaterial == null) return;
         local_bodyMaterial.color = color;
     }
     public void SetFeetMaterialColor(Color color)
     {
+        if (local_feetMaterial == null) return;
         local_feetMaterial.color = color;
     }
     public void SetHeadMaterialColor(Color color)
     {
+        if (local_headMaterial == null) return;
         local_headMaterial.color = color;
     }
     public void SetHandMaterialColor(Color color)
     {
+        if (local_handMaterial == null) return;
         local_handMaterial.color = color;
     }
     public void SetGlobalBodyMaterialColor(float r, float g, float b)
     {
+        if (global_bodyMaterial == null) return;
         Color color = new Color(r, g, b, 1);
         global_bodyMaterial.color = color;
     }
     public void SetGlobalFeetMaterialColor(float r, float g, float b)
     {
+        if (global_feetMaterial == null) return;
         Color color = new Color(r, g, b, 1);
         global_feetMaterial.color = color;
     }
     public void SetGlobalHeadMaterialColor(float r, float g, float b)
     {
+        if (global_headMaterial == null) return;
         Color color = new Color(r, g, b, 1);
         global_headMaterial.color = color;
     }
     public void SetGlobalHandMaterialColor(float r, float g, float b)
     {
+        if (global_handMaterial == null) return;
         Color color = new Color(r, g, b, 1);
         global_handMaterial.color = color;
     }
