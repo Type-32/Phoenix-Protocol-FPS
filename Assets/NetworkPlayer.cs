@@ -19,15 +19,18 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
         {
             transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
-            //player.holder.transform.position = Vector3.Lerp(player.holder.transform.position, camRealPos, 0.1f);
-            if (player.fpsCam.gameObject.transform.rotation.x >= 20f || player.fpsCam.gameObject.transform.rotation.x <= -20f)
+            player.fpsCam.gameObject.transform.position = Vector3.Lerp(player.fpsCam.gameObject.transform.position, camRealPos, 0.1f);
+            /*
+            if (player.fpsCam.gameObject.transform.localRotation.x <= 0.3f && player.fpsCam.gameObject.transform.localRotation.x >= -0.2f)
             {
-                player.bodyRotatePoint.transform.rotation = Quaternion.Lerp(player.bodyRotatePoint.transform.rotation, Quaternion.Euler((camRealRot.x - player.fpsCam.gameObject.transform.rotation.x), 0f, 0f), 0.1f);
+                Debug.LogWarning("x: " + player.fpsCam.gameObject.transform.localRotation.x + " y: " + player.fpsCam.gameObject.transform.localRotation.y + " z: " + player.fpsCam.gameObject.transform.localRotation.z);
+                player.fpsCam.gameObject.transform.rotation = Quaternion.Lerp(player.fpsCam.gameObject.transform.rotation, camRealRot, 0.1f);
             }
             else
             {
-                player.fpsCam.gameObject.transform.rotation = Quaternion.Lerp(player.fpsCam.gameObject.transform.rotation, camRealRot, 0.1f);
-            }
+                Debug.LogWarning("Is Rotating Body Joint");
+                player.bodyRotatePoint.transform.rotation = Quaternion.Lerp(player.bodyRotatePoint.transform.rotation, Quaternion.Euler((camRealRot.x - player.fpsCam.gameObject.transform.rotation.x), 0f, 0f), 0.1f);
+            }*/
         }
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
