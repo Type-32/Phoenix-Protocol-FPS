@@ -121,7 +121,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         playerManager =
             PhotonView
-                .Find((int) pv.InstantiationData[0])
+                .Find((int)pv.InstantiationData[0])
                 .GetComponent<PlayerManager>();
         pv = GetComponent<PhotonView>();
         //ui = FindObjectOfType<UIManager>();
@@ -135,9 +135,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             //if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
             ui.hostileTIGroup.alpha = 0;
             weaponIndex1 =
-                (int) pv.Owner.CustomProperties["selectedMainWeaponIndex"];
+                (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
             weaponIndex2 =
-                (int) pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
+                (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
             recoilScript = FindObjectOfType<Recoil>();
             DerivePlayerStatsToHUDInitialize();
             playerHead.SetActive(false);
@@ -174,9 +174,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                 "Team Deathmatch"
             ) IsTeam = playerManager.IsTeam;
             weaponIndex1 =
-                (int) pv.Owner.CustomProperties["selectedMainWeaponIndex"];
+                (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
             weaponIndex2 =
-                (int) pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
+                (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
             Destroy(ui.gameObject);
             playerHead.SetActive(true);
             playerBody.SetActive(true);
@@ -339,7 +339,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
 
 
-#region Body Materials
+    #region Body Materials
     public void SetBodyMaterialColor(Color color)
     {
         local_bodyMaterial.color = color;
@@ -372,7 +372,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         Color color = new Color(r, g, b, 1);
         global_headMaterial.color = color;
     }
-#endregion
+    #endregion
 
 
     public IEnumerator UseStreakGift(float duration, int cost)
@@ -397,8 +397,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         //ui.healthBarFill.color = Color.Lerp(ui.healthBarFill.color, (stats.health >= 50f) ? Color.green : (stats.health < 50f && stats.health >= 30f) ? Color.yellow : Color.red, 5 * Time.deltaTime);
         //ui.healthText.text = ((int)stats.health).ToString();
-        ui.healthText.text = ((int) stats.health).ToString();
-        ui.armorText.text = ((int) stats.armor).ToString();
+        ui.healthText.text = ((int)stats.health).ToString();
+        ui.armorText.text = ((int)stats.armor).ToString();
         playerVolumeEffect.weight = 1f - (stats.health / 100f);
         playerHurtEffect.weight =
             Mathf.Lerp(playerHurtEffect.weight, 0f, 8 * Time.deltaTime);
@@ -492,7 +492,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         SpawnDeathLoot();
         DisableAllMinimapDots();
         usingStreakGifts = false;
-        playerManager.Die (isSuicide, ViewID, killer);
+        playerManager.Die(isSuicide, ViewID, killer);
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;
     }
@@ -562,7 +562,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         UIManager.ValueTransform tmp;
         tmp.position = targetPos;
         tmp.rotation = targetRot;
-        UIManager.CreateIndicator (tmp);
+        UIManager.CreateIndicator(tmp);
 
         //Core Take Damage Functions
         recoilScript.RecoilFire(0.4f, 0.8f, 4, 0.12f, 0, 5, 12, 5, 12);
@@ -604,7 +604,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             int tm =
-                (int) info.Sender.CustomProperties["weaponIndex"] == 0
+                (int)info.Sender.CustomProperties["weaponIndex"] == 0
                     ? (int)
                     info.Sender.CustomProperties["selectedMainWeaponIndex"]
                     : (int)
@@ -737,7 +737,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             if (holder.weaponIndex == 0)
             {
-                if ((int) pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
                     holder
                         .weaponSlots[holder.weaponIndex]
                         .gun
@@ -752,7 +752,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             }
             else
             {
-                if ((int) pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
                     holder
                         .weaponSlots[holder.weaponIndex]
                         .gun
@@ -770,7 +770,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             if (holder.weaponIndex == 0)
             {
-                if ((int) pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
                     holder
                         .weaponSlots[holder.weaponIndex]
                         .gun
@@ -785,7 +785,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             }
             else
             {
-                if ((int) pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
+                if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
                     holder
                         .weaponSlots[holder.weaponIndex]
                         .gun
@@ -802,12 +802,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         if (holder.weaponIndex == 0)
         {
-            if ((int) pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
                 holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
         }
         else
         {
-            if ((int) pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
                 holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
         }
     }
