@@ -329,9 +329,6 @@ public class PlayerManager : MonoBehaviour
 
         controller.GetComponent<PlayerStats>().SetPlayerSensitivity(jsonData.MouseSensitivity);
         controller.GetComponent<PlayerStats>().SetPlayerFOV(jsonData.FieldOfView);
-        controller.GetComponent<PlayerControllerManager>().SetBodyMaterialColor(randomPlayerColor);
-        controller.GetComponent<PlayerControllerManager>().SetHeadMaterialColor(randomPlayerColor);
-        controller.GetComponent<PlayerControllerManager>().SetFeetMaterialColor(randomPlayerColor);
         controller.GetComponent<PlayerControllerManager>().IsTeam = IsTeam;
         cmm.RefreshAllHostileIndicators();
     }
