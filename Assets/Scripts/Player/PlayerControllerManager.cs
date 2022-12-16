@@ -58,7 +58,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public PhotonView pv;
     public PlayerManager playerManager;
     public List<GameObject> playerDeathLoots;
-
     private bool hasArmor = false;
     public bool IsTeam = false;
     private float timePassedAfterDamageTaken = 5f;
@@ -92,6 +91,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerBody.SetActive(false);
             playerFeet1.SetActive(false);
             playerFeet2.SetActive(false);
+            playerHead.GetComponent<MeshRenderer>().material = local_headMaterial;
+            playerBody.GetComponent<MeshRenderer>().material = local_bodyMaterial;
+            playerFeet1.GetComponent<MeshRenderer>().material = local_feetMaterial;
+            playerFeet2.GetComponent<MeshRenderer>().material = local_feetMaterial;
             stats.enableNightVision = playerManager.nightVisionState;
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
             MinimapDotIdentifier[] tempget;
@@ -114,11 +117,15 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             playerBody.SetActive(true);
             playerFeet1.SetActive(true);
             playerFeet2.SetActive(true);
+            playerHead.GetComponent<MeshRenderer>().material = global_headMaterial;
+            playerBody.GetComponent<MeshRenderer>().material = global_bodyMaterial;
+            playerFeet1.GetComponent<MeshRenderer>().material = global_feetMaterial;
+            playerFeet2.GetComponent<MeshRenderer>().material = global_feetMaterial;
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
             playerMinimapDot.SetActive(false);
-            SetBodyMaterialColor(Color.red);
-            SetFeetMaterialColor(Color.red);
-            SetHeadMaterialColor(Color.red);
+            SetGlobalBodyMaterialColor(Color.red.r, Color.red.g, Color.red.b);
+            SetGlobalFeetMaterialColor(Color.red.r, Color.red.g, Color.red.b);
+            SetGlobalHeadMaterialColor(Color.red.r, Color.red.g, Color.red.b);
         }
     }
     void FixedUpdate()
@@ -241,20 +248,17 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         local_headMaterial.color = color;
     }
-    [PunRPC]
-    public void RPC_SetGlobalBodyMaterialColor(float r, float g, float b)
+    public void SetGlobalBodyMaterialColor(float r, float g, float b)
     {
         Color color = new Color(r, g, b, 1);
         global_bodyMaterial.color = color;
     }
-    [PunRPC]
-    public void RPC_SetGlobalFeetMaterialColor(float r, float g, float b)
+    public void SetGlobalFeetMaterialColor(float r, float g, float b)
     {
         Color color = new Color(r, g, b, 1);
         global_feetMaterial.color = color;
     }
-    [PunRPC]
-    public void RPC_SetGlobalHeadMaterialColor(float r, float g, float b)
+    public void SetGlobalHeadMaterialColor(float r, float g, float b)
     {
         Color color = new Color(r, g, b, 1);
         global_headMaterial.color = color;
