@@ -20,13 +20,13 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
             transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);
             //player.holder.transform.position = Vector3.Lerp(player.holder.transform.position, camRealPos, 0.1f);
-            if (player.holder.transform.rotation.y >= 70f || player.holder.transform.rotation.y <= -70f)
+            if (player.fpsCam.gameObject.transform.rotation.x >= 20f || player.fpsCam.gameObject.transform.rotation.x <= -20f)
             {
-                player.bodyRotatePoint.transform.rotation = Quaternion.Lerp(player.bodyRotatePoint.transform.rotation, Quaternion.Euler(camRealRot.x, (camRealRot.y - player.holder.transform.rotation.y), camRealRot.z), 0.1f);
+                player.bodyRotatePoint.transform.rotation = Quaternion.Lerp(player.bodyRotatePoint.transform.rotation, Quaternion.Euler((camRealRot.x - player.fpsCam.gameObject.transform.rotation.x), 0f, 0f), 0.1f);
             }
             else
             {
-                player.holder.transform.rotation = Quaternion.Lerp(player.holder.transform.rotation, camRealRot, 0.1f);
+                player.fpsCam.gameObject.transform.rotation = Quaternion.Lerp(player.fpsCam.gameObject.transform.rotation, camRealRot, 0.1f);
             }
         }
     }
@@ -37,7 +37,7 @@ public class NetworkPlayer : MonoBehaviourPun, IPunObservable
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             //stream.SendNext(player.holder.transform.position);
-            stream.SendNext(player.holder.transform.rotation);
+            stream.SendNext(player.fpsCam.gameObject.transform.rotation);
         }
         else
         {
