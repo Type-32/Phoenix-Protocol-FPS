@@ -64,6 +64,10 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] obj2 = weaponSlots[1].gun.handsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < obj1.Length; i++) obj1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             for (int i = 0; i < obj2.Length; i++) obj2[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            Transform[] obj3 = weaponSlots[0].gun.thirdPersonHandsVisual.GetComponentsInChildren<Transform>();
+            Transform[] obj4 = weaponSlots[1].gun.thirdPersonHandsVisual.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < obj3.Length; i++) obj3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < obj4.Length; i++) obj4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             if (weaponSlots[0] != null)
             {
                 Destroy(weaponSlots[0].gun.handsVisual);
@@ -83,6 +87,10 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] el4 = equipmentSlots[1].equipment.handsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < el3.Length; i++) el3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             for (int i = 0; i < el4.Length; i++) el4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            Transform[] el5 = equipmentSlots[0].equipment.thirdPersonHandsVisual.GetComponentsInChildren<Transform>();
+            Transform[] el6 = equipmentSlots[1].equipment.thirdPersonHandsVisual.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < el5.Length; i++) el5[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < el6.Length; i++) el6[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
 
             if (equipmentSlots[0] != null)
             {
