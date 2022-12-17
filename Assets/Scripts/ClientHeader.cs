@@ -332,6 +332,13 @@ namespace UserConfiguration
                 return "SettingsOptions.json";
             }
         }
+        public static string AppearancesConfigKey
+        {
+            get
+            {
+                return "AppearancesConfig.json";
+            }
+        }
     }
     public static class Database
     {
@@ -414,6 +421,56 @@ namespace UserConfiguration
                 if (i == index) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i];
             }
             return null;
+        }
+        public static int FindPlayerCosmeticDataIndex(PlayerCosmeticData data)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allPlayerCosmeticDatas.Count; i++)
+            {
+                if (GlobalDatabase.singleton.allPlayerCosmeticDatas[i] == data) return i;
+            }
+            return -1;
+        }
+        public static PlayerCosmeticData FindPlayerCosmeticData(int index)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allPlayerCosmeticDatas.Count; i++)
+            {
+                if (i == index) return GlobalDatabase.singleton.allPlayerCosmeticDatas[i];
+            }
+            return null;
+        }
+    }
+    public static class CosmeticSystem
+    {
+        public static string AppearancesConfigFilePath
+        {
+            get
+            {
+                string path = Path.Combine(Application.persistentDataPath, "AppearancesConfig.json");
+                if (File.Exists(path)) return path;
+                else
+                {
+                    File.Create(path).Close();
+                }
+                return null;
+            }
+        }
+        public static void WriteToConfig(AppearancesDataJSON appearancesDataJSON)
+        {
+            string json = JsonUtility.ToJson(appearancesDataJSON, true);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
+        }
+        public static void WriteToConfig(string jsonString)
+        {
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), jsonString);
+        }
+        public static AppearancesDataJSON AppearancesJsonData
+        {
+            get
+            {
+                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
+                AppearancesDataJSON jsonData = JsonUtility.FromJson<AppearancesDataJSON>(json);
+                return jsonData;
+            }
         }
     }
     public static class ShopSystem

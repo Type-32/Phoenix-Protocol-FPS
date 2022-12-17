@@ -18,6 +18,8 @@ public class LoadoutSlotDataJSON
     public int WA_Rightbarrel2;
     public int WA_Leftbarrel1;
     public int WA_Leftbarrel2;
+    public int WeaponSkin1;
+    public int WeaponSkin2;
     internal LoadoutSlotDataJSON()
     {
         SlotName = "Custom Loadout";
@@ -36,5 +38,7 @@ public class LoadoutSlotDataJSON
         WA_Rightbarrel2 = -1;
         WA_Leftbarrel1 = -1;
         WA_Leftbarrel2 = -1;
+        WeaponSkin1 = 0;
+        WeaponSkin2 = 0;
     }
 }

@@ -12,6 +12,7 @@ public class GlobalDatabase : MonoBehaviour
     public List<EquipmentData> allEquipmentDatas = new();
     public List<WeaponAppearanceData> allWeaponAppearanceDatas = new();
     public List<WeaponAttachmentData> allWeaponAttachmentDatas = new();
+    public List<PlayerCosmeticData> allPlayerCosmeticDatas = new();
     public List<LoadoutData> allLoadoutDatas = new();
     public List<UpdateLogData> allLogDatas = new();
     public static GlobalDatabase singleton;
