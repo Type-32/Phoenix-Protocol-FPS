@@ -287,11 +287,13 @@ public class GunCoreFunc : MonoBehaviour
                     {
                         if (part.part != PlayerHitboxPart.PlayerPart.Head)
                         {
-                            Instantiate(gun.player.playerBloodSplatter, hit.transform.position, hit.transform.rotation);
+                            GameObject bloodImpact = Instantiate(gun.player.playerBloodSplatter, hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
+                            Destroy(bloodImpact, 3f);
                         }
                         else
                         {
-                            Instantiate(gun.player.playerCritBloodSplatter, hit.transform.position, hit.transform.rotation);
+                            GameObject bloodImpact = Instantiate(gun.player.playerCritBloodSplatter, hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
+                            Destroy(bloodImpact, 3f);
                         }
                     }
                 }

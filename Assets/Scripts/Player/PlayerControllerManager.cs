@@ -563,11 +563,11 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         if (holder.weaponIndex == 0)
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) Destroy(Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation), 3f);
         }
         else
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) Destroy(Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation), 3f);
         }
 
         if (point != new Vector3() && normal != new Vector3())
