@@ -568,21 +568,24 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
             {
-                GameObject temp = new();
                 if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
                 {
-                    temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
                 }
                 else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.MarksmanRifle)
                 {
-                    temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
                 }
                 else
                 {
-                    temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
                 }
-                if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
-                else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
                 //Destroy(temp, 3f);
             }
         }
@@ -590,21 +593,24 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
             {
-                GameObject temp = new();
                 if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
                 {
-                    temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
                 }
                 else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.MarksmanRifle)
                 {
-                    temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
                 }
                 else
                 {
-                    temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
                 }
-                if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
-                else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             }
         }
 

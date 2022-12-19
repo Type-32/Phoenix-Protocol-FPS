@@ -48,8 +48,8 @@ public class TargetIndicator : MonoBehaviour
     {
         if (target == null)
         {
-            canvasGroup.alpha = 0f;
             Destroy(this.gameObject);
+            canvasGroup.alpha = 0f;
             return;
         }
         canvasGroup.alpha = 1f;
