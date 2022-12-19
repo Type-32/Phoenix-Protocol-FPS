@@ -14,10 +14,11 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     {
         player = _player;
         playerName.text = _player.NickName;
+        playerLevel.text = ((int)_player.CustomProperties["userLevel"]).ToString();
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        if(player == otherPlayer)
+        if (player == otherPlayer)
         {
             Destroy(gameObject);
         }

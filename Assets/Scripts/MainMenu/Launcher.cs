@@ -44,6 +44,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Joined Lobby");
         MenuManager.instance.JoiningMasterLobby(true);
+        Hashtable temp = new();
+        temp.Add("userLevel", UserConfiguration.UserSystem.LocalUserLevel);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(temp);
     }
     public void CreateRoom()
     {
