@@ -523,7 +523,9 @@ public class MenuManager : MonoBehaviour
     {
         RoomOptions roomOptionsTemp = new RoomOptions();
         roomOptionsTemp.CustomRoomProperties = new Hashtable();
-        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility, maxKillLimitNumber);
+
+        //Force Gamemode to FFA
+        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, Gamemodes.FFA, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility, maxKillLimitNumber);
         return roomOptionsTemp;
     }
     public void OnCreateRoomInputSubmit(string roomInput)
