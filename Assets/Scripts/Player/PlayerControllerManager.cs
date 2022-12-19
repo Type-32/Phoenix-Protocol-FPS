@@ -563,11 +563,23 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         if (holder.weaponIndex == 0)
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) Destroy(Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation), 3f);
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
+            {
+                GameObject temp = Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                Destroy(temp, 3f);
+            }
         }
         else
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) Destroy(Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation), 3f);
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
+            {
+                GameObject temp = Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                Destroy(temp, 3f);
+            }
         }
 
         if (point != new Vector3() && normal != new Vector3())
@@ -576,7 +588,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             if (colliders.Length != 0)
             {
                 GameObject bulletImpactObject = Instantiate(holder.weaponSlots[holder.weaponIndex].bulletImpactPrefab, point + normal * 0.01f, Quaternion.LookRotation(-normal, Vector3.up));
-                Destroy(bulletImpactObject, 5f);
+                Destroy(bulletImpactObject, 1f);
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     if (colliders[i].GetComponent<PlayerControllerManager>() != null || colliders[i].GetComponent<PlayerHitboxPart>() != null)
