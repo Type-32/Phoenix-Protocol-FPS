@@ -252,7 +252,7 @@ public class GunCoreFunc : MonoBehaviour
             {
                 if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
                 {
-                    if (hit.collider.gameObject.GetComponent<PlayerControllerManager>().IsTeam != gun.player.IsTeam)
+                    if (hit.collider.gameObject.GetComponent<PlayerHitboxPart>().player.IsTeam != gun.player.IsTeam)
                     {
                         bool hitmarkerFlag = false;
                         hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
