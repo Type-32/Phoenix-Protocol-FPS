@@ -49,6 +49,7 @@ public class TargetIndicator : MonoBehaviour
         if (target == null)
         {
             canvasGroup.alpha = 0f;
+            Destroy(this.gameObject);
             return;
         }
         canvasGroup.alpha = 1f;

@@ -287,13 +287,11 @@ public class GunCoreFunc : MonoBehaviour
                     {
                         if (part.part != PlayerHitboxPart.PlayerPart.Head)
                         {
-                            GameObject bloodImpact = Instantiate(gun.player.playerBloodSplatter, hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
-                            Destroy(bloodImpact, 3f);
+                            ObjectPooler.Instance.SpawnFromPool("BloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
                         }
                         else
                         {
-                            GameObject bloodImpact = Instantiate(gun.player.playerCritBloodSplatter, hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
-                            Destroy(bloodImpact, 3f);
+                            ObjectPooler.Instance.SpawnFromPool("CritBloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
                         }
                     }
                 }
@@ -318,6 +316,10 @@ public class GunCoreFunc : MonoBehaviour
                             }
                             Destroy(temp, 2f);
                         }*/
+        }
+        else
+        {
+            gun.player.InvokeGunEffects(new Vector3(), new Vector3());
         }
     }
 

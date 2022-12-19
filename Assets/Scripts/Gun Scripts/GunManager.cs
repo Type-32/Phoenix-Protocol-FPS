@@ -51,6 +51,7 @@ public class GunManager : Gun
     }
     private void Awake()
     {
+
         //gunPV = GetComponent<PhotonView>();
         //InitializeAwake();
         //player = FindObjectOfType<PlayerControllerManager>();
@@ -180,6 +181,7 @@ public class GunManager : Gun
     }
     public override void InitializeAwake()
     {
+        muzzleFire.playOnAwake = false;
         FindingReferences();
     }
 }
