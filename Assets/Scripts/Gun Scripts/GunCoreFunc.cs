@@ -227,7 +227,6 @@ public class GunCoreFunc : MonoBehaviour
 
         anim.animate.SetTrigger("isFiring");
         if (gun.stats.weaponData.weaponType != QuantityStatsHUD.WeaponType.Shotgun) gun.stats.ammo--;
-        gun.player.InvokeGunEffects();
         RaycastHit hit;
         Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         Vector3 shootDirection = gun.fpsCam.transform.forward;
@@ -246,6 +245,7 @@ public class GunCoreFunc : MonoBehaviour
         ray.direction = shootDirection;
         if (Physics.Raycast(ray, out hit, range))
         {
+            Vector3 tempPoint = new Vector3(), tempNormal = new Vector3();
             //Debug.Log(hit.transform.name);
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
             if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
@@ -282,26 +282,40 @@ public class GunCoreFunc : MonoBehaviour
                         gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
                         gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
                     }
+                    PlayerHitboxPart part = hit.collider.gameObject.GetComponent<PlayerHitboxPart>();
+                    if (part != null)
+                    {
+                        if (part.part != PlayerHitboxPart.PlayerPart.Head)
+                        {
+                            Instantiate(gun.player.playerBloodSplatter, hit.transform.position, hit.transform.rotation);
+                        }
+                        else
+                        {
+                            Instantiate(gun.player.playerCritBloodSplatter, hit.transform.position, hit.transform.rotation);
+                        }
+                    }
                 }
             }
             else
             {
-                gun.player.CallShootRPCDecals(hit);
+                tempPoint = hit.point;
+                tempNormal = hit.normal;
             }
+            gun.player.InvokeGunEffects(tempPoint, tempNormal);
             /*
-            if (hit.transform.GetComponent<Rigidbody>() != null){
-                flag = true;
-                hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * gun.stats.impactForce);
-            }
-            if (!flag)
-            {
-                GameObject temp = Instantiate(gun.bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
-                if (hit.transform.GetComponent<Renderer>() == null)
-                {
-                    temp.GetComponent<Renderer>().material = hit.transform.GetComponent<Renderer>().material;
-                }
-                Destroy(temp, 2f);
-            }*/
+                        if (hit.transform.GetComponent<Rigidbody>() != null){
+                            flag = true;
+                            hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * gun.stats.impactForce);
+                        }
+                        if (!flag)
+                        {
+                            GameObject temp = Instantiate(gun.bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                            if (hit.transform.GetComponent<Renderer>() == null)
+                            {
+                                temp.GetComponent<Renderer>().material = hit.transform.GetComponent<Renderer>().material;
+                            }
+                            Destroy(temp, 2f);
+                        }*/
         }
     }
 

@@ -44,6 +44,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public Animator cameraAnim;
     public Recoil recoilScript;
     public Transform groundCheck;
+    public GameObject playerBloodSplatter;
+    public GameObject playerCritBloodSplatter;
     public GameObject playerDeathEffect;
     //public Camera cameraView;
 
@@ -463,12 +465,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         return;
     }
-    public void CallShootRPCDecals(RaycastHit hit)
-    {
-        //Debug.LogWarning("Invoking Shoot RPC...");
-        pv.RPC(nameof(RPC_Shoot), RpcTarget.All, hit.point, hit.normal);
-    }
-    public void InvokeGunEffects()
+    public void InvokeGunEffects(Vector3 point = new Vector3(), Vector3 normal = new Vector3())
     {
         //Debug.LogWarning("Invoking Gun Effects RPC...");
         /*
@@ -491,7 +488,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
         }*/
-        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, pv.ViewID);
+        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, point, normal);
     }
     public void InvokePlayerDeathEffects()
     {
@@ -535,24 +532,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         Destroy(obj, 5f);
     }
     [PunRPC]
-    public void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
+    public void RPC_InvokeGunEffects(Vector3 point = new Vector3(), Vector3 normal = new Vector3())
     {
-        Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
-        //Debug.LogWarning("Finding Colliders...");
-        if (colliders.Length != 0)
-        {
-            //Debug.LogWarning("Colliders Found");
-            GameObject bulletImpactObject = Instantiate(holder.weaponSlots[holder.weaponIndex].bulletImpactPrefab, hitPosition + hitNormal * 0.01f, Quaternion.LookRotation(-hitNormal, Vector3.up));
-            Destroy(bulletImpactObject, 5f);
-            if (colliders[0].GetComponent<PlayerControllerManager>() == null) bulletImpactObject.transform.SetParent(colliders[0].transform);
-            if (colliders[0].GetComponent<PlayerControllerManager>() != null) Destroy(bulletImpactObject);
-            //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
-        }
-    }
-    [PunRPC]
-    public void RPC_InvokeGunEffects(int viewID = 0)
-    {
-        if (pv.ViewID != viewID) return;
         if (pv.IsMine)
         {
             if (holder.weaponIndex == 0)
@@ -582,11 +563,31 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         if (holder.weaponIndex == 0)
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
         }
         else
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
+            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) Instantiate(holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.gameObject, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+        }
+
+        if (point != new Vector3() && normal != new Vector3())
+        {
+            Collider[] colliders = Physics.OverlapSphere(point, 0.3f);
+            if (colliders.Length != 0)
+            {
+                GameObject bulletImpactObject = Instantiate(holder.weaponSlots[holder.weaponIndex].bulletImpactPrefab, point + normal * 0.01f, Quaternion.LookRotation(-normal, Vector3.up));
+                Destroy(bulletImpactObject, 5f);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    if (colliders[i].GetComponent<PlayerControllerManager>() != null || colliders[i].GetComponent<PlayerHitboxPart>() != null)
+                    {
+                        Destroy(bulletImpactObject);
+                        return;
+                    }
+                }
+                bulletImpactObject.transform.SetParent(colliders[0].transform);
+                //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
+            }
         }
     }
 }

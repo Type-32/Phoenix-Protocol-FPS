@@ -50,11 +50,18 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public void CreateRoom()
     {
+        if (MapListItemHolder.Instance.selectedMapIndex == -1)
+        {
+            Debug.LogWarning("Cannot Create a room with an invalid map selection! ");
+            MenuManager.instance.AddModalWindow("Error", "Cannot Create Room: Invalid Map Selection");
+            return;
+        }
         if (string.IsNullOrEmpty(MenuManager.instance.GetRoomInputFieldText()))
         {
             Debug.LogWarning("Cannot Create a room with a null Input Field! ");
-            MenuManager.instance.SetInvalidInputFieldText("Invalid Name: Input Field Cannot be Null", Color.red);
-            MenuManager.instance.RoomInputFieldText(" ");
+            //MenuManager.instance.SetInvalidInputFieldText("Invalid Name: Input Field Cannot be Null", Color.red);
+            MenuManager.instance.AddModalWindow("Error", "Cannot Create Room: Invalid Room Name");
+            MenuManager.instance.RoomInputFieldText("");
             return;
         }
         //roomInfo.CustomProperties.Add("roomIcon", roomIcon.sprite);
@@ -63,7 +70,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(MenuManager.instance.GetRoomInputFieldText(), MenuManager.instance.GetGeneratedRoomOptions());
         Debug.Log("Trying to create a room with the name " + MenuManager.instance.GetRoomInputFieldText());
         MenuManager.instance.SetRoomTitle(MenuManager.instance.GetRoomInputFieldText());
-        MenuManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
+        //MenuManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
         MenuManager.instance.CloseCreateRoomMenu();
         MenuManager.instance.OpenLoadingMenu();
     }
@@ -164,7 +171,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             }
             Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
-        Debug.Log(rl.Count);
+        //Debug.Log(rl.Count);
     }
 
     public void FindRoomThroughCode()

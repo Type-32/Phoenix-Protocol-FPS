@@ -19,6 +19,7 @@ public class MapListItemHolder : MonoBehaviour
     }
     private void Start()
     {
+        selectedMapIndex = -1;
         if (Launcher.Instance.mapItemInfo.Count != 0)
         {
             for (int i = 0; i < Launcher.Instance.mapItemInfo.Count; i++)

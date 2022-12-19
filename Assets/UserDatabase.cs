@@ -16,7 +16,7 @@ public class UserDatabase : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        levelLimiter = 800;
+        levelLimiter = 600;
     }
     private void Start()
     {

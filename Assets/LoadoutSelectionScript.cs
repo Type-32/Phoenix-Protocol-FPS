@@ -321,11 +321,9 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].loadoutName = tp.Slots[i].SlotName;
             temp.SetLoadoutName(tp.Slots[i].SlotName);
             loadoutItems.Add(temp);
-            if (loadoutDataList[i].isDefault)
-            {
-                if (i == tp.SelectedSlot) temp.SelectLoadout();
-                temp.ToggleSelectVisual(true);
-            }
+            if (i == tp.SelectedSlot) temp.SelectLoadout();
+            temp.ToggleSelectVisual(true);
+            selectedLoadoutIndex = tp.SelectedSlot;
         }
         //loadoutItems[selectedLoadoutIndex].SelectLoadout();
     }

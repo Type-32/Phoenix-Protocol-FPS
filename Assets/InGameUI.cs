@@ -141,7 +141,7 @@ public class InGameUI : MonoBehaviour
         this.totalGainedXP.text = "Gained XP in match: " + totalGainedXP.ToString();
         this.XPSlider.value = (float)xp / (float)(level * UserDatabase.Instance.levelLimiter);
         this.levelText.text = (totalGainedXP + xp >= level * UserDatabase.Instance.levelLimiter) ? ("Level " + level.ToString() + " > " + UserDatabase.Instance.GetUserXPLevelValue().ToString()) : ("Level " + level.ToString());
-        sliderXPTemp = ((float)totalGainedXP / ((float)level * UserDatabase.Instance.levelLimiter)) + xp;
+        sliderXPTemp = ((float)(totalGainedXP + xp) / ((float)level * UserDatabase.Instance.levelLimiter));
     }
     public void OnLeaveButtonClick()
     {
