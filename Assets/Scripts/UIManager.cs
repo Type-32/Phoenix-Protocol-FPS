@@ -217,6 +217,17 @@ public class UIManager : MonoBehaviour
                     hitmarker11.color = color;
                     hitmarker12.color = color;
                 }
+                else
+                {
+                    hitmarker5.color = Color.red;
+                    hitmarker6.color = Color.red;
+                    hitmarker7.color = Color.red;
+                    hitmarker8.color = Color.red;
+                    hitmarker9.color = Color.red;
+                    hitmarker10.color = Color.red;
+                    hitmarker11.color = Color.red;
+                    hitmarker12.color = Color.red;
+                }
                 break;
             case HitmarkerType.Hitmarker:
                 anim.SetTrigger("Hitmarker");
@@ -226,6 +237,13 @@ public class UIManager : MonoBehaviour
                     hitmarker2.color = color;
                     hitmarker3.color = color;
                     hitmarker4.color = color;
+                }
+                else
+                {
+                    hitmarker1.color = Color.white;
+                    hitmarker2.color = Color.white;
+                    hitmarker3.color = Color.white;
+                    hitmarker4.color = Color.white;
                 }
                 break;
             default:
