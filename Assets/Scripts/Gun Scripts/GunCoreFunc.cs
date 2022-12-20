@@ -290,11 +290,13 @@ public class GunCoreFunc : MonoBehaviour
                     {
                         if (part.part != PlayerHitboxPart.PlayerPart.Head)
                         {
-                            ObjectPooler.Instance.SpawnFromPool("BloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
+                            ParticleSystem psys = ObjectPooler.Instance.SpawnFromPool("BloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up)).GetComponent<ParticleSystem>();
+                            psys.Play();
                         }
                         else
                         {
-                            ObjectPooler.Instance.SpawnFromPool("CritBloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up));
+                            ParticleSystem psys = ObjectPooler.Instance.SpawnFromPool("CritBloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up)).GetComponent<ParticleSystem>();
+                            psys.Play();
                         }
                     }
                 }

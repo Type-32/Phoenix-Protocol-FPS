@@ -570,21 +570,24 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             {
                 if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
                 {
-                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
                     else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    temp.Play();
                 }
                 else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.MarksmanRifle)
                 {
-                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
                     else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    temp.Play();
                 }
                 else
                 {
-                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
                     else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    temp.Play();
                 }
                 //Destroy(temp, 3f);
             }
@@ -595,21 +598,24 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             {
                 if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
                 {
-                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
                     else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    temp.Play();
                 }
                 else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.MarksmanRifle)
                 {
-                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
                     else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    temp.Play();
                 }
                 else
                 {
-                    GameObject temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation);
+                    ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
                     else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    temp.Play();
                 }
             }
         }
@@ -619,13 +625,13 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             Collider[] colliders = Physics.OverlapSphere(point, 0.3f);
             if (colliders.Length != 0)
             {
-                GameObject bulletImpactObject = Instantiate(holder.weaponSlots[holder.weaponIndex].bulletImpactPrefab, point + normal * 0.01f, Quaternion.LookRotation(-normal, Vector3.up));
-                Destroy(bulletImpactObject, 1f);
+                ParticleSystem bulletImpactObject = ObjectPooler.Instance.SpawnFromPool("BulletImpactEffect", point + normal * 0.01f, Quaternion.LookRotation(-normal, Vector3.up)).GetComponent<ParticleSystem>();
+                bulletImpactObject.Play();
                 for (int i = 0; i < colliders.Length; i++)
                 {
                     if (colliders[i].GetComponent<PlayerControllerManager>() != null || colliders[i].GetComponent<PlayerHitboxPart>() != null)
                     {
-                        Destroy(bulletImpactObject);
+                        bulletImpactObject.Stop();
                         return;
                     }
                 }
