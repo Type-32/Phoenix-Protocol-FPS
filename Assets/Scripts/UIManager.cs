@@ -40,6 +40,9 @@ public class UIManager : MonoBehaviour
     [Header("Inventory")]
     public GameObject inventory;
     public float hitmarkerTimePassed = 0;
+    public Image hitmarker1, hitmarker2, hitmarker3, hitmarker4;
+    public Image hitmarker5, hitmarker6, hitmarker7, hitmarker8;
+    public Image hitmarker9, hitmarker10, hitmarker11, hitmarker12;
 
     public static Action<ValueTransform> CreateIndicator = delegate { };
     public static Func<ValueTransform, bool> CheckIfObjectInSight = null;
@@ -197,15 +200,33 @@ public class UIManager : MonoBehaviour
             Destroy(indicator.gameObject);
         }
     }
-    public void InvokeHitmarker(HitmarkerType type)
+    public void InvokeHitmarker(HitmarkerType type, Color color = new Color())
     {
         switch (type)
         {
             case HitmarkerType.Killmarker:
                 anim.SetTrigger("Killmarker");
+                if (color != new Color())
+                {
+                    hitmarker5.color = color;
+                    hitmarker6.color = color;
+                    hitmarker7.color = color;
+                    hitmarker8.color = color;
+                    hitmarker9.color = color;
+                    hitmarker10.color = color;
+                    hitmarker11.color = color;
+                    hitmarker12.color = color;
+                }
                 break;
             case HitmarkerType.Hitmarker:
                 anim.SetTrigger("Hitmarker");
+                if (color != new Color())
+                {
+                    hitmarker1.color = color;
+                    hitmarker2.color = color;
+                    hitmarker3.color = color;
+                    hitmarker4.color = color;
+                }
                 break;
             default:
                 anim.SetTrigger("Hitmarker");

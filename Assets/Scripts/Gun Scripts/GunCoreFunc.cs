@@ -245,17 +245,19 @@ public class GunCoreFunc : MonoBehaviour
         ray.direction = shootDirection;
         if (Physics.Raycast(ray, out hit, range))
         {
+            IDamagable damageable = hit.collider.gameObject.GetComponent<IDamagable>();
+            PlayerHitboxPart part = hit.collider.gameObject.GetComponent<PlayerHitboxPart>();
             Vector3 tempPoint = new Vector3(), tempNormal = new Vector3();
             //Debug.Log(hit.transform.name);
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
-            if (hit.collider.gameObject.GetComponent<IDamagable>() != null)
+            if (damageable != null)
             {
                 if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
                 {
-                    if (hit.collider.gameObject.GetComponent<PlayerHitboxPart>().player.IsTeam != gun.player.IsTeam)
+                    if (part.player.IsTeam != gun.player.IsTeam)
                     {
                         bool hitmarkerFlag = false;
-                        hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
+                        hitmarkerFlag = (bool)damageable?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
                         if (!hitmarkerFlag)
                         {
                             gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
@@ -271,10 +273,12 @@ public class GunCoreFunc : MonoBehaviour
                 else
                 {
                     bool hitmarkerFlag = false;
-                    hitmarkerFlag = (bool)hit.collider.gameObject.GetComponent<IDamagable>()?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
+                    hitmarkerFlag = (bool)damageable?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
+
                     if (!hitmarkerFlag)
                     {
-                        gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
+                        if (part.part == PlayerHitboxPart.PlayerPart.Head) gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker, Color.yellow);
+                        else gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Hitmarker);
                         gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Hitmarker);
                     }
                     else if (hitmarkerFlag)
@@ -282,7 +286,6 @@ public class GunCoreFunc : MonoBehaviour
                         gun.ui.ui.InvokeHitmarker(UIManager.HitmarkerType.Killmarker);
                         gun.player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
                     }
-                    PlayerHitboxPart part = hit.collider.gameObject.GetComponent<PlayerHitboxPart>();
                     if (part != null)
                     {
                         if (part.part != PlayerHitboxPart.PlayerPart.Head)
