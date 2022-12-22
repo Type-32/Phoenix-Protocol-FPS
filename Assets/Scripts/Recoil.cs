@@ -36,5 +36,6 @@ public class Recoil : MonoBehaviour
         targetRotation += new Vector3(-verticalRecoil, Random.Range(-horizontalRecoil, horizontalRecoil), Random.Range(-sphericalShake, sphericalShake));
         targetRotation += new Vector3(-verticalRecoil, Random.Range(-horizontalRecoil, horizontalRecoil), Random.Range(-sphericalShake, sphericalShake));
         targetPosition += new Vector3(0f, 0f, -positionRecoilRetaliation);
+        player.ui.AddReticleSize((verticalRecoil * positionRecoilRetaliation) * 3f);
     }
 }

@@ -14,7 +14,7 @@ using LauncherManifest;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager instance;
-    [SerializeField] private Button multiplayerButton;
+    //[SerializeField] private Button multiplayerButton;
     [SerializeField] private Button createRoomButton;
     [Space]
     [Header("Menus")]
@@ -40,6 +40,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Text findRoomIndicator;
     [SerializeField] private InputField findRoomInputField;
     public TMP_InputField playerNameInputField;
+    public Animator enterAnim;
 
     [Space]
     [Header("Menu States")]
@@ -56,6 +57,7 @@ public class MenuManager : MonoBehaviour
     public bool openedPopupMenu = false;
     public bool openedShopMenu = false;
     public bool usingCreateRooomInputField = false;
+    public bool isConnected = false;
 
     [Space]
     [Header("Menu Online States")]
@@ -135,7 +137,6 @@ public class MenuManager : MonoBehaviour
         SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");
         SetInvalidInputFieldText(" ", Color.red);
         CloseRoomMenu();
-        CloseMultiplayerMenu();
         CloseLoadingMenu();
         CloseFindRoomMenu();
         CloseCosmeticsMenu();
@@ -173,30 +174,6 @@ public class MenuManager : MonoBehaviour
     }
     #endregion
 
-    #region Multiplayer Menus
-    public void OpenMultiplayerMenu()
-    {
-        openedMultiplayerMenu = true;
-        multiplayerMenu.SetActive(openedMultiplayerMenu);
-    }
-    public void CloseMultiplayerMenu()
-    {
-        openedMultiplayerMenu = false;
-        multiplayerMenu.SetActive(openedMultiplayerMenu);
-    }
-    public void ToggleMultiplayerMenu()
-    {
-        if (openedMultiplayerMenu)
-        {
-            CloseMultiplayerMenu();
-        }
-        else
-        {
-            OpenMultiplayerMenu();
-        }
-    }
-    #endregion
-
     #region Update Logs Menus
     public void OpenUpdateLogsMenu()
     {
@@ -230,11 +207,11 @@ public class MenuManager : MonoBehaviour
     {
         if (openedMultiplayerMenu)
         {
-            CloseMultiplayerMenu();
+            CloseMainMenu();
         }
         else
         {
-            OpenMultiplayerMenu();
+            OpenMainMenu();
         }
     }
     #endregion
@@ -425,14 +402,11 @@ public class MenuManager : MonoBehaviour
     public void JoiningMasterLobby(bool value)
     {
         joinedMasterLobby = value;
-        multiplayerButton.interactable = value;
-        if (!value) connectionIndicator.text = "Connection Failed! Multiplayer Functions are now unavailable.";
-        else connectionIndicator.text = "Connection Successful! Multiplayer Functions are now available.";
+        isConnected = value;
+        enterAnim.SetBool("isConnected", isConnected);
     }
     public string SetConnectionIndicatorText(string content)
     {
-        if (content != null) connectionIndicator.text = content;
-        else return connectionIndicator.text;
         return null;
     }
     public void RoomInputFieldText(string content)

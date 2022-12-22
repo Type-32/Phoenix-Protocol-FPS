@@ -235,8 +235,8 @@ public class GunCoreFunc : MonoBehaviour
             float spreadX = 0f, spreadY = 0f;
             spreadX = Random.Range(-gun.logic.spreadConstant, gun.logic.spreadConstant);
             spreadY = Random.Range(-gun.logic.spreadConstant, gun.logic.spreadConstant);
-            spreadX *= gun.stats.weaponData.hipfireSpread;
-            spreadY *= gun.stats.weaponData.hipfireSpread;
+            spreadX *= (gun.stats.weaponData.hipfireSpread * (gun.player.stats.isJumping ? 1.1f : gun.player.stats.isWalking ? 0.85f : gun.player.stats.isCrouching ? 0.4f : 0.6f));
+            spreadY *= (gun.stats.weaponData.hipfireSpread * (gun.player.stats.isJumping ? 1.1f : gun.player.stats.isWalking ? 0.85f : gun.player.stats.isCrouching ? 0.4f : 0.6f));
             shootDirection.x += spreadX * 0.1f;
             shootDirection.y += spreadY * 0.1f;
             shootDirection.z += spreadX * 0.1f;

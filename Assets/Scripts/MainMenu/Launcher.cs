@@ -77,7 +77,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void QuickMatch()
     {
         MenuManager.instance.OpenLoadingMenu();
-        MenuManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.CloseMainMenu();
         PhotonNetwork.JoinRandomRoom();
         SetLoadoutValuesToPlayer();
     }
@@ -88,13 +88,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.CloseMainMenu();
         MenuManager.instance.OpenCreateRoomMenu();
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.OpenMultiplayerMenu();
+        MenuManager.instance.OpenCreateRoomMenu();
+        MenuManager.instance.AddModalWindow("Error", "Failed to create room. Server returned a message: " + message + "\nFail code " + returnCode.ToString());
         Debug.Log("Failed to create room, Message: " + message);
         MenuManager.instance.SetInvalidInputFieldText("Invalid Session, returned with message: " + message, Color.red);
     }
@@ -116,7 +117,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         Debug.Log("Connected to Room");
         MenuManager.instance.OpenRoomMenu();
         MenuManager.instance.CloseFindRoomMenu();
-        MenuManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.CloseMainMenu();
         MenuManager.instance.CloseLoadingMenu();
         MenuManager.instance.SetRoomTitle(PhotonNetwork.CurrentRoom.Name);
         Player[] players = PhotonNetwork.PlayerList;
@@ -145,14 +146,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.CloseLoadingMenu();
         MenuManager.instance.CloseFindRoomMenu();
         MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseMultiplayerMenu();
         MenuManager.instance.CloseRoomMenu();
         MenuManager.instance.CloseSettingsMenu();
         MenuManager.instance.CloseUpdateLogsMenu();
         MenuManager.instance.CloseCreateRoomMenu();
         MenuManager.instance.CloseLoadoutSelectionMenu();
         MenuManager.instance.CloseCosmeticsMenu();
-        MenuManager.instance.OpenMultiplayerMenu();
+        MenuManager.instance.OpenMainMenu();
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
@@ -193,7 +193,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(info.Name);
         MenuManager.instance.OpenLoadingMenu();
         MenuManager.instance.CloseFindRoomMenu();
-        MenuManager.instance.CloseMultiplayerMenu();
+        MenuManager.instance.CloseMainMenu();
         Debug.Log("Loading Room Info...");
     }
     public void LeaveRoom()

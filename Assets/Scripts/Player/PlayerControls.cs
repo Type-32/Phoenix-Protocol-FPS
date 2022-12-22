@@ -8,7 +8,7 @@ public class PlayerControls : MonoBehaviour
 {
 
     [SerializeField] PlayerControllerManager player;
-    private float speedValve = 0f;
+    public float speedValve = 0f;
     [HideInInspector] public Vector3 playerInput;
     private float normalFOV;
     private float sprintFOV;

@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
     public RectTransform hostileTIHolder, friendlyTIHolder, objectiveTIHolder, supplyTIHolder;
     public CanvasGroup hostileTIGroup, friendlyTIGroup, objectiveTIGroup, supplyTIGroup;
     public GameObject targetIndicatorPrefab;
+    public CanvasGroup crosshairGroup;
+    public RectTransform reticle;
 
     [Space]
     [Header("HUD Stats")]
@@ -35,6 +37,14 @@ public class UIManager : MonoBehaviour
     public QuantityStatsHUD quantityHUD;
     public CanvasGroup healthBarAlpha;
     public CanvasGroup streakHUDAlpha;
+    public float restingSize = 60f;
+    public float walkSize = 140f;
+    public float jumpSize = 180f;
+    public float slideSize = 220f;
+    public float crouchSize = 50f;
+    private float currentSize;
+    private float targetSize;
+    [SerializeField] Image topReticle, bottomReticle, leftReticle, rightReticle;
 
     [Space]
     [Header("Inventory")]
@@ -96,11 +106,11 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         if (!player.pv.IsMine) return;
+        SetReticleColor(Color.white);
         Cursor.lockState = CursorLockMode.Locked;
-
+        currentSize = restingSize;
         //interactionIndicator = FindObjectOfType<InteractionIndicatorScript>().gameObject;
     }
-
 
     void Update()
     {
@@ -136,7 +146,47 @@ public class UIManager : MonoBehaviour
         //    healthBarAlpha.alpha = Mathf.Lerp(healthBarAlpha.alpha, 1f, 5 * Time.deltaTime);
         //    if (passedTime >= 1) { healthAlphaDuration -= 1; passedTime = 0; }
         //}
-
+        if (player.stats.isSliding)
+        {
+            targetSize = Mathf.Lerp(targetSize, slideSize, Time.deltaTime * 10f);
+        }
+        else if (player.stats.isJumping || !player.stats.onGround)
+        {
+            targetSize = Mathf.Lerp(targetSize, jumpSize, Time.deltaTime * 10f);
+        }
+        else if (player.stats.isWalking)
+        {
+            targetSize = Mathf.Lerp(targetSize, walkSize, Time.deltaTime * 10f);
+        }
+        else if (player.stats.isCrouching)
+        {
+            targetSize = Mathf.Lerp(targetSize, crouchSize, Time.deltaTime * 10f);
+        }
+        else
+        {
+            targetSize = Mathf.Lerp(targetSize, restingSize, Time.deltaTime * 10f);
+        }
+        currentSize = Mathf.Lerp(currentSize, targetSize, Time.deltaTime * 6f);
+        reticle.sizeDelta = new Vector2(currentSize, currentSize);
+        if (player.stats.isSprinting)
+        {
+            crosshairGroup.alpha = Mathf.Lerp(crosshairGroup.alpha, 0f, Time.deltaTime * 5f);
+        }
+        else
+        {
+            crosshairGroup.alpha = Mathf.Lerp(crosshairGroup.alpha, 1f, Time.deltaTime * 5f);
+        }
+    }
+    public void AddReticleSize(float amount)
+    {
+        targetSize += amount;
+    }
+    public void SetReticleColor(Color color)
+    {
+        topReticle.color = color;
+        bottomReticle.color = color;
+        leftReticle.color = color;
+        rightReticle.color = color;
     }
     public enum HitmarkerType
     {

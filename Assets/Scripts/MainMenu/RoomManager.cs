@@ -66,13 +66,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
         MenuManager.instance.CloseLoadingMenu();
         MenuManager.instance.CloseFindRoomMenu();
         MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseMultiplayerMenu();
         MenuManager.instance.CloseRoomMenu();
         MenuManager.instance.CloseSettingsMenu();
         MenuManager.instance.CloseUpdateLogsMenu();
         MenuManager.instance.CloseCreateRoomMenu();
         MenuManager.instance.CloseLoadoutSelectionMenu();
         MenuManager.instance.CloseCosmeticsMenu();
+        MenuManager.instance.OpenMainMenu();
         //MainMenuUIManager.instance.OpenMultiplayerMenu();
         //CloseMainMenuDelayed(0.5f);
         Debug.Log("Loaded Scene from Room Manager");

@@ -327,18 +327,22 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             PhotonView _pv = hit.collider.GetComponent<PhotonView>();
             ProjectileBehaviour _proj = hit.collider.GetComponent<ProjectileBehaviour>();
-            if (_pv != null && _proj == null)
+            if (_pv != null && _proj == null && _pv.Owner != pv.Owner)
             {
                 ui.nametagIndicatorObject.SetActive(true);
                 ui.nametagIndicator.text = (_pv.Owner.NickName == null ? "Anonymous" : _pv.Owner.NickName);
+                ui.SetReticleColor(Color.red);
+                ui.nametagIndicator.color = Color.red;
             }
             else
             {
+                ui.SetReticleColor(Color.white);
                 ui.nametagIndicatorObject.SetActive(false);
             }
         }
         else
         {
+            ui.SetReticleColor(Color.white);
             ui.nametagIndicatorObject.SetActive(false);
         }
     }
