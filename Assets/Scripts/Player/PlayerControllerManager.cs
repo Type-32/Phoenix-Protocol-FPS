@@ -575,22 +575,70 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                 if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
                 {
                     ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
-                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
-                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    if (pv.IsMine)
+                    {
+                        temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                        Transform[] obj = temp.gameObject.GetComponentsInChildren<Transform>();
+                        foreach (Transform tp in obj)
+                        {
+                            tp.gameObject.layer = LayerMask.NameToLayer("Item");
+                        }
+                    }
+                    else
+                    {
+                        temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                        Transform[] obj = temp.gameObject.GetComponentsInChildren<Transform>();
+                        foreach (Transform tp in obj)
+                        {
+                            tp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                        }
+                    }
                     temp.Play();
                 }
                 else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.MarksmanRifle)
                 {
                     ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
-                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
-                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    if (pv.IsMine)
+                    {
+                        temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                        Transform[] obj = temp.gameObject.GetComponentsInChildren<Transform>();
+                        foreach (Transform tp in obj)
+                        {
+                            tp.gameObject.layer = LayerMask.NameToLayer("Item");
+                        }
+                    }
+                    else
+                    {
+                        temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                        Transform[] obj = temp.gameObject.GetComponentsInChildren<Transform>();
+                        foreach (Transform tp in obj)
+                        {
+                            tp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                        }
+                    }
                     temp.Play();
                 }
                 else
                 {
                     ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("StandardFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
-                    if (pv.IsMine) temp.gameObject.layer = LayerMask.NameToLayer("Item");
-                    else temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                    if (pv.IsMine)
+                    {
+                        temp.gameObject.layer = LayerMask.NameToLayer("Item");
+                        Transform[] obj = temp.gameObject.GetComponentsInChildren<Transform>();
+                        foreach (Transform tp in obj)
+                        {
+                            tp.gameObject.layer = LayerMask.NameToLayer("Item");
+                        }
+                    }
+                    else
+                    {
+                        temp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                        Transform[] obj = temp.gameObject.GetComponentsInChildren<Transform>();
+                        foreach (Transform tp in obj)
+                        {
+                            tp.gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+                        }
+                    }
                     temp.Play();
                 }
                 //Destroy(temp, 3f);
