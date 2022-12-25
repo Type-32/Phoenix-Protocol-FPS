@@ -21,6 +21,7 @@ public class ScoreboardItem : MonoBehaviourPunCallbacks
         scoreboard = scbd;
         usernameText.text = player.NickName;
         cachedPlayerKill = 0;
+        pingText.text = Random.Range(30, 110).ToString();
         UpdateStats();
     }
     void UpdateStats()

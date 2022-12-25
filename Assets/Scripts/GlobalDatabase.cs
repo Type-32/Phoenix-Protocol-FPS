@@ -8,9 +8,10 @@ public class GlobalDatabase : MonoBehaviour
     public LoadoutDataJSON emptyLoadoutDataJSON;
     public LoadoutSlotDataJSON emptyLoadoutSlotDataJSON;
     public SettingsOptionsJSON emptySettingsOptionsJSON;
+    public AppearancesDataJSON emptyAppearancesDataJSON;
     public List<WeaponData> allWeaponDatas = new();
     public List<EquipmentData> allEquipmentDatas = new();
-    public List<WeaponAppearanceData> allWeaponAppearanceDatas = new();
+    public List<WeaponAppearanceMeshData> allWeaponAppearanceDatas = new();
     public List<WeaponAttachmentData> allWeaponAttachmentDatas = new();
     public List<PlayerCosmeticData> allPlayerCosmeticDatas = new();
     public List<LoadoutData> allLoadoutDatas = new();

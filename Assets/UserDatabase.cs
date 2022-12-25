@@ -21,6 +21,7 @@ public class UserDatabase : MonoBehaviour
     private void Start()
     {
         ReadUserDataFromJSON();
+        ReadAppearanceDataFromJSON();
     }
     public void ReadUserDataFromJSON()
     {
@@ -71,6 +72,47 @@ public class UserDatabase : MonoBehaviour
         string json = JsonUtility.ToJson(data, true);
         if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey)).Close();
         File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey), json);
+        //Debug.LogWarning("Initializing User Data To Files...");
+    }
+    public void ReadAppearanceDataFromJSON()
+    {
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) InitializeAppearanceDataToJSON();
+        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)))
+        {
+            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
+            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+            {
+                InitializeAppearanceDataToJSON();
+            }
+        }
+        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
+        //Debug.LogWarning("Reading User Data To Files...");
+        AppearancesDataJSON jsonData = GlobalDatabase.singleton.emptyAppearancesDataJSON;
+        jsonData = JsonUtility.FromJson<AppearancesDataJSON>(json);
+    }
+    public void WriteAppearancesDataToJSON()
+    {
+        AppearancesDataJSON data = new();
+        data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
+
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
+        //Debug.LogWarning("Writing User Data To Files...");
+    }
+    public void WriteInputAppearanceDataToJSON(AppearancesDataJSON data)
+    {
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
+        //Debug.LogWarning("Writing User Data To Files...");
+    }
+    public void InitializeAppearanceDataToJSON()
+    {
+        AppearancesDataJSON data = new();
+        data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
+
+        string json = JsonUtility.ToJson(data, true);
+        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)).Close();
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
         //Debug.LogWarning("Initializing User Data To Files...");
     }
     public void AddUserCurrency(int amount)

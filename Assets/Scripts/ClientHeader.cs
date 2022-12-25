@@ -406,7 +406,7 @@ namespace UserConfiguration
             }
             return null;
         }
-        public static int FindWeaponAppearanceDataIndex(WeaponAppearanceData data)
+        public static int FindWeaponAppearanceDataIndex(WeaponAppearanceMeshData data)
         {
             for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
             {
@@ -414,7 +414,7 @@ namespace UserConfiguration
             }
             return -1;
         }
-        public static WeaponAppearanceData FindWeaponAppearanceData(int index)
+        public static WeaponAppearanceMeshData FindWeaponAppearanceData(int index)
         {
             for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
             {

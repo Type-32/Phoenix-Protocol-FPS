@@ -134,6 +134,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"]);
         int tmp = (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"];
         roomCodeText.text = (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"] ? "" : ("Room Code: " + tmp.ToString());
+        MenuManager.instance.SetRoomMenuPreviewData((int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"], ((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"]) - 1, PhotonNetwork.CurrentRoom.MaxPlayers, (string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"]);
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
