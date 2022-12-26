@@ -126,6 +126,8 @@ public class LoadoutSelectionScript : MonoBehaviour
             data.Slots[i].WA_Rightbarrel2 = loadoutDataList[i].selectedSidebarrelRightIndex[1];
             data.Slots[i].WA_Leftbarrel1 = loadoutDataList[i].selectedSidebarrelLeftIndex[0];
             data.Slots[i].WA_Leftbarrel2 = loadoutDataList[i].selectedSidebarrelLeftIndex[1];
+            data.Slots[i].WeaponSkin1 = loadoutDataList[i].selectedAppearanceDataIndex[0];
+            data.Slots[i].WeaponSkin2 = loadoutDataList[i].selectedAppearanceDataIndex[1];
         }
 
         string json = JsonUtility.ToJson(data, true);
@@ -457,6 +459,9 @@ public class LoadoutSelectionScript : MonoBehaviour
 
         if (loadoutCustomization.rightbarrelObjects.Count <= 0) customButtonsHolder.buttons[4].SetActive(false);
         else customButtonsHolder.buttons[4].SetActive(value);
+
+        if (loadoutCustomization.skinObjects.Count <= 0) customButtonsHolder.buttons[5].SetActive(false);
+        else customButtonsHolder.buttons[5].SetActive(value);
     }
     public void ConfirmRename()
     {

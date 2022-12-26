@@ -25,8 +25,8 @@ public class LoadoutData : ScriptableObject
     public WeaponAttachmentData[] selectedSidebarrelRight;
     public int[] selectedSidebarrelRightIndex = { 0, 0 };
 
-    public WeaponAppearanceData[] selectedAppearanceData;
-    public int[] selectedAppearanceDataIndex = { 0, 0 };
+    public WeaponAppearanceMeshData[] selectedAppearanceData;
+    public int[] selectedAppearanceDataIndex = { -1, -1 };
 
     public struct BarrelSelection
     {
@@ -207,6 +207,10 @@ public class LoadoutData : ScriptableObject
                 break;
         }
     }
+    public void SetNullAppearance(int slotIndex)
+    {
+        selectedAppearanceDataIndex[slotIndex] = -1;
+    }
     public int FindAttachmentGlobalIndex(WeaponAttachmentData data)
     {
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
@@ -218,8 +222,9 @@ public class LoadoutData : ScriptableObject
         }
         return -1;
     }
-    public void SetAppearance(WeaponAppearanceData data, int slotIndex)
+    public void SetAppearance(WeaponAppearanceMeshData data, int slotIndex)
     {
-
+        selectedAppearanceData[slotIndex] = data;
+        selectedAppearanceDataIndex[slotIndex] = data.WeaponAppearanceMeshDataIndex;
     }
 }

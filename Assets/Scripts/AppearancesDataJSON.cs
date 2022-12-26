@@ -4,9 +4,9 @@ using UnityEngine;
 [System.Serializable]
 public class AppearancesDataJSON
 {
+    [System.Serializable]
     public struct WeaponAppearance
     {
-        public bool isUnlocked;
         public int weaponIndex;
         public int appearanceIndex;
     };

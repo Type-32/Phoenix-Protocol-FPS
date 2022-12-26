@@ -13,6 +13,7 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
     public Image underbarrelIcon;
     public Image leftbarrelIcon;
     public Image rightbarrelIcon;
+    public Image weaponSkinIcon;
     public Sprite nullIcon;
     public int forSelectedSlot = 0;
     public void SetIcon(int index, Sprite sprite)
@@ -34,6 +35,9 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
             case 4:
                 rightbarrelIcon.sprite = sprite;
                 break;
+            case 5:
+                weaponSkinIcon.sprite = sprite;
+                break;
         }
     }
     public Sprite FindIconFromAttachmentIndex(int index)
@@ -41,6 +45,14 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
         for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
         {
             if (index == i) return GlobalDatabase.singleton.allWeaponAttachmentDatas[i].attachmentIcon;
+        }
+        return nullIcon;
+    }
+    public Sprite FindIconFromAppearanceIndex(int index)
+    {
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+        {
+            if (index == i) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i].itemIcon;
         }
         return nullIcon;
     }
@@ -55,12 +67,13 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
         SetIcon(2, FindIconFromAttachmentIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[index]));
         SetIcon(3, FindIconFromAttachmentIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[index]));
         SetIcon(4, FindIconFromAttachmentIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[index]));
+        SetIcon(5, FindIconFromAppearanceIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[index]));
     }
     public void OnClickButton(int index)
     {
         loadoutSelection.ToggleCustomizeSelectionUI(true);
         loadoutSelection.ToggleCustomizeButtonsUI(false);
-        loadoutSelection.loadoutCustomization.AttachmentSelectionUIToggler(index, true);
+        loadoutSelection.loadoutCustomization.CustomizationSelectionUIToggler(index, true);
         //SetAllIcons(loadoutSelection.forSelectedSlot);
     }
     public void OnClickClearButton()
@@ -70,16 +83,23 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
         SetIcon(2, nullIcon);
         SetIcon(3, nullIcon);
         SetIcon(4, nullIcon);
+        SetIcon(5, nullIcon);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sight, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Barrel, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Right, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Left, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Up, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Underbarrel, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAppearance(loadoutSelection.forSelectedSlot);
         OnClearCustomization(loadoutSelection.forSelectedSlot);
+        OnClearAppearance(loadoutSelection.forSelectedSlot);
     }
     public void OnClearCustomization(int forIndex)
     {
         loadoutSelection.loadoutPreviewUI.ClearPreviewAttachments(forIndex);
+    }
+    public void OnClearAppearance(int forIndex)
+    {
+        loadoutSelection.loadoutPreviewUI.ClearPreviewAppearances(forIndex);
     }
 }

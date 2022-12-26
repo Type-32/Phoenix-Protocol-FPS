@@ -59,7 +59,7 @@ public class LoadoutPreviewUI : MonoBehaviour
             //attachPreviewHolders[index <= 1 ? index : 0].gameObject.SetActive(false);
             loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = null;
         }
-        SetPreviewAttachments(index, weaponData);
+        SetPreviewCustomizations(index, weaponData);
         loadoutSelection.WriteLoadoutDataToJSON();
     }
     public void SetEquipmentSlotInfo(int index, EquipmentData equipmentData)
@@ -113,7 +113,12 @@ public class LoadoutPreviewUI : MonoBehaviour
             }
         }
     }
-    public void SetPreviewAttachments(int index, WeaponData weaponData)
+    public void ClearPreviewAppearances(int index)
+    {
+        int tmp = (index <= 1 ? index : 0);
+        images[tmp].sprite = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[tmp].itemIcon;
+    }
+    public void SetPreviewCustomizations(int index, WeaponData weaponData)
     {
         Debug.Log("Setting Attachments Preview");
         int tmp = (index <= 1 ? index : 0);
@@ -150,6 +155,10 @@ public class LoadoutPreviewUI : MonoBehaviour
             LAPreview i = Instantiate(attachPreviewPrefab, attachPreviewHolders[tmp]).GetComponentInChildren<LAPreview>();
             i.SetIcon(FindAttachmentIcon(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[tmp]));
         }
+        if (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[tmp] != -1)
+        {
+            images[tmp].sprite = FindAppearanceIcon(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[tmp]);
+        }
     }
     public void SetPreviewInfo(LoadoutData data)
     {
@@ -170,12 +179,21 @@ public class LoadoutPreviewUI : MonoBehaviour
         }
         return null;
     }
+    Sprite FindAppearanceIcon(int index)
+    {
+        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+        {
+            if (i == index) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i].itemIcon;
+        }
+        return null;
+    }
     public void OnCustomizeButtonPress(int index)
     {
         SetSelectionMenuSlotIndex(index);
         loadoutSelection.customButtonsHolder.SetAllIcons(loadoutSelection.forSelectedSlot);
-        loadoutSelection.loadoutCustomization.RemoveAttachmentUIItems();
+        loadoutSelection.loadoutCustomization.RemoveCustomizationUIItems();
         loadoutSelection.loadoutCustomization.AttachmentUIItemInstantiation();
+        loadoutSelection.loadoutCustomization.AppearanceUIItemInstantiation();
         loadoutSelection.ToggleCustomizationMenu(true);
         loadoutSelection.ToggleCustomizeButtonsUI(true);
         loadoutSelection.ToggleCustomizeSelectionUI(false);

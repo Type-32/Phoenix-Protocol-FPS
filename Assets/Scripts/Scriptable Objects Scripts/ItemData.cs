@@ -17,6 +17,7 @@ public class ItemData : ScriptableObject
     [Header("Inventorial Data")]
     public int unlockingLevel = 1;
     public bool requiresPurchase = false;
+    public bool overrideUnlockingLevel = false;
     public int purchasePrice = 100;
 
 }

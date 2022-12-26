@@ -138,6 +138,10 @@ namespace UserConfiguration
     }
     public static class WeaponSystem
     {
+        public static WeaponValidation ValidateWeapon(WeaponData data, bool correctValidation)
+        {
+            return ValidateWeapon(data.GlobalWeaponIndex, correctValidation);
+        }
         public static WeaponValidation ValidateWeapon(int weaponIndex, bool correctValidation)
         {
             string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
@@ -471,6 +475,58 @@ namespace UserConfiguration
                 AppearancesDataJSON jsonData = JsonUtility.FromJson<AppearancesDataJSON>(json);
                 return jsonData;
             }
+        }
+        public static bool VerifyWeaponAppearanceData(int weaponAppearanceMeshDataIndex, bool correctValidation = true)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            {
+                if (weaponAppearanceMeshDataIndex == i) return VerifyWeaponAppearanceData(GlobalDatabase.singleton.allWeaponAppearanceDatas[i], correctValidation);
+            }
+            return false;
+        }
+        public static bool VerifyWeaponAppearanceData(WeaponAppearanceMeshData data, bool correctValidation = true)
+        {
+            AppearancesDataJSON.WeaponAppearance temp;
+            AppearancesDataJSON jsonData = CosmeticSystem.AppearancesJsonData;
+            temp.appearanceIndex = data.WeaponAppearanceMeshDataIndex;
+            temp.weaponIndex = data.weaponData.GlobalWeaponIndex;
+            bool isValid = false;
+            if (jsonData.unlockedWeaponAppearances.Contains(temp))
+            {
+                isValid = true;
+            }
+            else
+            {
+                if (jsonData.availableWeaponAppearances.Contains(temp))
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    jsonData.availableWeaponAppearances.Add(temp);
+                    if (correctValidation) CosmeticSystem.WriteToConfig(jsonData);
+                }
+            }
+            return isValid;
+        }
+        public static AppearancesDataJSON.WeaponAppearance RevertWeaponAppearanceMeshData(WeaponAppearanceMeshData data)
+        {
+            AppearancesDataJSON.WeaponAppearance temp;
+            temp.appearanceIndex = data.WeaponAppearanceMeshDataIndex;
+            temp.weaponIndex = data.weaponData.GlobalWeaponIndex;
+            return temp;
+        }
+        public static WeaponAppearanceMeshData FindWeaponAppearanceMeshData(AppearancesDataJSON.WeaponAppearance appearance)
+        {
+            return FindWeaponAppearanceMeshData(appearance.appearanceIndex, appearance.weaponIndex);
+        }
+        public static WeaponAppearanceMeshData FindWeaponAppearanceMeshData(int appearanceIndex, int weaponIndex)
+        {
+            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            {
+                if (i == appearanceIndex && GlobalDatabase.singleton.allWeaponAppearanceDatas[i].weaponData.GlobalWeaponIndex == weaponIndex) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i];
+            }
+            return null;
         }
     }
     public static class ShopSystem

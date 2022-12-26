@@ -167,7 +167,7 @@ public class PlayerControls : MonoBehaviour
     {
         if (Input.GetKeyDown("f")) InteractWithPickup();
         if (Input.GetKeyDown("n")) player.ToggleNightVision();
-        if (Input.GetKeyDown("g") && player.playerManager.recordKills >= 3 && !player.usingStreakGifts) StartCoroutine(player.UseStreakGift(5f, 3));
+        if (Input.GetKeyDown("x") && player.playerManager.recordKills >= 3 && !player.usingStreakGifts) StartCoroutine(player.UseStreakGift(5f, 3));
         if (Input.GetKeyDown("k")) player.TakeDamage(100f, true, transform.position, transform.rotation, 0, true);
     }
     void Logics()

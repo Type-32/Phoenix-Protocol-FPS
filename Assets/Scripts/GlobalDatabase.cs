@@ -32,6 +32,10 @@ public class GlobalDatabase : MonoBehaviour
         {
             WeaponSystem.ValidateWeapon(i, true);
         }
+        foreach (WeaponAppearanceMeshData tp in allWeaponAppearanceDatas)
+        {
+            CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
+        }
     }
     public int FindIndexFromWeaponData(WeaponData data)
     {

@@ -84,7 +84,7 @@ public class WeaponData : ItemData
 
     [Space]
     [Header("Customizations")]
-    public List<WeaponAppearanceData> applicableVariants = new List<WeaponAppearanceData>();
+    public List<WeaponAppearanceMeshData> applicableVariants = new List<WeaponAppearanceMeshData>();
     public List<WeaponAttachmentData> applicableAttachments = new List<WeaponAttachmentData>();
 
     //[Space]

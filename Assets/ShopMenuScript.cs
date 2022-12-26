@@ -9,12 +9,12 @@ public class ShopMenuScript : MonoBehaviour
 {
     [Header("Menu References")]
     public GameObject weaponsMenu;
-    public GameObject cratesMenu;
+    public GameObject cosmeticsMenu;
 
     [Space]
     [Header("Selections")]
     public GameObject weaponsMenuSelection;
-    public GameObject cratesMenuSelection;
+    public GameObject cosmeticsMenuSelection;
 
     [Space, Header("Weapons Menu Refs")]
     public GameObject shopWeaponItemPrefab;
@@ -34,10 +34,15 @@ public class ShopMenuScript : MonoBehaviour
     public Slider previewRange;
     public Button purchasePreview;
 
-    [Space]
+    [Space, Header("Weapon Menu")]
     [SerializeField] WeaponData previewingWeaponData;
     [SerializeField] List<ShopAttachPreviewItem> attachList = new();
     [SerializeField] List<ShopWeaponItem> shopWeaponList = new();
+
+    [Space, Header("Cosmetics Menu")]
+    [SerializeField] GameObject weaponCosmeticListItem;
+    [SerializeField] Transform weaponCosmeticListItemHolder;
+    [SerializeField] List<WeaponCosmeticListItem> weaponCosmeticList;
 
     void Start()
     {
@@ -55,10 +60,20 @@ public class ShopMenuScript : MonoBehaviour
         UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
         jsonData = JsonUtility.FromJson<UserDataJSON>(json);
         InitializeWeaponsMenu(jsonData);
+        InitializeCosmeticsMenu(CosmeticSystem.AppearancesJsonData);
         weaponsMenu.SetActive(false);
-        cratesMenu.SetActive(false);
+        cosmeticsMenu.SetActive(false);
         TogglePreviewUI(false);
         MenuManager.instance.ToggleShopMenu(false);
+    }
+    public void InitializeCosmeticsMenu(AppearancesDataJSON jsonData)
+    {
+        for (int i = 0; i < jsonData.availableWeaponAppearances.Count; i++)
+        {
+            WeaponCosmeticListItem temp = Instantiate(weaponCosmeticListItem, weaponCosmeticListItemHolder).GetComponent<WeaponCosmeticListItem>();
+            weaponCosmeticList.Add(temp);
+            temp.SetInfo(CosmeticSystem.FindWeaponAppearanceMeshData(jsonData.availableWeaponAppearances[i]));
+        }
     }
     public void InitializeWeaponsMenu(UserDataJSON jsonData)
     {
@@ -147,8 +162,9 @@ public class ShopMenuScript : MonoBehaviour
         weaponsMenu.SetActive(value);
         if (value)
         {
-            cratesMenu.SetActive(false);
-            cratesMenuSelection.SetActive(false);
+            cosmeticsMenu.SetActive(false);
+            cosmeticsMenuSelection.SetActive(false);
+            weaponsMenuSelection.SetActive(true);
         }
         else
         {
@@ -157,11 +173,12 @@ public class ShopMenuScript : MonoBehaviour
     }
     public void ToggleCratesMenu(bool value)
     {
-        cratesMenu.SetActive(value);
+        cosmeticsMenu.SetActive(value);
         if (value)
         {
             weaponsMenu.SetActive(false);
             weaponsMenuSelection.SetActive(false);
+            cosmeticsMenuSelection.SetActive(true);
         }
     }
     public void TogglePreviewUI(bool value)
@@ -210,5 +227,10 @@ public class ShopMenuScript : MonoBehaviour
             }
         }
         return new();
+    }
+    public void RemoveWeaponCosmeticListItem(WeaponCosmeticListItem item)
+    {
+        if (weaponCosmeticList.Contains(item)) weaponCosmeticList.Remove(item);
+        Destroy(item.gameObject);
     }
 }

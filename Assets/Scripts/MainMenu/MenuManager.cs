@@ -186,8 +186,7 @@ public class MenuManager : MonoBehaviour
     }
     public void CloseUpdateLogsMenu()
     {
-        openedUpdateLogsMenu = false;
-        updateLogsMenu.SetActive(openedUpdateLogsMenu);
+
     }
     public void ToggleUpdateLogsMenu(bool toggle)
     {

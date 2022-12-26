@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UserConfiguration;
+using LauncherManifest;
 
 public class LoadoutCustomization : MonoBehaviour
 {
     [SerializeField] LoadoutSelectionScript loadoutSelection;
     [SerializeField] LoadoutCustomButtonsHolder customButtonsHolder;
     public GameObject attachmentSelectionItemPrefab;
+    public GameObject appearanceSelectionItemPrefab;
 
     [Space]
     public GameObject sightUI;
@@ -14,6 +17,7 @@ public class LoadoutCustomization : MonoBehaviour
     public GameObject underbarrelUI;
     public GameObject leftbarrelUI;
     public GameObject rightbarrelUI;
+    public GameObject skinUI;
 
     [Space]
     public Transform sightUIHolder;
@@ -21,7 +25,8 @@ public class LoadoutCustomization : MonoBehaviour
     public Transform underbarrelUIHolder;
     public Transform leftbarrelUIHolder;
     public Transform rightbarrelUIHolder;
-    
+    public Transform skinUIHolder;
+
     [Space]
     public List<GameObject> objectList = new List<GameObject>();
 
@@ -30,6 +35,7 @@ public class LoadoutCustomization : MonoBehaviour
     [HideInInspector] public List<GameObject> underbarrelObjects = new List<GameObject>();
     [HideInInspector] public List<GameObject> leftbarrelObjects = new List<GameObject>();
     [HideInInspector] public List<GameObject> rightbarrelObjects = new List<GameObject>();
+    [HideInInspector] public List<GameObject> skinObjects = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -38,12 +44,12 @@ public class LoadoutCustomization : MonoBehaviour
     }
     public void ToggleAllAttachmentUI(bool value)
     {
-        for (int i = 0; i <= 4; i++)
+        for (int i = 0; i <= 5; i++)
         {
-            AttachmentSelectionUIToggler(i, value);
+            CustomizationSelectionUIToggler(i, value);
         }
     }
-    public void AttachmentSelectionUIToggler(int index, bool value)
+    public void CustomizationSelectionUIToggler(int index, bool value)
     {
         switch (index)
         {
@@ -62,12 +68,16 @@ public class LoadoutCustomization : MonoBehaviour
             case 4:
                 rightbarrelUI.SetActive(value);
                 break;
+            case 5:
+                skinUI.SetActive(value);
+                break;
         }
         if (sightObjects.Count <= 0) sightUI.SetActive(false);
         if (barrelObjects.Count <= 0) barrelUI.SetActive(false);
         if (underbarrelObjects.Count <= 0) underbarrelUI.SetActive(false);
         if (leftbarrelObjects.Count <= 0) leftbarrelUI.SetActive(false);
         if (rightbarrelObjects.Count <= 0) rightbarrelUI.SetActive(false);
+        if (skinObjects.Count <= 0) skinUI.SetActive(false);
     }
     GameObject temp;
     public void AttachmentUIItemInstantiation()
@@ -78,7 +88,7 @@ public class LoadoutCustomization : MonoBehaviour
             switch (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableAttachments[i].attachmentType)
             {
                 case GunAttachments.AttachmentTypes.Sight:
-                    temp = Instantiate(attachmentSelectionItemPrefab,sightUIHolder);
+                    temp = Instantiate(attachmentSelectionItemPrefab, sightUIHolder);
                     sightObjects.Add(temp);
                     break;
                 case GunAttachments.AttachmentTypes.Barrel:
@@ -102,9 +112,24 @@ public class LoadoutCustomization : MonoBehaviour
             objectList.Add(temp);
         }
     }
-    public void RemoveAttachmentUIItems()
+
+    public void AppearanceUIItemInstantiation()
     {
-        for(int i = 0; i < objectList.Count; i++)
+        AppearancesDataJSON jsonData = CosmeticSystem.AppearancesJsonData;
+        for (int i = 0; i < loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants.Count; i++)
+        {
+            if (jsonData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i])))
+            {
+                temp = Instantiate(appearanceSelectionItemPrefab, skinUIHolder);
+                temp.GetComponent<LoadoutAppearanceUIItem>().SetInfo(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i]);
+                skinObjects.Add(temp);
+            }
+            objectList.Add(temp);
+        }
+    }
+    public void RemoveCustomizationUIItems()
+    {
+        for (int i = 0; i < objectList.Count; i++)
         {
             Destroy(objectList[i]);
         }
@@ -114,6 +139,7 @@ public class LoadoutCustomization : MonoBehaviour
         underbarrelObjects.Clear();
         leftbarrelObjects.Clear();
         rightbarrelObjects.Clear();
+        skinObjects.Clear();
     }
     public void BackToCustomizeButton()
     {

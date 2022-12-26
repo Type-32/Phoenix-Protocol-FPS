@@ -273,7 +273,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         weaponSlots[index].gun.SetThirdPersonViewHandsMaterial(player.global_handMaterial);
         weaponSlots[index].item.SetActive(false);
         EquipItem(index);
-        temp.GetComponent<GunManager>().attachment.EnableGunAttachments(index);
+        temp.GetComponent<GunManager>().attachment.EnableGunCustomizations(index);
         return true;
     }
     public bool InstantiateEquipment(EquipmentData data, int index)

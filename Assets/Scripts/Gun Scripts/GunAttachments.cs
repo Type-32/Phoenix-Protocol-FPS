@@ -40,11 +40,11 @@ public class GunAttachments : MonoBehaviour
             for (int i = 0; i < images.Length; i++) Destroy(images[i].gameObject);
         }
         for (int i = 0; i < attachmentsArray.Length; i++) attachmentsArray[i].gameObject.SetActive(false);
-        EnableGunAttachments(gun.player.holder.weaponIndex);
+        EnableGunCustomizations(gun.player.holder.weaponIndex);
     }
     public void CheckEnabledSightAimingPosition(int index)
     {
-        if(index == 0)
+        if (index == 0)
         {
             for (int i = 0; i < attachmentsArray.Length; i++)
             {
@@ -67,9 +67,9 @@ public class GunAttachments : MonoBehaviour
             }
         }
     }
-    public void EnableGunAttachments(int selectedWeaponSlot)
+    public void EnableGunCustomizations(int selectedWeaponSlot)
     {
-        if(selectedWeaponSlot == 0)
+        if (selectedWeaponSlot == 0)
         {
             for (int i = 0; i < attachmentsArray.Length; i++)
             {
@@ -84,6 +84,11 @@ public class GunAttachments : MonoBehaviour
                 if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_LeftbarrelIndex1"]) attachmentsArray[i].gameObject.SetActive(true);
                 if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_RightbarrelIndex1"]) attachmentsArray[i].gameObject.SetActive(true);
             }
+            if ((int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex1"] != -1)
+            {
+                gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.singleton.allWeaponAppearanceDatas[(int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex1"]].mesh;
+            }
+
         }
         else
         {
@@ -99,6 +104,10 @@ public class GunAttachments : MonoBehaviour
                 if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_UnderbarrelIndex2"]) attachmentsArray[i].gameObject.SetActive(true);
                 if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_LeftbarrelIndex2"]) attachmentsArray[i].gameObject.SetActive(true);
                 if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_RightbarrelIndex2"]) attachmentsArray[i].gameObject.SetActive(true);
+            }
+            if ((int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex2"] != -1)
+            {
+                gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.singleton.allWeaponAppearanceDatas[(int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex2"]].mesh;
             }
         }
     }
