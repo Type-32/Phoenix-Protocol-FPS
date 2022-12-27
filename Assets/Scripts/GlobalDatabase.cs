@@ -27,6 +27,7 @@ public class GlobalDatabase : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         singleton = this;
+        CosmeticSystem.ValidateLoadoutCosmetics();
         loadoutSelectionScript.ReadLoadoutDataFromJSON();
         for (int i = 0; i < allWeaponDatas.Count; i++)
         {
@@ -36,7 +37,6 @@ public class GlobalDatabase : MonoBehaviour
         {
             CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
         }
-        CosmeticSystem.ValidateLoadoutCosmetics();
     }
     public int FindIndexFromWeaponData(WeaponData data)
     {

@@ -148,7 +148,7 @@ namespace UserConfiguration
             string loadout = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
             UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
             LoadoutDataJSON loadoutJsonData = JsonUtility.FromJson<LoadoutDataJSON>(loadout);
-            AppearancesDataJSON appearanceData = CosmeticSystem.AppearancesJsonData;
+            // AppearancesDataJSON appearanceData = CosmeticSystem.AppearancesJsonData;
             WeaponValidation result = WeaponValidation.Valid;
             if (!jsonData.shopData.availableWeaponIndexes.Contains(weaponIndex))
             {
@@ -472,6 +472,29 @@ namespace UserConfiguration
         {
             get
             {
+                if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)))
+                {
+                    AppearancesDataJSON data = new();
+                    data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
+
+                    string jsonString = JsonUtility.ToJson(data, true);
+                    if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)).Close();
+                    File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), jsonString);
+
+                }
+                if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)))
+                {
+                    string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
+                    if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+                    {
+                        AppearancesDataJSON data = new();
+                        data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
+
+                        string jsonString = JsonUtility.ToJson(data, true);
+                        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)).Close();
+                        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), jsonString);
+                    }
+                }
                 string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
                 AppearancesDataJSON jsonData = JsonUtility.FromJson<AppearancesDataJSON>(json);
                 return jsonData;
@@ -522,40 +545,50 @@ namespace UserConfiguration
             AppearancesDataJSON appearanceData = CosmeticSystem.AppearancesJsonData;
             for (int i = 0; i < 8; i++)
             {
-                AppearancesDataJSON.WeaponAppearance t1 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
-                AppearancesDataJSON.WeaponAppearance t2 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
-                if (!appearanceData.unlockedWeaponAppearances.Contains(t1))
+                AppearancesDataJSON.WeaponAppearance t1 = new();
+                AppearancesDataJSON.WeaponAppearance t2 = new();
+                //Debug.LogWarning("Slots Length: " + loadoutJsonData.Slots.Length);
+                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1) t1 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
+                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1) t2 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
+                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1)
                 {
-                    isValid = false;
-                    loadoutJsonData.Slots[i].WeaponSkin1 = -1;
-                    if (!appearanceData.availableWeaponAppearances.Contains(t1))
-                    {
-                        appearanceData.availableWeaponAppearances.Add(t1);
-                    }
-                }
-                else
-                {
-                    if (appearanceData.availableWeaponAppearances.Contains(t1))
+                    if (!appearanceData.unlockedWeaponAppearances.Contains(t1))
                     {
                         isValid = false;
-                        appearanceData.availableWeaponAppearances.Remove(t1);
+                        loadoutJsonData.Slots[i].WeaponSkin1 = -1;
+                        if (!appearanceData.availableWeaponAppearances.Contains(t1))
+                        {
+                            appearanceData.availableWeaponAppearances.Add(t1);
+                        }
                     }
-                }
-                if (!appearanceData.unlockedWeaponAppearances.Contains(t2))
-                {
-                    isValid = false;
-                    loadoutJsonData.Slots[i].WeaponSkin2 = -1;
-                    if (!appearanceData.availableWeaponAppearances.Contains(t2))
+                    else
                     {
-                        appearanceData.availableWeaponAppearances.Add(t2);
+                        if (appearanceData.availableWeaponAppearances.Contains(t1))
+                        {
+                            isValid = false;
+                            appearanceData.availableWeaponAppearances.Remove(t1);
+                        }
                     }
                 }
-                else
+
+                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1)
                 {
-                    if (appearanceData.availableWeaponAppearances.Contains(t2))
+                    if (!appearanceData.unlockedWeaponAppearances.Contains(t2))
                     {
                         isValid = false;
-                        appearanceData.availableWeaponAppearances.Remove(t2);
+                        loadoutJsonData.Slots[i].WeaponSkin2 = -1;
+                        if (!appearanceData.availableWeaponAppearances.Contains(t2))
+                        {
+                            appearanceData.availableWeaponAppearances.Add(t2);
+                        }
+                    }
+                    else
+                    {
+                        if (appearanceData.availableWeaponAppearances.Contains(t2))
+                        {
+                            isValid = false;
+                            appearanceData.availableWeaponAppearances.Remove(t2);
+                        }
                     }
                 }
             }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerHitboxPart : MonoBehaviour, IDamagable
 {
     public PlayerControllerManager player;
+    public bool applyBotConfig = false;
     public enum PlayerPart
     {
         Head,
@@ -32,7 +33,11 @@ public class PlayerHitboxPart : MonoBehaviour, IDamagable
                 processed = amount - 10;
                 break;
         }
-        bool tmp = player.TakeDamage(processed, bypassArmor, targetPos, targetRot, weaponIndex, isWeapon);
+        bool tmp = false;
+        if (!applyBotConfig)
+        {
+            tmp = player.TakeDamage(processed, bypassArmor, targetPos, targetRot, weaponIndex, isWeapon);
+        }
         return tmp;
     }
 }

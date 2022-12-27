@@ -1884,7 +1884,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: G
+  m_text: X
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2795,6 +2795,8 @@ MonoBehaviour:
   streakHUDAlpha: {fileID: 5193357424524005925}
   restingSize: 60
   walkSize: 180
+  jumpSize: 180
+  slideSize: 220
   crouchSize: 40
   topReticle: {fileID: 4280456199046127748}
   bottomReticle: {fileID: 1911180236945785387}
@@ -8457,6 +8459,11 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 2051476038276295354}
+    - target: {fileID: 7347137235335450449, guid: 1674f1dbcf2c05049858e5d722624cd4,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8095677562124831651, guid: 1674f1dbcf2c05049858e5d722624cd4,
         type: 3}
       propertyPath: m_Pivot.x

@@ -151,6 +151,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
         json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
         UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
+        AppearancesDataJSON appearancesData = CosmeticSystem.AppearancesJsonData;
         selectedLoadoutIndex = jsonData.SelectedSlot;
         selectedMainWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon1;
         selectedSecondWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon2;
@@ -190,6 +191,8 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].selectedSidebarrelLeft[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Leftbarrel2);
             loadoutDataList[i].selectedSidebarrelRight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel1);
             loadoutDataList[i].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel2);
+            loadoutDataList[i].selectedAppearanceData[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1] : null));
+            loadoutDataList[i].selectedAppearanceData[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2] : null));
 
             loadoutDataList[i].selectedSightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Sight1 : -1;
             loadoutDataList[i].selectedSightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Sight2 : -1;
@@ -201,6 +204,8 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].selectedSidebarrelLeftIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Leftbarrel2 : -1;
             loadoutDataList[i].selectedSidebarrelRightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Rightbarrel1 : -1;
             loadoutDataList[i].selectedSidebarrelRightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Rightbarrel2 : -1;
+            loadoutDataList[i].selectedAppearanceDataIndex[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? jsonData.Slots[i].WeaponSkin1 : -1));
+            loadoutDataList[i].selectedAppearanceDataIndex[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? jsonData.Slots[i].WeaponSkin2 : -1));
         }
         if (checkChange) WriteLoadoutDataToJSON();
     }
