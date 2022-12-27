@@ -11,6 +11,8 @@ public class WeaponCosmeticListItem : MonoBehaviour
     [SerializeField] Image weaponIcon;
     [SerializeField] Text weaponSkinText;
     [SerializeField] Text weaponSkinPrice;
+    [SerializeField] Text rarityText;
+    [SerializeField] Color common, uncommon, rare, epic, legendary;
     [HideInInspector] public WeaponAppearanceMeshData data;
     // Start is called before the first frame update
     void Awake()
@@ -22,6 +24,25 @@ public class WeaponCosmeticListItem : MonoBehaviour
         weaponIcon.sprite = data.itemIcon;
         weaponSkinText.text = data.weaponData.itemName + " - " + data.itemName;
         weaponSkinPrice.text = "$" + data.purchasePrice.ToString();
+        rarityText.text = data.rarity.ToString();
+        switch (data.rarity)
+        {
+            case WeaponAppearanceMeshData.Rarity.Common:
+                rarityText.color = common;
+                break;
+            case WeaponAppearanceMeshData.Rarity.Uncommon:
+                rarityText.color = uncommon;
+                break;
+            case WeaponAppearanceMeshData.Rarity.Rare:
+                rarityText.color = rare;
+                break;
+            case WeaponAppearanceMeshData.Rarity.Epic:
+                rarityText.color = epic;
+                break;
+            case WeaponAppearanceMeshData.Rarity.Legendary:
+                rarityText.color = legendary;
+                break;
+        }
         this.data = data;
     }
     public void PurchaseItem()

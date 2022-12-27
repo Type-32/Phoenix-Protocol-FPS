@@ -36,6 +36,7 @@ public class GlobalDatabase : MonoBehaviour
         {
             CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
         }
+        CosmeticSystem.ValidateLoadoutCosmetics();
     }
     public int FindIndexFromWeaponData(WeaponData data)
     {

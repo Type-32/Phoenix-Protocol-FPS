@@ -148,6 +148,7 @@ namespace UserConfiguration
             string loadout = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
             UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
             LoadoutDataJSON loadoutJsonData = JsonUtility.FromJson<LoadoutDataJSON>(loadout);
+            AppearancesDataJSON appearanceData = CosmeticSystem.AppearancesJsonData;
             WeaponValidation result = WeaponValidation.Valid;
             if (!jsonData.shopData.availableWeaponIndexes.Contains(weaponIndex))
             {
@@ -494,6 +495,11 @@ namespace UserConfiguration
             if (jsonData.unlockedWeaponAppearances.Contains(temp))
             {
                 isValid = true;
+                if (jsonData.availableWeaponAppearances.Contains(temp))
+                {
+                    jsonData.availableWeaponAppearances.Remove(temp);
+                    isValid = false;
+                }
             }
             else
             {
@@ -506,6 +512,57 @@ namespace UserConfiguration
                     jsonData.availableWeaponAppearances.Add(temp);
                     if (correctValidation) CosmeticSystem.WriteToConfig(jsonData);
                 }
+            }
+            return isValid;
+        }
+        public static bool ValidateLoadoutCosmetics(bool correctValidation = true)
+        {
+            bool isValid = true;
+            LoadoutDataJSON loadoutJsonData = WeaponSystem.LoadoutJsonData;
+            AppearancesDataJSON appearanceData = CosmeticSystem.AppearancesJsonData;
+            for (int i = 0; i < 8; i++)
+            {
+                AppearancesDataJSON.WeaponAppearance t1 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
+                AppearancesDataJSON.WeaponAppearance t2 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
+                if (!appearanceData.unlockedWeaponAppearances.Contains(t1))
+                {
+                    isValid = false;
+                    loadoutJsonData.Slots[i].WeaponSkin1 = -1;
+                    if (!appearanceData.availableWeaponAppearances.Contains(t1))
+                    {
+                        appearanceData.availableWeaponAppearances.Add(t1);
+                    }
+                }
+                else
+                {
+                    if (appearanceData.availableWeaponAppearances.Contains(t1))
+                    {
+                        isValid = false;
+                        appearanceData.availableWeaponAppearances.Remove(t1);
+                    }
+                }
+                if (!appearanceData.unlockedWeaponAppearances.Contains(t2))
+                {
+                    isValid = false;
+                    loadoutJsonData.Slots[i].WeaponSkin2 = -1;
+                    if (!appearanceData.availableWeaponAppearances.Contains(t2))
+                    {
+                        appearanceData.availableWeaponAppearances.Add(t2);
+                    }
+                }
+                else
+                {
+                    if (appearanceData.availableWeaponAppearances.Contains(t2))
+                    {
+                        isValid = false;
+                        appearanceData.availableWeaponAppearances.Remove(t2);
+                    }
+                }
+            }
+            if (correctValidation)
+            {
+                CosmeticSystem.WriteToConfig(appearanceData);
+                WeaponSystem.WriteToLoadoutConfig(loadoutJsonData);
             }
             return isValid;
         }
