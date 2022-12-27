@@ -18,6 +18,7 @@ MonoBehaviour:
   equippedByDefault: 0
   unlockingLevel: 8
   requiresPurchase: 1
+  overrideUnlockingLevel: 0
   purchasePrice: 5000
   weaponPrefab: {fileID: 6788626819295025767, guid: 4c1b680f8451aea4f8f990faf3680588,
     type: 3}
@@ -102,7 +103,12 @@ MonoBehaviour:
   raiseGun: {fileID: 0}
   aimIn: {fileID: 0}
   aimOut: {fileID: 0}
-  applicableVariants: []
+  applicableVariants:
+  - {fileID: 11400000, guid: 9759ac9378f0eaf42bc42684bf4ca46b, type: 2}
+  - {fileID: 11400000, guid: 3cbfc637c855c604fac4fdc605e05a47, type: 2}
+  - {fileID: 11400000, guid: 2de358742a7d0ea4aaa72c819c56abc2, type: 2}
+  - {fileID: 11400000, guid: 5d1a05989e8161c4d8d0d3c039710f28, type: 2}
+  - {fileID: 11400000, guid: 916631b6af5e6f94abeb1709e9ec9a9c, type: 2}
   applicableAttachments:
   - {fileID: 11400000, guid: eaa3091aa3f59c1458f80c48eac2633e, type: 2}
   - {fileID: 11400000, guid: 5d4ea03721058124f90295b220f740d0, type: 2}
