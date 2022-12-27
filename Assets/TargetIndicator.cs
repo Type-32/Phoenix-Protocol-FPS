@@ -48,8 +48,8 @@ public class TargetIndicator : MonoBehaviour
     {
         if (target == null)
         {
+            this.gameObject.GetComponent<CanvasGroup>().alpha = 0f;
             Destroy(this.gameObject);
-            canvasGroup.alpha = 0f;
             return;
         }
         canvasGroup.alpha = 1f;
