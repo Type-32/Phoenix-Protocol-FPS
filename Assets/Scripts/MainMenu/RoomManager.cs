@@ -8,6 +8,7 @@ using System.IO;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Instance;
+    [HideInInspector] public CurrentMatchManager cmm;
     public int currentSceneIndex = 0;
     private void Awake()
     {
@@ -35,19 +36,28 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (scene.buildIndex == 1)//Inside game Scene
         {
             //PhotonNetwork.CurrentRoom.IsVisible = false;
+            cmm = FindObjectOfType<CurrentMatchManager>();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
         else if (scene.buildIndex == 2)
         {
             //PhotonNetwork.CurrentRoom.IsVisible = false;
+            cmm = FindObjectOfType<CurrentMatchManager>();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
         else if (scene.buildIndex == 3)
         {
+            cmm = FindObjectOfType<CurrentMatchManager>();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
         else if (scene.buildIndex == 4)
         {
+            cmm = FindObjectOfType<CurrentMatchManager>();
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+        }
+        else if (scene.buildIndex == 5)
+        {
+            cmm = FindObjectOfType<CurrentMatchManager>();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
         else if (scene.buildIndex == 0)
