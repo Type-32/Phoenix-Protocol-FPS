@@ -786,37 +786,39 @@ public class PlayerManager : MonoBehaviour
         pv.RPC(nameof(RPC_TDM_InstantiateMessageOnKill), RpcTarget.All, killedName, killerName, weaponIndex, killedIsTeam, isWeapon);
     }
     [PunRPC]
-    public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool isWeapon)
+    public void RPC_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool isWeapon, PhotonMessageInfo info)
     {
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
-        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
+        KillMessageItem msg = temp.GetComponent<KillMessageItem>();
+        msg.SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
         if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Free For All")
         {
-            if (pv.Owner.NickName == killerName)
+            if (pv.Owner == info.Sender)
             {
-                temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+                msg.SetKilledColor(Color.red);
             }
             else
             {
-                temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
-                temp.GetComponent<KillMessageItem>().SetKillerColor(Color.red);
+                msg.SetKilledColor(Color.red);
+                msg.SetKillerColor(Color.red);
             }
         }
         Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex);
         Destroy(temp, 15f);
     }
     [PunRPC]
-    public void RPC_TDM_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool killerIsTeam, bool isWeapon)
+    public void RPC_TDM_InstantiateMessageOnKill(string killedName, string killerName, int weaponIndex, bool killerIsTeam, bool isWeapon, PhotonMessageInfo info)
     {
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
-        temp.GetComponent<KillMessageItem>().SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
+        KillMessageItem msg = temp.GetComponent<KillMessageItem>();
+        msg.SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
         if (cmm.localClientPlayer.IsTeam == killerIsTeam)
         {
-            temp.GetComponent<KillMessageItem>().SetKilledColor(Color.red);
+            msg.SetKilledColor(Color.red);
         }
         else
         {
-            temp.GetComponent<KillMessageItem>().SetKillerColor(Color.red);
+            msg.SetKillerColor(Color.red);
         }
         //Debug.LogWarning("Instantiating Message: " + killedName + " " + killerName + " " + weaponIndex);
         Debug.Log(killedName + " was killed by " + killerName + " using weapon with an index of " + weaponIndex + " on team " + (killerIsTeam ? "Red" : "Blue"));

@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 8358296171505222946}
   - component: {fileID: 9118850313492596738}
   - component: {fileID: 178085316659708475}
-  - component: {fileID: 8523656060663391235}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -153,18 +152,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &8523656060663391235
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6946365575504997648}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &6988681531476477674
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +162,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7128979462223335194}
   - component: {fileID: 323901345891005356}
-  - component: {fileID: 6997835683560722133}
   m_Layer: 5
   m_Name: KillIconItem
   m_TagString: Untagged
@@ -219,23 +205,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killIcon: {fileID: 178085316659708475}
   killCross: {fileID: 6588804435498333248}
---- !u!95 &6997835683560722133
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6988681531476477674}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 77a0790b0d10e7c45bd500a621be8bb7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

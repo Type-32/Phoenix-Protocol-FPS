@@ -8,6 +8,7 @@ public class KillMessageItem : MonoBehaviour
     [SerializeField] Text killed;
     [SerializeField] Text killer;
     [SerializeField] Image icon;
+    [SerializeField] Image iconBG;
     public void SetInfo(string killedName, string killerName, Sprite img)
     {
         killed.text = killedName;
@@ -17,6 +18,7 @@ public class KillMessageItem : MonoBehaviour
     public void SetKillerColor(Color killerColor)
     {
         killer.color = killerColor;
+        iconBG.color = killerColor;
     }
     public void SetKilledColor(Color killedColor)
     {
