@@ -407,11 +407,11 @@ public class PlayerManager : MonoBehaviour
         managerRigidbody.useGravity = true;
         managerRigidbody.isKinematic = true;
         hurtVolume.weight = 1f;
-        cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
+        /*cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
         if (cameraData)
         {
             cameraData.renderPostProcessing = true;
-        }
+        }*/
 
         PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
