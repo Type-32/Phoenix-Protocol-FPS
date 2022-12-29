@@ -830,6 +830,7 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
+                Debug.LogWarning("You are killed by a baddie");
                 msg.SetKilledColor(Color.red);
                 msg.SetKillerColor(Color.red);
             }
