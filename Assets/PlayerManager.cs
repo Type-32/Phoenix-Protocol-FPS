@@ -383,7 +383,7 @@ public class PlayerManager : MonoBehaviour
             }
         }
         if (pv.IsMine) SynchronizeValues(kills, deaths);
-        pv.RPC(nameof(RPC_InstantiateDeadBody), RpcTarget.All, controller.transform.position, controller.transform.rotation);
+        //pv.RPC(nameof(RPC_InstantiateDeadBody), RpcTarget.All, controller.transform.position, controller.transform.rotation);
         audioListener.enabled = true;
         streakKills = 0;
         cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
