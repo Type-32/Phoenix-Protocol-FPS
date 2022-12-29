@@ -44,7 +44,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389131835395441929}
   serializedVersion: 8
-  lengthInSec: 10
+  lengthInSec: 14
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -981,7 +981,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 8
+        scalar: 1
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -9902,8 +9902,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198003314167521688, guid: cc606b05b54463b41bd3f1744812102d,
         type: 3}
+      propertyPath: lengthInSec
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 198003314167521688, guid: cc606b05b54463b41bd3f1744812102d,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 198003314167521688, guid: cc606b05b54463b41bd3f1744812102d,
+        type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 199529841402903642, guid: cc606b05b54463b41bd3f1744812102d,
         type: 3}

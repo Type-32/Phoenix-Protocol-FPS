@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 7630510218944368837}
   - component: {fileID: 7968719938644575821}
   - component: {fileID: 1293865389950472983}
+  - component: {fileID: 4005660463186144260}
   m_Layer: 5
   m_Name: SpawnpointListItem
   m_TagString: Untagged
@@ -191,6 +192,19 @@ MonoBehaviour:
   buttonVisual: {fileID: 7968719938644575821}
   selectedVisual: {fileID: 8993165758386745526}
   spawnpointItemIndex: 0
+  canvasGroup: {fileID: 4005660463186144260}
+--- !u!225 &4005660463186144260
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132523249197665679}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &2526906779052851108
 GameObject:
   m_ObjectHideFlags: 0

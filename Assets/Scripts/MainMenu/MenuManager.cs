@@ -436,12 +436,12 @@ public class MenuManager : MonoBehaviour
     #endregion
 
     #region Room Creation
-    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomModes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit)
+    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomModes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit, bool randomRespawn = true)
     {
         Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
         int roomCode = Random.Range(10000000, 99999999);
-        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit" }; //Expose values to main lobby
+        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "randomRespawn", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit" }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add("roomName", roomName);
@@ -449,6 +449,7 @@ public class MenuManager : MonoBehaviour
         roomOptions.CustomRoomProperties.Add("mapInfoIndex", mapInfoIndex);
         roomOptions.CustomRoomProperties.Add("maxPlayer", maxPlayer);
         roomOptions.CustomRoomProperties.Add("gameStarted", false);
+        roomOptions.CustomRoomProperties.Add("randomRespawn", randomRespawn);
         switch (roomModes)
         {
             case Gamemodes.FFA:

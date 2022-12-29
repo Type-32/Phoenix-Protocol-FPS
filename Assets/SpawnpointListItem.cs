@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class SpawnpointListItem : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class SpawnpointListItem : MonoBehaviour
     public Button buttonVisual;
     public GameObject selectedVisual;
     public int spawnpointItemIndex = 0;
+    public CanvasGroup canvasGroup;
     Animator animator;
     // Start is called before the first frame update
     void Awake()
@@ -22,6 +25,7 @@ public class SpawnpointListItem : MonoBehaviour
     private void Start()
     {
         selectedVisual.gameObject.SetActive(false);
+        canvasGroup.alpha = (bool)PhotonNetwork.CurrentRoom.CustomProperties["randomRespawn"] ? 0f : 1f;
     }
 
     public void OnClickSpawnpoint()

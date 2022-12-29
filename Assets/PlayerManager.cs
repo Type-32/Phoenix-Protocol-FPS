@@ -10,11 +10,16 @@ using System.Linq;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using LauncherManifest;
 using UserConfiguration;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerManager : MonoBehaviour
 {
     public PhotonView pv;
     public GameObject controller;
+    [SerializeField] Collider managerCollider;
+    [SerializeField] Rigidbody managerRigidbody;
+    [SerializeField] Volume hurtVolume;
     [SerializeField] GameObject deathUI;
     [SerializeField] Text deathCountdown;
     public Camera cameraObject;
@@ -119,6 +124,9 @@ public class PlayerManager : MonoBehaviour
         temp.Add("team", false);
         pv.Owner.CustomProperties.TryAdd("team", false);
         pv.Owner.SetCustomProperties(temp);*/
+        managerCollider.enabled = false;
+        managerRigidbody.useGravity = false;
+        managerRigidbody.isKinematic = false;
         if (pv.IsMine)
         {
             Hashtable th = new();
@@ -300,6 +308,11 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         //if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") RetreiveIsTeamValue();
+        cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
+        if (cameraData)
+        {
+            cameraData.renderPostProcessing = false;
+        }
         audioListener.enabled = false;
         respawning = true;
         respawnButton.interactable = false;
@@ -309,6 +322,7 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Instantiating Player Controller");
 
         if (spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["randomRespawn"]) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
 
         controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { pv.ViewID });
         controller.GetComponent<PlayerControllerManager>().playerManager = this;
@@ -388,6 +402,16 @@ public class PlayerManager : MonoBehaviour
         Hashtable hash = new Hashtable();
         hash.Add("deaths", deaths);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+        managerCollider.enabled = true;
+        managerRigidbody.useGravity = true;
+        managerRigidbody.isKinematic = true;
+        hurtVolume.weight = 1f;
+        cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
+        if (cameraData)
+        {
+            cameraData.renderPostProcessing = true;
+        }
 
         PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
@@ -541,7 +565,7 @@ public class PlayerManager : MonoBehaviour
         }
         if (returnTemp <= 0f && hasRespawned && !respawning)
         {
-            //CreateController();
+            CreateController();
         }
         if (respawning)
         {
@@ -554,6 +578,10 @@ public class PlayerManager : MonoBehaviour
                     deathGUICanvas.alpha = Mathf.Lerp(deathGUICanvas.alpha, 1f, Time.deltaTime * 2);
                     transform.position = Vector3.Slerp(transform.position, spawnpointCamera.transform.position, Time.deltaTime * 3);
                     transform.rotation = Quaternion.Slerp(transform.rotation, spawnpointCamera.transform.rotation, Time.deltaTime * 3);
+                    managerCollider.enabled = false;
+                    managerRigidbody.isKinematic = false;
+                    managerRigidbody.useGravity = false;
+                    hurtVolume.weight = Mathf.Lerp(hurtVolume.weight, 0f, Time.deltaTime * 2);
                 }
             }
             else
