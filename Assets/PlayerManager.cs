@@ -407,11 +407,14 @@ public class PlayerManager : MonoBehaviour
         managerRigidbody.useGravity = true;
         managerRigidbody.isKinematic = true;
         hurtVolume.weight = 1f;
-        /*cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
-        if (cameraData)
+        if (cameraObject != null)
         {
-            cameraData.renderPostProcessing = true;
-        }*/
+            cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
+            if (cameraData)
+            {
+                cameraData.renderPostProcessing = true;
+            }
+        }
 
         PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
@@ -565,7 +568,7 @@ public class PlayerManager : MonoBehaviour
         }
         if (returnTemp <= 0f && hasRespawned && !respawning)
         {
-            CreateController();
+            //CreateController();
         }
         if (respawning)
         {
