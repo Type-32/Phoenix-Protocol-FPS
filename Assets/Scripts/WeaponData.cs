@@ -44,6 +44,8 @@ public class WeaponData : ItemData
     [Range(0f, 50f)] public float damagePerPellet = 10f;
     public int pelletsPerFire = 1;
     public float reloadTimePerPellet = 0.8f;
+    public int maxDurability = 2500;
+    public int durationCostPerUse = 10;
 
     [Space]
     [Header("Weapon Parameters")]
@@ -59,6 +61,16 @@ public class WeaponData : ItemData
     public bool ejectCasingAfterRechamber = false;
     public bool reloadByBullet = false;
     public bool useRechamberClipAudioList = true;
+    public bool allowMagazineUpgrades = true;
+    public bool allowDamageUpgrades = true;
+    public bool allowRangeUpgrades = true;
+    public bool allowCatridgeUpgrades = true;
+    public bool allowReloadUpgrades = true;
+    public bool allowADSUpgrades = true;
+    public bool allowHipfireUpgrades = true;
+    public bool allowDurabilityUpgrades = true;
+    public bool allowRecoilUpgrades = true;
+    public bool allowRepairs = true;
 
     [Space]
     [Header("Audio Clips")]
