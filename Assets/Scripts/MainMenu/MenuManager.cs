@@ -30,7 +30,7 @@ public class MenuManager : MonoBehaviour
     public GameObject loadoutSelectionMenu;
     public GameObject popupMenu;
     public GameObject shopMenu;
-    public List<GameObject> menuList = new();
+    public List<GameObject> setActiveMenuList = new();
 
     [Space]
     [Header("Misc Components")]
@@ -130,6 +130,10 @@ public class MenuManager : MonoBehaviour
     }
     private void Awake()
     {
+        foreach (GameObject tp in setActiveMenuList)
+        {
+            tp.SetActive(true);
+        }
         instance = this;
         Debug.Log("Initializing Awake Main menu");
     }

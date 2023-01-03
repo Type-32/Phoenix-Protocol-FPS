@@ -5,6 +5,7 @@ using UserConfiguration;
 
 public class GlobalDatabase : MonoBehaviour
 {
+    public GunsmithDataJSON emptyGunsmithDataJSON;
     public LoadoutDataJSON emptyLoadoutDataJSON;
     public LoadoutSlotDataJSON emptyLoadoutSlotDataJSON;
     public SettingsOptionsJSON emptySettingsOptionsJSON;
@@ -36,6 +37,10 @@ public class GlobalDatabase : MonoBehaviour
         foreach (WeaponAppearanceMeshData tp in allWeaponAppearanceDatas)
         {
             CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
+        }
+        for (int i = 0; i < GunsmithSystem.GunsmithJsonData.weaponSmithings.Count; i++)
+        {
+            GunsmithSystem.VerifyWeaponSmithingData(GunsmithSystem.GunsmithJsonData.weaponSmithings[i]);
         }
     }
     public int FindIndexFromWeaponData(WeaponData data)

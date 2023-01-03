@@ -344,6 +344,11 @@ namespace UserConfiguration
                 return "AppearancesConfig.json";
             }
         }
+        public static string GunsmithConfigKey{
+            get{
+                return "GunsmithConfig.json";
+            }
+        }
     }
     public static class Database
     {
@@ -442,6 +447,80 @@ namespace UserConfiguration
                 if (i == index) return GlobalDatabase.singleton.allPlayerCosmeticDatas[i];
             }
             return null;
+        }
+    }
+    public static class GunsmithSystem
+    {
+        public static string GunsmithConfigFilePath
+        {
+            get
+            {
+                string path = Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey);
+                if(File.Exists(path)) return path;
+                else File.Create(path).Close();
+                return null;
+            }
+        }
+        public static void WriteToConfig(GunsmithDataJSON gunsmithDataJSON){
+            string jsonString = JsonUtility.ToJson(gunsmithDataJSON, true);
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
+        }
+        public static void WriteToConfig(string jsonString){
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
+        }
+        public static GunsmithDataJSON GunsmithJsonData
+        {
+            get
+            {
+                if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)))
+                {
+                    GunsmithDataJSON data = new();
+                    data = GlobalDatabase.singleton.emptyGunsmithDataJSON;
+
+                    string jsonString = JsonUtility.ToJson(data, true);
+                    if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)).Close();
+                    File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
+
+                }
+                if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)))
+                {
+                    string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey));
+                    if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
+                    {
+                        GunsmithDataJSON data = new();
+                        data = GlobalDatabase.singleton.emptyGunsmithDataJSON;
+
+                        string jsonString = JsonUtility.ToJson(data, true);
+                        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)).Close();
+                        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
+                    }
+                }
+                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey));
+                GunsmithDataJSON jsonData = JsonUtility.FromJson<GunsmithDataJSON>(json);
+                return jsonData;
+            }
+        }
+        public static object FindWeaponSmithingData(int weaponIndex)
+        {
+            GunsmithDataJSON data = GunsmithJsonData;
+            for (int i = 0; i < data.weaponSmithings.Count; i++)
+            {
+                if(weaponIndex == data.weaponSmithings[i].weaponIndex) return data.weaponSmithings[i];
+            }
+            return null;
+        }
+        public static bool VerifyWeaponSmithingData(GunsmithDataJSON.WeaponSmithingData data, bool correctValidation = true){
+            if(UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.weaponIndex)){
+                return true;
+            }else{
+                if(correctValidation){
+                    if(GunsmithJsonData.weaponSmithings.Contains(data)){
+                        GunsmithJsonData.weaponSmithings.Remove(data);
+                        WriteToConfig(GunsmithJsonData);
+                    }
+                }
+            }
+            return false;
         }
     }
     public static class CosmeticSystem
