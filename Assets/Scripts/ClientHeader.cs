@@ -522,6 +522,36 @@ namespace UserConfiguration
             }
             return false;
         }
+        public static bool AddWeaponToData(WeaponData data)
+        {
+            bool success = false;
+            if(UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
+            {
+                if(FindWeaponSmithingData(data.GlobalWeaponIndex) == null)
+                {
+                    GunsmithDataJSON jsonData = GunsmithJsonData;
+                    GunsmithDataJSON.WeaponSmithingData temp;
+                    temp.weaponIndex = data.GlobalWeaponIndex;
+                    jsonData.weaponSmithings.Add(temp);
+                    WriteToConfig(jsonData);
+                    success = true;
+                }
+            }
+            return success;
+        }
+        public static bool RemoveWeaponFromData(WeaponData data)
+        {
+            bool success = false;
+            GunsmithDataJSON.WeaponSmithingData temp = FindWeaponSmithingData(data.GlobalWeaponIndex);
+            if(temp != null)
+            {
+                GunsmithDataJSON jsonData = GunsmithJsonData;
+                jsonData.weaponSmithings.Remove(temp);
+                WriteToConfig(jsonData);
+                success = true;
+            }
+            return success;
+        }
     }
     public static class CosmeticSystem
     {
