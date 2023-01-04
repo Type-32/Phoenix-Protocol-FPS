@@ -471,27 +471,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void InvokeGunEffects(Vector3 point = new Vector3(), Vector3 normal = new Vector3(), bool playSound = true)
     {
-        //Debug.LogWarning("Invoking Gun Effects RPC...");
-        /*
-        if (holder.weaponIndex == 0)
-        {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
-            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
-        }
-        else
-        {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
-            else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
-        }
-
-        if (holder.weaponIndex == 0)
-        {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
-        }
-        else
-        {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.Play();
-        }*/
         pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, point, normal, playSound);
     }
     public void InvokePlayerDeathEffects()
@@ -507,10 +486,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void RPC_ChangePlayerState(bool value, int ind)
     {
         /*
-       0. Sprinting
-       1. Crouching
-       2. Sliding
-         */
+        0. Sprinting
+        1. Crouching
+        2. Sliding
+        */
         switch (ind)
         {
             case 0:

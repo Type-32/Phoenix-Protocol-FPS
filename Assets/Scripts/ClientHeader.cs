@@ -500,7 +500,7 @@ namespace UserConfiguration
                 return jsonData;
             }
         }
-        public static object FindWeaponSmithingData(int weaponIndex)
+        public static GunsmithDataJSON.WeaponSmithingData FindWeaponSmithingData(int weaponIndex)
         {
             GunsmithDataJSON data = GunsmithJsonData;
             for (int i = 0; i < data.weaponSmithings.Count; i++)
@@ -530,7 +530,7 @@ namespace UserConfiguration
                 if(FindWeaponSmithingData(data.GlobalWeaponIndex) == null)
                 {
                     GunsmithDataJSON jsonData = GunsmithJsonData;
-                    GunsmithDataJSON.WeaponSmithingData temp;
+                    GunsmithDataJSON.WeaponSmithingData temp = new();
                     temp.weaponIndex = data.GlobalWeaponIndex;
                     jsonData.weaponSmithings.Add(temp);
                     WriteToConfig(jsonData);

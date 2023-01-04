@@ -5,7 +5,7 @@ using UnityEngine;
 public class GunsmithDataJSON
 {
     [System.Serializable]
-    public struct WeaponSmithingData
+    public class WeaponSmithingData
     {
         #region Original Values
         public float o_Damage
