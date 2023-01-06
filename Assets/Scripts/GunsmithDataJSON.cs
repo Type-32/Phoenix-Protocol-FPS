@@ -212,23 +212,9 @@ public class GunsmithDataJSON
         }
     }
     #endregion
-    [System.Serializable]
-    public struct SmithingResources{
-        public int iron;
-        public int mechanisms;
-        public int composites;
-        public int tools;
-        public int experience;
-    }
-    public SmithingResources userResources;
     public List<WeaponSmithingData> weaponSmithings = new();
     internal GunsmithDataJSON()
     {
-        userResources.iron = 1000; //Gained Through Matches, approx. 500~2500 per match
-        userResources.experience = 0; //Gained Through Matches, approx. 50~300 per match
-        userResources.composites = 500; //Gained Through Matches, approx. 150~400 per match
-        userResources.mechanisms = 50; //Gained Through Combining Iron and Composites, approx. 10~50 per fusion, around 600~1500 iron needed and 150~400 composites needed
-        userResources.tools = 5; //Gained Through Match Kills, approx 1~3 per match
         weaponSmithings = new();
     }
 }
