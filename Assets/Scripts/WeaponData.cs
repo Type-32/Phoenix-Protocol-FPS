@@ -72,10 +72,12 @@ public class WeaponData : ItemData
     public bool allowRecoilUpgrades = true;
     public bool allowRepairs = true;
     public bool automaticLimits = true;
-    public int magazineUpgradeLimit{
-        get{
+    public int magazineUpgradeLimit
+    {
+        get
+        {
             int temp = 0;
-            if(automaticLimits) temp = maxAmmoPerMag + maxAmmoPerMag / 2;
+            if (automaticLimits) temp = maxAmmoPerMag + maxAmmoPerMag / 2;
             else temp = magazineUpgradeLimit;
             return temp;
         }
