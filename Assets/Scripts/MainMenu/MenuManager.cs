@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -30,6 +31,8 @@ public class MenuManager : MonoBehaviour
     public GameObject loadoutSelectionMenu;
     public GameObject popupMenu;
     public GameObject shopMenu;
+    public GameObject gunsmithMenu;
+    public GameObject enterAnimMenu;
     public List<GameObject> setActiveMenuList = new();
 
     [Space]
@@ -56,6 +59,7 @@ public class MenuManager : MonoBehaviour
     public bool openedLoadoutSelectionMenu = false;
     public bool openedPopupMenu = false;
     public bool openedShopMenu = false;
+    public bool openedGunsmithMenu = false;
     public bool usingCreateRooomInputField = false;
     public bool isConnected = false;
 
@@ -135,7 +139,8 @@ public class MenuManager : MonoBehaviour
             tp.SetActive(true);
         }
         instance = this;
-        Debug.Log("Initializing Awake Main menu");
+        gunsmithMenuState += OnGunsmithMenuToggled;
+        //Debug.Log("Initializing Awake Main menu");
     }
     void Start()
     {
@@ -151,6 +156,7 @@ public class MenuManager : MonoBehaviour
         CloseCreateRoomMenu();
         CloseSettingsMenu();
         CloseUpdateLogsMenu();
+        ToggleGunsmithMenu(false);
         //CloseLoadoutSelectionMenu();
         OpenMainMenu();
         for (int i = 0; i < versionTexts.Count; i++)
@@ -382,6 +388,20 @@ public class MenuManager : MonoBehaviour
     }
     #endregion
 
+    #region Gunsmith Menu
+    public Action gunsmithMenuState;
+    public void ToggleGunsmithMenu(bool state)
+    {
+        gunsmithMenuState.Invoke();
+        openedGunsmithMenu = state;
+        gunsmithMenu.SetActive(openedGunsmithMenu);
+    }
+    public virtual void OnGunsmithMenuToggled()
+    {
+
+    }
+    #endregion
+
     #region Main
     public Gamemodes GetGamemode()
     {
@@ -411,6 +431,13 @@ public class MenuManager : MonoBehaviour
         joinedMasterLobby = value;
         isConnected = value;
         enterAnim.SetBool("isConnected", isConnected);
+        StartCoroutine(DelayDisableEnterAnim(2f));
+
+    }
+    IEnumerator DelayDisableEnterAnim(float time)
+    {
+        yield return new WaitForSeconds(time);
+        RoomManager.Instance.loadEnterAnim = false;
     }
     public string SetConnectionIndicatorText(string content)
     {
@@ -444,7 +471,7 @@ public class MenuManager : MonoBehaviour
     {
         Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
-        int roomCode = Random.Range(10000000, 99999999);
+        int roomCode = UnityEngine.Random.Range(10000000, 99999999);
         string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "randomRespawn", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit" }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();

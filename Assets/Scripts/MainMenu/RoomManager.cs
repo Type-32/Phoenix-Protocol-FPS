@@ -10,6 +10,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public static RoomManager Instance;
     [HideInInspector] public CurrentMatchManager cmm;
     public int currentSceneIndex = 0;
+    public bool loadEnterAnim = true;
     private void Awake()
     {
         if (Instance)
@@ -19,6 +20,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         DontDestroyOnLoad(gameObject);
         Instance = this;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     public override void OnEnable()
@@ -33,6 +35,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
+        if (scene.buildIndex == 0)
+        {
+            if (!loadEnterAnim)
+            {
+                MenuManager.instance.enterAnimMenu.SetActive(false);
+                Debug.Log("Main Scene Loaded");
+            }
+        }
         if (scene.buildIndex == 1)//Inside game Scene
         {
             //PhotonNetwork.CurrentRoom.IsVisible = false;
