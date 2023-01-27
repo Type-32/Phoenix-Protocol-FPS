@@ -40,13 +40,13 @@ public class PlayerSounds : MonoBehaviour
         if (!player.pv.IsMine) return;
         FootstepHandler();
     }
-    
+
     void FootstepHandler()
     {
-        if (!player.body.isGrounded) return;
+        if (!player.stats.onGround) return;
         if (Input.GetAxis("Vertical") == 0f && Input.GetAxis("Horizontal") == 0f) return;
         footstepTimer -= Time.deltaTime;
-        if(footstepTimer <= 0f)
+        if (footstepTimer <= 0f)
         {
             InvokePlayerFootsteps();
         }
@@ -90,7 +90,7 @@ public class PlayerSounds : MonoBehaviour
                     stats.footstepAS.clip = defaultClips[Random.Range(0, defaultClips.Length - 1)];
                     break;
             }
-            if(stats.footstepAS.clip != null) stats.footstepAS.Play();
+            if (stats.footstepAS.clip != null) stats.footstepAS.Play();
         }
         footstepTimer = GetCurrentOffset;
         //PhotonNetwork
@@ -128,6 +128,6 @@ public class PlayerSounds : MonoBehaviour
                 stats.playerInternalAS.PlayOneShot(armorBreakMarkerClips[Random.Range(0, armorBreakMarkerClips.Length - 1)]);
                 break;
         }
-        
+
     }
 }
