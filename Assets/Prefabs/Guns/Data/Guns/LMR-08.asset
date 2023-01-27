@@ -31,15 +31,17 @@ MonoBehaviour:
   reloadTime: 5
   impactForce: 20
   fireRate: 1.2
-  FOVMultiplier: 3
+  FOVMultiplier: 1.08
   hipfireSpread: 0.8
   rechamberDelay: 0.5
   shellEjectionDelay: 0.25
   boltRecoveryDuration: 1.4
-  aimSpeed: 0.233
+  aimSpeed: 5
   damagePerPellet: 10
   pelletsPerFire: 1
   reloadTimePerPellet: 0.8
+  maxDurability: 2500
+  durationCostPerUse: 10
   isEnabled: 1
   isMelee: 0
   isExplosive: 0
@@ -52,6 +54,17 @@ MonoBehaviour:
   ejectCasingAfterRechamber: 1
   reloadByBullet: 0
   useRechamberClipAudioList: 1
+  allowMagazineUpgrades: 1
+  allowDamageUpgrades: 1
+  allowRangeUpgrades: 1
+  allowCatridgeUpgrades: 1
+  allowReloadUpgrades: 1
+  allowADSUpgrades: 1
+  allowHipfireUpgrades: 1
+  allowDurabilityUpgrades: 1
+  allowRecoilUpgrades: 1
+  allowRepairs: 1
+  automaticLimits: 1
   bassClips:
   - {fileID: 8300000, guid: 0d88164ddcb598c4ba84a1cc4a00999d, type: 3}
   fireClips:

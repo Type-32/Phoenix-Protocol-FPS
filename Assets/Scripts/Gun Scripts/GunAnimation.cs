@@ -16,6 +16,15 @@ public class GunAnimation : MonoBehaviour
     public bool rotationY = true;
     public bool rotationZ = true;
 
+    [Space]
+    public bool enableAimValueInterpolation = false;
+    public bool enableSprintValueInterpolation = false;
+    public bool enableWalkValueInterpolation = false;
+    public float aimIntDurationMultiplier = 2f, sprintIntDurationMultiplier = 2f, walkIntDurationMultiplier = 2f;
+    public string aimValueKey = "aimingValue", sprintValueKey = "sprintValue", walkValueKey = "walkValue";
+    [HideInInspector] public float aimInterpolation = 0f, sprintInterpolation = 0f, walkInterpolation = 0f;
+
+    #region Private Variables
     private Vector3 initialPosition;
     private Quaternion initialRotation;
     private Quaternion originRotation;
@@ -47,6 +56,7 @@ public class GunAnimation : MonoBehaviour
     Vector3 rotationalRecoil;
     Vector3 positionalRecoil;
     Vector3 Rot;
+    #endregion
 
     public float aimBobAmount = 0.015f;
     public float walkBobAmount = 0.1f;
@@ -112,10 +122,22 @@ public class GunAnimation : MonoBehaviour
         animate.SetBool("isAiming", gun.stats.isAiming);
         animate.SetBool("isReloading", gun.stats.isReloading);
         animate.SetBool("isSliding", gun.player.stats.isSliding);
-        if (gun.stats.isAiming)
+        if (enableAimValueInterpolation)
         {
-            gun.attachment.CheckEnabledSightAimingPosition(gun.player.holder.weaponIndex);
+            aimInterpolation = Mathf.Lerp(aimInterpolation, (stats.isAiming ? 1f : 0f), Time.deltaTime * aimIntDurationMultiplier);
+            animate.SetFloat(aimValueKey, aimInterpolation);
         }
+        if (enableSprintValueInterpolation)
+        {
+            sprintInterpolation = Mathf.Lerp(sprintInterpolation, (stats.isSprinting ? 1f : 0f), Time.deltaTime * sprintIntDurationMultiplier);
+            animate.SetFloat(sprintValueKey, sprintInterpolation);
+        }
+        if (enableWalkValueInterpolation)
+        {
+            walkInterpolation = Mathf.Lerp(walkInterpolation, (stats.isWalking ? 1f : 0f), Time.deltaTime * walkIntDurationMultiplier);
+            animate.SetFloat(walkValueKey, walkInterpolation);
+        }
+        if (gun.stats.isAiming) gun.attachment.CheckEnabledSightAimingPosition(gun.player.holder.weaponIndex);
         //animate.SetBool("isSliding", gun.player.stats.isSliding);
         //animate.SetBool("isAttaching", gun.stats.isAttaching);
     }

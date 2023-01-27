@@ -39,8 +39,7 @@ public class GunLogic : MonoBehaviour
     }
     void GunMovementLogic()
     {
-        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)) gun.stats.isWalking = true;
-        else gun.stats.isWalking = false;
+        gun.stats.isWalking = gun.player.stats.isWalking;
 
         if (Input.GetKey("left shift") && !gun.stats.isAiming && !gun.player.stats.isCrouching && gun.stats.isWalking) gun.stats.isSprinting = true;
         else gun.stats.isSprinting = false;
