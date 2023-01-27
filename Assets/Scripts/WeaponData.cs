@@ -35,12 +35,12 @@ public class WeaponData : ItemData
     public float reloadTime = 3f;
     public float impactForce = 10f;
     public float fireRate = 15f;
-    [Range(1f, 15f), Tooltip("Normally Set Around 3f.")] public float FOVMultiplier = 1.1f;
+    [Range(1f, 1.6f), Tooltip("Normally Set Around 1.1f.")] public float FOVMultiplier = 1.1f;
     [Range(0.5f, 2f)] public float hipfireSpread = 1f;
     public float rechamberDelay = 0.1f;
     public float shellEjectionDelay = 0f;
     public float boltRecoveryDuration = 1.5f;
-    public float aimSpeed = 3f;
+    [Range(1f, 8f), Tooltip("Normally Set Around 2~3f")] public float aimSpeed = 3f;
     [Range(0f, 50f)] public float damagePerPellet = 10f;
     public int pelletsPerFire = 1;
     public float reloadTimePerPellet = 0.8f;

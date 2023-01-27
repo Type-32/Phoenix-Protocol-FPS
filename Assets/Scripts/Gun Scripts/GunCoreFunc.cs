@@ -80,14 +80,7 @@ public class GunCoreFunc : MonoBehaviour
     }*/
     public void AimingMechanics()
     {
-        if (gun.stats.isAiming)
-        {
-            EnterAiming(true);
-        }
-        else
-        {
-            EnterAiming(false);
-        }
+        EnterAiming(gun.stats.isAiming);
     }
     public void FiremodeSwitchMechanics()
     {

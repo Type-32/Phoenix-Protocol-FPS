@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System;
+using UnityEngine.Events;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
@@ -26,7 +28,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnEnable()
     {
         base.OnEnable();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
     public override void OnDisable()
     {
