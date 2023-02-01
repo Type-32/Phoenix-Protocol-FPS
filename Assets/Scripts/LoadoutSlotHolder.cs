@@ -17,15 +17,25 @@ public class LoadoutSlotHolder : MonoBehaviourPunCallbacks
     public Text[] slotNames;
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if (!playerManager.pv.IsMine && targetPlayer == playerManager.pv.Owner && (changedProps.ContainsKey("weaponDataChangedMode") && changedProps.ContainsKey("weaponDataChanged")))
+        if (!playerManager.pv.IsMine && targetPlayer == playerManager.pv.Owner)
         {
-            if ((int)changedProps["weaponDataChangedMode"] < 2)
+            if (changedProps.ContainsKey("weaponDataChangedMode") && changedProps.ContainsKey("weaponDataChanged"))
             {
-                playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+                if ((int)changedProps["weaponDataChangedMode"] < 2)
+                {
+                    playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+                }
+                else
+                {
+                    playerManager.slotHolderScript.slotEquipmentData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allEquipmentDatas[(int)changedProps["weaponDataChanged"]];
+                }
             }
-            else
+            else if (changedProps.ContainsKey("selectedMainWeaponIndex") || changedProps.ContainsKey("selectedSecondWeaponIndex") || changedProps.ContainsKey("selectedEquipmentIndex1") || changedProps.ContainsKey("selectedEquipmentIndex2"))
             {
-                playerManager.slotHolderScript.slotEquipmentData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allEquipmentDatas[(int)changedProps["weaponDataChanged"]];
+                slotWeaponData[0] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["selectedMainWeaponIndex"]];
+                slotWeaponData[1] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["selectedSecondWeaponIndex"]];
+                slotEquipmentData[0] = GlobalDatabase.singleton.allEquipmentDatas[(int)changedProps["selectedEquipmentIndex1"]];
+                slotEquipmentData[1] = GlobalDatabase.singleton.allEquipmentDatas[(int)changedProps["selectedEquipmentIndex2"]];
             }
         }
     }

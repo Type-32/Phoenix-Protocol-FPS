@@ -10,6 +10,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class CurrentMatchManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private PhotonView pv;
+    public static CurrentMatchManager Instance;
     private InGameUI internalUI;
     public List<PlayerManager> players = new();
     public List<Player> punPlayers = new();
@@ -35,6 +36,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     private void Awake()
     {
+        Instance = this;
         maxKillLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"];
         internalUI = FindObjectOfType<InGameUI>();
         scoreboard = FindObjectOfType<Scoreboard>();

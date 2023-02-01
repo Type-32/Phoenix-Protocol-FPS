@@ -165,10 +165,10 @@ public class PlayerManager : MonoBehaviour
     {
         if (!pv.IsMine)
         {
-            slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]);
-            slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]);
-            slotHolderScript.slotEquipmentData[0] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]);
-            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]);
+            slotHolderScript.slotWeaponData[0] = GlobalDatabase.singleton.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]];
+            slotHolderScript.slotWeaponData[1] = GlobalDatabase.singleton.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]];
+            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
+            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
             deathUI.SetActive(false);
             hasRespawned = true;
             CloseMenu();
@@ -184,27 +184,18 @@ public class PlayerManager : MonoBehaviour
                 StartCoroutine(DelayedInit(0.2f));
             }
             StartCoroutine(DelayedSyncIsTeam(0.25f));
-            //Debug.Log("Field of View in Player Preferences: " + PlayerPrefs.GetFloat("Field Of View"));
             settingsMenu.SettingsMenuAwakeFunction();
-            //PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("selectedMainWeaponIndex", out object selectedMainWeaponIndex);
-            //Debug.Log(selectedMainWeaponIndex);
-            //Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
-            slotHolderScript.slotWeaponData[0] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedMainWeaponIndex"]);
-            slotHolderScript.slotWeaponData[1] = FindWeaponDataFromIndex((int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]);
-            slotHolderScript.slotEquipmentData[0] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]);
-            slotHolderScript.slotEquipmentData[1] = FindEquipmentDataFromIndex((int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]);
-            //CreateController();
+            slotHolderScript.slotWeaponData[0] = GlobalDatabase.singleton.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedMainWeaponIndex"]];
+            slotHolderScript.slotWeaponData[1] = GlobalDatabase.singleton.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]];
+            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
+            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
             OnJoiningOngoingRoom();
-            //randomPlayerColor = Random.ColorHSV();
             deathInfoCanvas.alpha = 0f;
             randomPlayerColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255), 1);
         }
-        //if (!pv.IsMine) return;
         openedInventory = false;
         CloseMenu();
         CloseLoadoutMenu();
-
-        //respawnCountdown = 8;
     }
     IEnumerator DelayedInit(float amount)
     {
@@ -216,7 +207,6 @@ public class PlayerManager : MonoBehaviour
     IEnumerator DelayedSyncIsTeam(float amount)
     {
         yield return new WaitForSeconds(amount);
-        //RetreiveIsTeamValue();
     }
     public void SetPlayerIsTeamState(bool IsTeam, bool synchronize)
     {
@@ -307,7 +297,6 @@ public class PlayerManager : MonoBehaviour
     }
     void CreateController()
     {
-        //if(PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") RetreiveIsTeamValue();
         cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
         if (cameraData)
         {
@@ -337,6 +326,7 @@ public class PlayerManager : MonoBehaviour
         deathInfoCanvas.gameObject.SetActive(false);
 
         settingsMenu.SettingsMenuAwakeFunction();
+
         //Player Related Settings
         string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey));
         SettingsOptionsJSON jsonData = JsonUtility.FromJson<SettingsOptionsJSON>(json);

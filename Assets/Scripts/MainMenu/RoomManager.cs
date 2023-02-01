@@ -39,6 +39,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         if (scene.buildIndex == 0)
         {
+            CheckQueue();
             if (!loadEnterAnim)
             {
                 MenuManager.instance.enterAnimMenu.SetActive(false);
@@ -49,32 +50,33 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             //PhotonNetwork.CurrentRoom.IsVisible = false;
             cmm = FindObjectOfType<CurrentMatchManager>();
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 2)
         {
             //PhotonNetwork.CurrentRoom.IsVisible = false;
             cmm = FindObjectOfType<CurrentMatchManager>();
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 3)
         {
             cmm = FindObjectOfType<CurrentMatchManager>();
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 4)
         {
             cmm = FindObjectOfType<CurrentMatchManager>();
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 5)
         {
             cmm = FindObjectOfType<CurrentMatchManager>();
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
-        }
-        else if (scene.buildIndex == 0)
-        {
-            CheckQueue();
+            GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else
         {
