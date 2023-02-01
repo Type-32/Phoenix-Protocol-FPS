@@ -119,6 +119,10 @@ public class UIManager : MonoBehaviour
         {
             for (int i = 0; i < objectiveTargetIndicators.Count; i++)
             {
+                if (objectiveTargetIndicators[i] == null)
+                {
+                    objectiveTargetIndicators.Remove(objectiveTargetIndicators[i]);
+                }
                 objectiveTargetIndicators[i].UpdateTargetIndicator();
             }
         }
@@ -126,6 +130,10 @@ public class UIManager : MonoBehaviour
         {
             for (int i = 0; i < friendlyTargetIndicators.Count; i++)
             {
+                if (friendlyTargetIndicators[i] == null)
+                {
+                    friendlyTargetIndicators.Remove(friendlyTargetIndicators[i]);
+                }
                 friendlyTargetIndicators[i].UpdateTargetIndicator();
             }
         }
@@ -133,6 +141,10 @@ public class UIManager : MonoBehaviour
         {
             for (int i = 0; i < hostileTargetIndicators.Count; i++)
             {
+                if (hostileTargetIndicators[i] == null)
+                {
+                    hostileTargetIndicators.Remove(hostileTargetIndicators[i]);
+                }
                 hostileTargetIndicators[i].UpdateTargetIndicator();
             }
         }
