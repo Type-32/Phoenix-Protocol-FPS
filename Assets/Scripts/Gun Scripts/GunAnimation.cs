@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,7 @@ public class GunAnimation : MonoBehaviour
     public bool enableSprintValueInterpolation = false;
     public bool enableWalkValueInterpolation = false;
     public float aimIntDurationMultiplier = 2f, sprintIntDurationMultiplier = 2f, walkIntDurationMultiplier = 2f;
-    public string aimValueKey = "aimingValue", sprintValueKey = "sprintValue", walkValueKey = "walkValue";
+    public string aimValueKey = "aimingValue", sprintValueKey = "sprintValue", walkValueKey = "walkValue", movementHorizontalValueKey = "horizontalInput", movementVerticalValueKey = "verticalInput";
     [HideInInspector] public float aimInterpolation = 0f, sprintInterpolation = 0f, walkInterpolation = 0f;
 
     #region Private Variables
@@ -124,18 +125,20 @@ public class GunAnimation : MonoBehaviour
         animate.SetBool("isSliding", gun.player.stats.isSliding);
         if (enableAimValueInterpolation)
         {
-            aimInterpolation = Mathf.Lerp(aimInterpolation, (stats.isAiming ? 1f : 0f), Time.deltaTime * aimIntDurationMultiplier);
-            animate.SetFloat(aimValueKey, aimInterpolation);
+            //aimInterpolation = Mathf.Lerp(aimInterpolation, (stats.isAiming ? 1f : 0f), Time.deltaTime * aimIntDurationMultiplier);
+            animate.SetFloat(aimValueKey, Convert.ToSingle(gun.stats.isAiming), 0.3f, Time.deltaTime);
         }
         if (enableSprintValueInterpolation)
         {
-            sprintInterpolation = Mathf.Lerp(sprintInterpolation, (stats.isSprinting ? 1f : 0f), Time.deltaTime * sprintIntDurationMultiplier);
-            animate.SetFloat(sprintValueKey, sprintInterpolation);
+            //sprintInterpolation = Mathf.Lerp(sprintInterpolation, (stats.isSprinting ? 1f : 0f), Time.deltaTime * sprintIntDurationMultiplier);
+            animate.SetFloat(sprintValueKey, Convert.ToSingle(gun.stats.isSprinting), 0.3f, Time.deltaTime);
         }
         if (enableWalkValueInterpolation)
         {
-            walkInterpolation = Mathf.Lerp(walkInterpolation, (stats.isWalking ? 1f : 0f), Time.deltaTime * walkIntDurationMultiplier);
-            animate.SetFloat(walkValueKey, walkInterpolation);
+            //walkInterpolation = Mathf.Lerp(walkInterpolation, (stats.isWalking ? 1f : 0f), Time.deltaTime * walkIntDurationMultiplier);
+            animate.SetFloat(walkValueKey, Convert.ToSingle(gun.stats.isWalking), 0.3f, Time.deltaTime);
+            animate.SetFloat(movementHorizontalValueKey, Input.GetAxis("Horizontal"), 0.15f, Time.deltaTime);
+            animate.SetFloat(movementVerticalValueKey, Input.GetAxis("Vertical"), 0.15f, Time.deltaTime);
         }
         if (gun.stats.isAiming) gun.attachment.CheckEnabledSightAimingPosition(gun.player.holder.weaponIndex);
         //animate.SetBool("isSliding", gun.player.stats.isSliding);
@@ -184,7 +187,7 @@ public class GunAnimation : MonoBehaviour
     public void TriggerWeaponRecoil(float recoilX, float recoilY, float recoilZ, float kickBackZ)
     {
         gunTargetPosition -= new Vector3(0, 0, kickBackZ);
-        gunTargetRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY), Random.Range(-recoilZ, recoilZ));
+        gunTargetRotation += new Vector3(recoilX, UnityEngine.Random.Range(-recoilY, recoilY), UnityEngine.Random.Range(-recoilZ, recoilZ));
     }
     public void UpdateWeaponRotationRecoil()
     {

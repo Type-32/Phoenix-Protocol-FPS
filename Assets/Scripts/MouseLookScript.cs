@@ -48,6 +48,7 @@ public class MouseLookScript : MonoBehaviour
     {
         playerMainCamera.fieldOfView = fov;
         player.stats.cameraFieldOfView = fov;
+        //PlayerPrefs.
     }
     Vector3 temp;
     void Update()

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-
 namespace LauncherManifest
 {
     public static class LauncherConfig
@@ -344,8 +343,10 @@ namespace UserConfiguration
                 return "AppearancesConfig.json";
             }
         }
-        public static string GunsmithConfigKey{
-            get{
+        public static string GunsmithConfigKey
+        {
+            get
+            {
                 return "GunsmithConfig.json";
             }
         }
@@ -456,16 +457,18 @@ namespace UserConfiguration
             get
             {
                 string path = Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey);
-                if(File.Exists(path)) return path;
+                if (File.Exists(path)) return path;
                 else File.Create(path).Close();
                 return null;
             }
         }
-        public static void WriteToConfig(GunsmithDataJSON gunsmithDataJSON){
+        public static void WriteToConfig(GunsmithDataJSON gunsmithDataJSON)
+        {
             string jsonString = JsonUtility.ToJson(gunsmithDataJSON, true);
             File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
         }
-        public static void WriteToConfig(string jsonString){
+        public static void WriteToConfig(string jsonString)
+        {
             File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
         }
         public static GunsmithDataJSON GunsmithJsonData
@@ -505,16 +508,22 @@ namespace UserConfiguration
             GunsmithDataJSON data = GunsmithJsonData;
             for (int i = 0; i < data.weaponSmithings.Count; i++)
             {
-                if(weaponIndex == data.weaponSmithings[i].weaponIndex) return data.weaponSmithings[i];
+                if (weaponIndex == data.weaponSmithings[i].weaponIndex) return data.weaponSmithings[i];
             }
             return null;
         }
-        public static bool VerifyWeaponSmithingData(GunsmithDataJSON.WeaponSmithingData data, bool correctValidation = true){
-            if(UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.weaponIndex)){
+        public static bool VerifyWeaponSmithingData(GunsmithDataJSON.WeaponSmithingData data, bool correctValidation = true)
+        {
+            if (UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.weaponIndex))
+            {
                 return true;
-            }else{
-                if(correctValidation){
-                    if(GunsmithJsonData.weaponSmithings.Contains(data)){
+            }
+            else
+            {
+                if (correctValidation)
+                {
+                    if (GunsmithJsonData.weaponSmithings.Contains(data))
+                    {
                         GunsmithJsonData.weaponSmithings.Remove(data);
                         WriteToConfig(GunsmithJsonData);
                     }
@@ -525,9 +534,9 @@ namespace UserConfiguration
         public static bool AddWeaponToData(WeaponData data)
         {
             bool success = false;
-            if(UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
+            if (UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
             {
-                if(FindWeaponSmithingData(data.GlobalWeaponIndex) == null)
+                if (FindWeaponSmithingData(data.GlobalWeaponIndex) == null)
                 {
                     GunsmithDataJSON jsonData = GunsmithJsonData;
                     GunsmithDataJSON.WeaponSmithingData temp = new();
@@ -543,7 +552,7 @@ namespace UserConfiguration
         {
             bool success = false;
             GunsmithDataJSON.WeaponSmithingData temp = FindWeaponSmithingData(data.GlobalWeaponIndex);
-            if(temp != null)
+            if (temp != null)
             {
                 GunsmithDataJSON jsonData = GunsmithJsonData;
                 jsonData.weaponSmithings.Remove(temp);

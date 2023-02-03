@@ -69,6 +69,7 @@ public class SettingsMenu : MonoBehaviour
         SetSensitivity(jsonData.MouseSensitivity);
         SetQuality(jsonData.QualityIndex);
         SetResolution(jsonData.ResolutionIndex);
+        
     }
     public void SetVolume(float volume)
     {
