@@ -127,6 +127,7 @@ public class GunAnimation : MonoBehaviour
         {
             //aimInterpolation = Mathf.Lerp(aimInterpolation, (stats.isAiming ? 1f : 0f), Time.deltaTime * aimIntDurationMultiplier);
             animate.SetFloat(aimValueKey, Convert.ToSingle(gun.stats.isAiming), 0.3f, Time.deltaTime);
+            aimInterpolation = animate.GetFloat(aimValueKey);
         }
         if (enableSprintValueInterpolation)
         {

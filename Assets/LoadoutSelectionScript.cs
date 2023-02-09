@@ -209,60 +209,6 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         if (checkChange) WriteLoadoutDataToJSON();
     }
-    public int GetLoadoutDataFromPreferences(string key)
-    {
-        int returner = 0;
-        switch (key)
-        {
-            case "selectedLoadoutIndex":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "selectedMainWeaponIndex":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "selectedSecondWeaponIndex":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_SightIndex1":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_SightIndex2":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_BarrelIndex1":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_BarrelIndex2":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_UnderbarrelIndex1":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_UnderbarrelIndex2":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_LeftbarrelIndex1":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_LeftbarrelIndex2":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_RightbarrelIndex1":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_RightbarrelIndex2":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_AppearanceIndex1":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-            case "SMWA_AppearanceIndex2":
-                returner = PlayerPrefs.GetInt(key);
-                break;
-        }
-        Debug.LogError(key + " " + returner);
-        return returner;
-    }
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
@@ -280,39 +226,6 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         return null;
     }
-    /*
-    public void SetLoadoutDataFromPrefs()
-    {
-        Debug.LogError("Setting Loadout Data From Prefs...");
-        if (PlayerPrefs.HasKey("selectedLoadoutIndex")) selectedLoadoutIndex = GetLoadoutDataFromPreferences("selectedLoadoutIndex");
-        if (PlayerPrefs.HasKey("selectedMainWeaponIndex")) selectedMainWeaponIndex = GetLoadoutDataFromPreferences("selectedMainWeaponIndex");
-        if (PlayerPrefs.HasKey("selectedSecondWeaponIndex")) selectedSecondWeaponIndex = GetLoadoutDataFromPreferences("selectedSecondWeaponIndex");
-        if (PlayerPrefs.HasKey("SMWA_SightIndex1")) loadoutDataList[selectedLoadoutIndex].selectedSightIndex[0] = GetLoadoutDataFromPreferences("SMWA_SightIndex1");
-        if (PlayerPrefs.HasKey("SMWA_SightIndex2")) loadoutDataList[selectedLoadoutIndex].selectedSightIndex[1] = GetLoadoutDataFromPreferences("SMWA_SightIndex2");
-        if (PlayerPrefs.HasKey("SMWA_BarrelIndex1")) loadoutDataList[selectedLoadoutIndex].selectedBarrelIndex[0] = GetLoadoutDataFromPreferences("SMWA_BarrelIndex1");
-        if (PlayerPrefs.HasKey("SMWA_BarrelIndex2")) loadoutDataList[selectedLoadoutIndex].selectedBarrelIndex[1] = GetLoadoutDataFromPreferences("SMWA_BarrelIndex2");
-        if (PlayerPrefs.HasKey("SMWA_UnderbarrelIndex1")) loadoutDataList[selectedLoadoutIndex].selectedUnderbarrelIndex[0] = GetLoadoutDataFromPreferences("SMWA_UnderbarrelIndex1");
-        if (PlayerPrefs.HasKey("SMWA_UnderbarrelIndex2")) loadoutDataList[selectedLoadoutIndex].selectedUnderbarrelIndex[1] = GetLoadoutDataFromPreferences("SMWA_UnderbarrelIndex2");
-        if (PlayerPrefs.HasKey("SMWA_LeftbarrelIndex1")) loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeftIndex[0] = GetLoadoutDataFromPreferences("SMWA_LeftbarrelIndex1");
-        if (PlayerPrefs.HasKey("SMWA_LeftbarrelIndex2")) loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeftIndex[1] = GetLoadoutDataFromPreferences("SMWA_LeftbarrelIndex2");
-        if (PlayerPrefs.HasKey("SMWA_RightbarrelIndex1")) loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRightIndex[0] = GetLoadoutDataFromPreferences("SMWA_RightbarrelIndex1");
-        if (PlayerPrefs.HasKey("SMWA_RightbarrelIndex2")) loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRightIndex[1] = GetLoadoutDataFromPreferences("SMWA_RightbarrelIndex2");
-        if (PlayerPrefs.HasKey("SMWA_AppearanceIndex1")) loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[0] = GetLoadoutDataFromPreferences("SMWA_AppearanceIndex1");
-        if (PlayerPrefs.HasKey("SMWA_AppearanceIndex2")) loadoutDataList[selectedLoadoutIndex].selectedAppearanceDataIndex[1] = GetLoadoutDataFromPreferences("SMWA_AppearanceIndex2");
-
-        loadoutDataList[selectedLoadoutIndex].weaponData[0] = FindWeaponDataFromIndex(selectedMainWeaponIndex);
-        loadoutDataList[selectedLoadoutIndex].weaponData[1] = FindWeaponDataFromIndex(selectedSecondWeaponIndex);
-        loadoutDataList[selectedLoadoutIndex].selectedSight[0] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSightIndex[0]);
-        loadoutDataList[selectedLoadoutIndex].selectedSight[1] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSightIndex[1]);
-        loadoutDataList[selectedLoadoutIndex].selectedBarrel[0] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedBarrelIndex[0]);
-        loadoutDataList[selectedLoadoutIndex].selectedBarrel[1] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedBarrelIndex[1]);
-        loadoutDataList[selectedLoadoutIndex].selectedUnderbarrel[0] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedUnderbarrelIndex[0]);
-        loadoutDataList[selectedLoadoutIndex].selectedUnderbarrel[1] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedUnderbarrelIndex[1]);
-        loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeft[0] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeftIndex[0]);
-        loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeft[1] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSidebarrelLeftIndex[1]);
-        loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRight[0] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRightIndex[0]);
-        loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(loadoutDataList[selectedLoadoutIndex].selectedSidebarrelRightIndex[1]);
-    }*/
 
     public void InstantiateLoadoutSelections()
     {

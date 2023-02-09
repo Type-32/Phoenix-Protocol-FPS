@@ -13,7 +13,7 @@ public class MouseLookScript : MonoBehaviour
     public float mouseSensitivityValve;
     private float regularSensitivity;
     private float aimingSensitivity;
-    [SerializeField] Camera itemLayerCamera;
+    public Camera itemLayerCamera;
     public Camera playerMainCamera;
     public Camera minimapCamera;
     [SerializeField] GameObject cameraHolder;

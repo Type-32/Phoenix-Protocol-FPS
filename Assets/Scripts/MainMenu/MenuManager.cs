@@ -377,7 +377,7 @@ public class MenuManager : MonoBehaviour
     }
     public void ToggleLoadoutSelectionMenu()
     {
-        if (openedLoadingMenu)
+        if (openedLoadoutSelectionMenu)
         {
             CloseLoadoutSelectionMenu();
         }

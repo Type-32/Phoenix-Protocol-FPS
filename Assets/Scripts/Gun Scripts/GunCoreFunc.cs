@@ -12,6 +12,9 @@ public class GunCoreFunc : MonoBehaviour
     [SerializeField] private float originFOV;
     [SerializeField] private float originMultiplierFOV;
     public float sightFOV;
+
+    private float il_originFOV, il_originMultiplierFOV, il_sightFOV;
+
     private Recoil recoilScript;
     public bool enableGunCoreFunc = true;
     private float timePassedUntillNextShot = 0f;
@@ -40,6 +43,9 @@ public class GunCoreFunc : MonoBehaviour
         originFOV = gun.player.stats.cameraFieldOfView;
         originMultiplierFOV = originFOV / gun.stats.weaponData.FOVMultiplier;
         sightFOV = originMultiplierFOV;
+        il_originFOV = 60f;
+        il_originMultiplierFOV = il_originFOV / gun.stats.weaponData.FOVMultiplier;
+        il_sightFOV = il_originMultiplierFOV;
     }
     void FiremodeInitialize()
     {
@@ -166,12 +172,15 @@ public class GunCoreFunc : MonoBehaviour
         if (gun.fpsCam.playerMainCamera == null) return;
         if (check)
         {
-            if (gun.stats.selectedSightIndex != 0) gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, sightFOV, gun.stats.aimSpeed * Time.deltaTime);
-            else gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, originMultiplierFOV, gun.stats.aimSpeed * Time.deltaTime);
+            if (gun.stats.selectedSightIndex != 0) gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, sightFOV, gun.animate.aimInterpolation);
+            else gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, originMultiplierFOV, gun.animate.aimInterpolation);
+            if (gun.stats.selectedSightIndex != 0) gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_sightFOV, gun.animate.aimInterpolation);
+            else gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_originMultiplierFOV, gun.animate.aimInterpolation);
         }
         else
         {
-            gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, originFOV, gun.stats.aimSpeed * Time.deltaTime);
+            gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, originFOV, gun.animate.aimInterpolation * Time.deltaTime);
+            gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_originFOV, gun.animate.aimInterpolation);
         }
     }
     public void ChangeFiremode()

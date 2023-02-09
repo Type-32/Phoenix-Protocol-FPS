@@ -972,6 +972,20 @@ MonoBehaviour:
   rotationX: 1
   rotationY: 1
   rotationZ: 1
+  enableAimValueInterpolation: 1
+  enableSprintValueInterpolation: 0
+  enableWalkValueInterpolation: 0
+  aimIntDurationMultiplier: 2
+  sprintIntDurationMultiplier: 2
+  walkIntDurationMultiplier: 2
+  aimValueKey: aimingValue
+  sprintValueKey: sprintValue
+  walkValueKey: walkValue
+  movementHorizontalValueKey: horizontalInput
+  movementVerticalValueKey: verticalInput
+  aimInterpolation: 0
+  sprintInterpolation: 0
+  walkInterpolation: 0
   aimBobAmount: 0.005
   walkBobAmount: 0.05
   crouchBobAmount: 0.02
