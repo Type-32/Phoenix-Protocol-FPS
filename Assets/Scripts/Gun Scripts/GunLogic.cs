@@ -34,7 +34,7 @@ public class GunLogic : MonoBehaviour
     }
     void AimingLogic()
     {
-        if ((Input.GetButton("Fire2") || (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightBracket))) && !gun.stats.isReloading && !gun.player.stats.isSliding) gun.stats.isAiming = true;
+        if ((Input.GetButton("Fire2") || (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightBracket))) && !gun.player.stats.isSliding) gun.stats.isAiming = true;
         else gun.stats.isAiming = false;
     }
     void GunMovementLogic()
