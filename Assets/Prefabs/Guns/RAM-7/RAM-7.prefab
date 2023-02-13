@@ -638,7 +638,6 @@ GameObject:
   - component: {fileID: 4852457880753245286}
   - component: {fileID: 6461612949691681221}
   - component: {fileID: 3022590338956811405}
-  - component: {fileID: 5183655109247484720}
   - component: {fileID: 6173563475319394978}
   - component: {fileID: 1141734385335685585}
   m_Layer: 6
@@ -678,7 +677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun: {fileID: 4852457880753245286}
   stats: {fileID: 6461612949691681221}
-  animate: {fileID: 5183655109247484720}
+  animate: {fileID: 0}
   gunModel: {fileID: 2849126101163745364}
   gunRecoilModel: {fileID: 973158713076937611}
   rotationX: 1
@@ -790,8 +789,6 @@ MonoBehaviour:
   shellEject: {fileID: 4373295011416958526}
   pickup: {fileID: 0}
   gunVisual: {fileID: 6481375713513974470}
-  handsVisual: {fileID: 0}
-  thirdPersonHandsVisual: {fileID: 0}
   camRecoil: {fileID: 0}
   swayModel: {fileID: 2849126101163745364}
   recoilModel: {fileID: 973158713076937611}
@@ -879,26 +876,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun: {fileID: 4852457880753245286}
   ui: {fileID: 0}
---- !u!95 &5183655109247484720
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6788626819295025767}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 99487f0e1db10fb4fbf252629bac04bd, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &6173563475319394978
 MonoBehaviour:
   m_ObjectHideFlags: 0

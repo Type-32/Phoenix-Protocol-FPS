@@ -50,16 +50,9 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             EquipItem(0);
             for (int i = 0; i < list1.Length; i++) list1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             for (int i = 0; i < list2.Length; i++) list2[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
-
-            for (int i = 0; i < list3.Length; i++)
-            {
-                list3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
-            }
-            for (int i = 0; i < list4.Length; i++)
-            {
-                list4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
-            }
-
+            for (int i = 0; i < list3.Length; i++) list3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            for (int i = 0; i < list4.Length; i++) list4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            /*
             Transform[] obj1 = weaponSlots[0].gun.handsVisual.GetComponentsInChildren<Transform>();
             Transform[] obj2 = weaponSlots[1].gun.handsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < obj1.Length; i++) obj1[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
@@ -68,6 +61,9 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             Transform[] obj4 = weaponSlots[1].gun.thirdPersonHandsVisual.GetComponentsInChildren<Transform>();
             for (int i = 0; i < obj3.Length; i++) obj3[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
             for (int i = 0; i < obj4.Length; i++) obj4[i].gameObject.layer = LayerMask.NameToLayer("DefaultItem");
+            */
+
+            /*
             if (weaponSlots[0] != null)
             {
                 Destroy(weaponSlots[0].gun.handsVisual);
@@ -77,7 +73,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
             {
                 Destroy(weaponSlots[1].gun.handsVisual);
                 weaponSlots[1].gun.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-            }
+            }*/
 
             Transform[] el1 = equipmentSlots[0].equipment.equipmentVisual.GetComponentsInChildren<Transform>();
             Transform[] el2 = equipmentSlots[1].equipment.equipmentVisual.GetComponentsInChildren<Transform>();
@@ -124,8 +120,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                     equipmentSlots[i].InitializeStart();
                 }
             }
-            if (weaponSlots[0] != null) Destroy(weaponSlots[0].gun.thirdPersonHandsVisual);
-            if (weaponSlots[1] != null) Destroy(weaponSlots[1].gun.thirdPersonHandsVisual);
+            //if (weaponSlots[0] != null) Destroy(weaponSlots[0].gun.thirdPersonHandsVisual);
+            //if (weaponSlots[1] != null) Destroy(weaponSlots[1].gun.thirdPersonHandsVisual);
             if (equipmentSlots[0] != null) Destroy(equipmentSlots[0].equipment.thirdPersonHandsVisual);
             if (equipmentSlots[1] != null) Destroy(equipmentSlots[1].equipment.thirdPersonHandsVisual);
             Debug.Log("Init Start Line 36");

@@ -6,8 +6,8 @@ using Photon.Pun;
 public class GunManager : Gun
 {
     [Header("Scripts")]
-    public PlayerControllerManager player;
-    public EquipmentHolder holder;
+    [HideInInspector] public PlayerControllerManager player;
+    [HideInInspector] public EquipmentHolder holder;
     public GunCoreFunc core;
     public GunStats stats;
     public GunUI ui;
@@ -19,20 +19,16 @@ public class GunManager : Gun
 
     [Space]
     [Header("References")]
-    public MouseLookScript fpsCam;
-    //public GadgetUsageScript gadgetFunc;
+    [HideInInspector] public MouseLookScript fpsCam;
     public ParticleSystem muzzleFire;
     public GameObject shellEject;
-    //public Transform shellEjectPos;
-    //public GameObject bulletImpact;
-    //public GameObject bulletImpactBlood;
-    public GameObject pickup;
+    [HideInInspector] public GameObject pickup;
     public GameObject gunVisual;
-    public GameObject handsVisual;
-    public GameObject thirdPersonHandsVisual;
+    //public GameObject handsVisual;
+    //public GameObject thirdPersonHandsVisual;
     //public Joint rightHandEnd;
     //public Joint leftHandEnd;
-    public Recoil camRecoil;
+    [HideInInspector] public Recoil camRecoil;
 
     [Space]
     [Header("Weapon Body")]
@@ -51,18 +47,12 @@ public class GunManager : Gun
     }
     private void Awake()
     {
-
-        //gunPV = GetComponent<PhotonView>();
         //InitializeAwake();
-        //player = FindObjectOfType<PlayerControllerManager>();
     }
     void Start()
     {
         //InitializeStart();
-        //fpsCam = FindObjectOfType<MouseLookScript>();
-        //player = FindObjectOfType<PlayerControllerManager>();
         camRecoil = GetComponentInParent<Recoil>();
-        //gadgetFunc = FindObjectOfType<GadgetUsageScript>();
         holder = GetComponentInParent<EquipmentHolder>();
     }
     /*
@@ -138,19 +128,21 @@ public class GunManager : Gun
     }
     public void SetFirstPersonViewHandsMaterial(Material mat)
     {
+        /*
         MeshRenderer[] tmp = handsVisual.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < tmp.Length; i++)
         {
             tmp[i].material = mat;
-        }
+        }*/
     }
     public void SetThirdPersonViewHandsMaterial(Material mat)
     {
+        /*
         MeshRenderer[] tmp = thirdPersonHandsVisual.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < tmp.Length; i++)
         {
             tmp[i].material = mat;
-        }
+        }*/
     }
     public override void Use()
     {
