@@ -7,13 +7,47 @@ using System.IO;
 using UnityEngine;
 using Unity.Mathematics;
 
-namespace ProtoLib
+namespace PrototypeLib
 {
+    namespace Multiplayer
+    {
+        using Photon;
+        using Photon.Pun;
+        using Photon.Realtime;
+        using Hashtable = ExitGames.Client.Photon.Hashtables;
+        namespace LocalPlayerIO
+        {
+            public static class PlayerManipulaton<T> where T : new()
+            {
+                public static bool Save(Hashtable h)
+                {
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+                }
+                public static bool Save(string[] keys, object[] parameters = null)
+                {
+                    Hashtable hash = new();
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        hash.Add(keys[i], parameters[i]);
+                    }
+                    Save(hash);
+                }
+            }
+        }
+    }
     namespace Modules
     {
         namespace FileOpsIO
         {
-            public class WritingData
+            using System;
+            using System.Threading.Tasks;
+            using System.Collections;
+            using System.Collections.Generic;
+            using UnityEngine;
+            using Unity.Mathematics;
+            using System.Text;
+            using System.IO;
+            public struct WritingData
             {
                 public string filePath;
                 public bool initializeIfEmpty;
@@ -40,7 +74,7 @@ namespace ProtoLib
                     encode = ec;
                 }
             }
-            public class ReadingData
+            public struct ReadingData
             {
                 public string filePath;
                 public bool initializeIfEmpty;
@@ -96,7 +130,7 @@ namespace ProtoLib
                 public static bool WriteFile(T content, string filePath, bool initializeIfEmpty = true, bool jsonFormat = true, bool cleanJson = true, bool overwriteExisted = true, Encoding encode = null)
                 {
                     bool success = false;
-                    if(typeof(T) == null)
+                    if (typeof(T) == null)
                     {
                         Debug.LogWarning($"The Data Type {typeof(T).FullName} is null. Please make sure the type is not null.");
                         return success;
@@ -230,25 +264,6 @@ namespace ProtoLib
                         return false;
                     }
                     return true;
-                }
-            }
-        }
-        namespace BufferingIO
-        {
-            public static class LocalCaches
-            {
-                public static List<int> integers = new();
-                public static List<float> floats = new();
-                public static List<double> doubles = new();
-                public static List<bool> booleans = new();
-                public static List<string> strings = new();
-                public static void ReleaseCaches()
-                {
-                    integers = new();
-                    floats = new();
-                    doubles = new();
-                    booleans = new();
-                    strings = new();
                 }
             }
         }
