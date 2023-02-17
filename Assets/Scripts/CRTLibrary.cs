@@ -17,7 +17,7 @@ namespace PrototypeLib
         using Hashtable = ExitGames.Client.Photon.Hashtable;
         namespace LocalPlayerIO
         {
-            public static class PlayerManipulaton<T> where T : new()
+            public static class PlayerManipulaton
             {
                 public static bool Save(Hashtable h)
                 {
@@ -33,6 +33,14 @@ namespace PrototypeLib
                         hash.Add(keys[i], parameters[i]);
                     }
                     return Save(hash);
+                }
+                public static bool Read(Hashtable hash)
+                {
+                    return false;
+                }
+                public static bool ReadParameters(string[] keys)
+                {
+                    return false;
                 }
             }
         }
@@ -51,7 +59,7 @@ namespace PrototypeLib
             using System.IO;
             public class WritingData
             {
-                public string filePath, fileName;
+                public string filePath;
                 public bool initializeIfEmpty;
                 public bool jsonFormat;
                 public bool cleanJson;
@@ -78,7 +86,7 @@ namespace PrototypeLib
             }
             public class ReadingData
             {
-                public string filePath, fileName;
+                public string filePath;
                 public bool initializeIfEmpty;
                 public bool convertFromJson;
                 public Encoding encode;
@@ -103,11 +111,10 @@ namespace PrototypeLib
                 public delegate void FileOperateAsync();
                 public static event FileOperate OperatedFile;
                 public static event FileOperateAsync OperatedFileAsync;
-                public async static Task<bool> WriteFileAsync(T content, WritingData data) { return await WriteFileAsync(content, data.filePath, data.fileName, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode); }
-                public async static Task<bool> WriteFileAsync(T content, string filePath, string fileName, bool initializeIfEmpty = true, bool jsonFormat = true, bool cleanJson = true, bool overwriteExisted = true, Encoding encode = null)
+                public async static Task<bool> WriteFileAsync(T content, WritingData data) { return await WriteFileAsync(content, data.filePath, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode); }
+                public async static Task<bool> WriteFileAsync(T content, string filePath, bool initializeIfEmpty = true, bool jsonFormat = true, bool cleanJson = true, bool overwriteExisted = true, Encoding encode = null)
                 {
                     bool success = false;
-                    string fp = Path.Combine(filePath, fileName);
                     if (typeof(T) == null)
                     {
                         Debug.LogWarning($"The Data Type {typeof(T).FullName} is null. Please make sure the type is not null.");
@@ -118,14 +125,14 @@ namespace PrototypeLib
                         Debug.LogWarning($"The Data Type {typeof(T).FullName} is not serialized. Please make sure to serialize the data type before performing any writing operations regarding the type.");
                         return false;
                     }
-                    if (File.Exists(fp))
+                    if (File.Exists(filePath))
                     {
                         if (overwriteExisted)
-                            success = await ImprintToFileAsync(content, new WritingData(fp, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode));
+                            success = await ImprintToFileAsync(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode));
                     }
                     else
                     {
-                        Debug.LogWarning($"The File Path {fp} does not exist. Please make sure the file is created and initialized.");
+                        Debug.LogWarning($"The File Path {filePath} does not exist. Please make sure the file is created and initialized.");
                     }
                     return success;
                 }
