@@ -14,23 +14,25 @@ namespace PrototypeLib
         using Photon;
         using Photon.Pun;
         using Photon.Realtime;
-        using Hashtable = ExitGames.Client.Photon.Hashtables;
+        using Hashtable = ExitGames.Client.Photon.Hashtable;
         namespace LocalPlayerIO
         {
             public static class PlayerManipulaton<T> where T : new()
             {
                 public static bool Save(Hashtable h)
                 {
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+                    return PhotonNetwork.LocalPlayer.SetCustomProperties(h);
                 }
-                public static bool Save(string[] keys, object[] parameters = null)
+                public static bool SaveParameters(string[] keys, object[] parameters = null)
                 {
+                    if (parameters == null) return false;
+                    if (keys.Length == 0) return false;
                     Hashtable hash = new();
                     for (int i = 0; i < keys.Length; i++)
                     {
                         hash.Add(keys[i], parameters[i]);
                     }
-                    Save(hash);
+                    return Save(hash);
                 }
             }
         }
@@ -47,15 +49,15 @@ namespace PrototypeLib
             using Unity.Mathematics;
             using System.Text;
             using System.IO;
-            public struct WritingData
+            public class WritingData
             {
-                public string filePath;
+                public string filePath, fileName;
                 public bool initializeIfEmpty;
                 public bool jsonFormat;
                 public bool cleanJson;
                 public bool overwriteExisted;
                 public Encoding encode;
-                internal WritingData()
+                public WritingData()
                 {
                     filePath = "";
                     initializeIfEmpty = true;
@@ -64,7 +66,7 @@ namespace PrototypeLib
                     overwriteExisted = true;
                     encode = null;
                 }
-                internal WritingData(string fp, bool iie, bool jf, bool cj, bool oe, Encoding ec)
+                public WritingData(string fp, bool iie, bool jf, bool cj, bool oe, Encoding ec)
                 {
                     filePath = fp;
                     initializeIfEmpty = iie;
@@ -74,20 +76,20 @@ namespace PrototypeLib
                     encode = ec;
                 }
             }
-            public struct ReadingData
+            public class ReadingData
             {
-                public string filePath;
+                public string filePath, fileName;
                 public bool initializeIfEmpty;
                 public bool convertFromJson;
                 public Encoding encode;
-                internal ReadingData()
+                public ReadingData()
                 {
                     filePath = "";
                     initializeIfEmpty = true;
                     convertFromJson = true;
                     encode = null;
                 }
-                internal ReadingData(string filePath, bool initializeIfEmpty, bool convertFromJson, Encoding encode)
+                public ReadingData(string filePath, bool initializeIfEmpty, bool convertFromJson, Encoding encode)
                 {
                     this.filePath = filePath;
                     this.initializeIfEmpty = initializeIfEmpty;
@@ -101,10 +103,11 @@ namespace PrototypeLib
                 public delegate void FileOperateAsync();
                 public static event FileOperate OperatedFile;
                 public static event FileOperateAsync OperatedFileAsync;
-                public async static Task<bool> WriteFileAsync(T content, WritingData data) { return await WriteFileAsync(content, data.filePath, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode); }
-                public async static Task<bool> WriteFileAsync(T content, string filePath, bool initializeIfEmpty = true, bool jsonFormat = true, bool cleanJson = true, bool overwriteExisted = true, Encoding encode = null)
+                public async static Task<bool> WriteFileAsync(T content, WritingData data) { return await WriteFileAsync(content, data.filePath, data.fileName, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode); }
+                public async static Task<bool> WriteFileAsync(T content, string filePath, string fileName, bool initializeIfEmpty = true, bool jsonFormat = true, bool cleanJson = true, bool overwriteExisted = true, Encoding encode = null)
                 {
                     bool success = false;
+                    string fp = Path.Combine(filePath, fileName);
                     if (typeof(T) == null)
                     {
                         Debug.LogWarning($"The Data Type {typeof(T).FullName} is null. Please make sure the type is not null.");
@@ -115,14 +118,14 @@ namespace PrototypeLib
                         Debug.LogWarning($"The Data Type {typeof(T).FullName} is not serialized. Please make sure to serialize the data type before performing any writing operations regarding the type.");
                         return false;
                     }
-                    if (File.Exists(filePath))
+                    if (File.Exists(fp))
                     {
                         if (overwriteExisted)
-                            success = await ImprintToFileAsync(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode));
+                            success = await ImprintToFileAsync(content, new WritingData(fp, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode));
                     }
                     else
                     {
-                        Debug.LogWarning($"The File Path {filePath} does not exist. Please make sure the file is created and initialized.");
+                        Debug.LogWarning($"The File Path {fp} does not exist. Please make sure the file is created and initialized.");
                     }
                     return success;
                 }
@@ -151,7 +154,7 @@ namespace PrototypeLib
                     }
                     return success;
                 }
-                public async static Task<object> ReadFileAsync(ReadingData data) { return await ReadFileAsync(data.filePath, data.convertFromJson, data.encode); }
+                public async static Task<object> ReadFileAsync(ReadingData data) { return await ReadFileAsync(data.filePath, data.initializeIfEmpty, data.convertFromJson, data.encode); }
                 public async static Task<object> ReadFileAsync(string filePath, bool initializeIfEmpty = true, bool convertFromJson = true, Encoding encode = null)
                 {
                     object obj = null;
