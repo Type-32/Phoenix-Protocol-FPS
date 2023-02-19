@@ -67,6 +67,10 @@ public class GunsmithDataJSON
         #endregion
         public int weaponIndex;
         public SmithingUpgrades upgrades;
+        public WeaponSmithingData(int i)
+        {
+            weaponIndex = i;
+        }
     };
     [System.Serializable]
     public struct SmithingUpgrades
@@ -222,7 +226,7 @@ public class GunsmithDataJSON
     }
     public SmithingResources userResources;
     public List<WeaponSmithingData> weaponSmithings = new();
-    internal GunsmithDataJSON()
+    public GunsmithDataJSON()
     {
         userResources.iron = 1000; //Gained Through Matches, approx. 500~2500 per match
         userResources.experience = 0; //Gained Through Matches, approx. 50~300 per match

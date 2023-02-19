@@ -1,3 +1,4 @@
+using PrototypeLib.Modules.FileOpsIO;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -46,21 +47,9 @@ public class ShopMenuScript : MonoBehaviour
 
     void Start()
     {
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey))) UserDatabase.Instance.InitializeUserDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey)))
-        {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
-            {
-                UserDatabase.Instance.InitializeUserDataToJSON();
-            }
-        }
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        //Debug.LogWarning("Reading User Data To Files...");
-        UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
-        jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         InitializeWeaponsMenu(jsonData);
-        InitializeCosmeticsMenu(CosmeticSystem.AppearancesJsonData);
+        InitializeCosmeticsMenu(FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath));
         weaponsMenu.SetActive(false);
         cosmeticsMenu.SetActive(false);
         TogglePreviewUI(false);
@@ -128,7 +117,7 @@ public class ShopMenuScript : MonoBehaviour
                 shopWeaponList.Add(item);
             }
         }
-        UserDatabase.Instance.WriteInputDataToJSON(jsonData);
+        FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         if (informPopupNeeded) MenuManager.instance.AddModalWindow("Unlocking Content", content);
     }
     public void SetPreviewInfo(WeaponData data, bool showPurchaseButton)
@@ -195,8 +184,7 @@ public class ShopMenuScript : MonoBehaviour
         {
             string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
             //Debug.LogWarning("Reading User Data To Files...");
-            UserDataJSON jsonData = UserDatabase.Instance.emptyUserDataJSON;
-            jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+            UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             if (jsonData.userCoins >= data.purchasePrice)
             {
                 MenuManager.instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
@@ -207,7 +195,7 @@ public class ShopMenuScript : MonoBehaviour
                 purchasePreview.interactable = false;
                 MenuManager.instance.UpdateCoin(jsonData.userCoins);
 
-                UserDatabase.Instance.WriteInputDataToJSON(jsonData);
+                FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                 MenuManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutItemSelections();
                 //Debug.LogWarning("Writing User Data To Files...");
             }

@@ -1,3 +1,4 @@
+using PrototypeLib.Modules.FileOpsIO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,6 @@ using UserConfiguration;
 
 public class GlobalDatabase : MonoBehaviour
 {
-    public GunsmithDataJSON emptyGunsmithDataJSON;
-    public LoadoutDataJSON emptyLoadoutDataJSON;
-    public LoadoutSlotDataJSON emptyLoadoutSlotDataJSON;
-    public SettingsOptionsJSON emptySettingsOptionsJSON;
-    public AppearancesDataJSON emptyAppearancesDataJSON;
     public List<WeaponData> allWeaponDatas = new();
     public List<EquipmentData> allEquipmentDatas = new();
     public List<WeaponAppearanceMeshData> allWeaponAppearanceDatas = new();
@@ -38,9 +34,10 @@ public class GlobalDatabase : MonoBehaviour
         {
             CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
         }
-        for (int i = 0; i < GunsmithSystem.GunsmithJsonData.weaponSmithings.Count; i++)
+        GunsmithDataJSON gmt = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
+        for (int i = 0; i < gmt.weaponSmithings.Count; i++)
         {
-            GunsmithSystem.VerifyWeaponSmithingData(GunsmithSystem.GunsmithJsonData.weaponSmithings[i]);
+            GunsmithSystem.VerifyWeaponSmithingData(gmt.weaponSmithings[i]);
         }
     }
     public int FindIndexFromWeaponData(WeaponData data)

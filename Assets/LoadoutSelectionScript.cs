@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UserConfiguration;
 using TMPro;
+using PrototypeLib.Modules.FileOpsIO;
 
 public class LoadoutSelectionScript : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         ToggleRenameUI(false);
         DisableWeaponSelection();
         DisableEquipmentSelection();
-        MenuManager.instance.CloseLoadoutSelectionMenu();
+        //MenuManager.instance.CloseLoadoutSelectionMenu();
     }
     public int FindGlobalWeaponIndex(WeaponData data)
     {
@@ -80,29 +81,9 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         return -1;
     }
-    public void InitializeLoadoutDataToJSON()
-    {
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey))) database.InitializeUserDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey)))
-        {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
-            {
-                database.InitializeUserDataToJSON();
-            }
-        }
-        LoadoutDataJSON data = new();
-        data = GlobalDatabase.singleton.emptyLoadoutDataJSON;
-        string json = JsonUtility.ToJson(data, true);
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey)).Close();
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey), json);
-        Debug.LogWarning("Initializing Loadout Data To Files...");
-    }
     public void WriteLoadoutDataToJSON()
     {
-        LoadoutDataJSON data = new();
-        data = GlobalDatabase.singleton.emptyLoadoutDataJSON;
-        data = WeaponSystem.LoadoutJsonData;
+        LoadoutDataJSON data = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
         data.SelectedSlot = selectedLoadoutIndex;
         //string json = JsonUtility.ToJson(data, true);
         //File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey), json);
@@ -136,22 +117,9 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void ReadLoadoutDataFromJSON()
     {
-        Debug.Log("Called ReadLoadoutDataFromJSON");
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey))) InitializeLoadoutDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey)))
-        {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey));
-            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
-            {
-                InitializeLoadoutDataToJSON();
-            }
-        }
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey));
-        Debug.LogWarning("Reading Loadout Data To Files...");
-        LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
-        json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
-        AppearancesDataJSON appearancesData = CosmeticSystem.AppearancesJsonData;
+        LoadoutDataJSON jsonData = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
+        UserDataJSON jsonUserData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+        AppearancesDataJSON appearancesData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
         selectedLoadoutIndex = jsonData.SelectedSlot;
         selectedMainWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon1;
         selectedSecondWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon2;
@@ -191,8 +159,8 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].selectedSidebarrelLeft[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Leftbarrel2);
             loadoutDataList[i].selectedSidebarrelRight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel1);
             loadoutDataList[i].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel2);
-            loadoutDataList[i].selectedAppearanceData[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1] : null));
-            loadoutDataList[i].selectedAppearanceData[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2] : null));
+            loadoutDataList[i].selectedAppearanceData[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1] : null));
+            loadoutDataList[i].selectedAppearanceData[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2] : null));
 
             loadoutDataList[i].selectedSightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Sight1 : -1;
             loadoutDataList[i].selectedSightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Sight2 : -1;
@@ -204,8 +172,8 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].selectedSidebarrelLeftIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Leftbarrel2 : -1;
             loadoutDataList[i].selectedSidebarrelRightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Rightbarrel1 : -1;
             loadoutDataList[i].selectedSidebarrelRightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Rightbarrel2 : -1;
-            loadoutDataList[i].selectedAppearanceDataIndex[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? jsonData.Slots[i].WeaponSkin1 : -1));
-            loadoutDataList[i].selectedAppearanceDataIndex[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? jsonData.Slots[i].WeaponSkin2 : -1));
+            loadoutDataList[i].selectedAppearanceDataIndex[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? jsonData.Slots[i].WeaponSkin1 : -1));
+            loadoutDataList[i].selectedAppearanceDataIndex[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? jsonData.Slots[i].WeaponSkin2 : -1));
         }
         if (checkChange) WriteLoadoutDataToJSON();
     }
@@ -229,7 +197,7 @@ public class LoadoutSelectionScript : MonoBehaviour
 
     public void InstantiateLoadoutSelections()
     {
-        LoadoutDataJSON tp = WeaponSystem.LoadoutJsonData;
+        LoadoutDataJSON tp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
         Debug.Log("Called Loadout Instantiation");
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
@@ -249,8 +217,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void InstantiateLoadoutItemSelections()
     {
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        UserDataJSON jsonUserData = JsonUtility.FromJson<UserDataJSON>(json);
+        UserDataJSON jsonUserData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         if (loadoutWeaponSelects.Count != 0)
         {
             for (int i = 0; i < loadoutWeaponSelects.Count; i++)
@@ -276,7 +243,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
             temp.weaponIndex = i;
             temp.customButtonsHolder = this.customButtonsHolder;
-            database.WriteInputDataToJSON(jsonUserData);
+            FileOps<UserDataJSON>.WriteFile(jsonUserData, UserSystem.UserDataPath);
         }
         for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
         {
@@ -286,7 +253,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             temp.equipmentData = GlobalDatabase.singleton.allEquipmentDatas[i];
             temp.equipmentIndex = i;
             temp.customButtonsHolder = this.customButtonsHolder;
-            database.WriteInputDataToJSON(jsonUserData);
+            FileOps<UserDataJSON>.WriteFile(jsonUserData, UserSystem.UserDataPath);
         }
     }
 
@@ -383,10 +350,10 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void ConfirmRename()
     {
-        LoadoutDataJSON tmp = WeaponSystem.LoadoutJsonData;
+        LoadoutDataJSON tmp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
         loadoutItems[forRenamingSlot].SetLoadoutName(renameInputField.text);
         tmp.Slots[forRenamingSlot].SlotName = renameInputField.text;
-        WeaponSystem.WriteToLoadoutConfig(tmp);
+        FileOps<LoadoutDataJSON>.WriteFile(tmp, UserSystem.LoadoutDataPath);
         ToggleRenameUI(false);
     }
 }

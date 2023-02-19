@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UserConfiguration;
 using LauncherManifest;
+using PrototypeLib.Modules.FileOpsIO;
 
 public class LoadoutCustomization : MonoBehaviour
 {
@@ -115,10 +116,10 @@ public class LoadoutCustomization : MonoBehaviour
 
     public void AppearanceUIItemInstantiation()
     {
-        AppearancesDataJSON jsonData = CosmeticSystem.AppearancesJsonData;
+        AppearancesDataJSON jsonData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
         for (int i = 0; i < loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants.Count; i++)
         {
-            if (jsonData.unlockedWeaponAppearances.Contains(CosmeticSystem.RevertWeaponAppearanceMeshData(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i])))
+            if (jsonData.unlockedWeaponAppearances.Contains(new WeaponAppearance(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i])))
             {
                 temp = Instantiate(appearanceSelectionItemPrefab, skinUIHolder);
                 temp.GetComponent<LoadoutAppearanceUIItem>().SetInfo(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i]);

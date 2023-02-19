@@ -7,6 +7,7 @@ using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using LauncherManifest;
 using UserConfiguration;
+using PrototypeLib.Modules.FileOpsIO;
 
 public class UserDatabase : MonoBehaviour
 {
@@ -25,112 +26,35 @@ public class UserDatabase : MonoBehaviour
     }
     public void ReadUserDataFromJSON()
     {
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey))) InitializeUserDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey)))
-        {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
-            {
-                InitializeUserDataToJSON();
-            }
-        }
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        //Debug.LogWarning("Reading User Data To Files...");
-        UserDataJSON jsonData = emptyUserDataJSON;
-        jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         MenuManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, (float)jsonData.userLevelXP, jsonData.userCoins);
-        Debug.Log((jsonData.userLevelXP / (jsonData.userLevel * UserDatabase.Instance.levelLimiter)));
+        //Debug.Log((jsonData.userLevelXP / (jsonData.userLevel * UserDatabase.Instance.levelLimiter)));
         if (!jsonData.hasInitialized)
         {
-            string content = "";
-            content = "You have unlocked your first three weapons:\n-AK-47\n-M16\n-Beretta\nYou can go equip them in your loadouts now.";
+            string content = "You have unlocked your first three weapons:\n-AK-47\n-M16\n-Beretta\nYou can go equip them in your loadouts now.";
             MenuManager.instance.AddModalWindow("Unlocked", content);
             jsonData.hasInitialized = true;
-            WriteInputDataToJSON(jsonData);
+            FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
-    }
-    public void WriteUserDataToJSON()
-    {
-        UserDataJSON data = new();
-        data = emptyUserDataJSON;
-
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey), json);
-        //Debug.LogWarning("Writing User Data To Files...");
-    }
-    public void WriteInputDataToJSON(UserDataJSON data)
-    {
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey), json);
-        //Debug.LogWarning("Writing User Data To Files...");
-    }
-    public void InitializeUserDataToJSON()
-    {
-        UserDataJSON data = new();
-        data = emptyUserDataJSON;
-
-        string json = JsonUtility.ToJson(data, true);
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey)).Close();
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey), json);
-        //Debug.LogWarning("Initializing User Data To Files...");
     }
     public void ReadAppearanceDataFromJSON()
     {
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) InitializeAppearanceDataToJSON();
-        if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)))
-        {
-            string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
-            if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
-            {
-                InitializeAppearanceDataToJSON();
-            }
-        }
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
-        //Debug.LogWarning("Reading User Data To Files...");
-        AppearancesDataJSON jsonData = GlobalDatabase.singleton.emptyAppearancesDataJSON;
-        jsonData = JsonUtility.FromJson<AppearancesDataJSON>(json);
-    }
-    public void WriteAppearancesDataToJSON()
-    {
-        AppearancesDataJSON data = new();
-        data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
-
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
-        //Debug.LogWarning("Writing User Data To Files...");
-    }
-    public void WriteInputAppearanceDataToJSON(AppearancesDataJSON data)
-    {
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
-        //Debug.LogWarning("Writing User Data To Files...");
-    }
-    public void InitializeAppearanceDataToJSON()
-    {
-        AppearancesDataJSON data = new();
-        data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
-
-        string json = JsonUtility.ToJson(data, true);
-        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)).Close();
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
-        //Debug.LogWarning("Initializing User Data To Files...");
+        AppearancesDataJSON jsonData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
     }
     public void AddUserCurrency(int amount)
     {
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
+        UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         jsonData.userCoins += amount;
         if (RoomManager.Instance.currentSceneIndex == 0)
         {
             MenuManager.instance.UpdateCoin(jsonData.userCoins);
         }
-        WriteInputDataToJSON(jsonData);
+        FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
     }
     public bool AddUserLevelXP(int amount)
     {
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-        int levelLim = jsonData.userLevel * UserDatabase.Instance.levelLimiter;
+        UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+        int levelLim = jsonData.userLevel * levelLimiter;
         string unlockedContent = "";
         bool ret = false;
         if (jsonData.userLevelXP + amount >= levelLim)
@@ -154,33 +78,27 @@ public class UserDatabase : MonoBehaviour
                 if (!MenuManager.instance.queuedModalWindows.Contains(tmp)) MenuManager.instance.QueueModalWindow(tmp.title, tmp.content, MenuManager.PopupQueue.OnMainMenuLoad);
             }
             else MenuManager.instance.AddModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
-            WriteInputDataToJSON(jsonData);
+            FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
         else
         {
             if (RoomManager.Instance.currentSceneIndex != 0) MenuManager.instance.QueueModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent), MenuManager.PopupQueue.OnMainMenuLoad);
             else MenuManager.instance.AddModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
             jsonData.userLevelXP += amount;
-            WriteInputDataToJSON(jsonData);
+            FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
         return ret;
     }
     public int GetUserXPValue()
     {
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-        return jsonData.userLevelXP;
+        return FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).userLevelXP;
     }
     public int GetUserXPLevelValue()
     {
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-        return jsonData.userLevel;
+        return FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).userLevel;
     }
     public int GetUserCoinValue()
     {
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-        UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-        return jsonData.userCoins;
+        return FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).userCoins;
     }
 }

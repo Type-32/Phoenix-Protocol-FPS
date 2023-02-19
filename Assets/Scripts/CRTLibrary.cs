@@ -72,7 +72,16 @@ namespace PrototypeLib
                     jsonFormat = true;
                     cleanJson = true;
                     overwriteExisted = true;
-                    encode = null;
+                    encode = Encoding.Default;
+                }
+                public WritingData(string fp, Encoding ec)
+                {
+                    filePath = fp;
+                    initializeIfEmpty = true;
+                    jsonFormat = true;
+                    cleanJson = true;
+                    overwriteExisted = true;
+                    encode = ec ?? Encoding.Default;
                 }
                 public WritingData(string fp, bool iie, bool jf, bool cj, bool oe, Encoding ec)
                 {
@@ -81,7 +90,7 @@ namespace PrototypeLib
                     jsonFormat = jf;
                     cleanJson = cj;
                     overwriteExisted = oe;
-                    encode = ec;
+                    encode = ec ?? Encoding.Default;
                 }
             }
             public class ReadingData
@@ -95,14 +104,21 @@ namespace PrototypeLib
                     filePath = "";
                     initializeIfEmpty = true;
                     convertFromJson = true;
-                    encode = null;
+                    encode = Encoding.Default;
+                }
+                public ReadingData(string fp, Encoding ec)
+                {
+                    filePath = fp;
+                    initializeIfEmpty = true;
+                    convertFromJson = true;
+                    encode = ec ?? Encoding.Default;
                 }
                 public ReadingData(string filePath, bool initializeIfEmpty, bool convertFromJson, Encoding encode)
                 {
                     this.filePath = filePath;
                     this.initializeIfEmpty = initializeIfEmpty;
                     this.convertFromJson = convertFromJson;
-                    this.encode = encode;
+                    this.encode = encode ?? Encoding.Default;
                 }
             }
             public static class FileOps<T> where T : new()
@@ -111,7 +127,7 @@ namespace PrototypeLib
                 public delegate void FileOperateAsync();
                 public static event FileOperate OperatedFile;
                 public static event FileOperateAsync OperatedFileAsync;
-                public async static Task<bool> WriteFileAsync(T content, WritingData data) { return await WriteFileAsync(content, data.filePath, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode); }
+                public async static Task<bool> WriteFileAsync(T content, WritingData data) { return await WriteFileAsync(content, data.filePath, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode ?? Encoding.Default); }
                 public async static Task<bool> WriteFileAsync(T content, string filePath, bool initializeIfEmpty = true, bool jsonFormat = true, bool cleanJson = true, bool overwriteExisted = true, Encoding encode = null)
                 {
                     bool success = false;
@@ -128,15 +144,16 @@ namespace PrototypeLib
                     if (File.Exists(filePath))
                     {
                         if (overwriteExisted)
-                            success = await ImprintToFileAsync(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode));
+                            success = await ImprintToFileAsync(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode ?? Encoding.Default));
                     }
                     else
                     {
+                        if (initializeIfEmpty) ImprintToFile(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode ?? Encoding.Default));
                         Debug.LogWarning($"The File Path {filePath} does not exist. Please make sure the file is created and initialized.");
                     }
                     return success;
                 }
-                public static bool WriteFile(T content, WritingData data) { return WriteFile(content, data.filePath, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode); }
+                public static bool WriteFile(T content, WritingData data) { return WriteFile(content, data.filePath, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode ?? Encoding.Default); }
                 public static bool WriteFile(T content, string filePath, bool initializeIfEmpty = true, bool jsonFormat = true, bool cleanJson = true, bool overwriteExisted = true, Encoding encode = null)
                 {
                     bool success = false;
@@ -153,68 +170,69 @@ namespace PrototypeLib
                     if (File.Exists(filePath))
                     {
                         if (overwriteExisted)
-                            success = ImprintToFile(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode));
+                            success = ImprintToFile(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode ?? Encoding.Default));
                     }
                     else
                     {
+                        if (initializeIfEmpty) ImprintToFile(content, new WritingData(filePath, initializeIfEmpty, jsonFormat, cleanJson, overwriteExisted, encode ?? Encoding.Default));
                         Debug.LogWarning($"The File Path {filePath} does not exist. Please make sure the file is created and initialized.");
                     }
                     return success;
                 }
-                public async static Task<object> ReadFileAsync(ReadingData data) { return await ReadFileAsync(data.filePath, data.initializeIfEmpty, data.convertFromJson, data.encode); }
-                public async static Task<object> ReadFileAsync(string filePath, bool initializeIfEmpty = true, bool convertFromJson = true, Encoding encode = null)
+                public async static Task<T> ReadFileAsync(ReadingData data) { return await ReadFileAsync(data.filePath, data.initializeIfEmpty, data.convertFromJson, data.encode ?? Encoding.Default); }
+                public async static Task<T> ReadFileAsync(string filePath, bool initializeIfEmpty = true, bool convertFromJson = true, Encoding encode = null)
                 {
                     object obj = null;
-                    if (typeof(T) == null) return false;
+                    if (typeof(T) == null) return default;
                     if (File.Exists(filePath))
                     {
-                        obj = await File.ReadAllTextAsync(filePath, encode);
+                        obj = await File.ReadAllTextAsync(filePath, encode ?? Encoding.Default);
                         if (convertFromJson)
                             obj = JsonUtility.FromJson((string)obj, typeof(T));
                         else
-                            return (string)obj;
+                            return default;
                     }
                     else
                     {
                         if (initializeIfEmpty)
                         {
-                            WriteFile(new T(), new WritingData(filePath, initializeIfEmpty, convertFromJson, convertFromJson, convertFromJson, encode));
-                            obj = File.ReadAllText(filePath, encode);
+                            WriteFile(new T(), new WritingData(filePath, initializeIfEmpty, convertFromJson, convertFromJson, convertFromJson, encode ?? Encoding.Default));
+                            obj = File.ReadAllText(filePath, encode ?? Encoding.Default);
                             if (convertFromJson)
                                 obj = JsonUtility.FromJson((string)obj, typeof(T));
                             else
-                                return (string)obj;
+                                return default;
                         }
                     }
-                    OperatedFileAsync.Invoke();
+                    OperatedFileAsync?.Invoke();
                     return (T)obj;
                 }
-                public static object ReadFile(ReadingData data) { return ReadFile(data.filePath, data.initializeIfEmpty, data.convertFromJson, data.encode); }
-                public static object ReadFile(string filePath, bool initializeIfEmpty = true, bool convertFromJson = true, Encoding encode = null)
+                public static T ReadFile(ReadingData data) { return ReadFile(data.filePath, data.initializeIfEmpty, data.convertFromJson, data.encode ?? Encoding.Default); }
+                public static T ReadFile(string filePath, bool initializeIfEmpty = true, bool convertFromJson = true, Encoding encode = null)
                 {
                     object obj = null;
-                    if (typeof(T) == null) return false;
+                    if (typeof(T) == null) return default;
                     if (File.Exists(filePath))
                     {
-                        obj = File.ReadAllText(filePath, encode);
+                        obj = File.ReadAllText(filePath, encode ?? Encoding.Default);
                         if (convertFromJson)
                             obj = JsonUtility.FromJson((string)obj, typeof(T));
                         else
-                            return (string)obj;
+                            return default;
                     }
                     else
                     {
                         if (initializeIfEmpty)
                         {
-                            WriteFile(new T(), new WritingData(filePath, initializeIfEmpty, convertFromJson, convertFromJson, convertFromJson, encode));
-                            obj = File.ReadAllText(filePath, encode);
+                            WriteFile(new T(), new WritingData(filePath, initializeIfEmpty, convertFromJson, convertFromJson, convertFromJson, encode ?? Encoding.Default));
+                            obj = File.ReadAllText(filePath, encode ?? Encoding.Default);
                             if (convertFromJson)
                                 obj = JsonUtility.FromJson((string)obj, typeof(T));
                             else
-                                return (string)obj;
+                                return default;
                         }
                     }
-                    OperatedFile.Invoke();
+                    OperatedFile?.Invoke();
                     return (T)obj;
                 }
                 private static bool ImprintToFile(T content, WritingData data)
@@ -223,24 +241,24 @@ namespace PrototypeLib
                     {
                         if (File.Exists(data.filePath))
                         {
-                            File.WriteAllText(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode);
+                            File.WriteAllText(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode ?? Encoding.Default);
                         }
                         else
                         {
                             if (data.initializeIfEmpty)
                             {
                                 File.Create(data.filePath).Close();
-                                File.WriteAllText(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(new T(), true) : JsonUtility.ToJson(new T(), false) : new T().ToString(), data.encode);
+                                File.WriteAllText(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(new T(), true) : JsonUtility.ToJson(new T(), false) : new T().ToString(), data.encode ?? Encoding.Default);
                             }
                             else
                             {
                                 return false;
                             }
-                            File.WriteAllText(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode);
+                            File.WriteAllText(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode ?? Encoding.Default);
                         }
-                        OperatedFile.Invoke();
+                        OperatedFile?.Invoke();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         return false;
                     }
@@ -252,24 +270,24 @@ namespace PrototypeLib
                     {
                         if (File.Exists(data.filePath))
                         {
-                            await File.WriteAllTextAsync(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode);
+                            await File.WriteAllTextAsync(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode ?? Encoding.Default);
                         }
                         else
                         {
                             if (data.initializeIfEmpty)
                             {
                                 File.Create(data.filePath).Close();
-                                await File.WriteAllTextAsync(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(new T(), true) : JsonUtility.ToJson(new T(), false) : new T().ToString(), data.encode);
+                                await File.WriteAllTextAsync(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(new T(), true) : JsonUtility.ToJson(new T(), false) : new T().ToString(), data.encode ?? Encoding.Default);
                             }
                             else
                             {
                                 return false;
                             }
-                            await File.WriteAllTextAsync(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode);
+                            await File.WriteAllTextAsync(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode ?? Encoding.Default);
                         }
-                        OperatedFileAsync.Invoke();
+                        OperatedFileAsync?.Invoke();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         return false;
                     }

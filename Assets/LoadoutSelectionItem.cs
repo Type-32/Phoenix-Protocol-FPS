@@ -1,5 +1,7 @@
+using PrototypeLib.Modules.FileOpsIO;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using UserConfiguration;
@@ -44,10 +46,10 @@ public class LoadoutSelectionItem : MonoBehaviour
                 tempIndex2 = i;
             }
         }
-        LoadoutDataJSON tmp = WeaponSystem.LoadoutJsonData;
+        LoadoutDataJSON tmp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
         tmp.SelectedSlot = loadoutIndex;
         Debug.Log(tmp.Slots[tmp.SelectedSlot].SlotName + " Selected the Slot name");
-        WeaponSystem.WriteToLoadoutConfig(tmp);
+        FileOps<LoadoutDataJSON>.WriteFile(tmp, UserSystem.LoadoutDataPath);
         loadoutSelection.OnSelectLoadoutCallback(loadoutIndex, tempIndex1, tempIndex2, 0, 0);
         selectionVisual.SetActive(true);
         //loadoutSelection.WriteLoadoutDataToJSON();

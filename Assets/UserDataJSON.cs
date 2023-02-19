@@ -10,13 +10,12 @@ public class UserDataJSON
     public int userLevelXP;
     public int userCoins;
     public ShopDataJSON shopData;
-    /*
-    internal UserDataJSON()
+    public UserDataJSON()
     {
-        username = "Player " + (2022).ToString();
+        username = "Player " + (2023).ToString();
         hasInitialized = false;
         userLevel = 1;
         userLevelXP = 0;
         userCoins = 1000;
-    }*/
+    }
 }

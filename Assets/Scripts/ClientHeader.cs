@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using PrototypeLib.Modules.FileOpsIO;
+
 namespace LauncherManifest
 {
     public static class LauncherConfig
@@ -143,11 +145,9 @@ namespace UserConfiguration
         }
         public static WeaponValidation ValidateWeapon(int weaponIndex, bool correctValidation)
         {
-            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
-            string loadout = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
-            UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-            LoadoutDataJSON loadoutJsonData = JsonUtility.FromJson<LoadoutDataJSON>(loadout);
-            // AppearancesDataJSON appearanceData = CosmeticSystem.AppearancesJsonData;
+            UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+            LoadoutDataJSON loadoutJsonData = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
+            // AppearancesDataJSON appearanceData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
             WeaponValidation result = WeaponValidation.Valid;
             if (!jsonData.shopData.availableWeaponIndexes.Contains(weaponIndex))
             {
@@ -181,7 +181,7 @@ namespace UserConfiguration
                                 if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
                                 if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
                                 jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
-                                for (int i = 0; i < loadoutJsonData.Slots.Length; i++)
+                                for (int i = 0; i < loadoutJsonData.Slots.Count; i++)
                                 {
                                     if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
                                     {
@@ -208,7 +208,7 @@ namespace UserConfiguration
                             if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
                             jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
                             //UserDatabase.Instance.WriteInputDataToJSON(jsonData);
-                            for (int i = 0; i < loadoutJsonData.Slots.Length; i++)
+                            for (int i = 0; i < loadoutJsonData.Slots.Count; i++)
                             {
                                 if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
                                 {
@@ -236,7 +236,7 @@ namespace UserConfiguration
                         {
                             if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
                             if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
-                            for (int i = 0; i < loadoutJsonData.Slots.Length; i++)
+                            for (int i = 0; i < loadoutJsonData.Slots.Count; i++)
                             {
                                 if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
                                 {
@@ -252,29 +252,13 @@ namespace UserConfiguration
                     }
                 }
             }
-            if (correctValidation) { UserSystem.WriteToUserConfig(jsonData); WriteToLoadoutConfig(loadoutJsonData); }
+            if (correctValidation)
+            {
+                FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
+                FileOps<LoadoutDataJSON>.WriteFile(loadoutJsonData, UserSystem.LoadoutDataPath);
+            }
             Debug.Log("Returned " + result.ToString());
             return result;
-        }
-        public static void WriteToLoadoutConfig(LoadoutDataJSON loadoutData)
-        {
-            Debug.Log("Correcting Weapon Validation");
-            string json = JsonUtility.ToJson(loadoutData, true);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), json);
-        }
-        public static void WriteToLoadoutConfig(string jsonString)
-        {
-            Debug.Log("Correcting Weapon Validation");
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"), jsonString);
-        }
-        public static LoadoutDataJSON LoadoutJsonData
-        {
-            get
-            {
-                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "LoadoutDataConfig.json"));
-                LoadoutDataJSON jsonData = JsonUtility.FromJson<LoadoutDataJSON>(json);
-                return jsonData;
-            }
         }
     }
     public static class UserSystem
@@ -288,25 +272,6 @@ namespace UserConfiguration
                 UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
                 return jsonData.userLevel;
             }
-        }
-        public static UserDataJSON UserJsonData
-        {
-            get
-            {
-                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
-                UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-                return jsonData;
-            }
-        }
-        public static void WriteToUserConfig(UserDataJSON userData)
-        {
-            Debug.Log("Correcting Weapon Validation");
-            string json = JsonUtility.ToJson(userData, true);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), json);
-        }
-        public static void WriteToUserConfig(string jsonString)
-        {
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"), jsonString);
         }
         public static string UserDataConfigKey
         {
@@ -348,6 +313,48 @@ namespace UserConfiguration
             get
             {
                 return "GunsmithConfig.json";
+            }
+        }
+        public static string UserDataPath
+        {
+            get
+            {
+                return Path.Combine(Application.persistentDataPath, UserDataConfigKey);
+            }
+        }
+        public static string LoadoutDataPath
+        {
+            get
+            {
+                return Path.Combine(Application.persistentDataPath, LoadoutDataConfigKey);
+            }
+        }
+        public static string RewardDataPath
+        {
+            get
+            {
+                return Path.Combine(Application.persistentDataPath, RewardDataConfigKey);
+            }
+        }
+        public static string SettingsOptionsPath
+        {
+            get
+            {
+                return Path.Combine(Application.persistentDataPath, SettingsOptionsKey);
+            }
+        }
+        public static string AppearancesConfigPath
+        {
+            get
+            {
+                return Path.Combine(Application.persistentDataPath, AppearancesConfigKey);
+            }
+        }
+        public static string GunsmithPath
+        {
+            get
+            {
+                return Path.Combine(Application.persistentDataPath, GunsmithConfigKey);
             }
         }
     }
@@ -452,60 +459,9 @@ namespace UserConfiguration
     }
     public static class GunsmithSystem
     {
-        public static string GunsmithConfigFilePath
-        {
-            get
-            {
-                string path = Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey);
-                if (File.Exists(path)) return path;
-                else File.Create(path).Close();
-                return null;
-            }
-        }
-        public static void WriteToConfig(GunsmithDataJSON gunsmithDataJSON)
-        {
-            string jsonString = JsonUtility.ToJson(gunsmithDataJSON, true);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
-        }
-        public static void WriteToConfig(string jsonString)
-        {
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
-        }
-        public static GunsmithDataJSON GunsmithJsonData
-        {
-            get
-            {
-                if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)))
-                {
-                    GunsmithDataJSON data = new();
-                    data = GlobalDatabase.singleton.emptyGunsmithDataJSON;
-
-                    string jsonString = JsonUtility.ToJson(data, true);
-                    if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)).Close();
-                    File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
-
-                }
-                if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)))
-                {
-                    string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey));
-                    if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
-                    {
-                        GunsmithDataJSON data = new();
-                        data = GlobalDatabase.singleton.emptyGunsmithDataJSON;
-
-                        string jsonString = JsonUtility.ToJson(data, true);
-                        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey)).Close();
-                        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey), jsonString);
-                    }
-                }
-                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.GunsmithConfigKey));
-                GunsmithDataJSON jsonData = JsonUtility.FromJson<GunsmithDataJSON>(json);
-                return jsonData;
-            }
-        }
         public static GunsmithDataJSON.WeaponSmithingData FindWeaponSmithingData(int weaponIndex)
         {
-            GunsmithDataJSON data = GunsmithJsonData;
+            GunsmithDataJSON data = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
             for (int i = 0; i < data.weaponSmithings.Count; i++)
             {
                 if (weaponIndex == data.weaponSmithings[i].weaponIndex) return data.weaponSmithings[i];
@@ -514,18 +470,17 @@ namespace UserConfiguration
         }
         public static bool VerifyWeaponSmithingData(GunsmithDataJSON.WeaponSmithingData data, bool correctValidation = true)
         {
-            if (UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.weaponIndex))
-            {
+            GunsmithDataJSON temp = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
+            if (FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).shopData.ownedWeaponIndexes.Contains(data.weaponIndex))
                 return true;
-            }
             else
             {
                 if (correctValidation)
                 {
-                    if (GunsmithJsonData.weaponSmithings.Contains(data))
+                    if (temp.weaponSmithings.Contains(data))
                     {
-                        GunsmithJsonData.weaponSmithings.Remove(data);
-                        WriteToConfig(GunsmithJsonData);
+                        temp.weaponSmithings.Remove(data);
+                        FileOps<GunsmithDataJSON>.WriteFile(temp, UserSystem.GunsmithPath);
                     }
                 }
             }
@@ -534,15 +489,13 @@ namespace UserConfiguration
         public static bool AddWeaponToData(WeaponData data)
         {
             bool success = false;
-            if (UserSystem.UserJsonData.shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
+            if (FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
             {
                 if (FindWeaponSmithingData(data.GlobalWeaponIndex) == null)
                 {
-                    GunsmithDataJSON jsonData = GunsmithJsonData;
-                    GunsmithDataJSON.WeaponSmithingData temp = new();
-                    temp.weaponIndex = data.GlobalWeaponIndex;
-                    jsonData.weaponSmithings.Add(temp);
-                    WriteToConfig(jsonData);
+                    GunsmithDataJSON jsonData = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
+                    jsonData.weaponSmithings.Add(new GunsmithDataJSON.WeaponSmithingData(data.GlobalWeaponIndex));
+                    FileOps<GunsmithDataJSON>.WriteFile(jsonData, UserSystem.GunsmithPath);
                     success = true;
                 }
             }
@@ -554,9 +507,9 @@ namespace UserConfiguration
             GunsmithDataJSON.WeaponSmithingData temp = FindWeaponSmithingData(data.GlobalWeaponIndex);
             if (temp != null)
             {
-                GunsmithDataJSON jsonData = GunsmithJsonData;
+                GunsmithDataJSON jsonData = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
                 jsonData.weaponSmithings.Remove(temp);
-                WriteToConfig(jsonData);
+                FileOps<GunsmithDataJSON>.WriteFile(jsonData, UserSystem.GunsmithPath);
                 success = true;
             }
             return success;
@@ -564,74 +517,10 @@ namespace UserConfiguration
     }
     public static class CosmeticSystem
     {
-        public static string AppearancesConfigFilePath
-        {
-            get
-            {
-                string path = Path.Combine(Application.persistentDataPath, "AppearancesConfig.json");
-                if (File.Exists(path)) return path;
-                else
-                {
-                    File.Create(path).Close();
-                }
-                return null;
-            }
-        }
-        public static void WriteToConfig(AppearancesDataJSON appearancesDataJSON)
-        {
-            string json = JsonUtility.ToJson(appearancesDataJSON, true);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), json);
-        }
-        public static void WriteToConfig(string jsonString)
-        {
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), jsonString);
-        }
-        public static AppearancesDataJSON AppearancesJsonData
-        {
-            get
-            {
-                if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)))
-                {
-                    AppearancesDataJSON data = new();
-                    data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
-
-                    string jsonString = JsonUtility.ToJson(data, true);
-                    if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)).Close();
-                    File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), jsonString);
-
-                }
-                if (File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)))
-                {
-                    string tempJson = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
-                    if (string.IsNullOrEmpty(tempJson) || string.IsNullOrWhiteSpace(tempJson))
-                    {
-                        AppearancesDataJSON data = new();
-                        data = GlobalDatabase.singleton.emptyAppearancesDataJSON;
-
-                        string jsonString = JsonUtility.ToJson(data, true);
-                        if (!File.Exists(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey))) File.CreateText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey)).Close();
-                        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey), jsonString);
-                    }
-                }
-                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.AppearancesConfigKey));
-                AppearancesDataJSON jsonData = JsonUtility.FromJson<AppearancesDataJSON>(json);
-                return jsonData;
-            }
-        }
-        public static bool VerifyWeaponAppearanceData(int weaponAppearanceMeshDataIndex, bool correctValidation = true)
-        {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
-            {
-                if (weaponAppearanceMeshDataIndex == i) return VerifyWeaponAppearanceData(GlobalDatabase.singleton.allWeaponAppearanceDatas[i], correctValidation);
-            }
-            return false;
-        }
         public static bool VerifyWeaponAppearanceData(WeaponAppearanceMeshData data, bool correctValidation = true)
         {
-            AppearancesDataJSON.WeaponAppearance temp;
-            AppearancesDataJSON jsonData = CosmeticSystem.AppearancesJsonData;
-            temp.appearanceIndex = data.WeaponAppearanceMeshDataIndex;
-            temp.weaponIndex = data.weaponData.GlobalWeaponIndex;
+            WeaponAppearance temp = new WeaponAppearance(data);
+            AppearancesDataJSON jsonData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
             bool isValid = false;
             if (jsonData.unlockedWeaponAppearances.Contains(temp))
             {
@@ -645,13 +534,11 @@ namespace UserConfiguration
             else
             {
                 if (jsonData.availableWeaponAppearances.Contains(temp))
-                {
                     isValid = true;
-                }
                 else
                 {
                     jsonData.availableWeaponAppearances.Add(temp);
-                    if (correctValidation) CosmeticSystem.WriteToConfig(jsonData);
+                    if (correctValidation) FileOps<AppearancesDataJSON>.WriteFile(jsonData, UserSystem.AppearancesConfigPath);
                 }
             }
             return isValid;
@@ -659,15 +546,15 @@ namespace UserConfiguration
         public static bool ValidateLoadoutCosmetics(bool correctValidation = true)
         {
             bool isValid = true;
-            LoadoutDataJSON loadoutJsonData = WeaponSystem.LoadoutJsonData;
-            AppearancesDataJSON appearanceData = CosmeticSystem.AppearancesJsonData;
+            LoadoutDataJSON loadoutJsonData = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
+            AppearancesDataJSON appearanceData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
             for (int i = 0; i < 8; i++)
             {
-                AppearancesDataJSON.WeaponAppearance t1 = new();
-                AppearancesDataJSON.WeaponAppearance t2 = new();
+                WeaponAppearance t1 = new();
+                WeaponAppearance t2 = new();
                 //Debug.LogWarning("Slots Length: " + loadoutJsonData.Slots.Length);
-                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1) t1 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
-                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1) t2 = CosmeticSystem.RevertWeaponAppearanceMeshData(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
+                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1) t1 = new(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
+                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1) t2 = new(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
                 if (loadoutJsonData.Slots[i].WeaponSkin1 != -1)
                 {
                     if (!appearanceData.unlockedWeaponAppearances.Contains(t1))
@@ -712,19 +599,12 @@ namespace UserConfiguration
             }
             if (correctValidation)
             {
-                CosmeticSystem.WriteToConfig(appearanceData);
-                WeaponSystem.WriteToLoadoutConfig(loadoutJsonData);
+                FileOps<AppearancesDataJSON>.WriteFile(appearanceData, UserSystem.AppearancesConfigPath);
+                FileOps<LoadoutDataJSON>.WriteFile(loadoutJsonData, UserSystem.LoadoutDataPath);
             }
             return isValid;
         }
-        public static AppearancesDataJSON.WeaponAppearance RevertWeaponAppearanceMeshData(WeaponAppearanceMeshData data)
-        {
-            AppearancesDataJSON.WeaponAppearance temp;
-            temp.appearanceIndex = data.WeaponAppearanceMeshDataIndex;
-            temp.weaponIndex = data.weaponData.GlobalWeaponIndex;
-            return temp;
-        }
-        public static WeaponAppearanceMeshData FindWeaponAppearanceMeshData(AppearancesDataJSON.WeaponAppearance appearance)
+        public static WeaponAppearanceMeshData FindWeaponAppearanceMeshData(WeaponAppearance appearance)
         {
             return FindWeaponAppearanceMeshData(appearance.appearanceIndex, appearance.weaponIndex);
         }

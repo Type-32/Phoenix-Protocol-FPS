@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UserConfiguration;
 using LauncherManifest;
+using PrototypeLib.Modules.FileOpsIO;
 
 public class WeaponCosmeticListItem : MonoBehaviour
 {
@@ -47,17 +48,18 @@ public class WeaponCosmeticListItem : MonoBehaviour
     }
     public void PurchaseItem()
     {
-        UserDataJSON jsonData = UserSystem.UserJsonData;
-        AppearancesDataJSON app = CosmeticSystem.AppearancesJsonData;
-        AppearancesDataJSON.WeaponAppearance temp = CosmeticSystem.RevertWeaponAppearanceMeshData(data);
+        UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+        AppearancesDataJSON app = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
+        WeaponAppearance temp = new WeaponAppearance(data);
         if (data.purchasePrice <= jsonData.userCoins && (!app.unlockedWeaponAppearances.Contains(temp) && app.availableWeaponAppearances.Contains(temp)) && jsonData.shopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex))
         {
             MenuManager.instance.AddNotification("Success Purchase", "You have successfully purchased the " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + "!");
             jsonData.userCoins -= data.purchasePrice;
             app.unlockedWeaponAppearances.Add(temp);
             app.availableWeaponAppearances.Remove(temp);
-            CosmeticSystem.WriteToConfig(app);
-            UserSystem.WriteToUserConfig(jsonData);
+
+            FileOps<AppearancesDataJSON>.WriteFile(app, UserSystem.AppearancesConfigPath);
+            FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
             MenuManager.instance.UpdateCoin(jsonData.userCoins);
             script.RemoveWeaponCosmeticListItem(this);
         }
