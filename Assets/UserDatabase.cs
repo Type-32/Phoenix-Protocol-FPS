@@ -24,6 +24,13 @@ public class UserDatabase : MonoBehaviour
         ReadUserDataFromJSON();
         ReadAppearanceDataFromJSON();
     }
+    public int CurrentLevelLimit
+    {
+        get
+        {
+            return FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).userLevel * levelLimiter;
+        }
+    }
     public void ReadUserDataFromJSON()
     {
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
@@ -53,40 +60,45 @@ public class UserDatabase : MonoBehaviour
     }
     public bool AddUserLevelXP(int amount)
     {
+        int m_am = amount;
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        int levelLim = jsonData.userLevel * levelLimiter;
         string unlockedContent = "";
         bool ret = false;
-        if (jsonData.userLevelXP + amount >= levelLim)
+        while (jsonData.userLevelXP + m_am >= CurrentLevelLimit)
         {
-            ret = true;
-            jsonData.userLevelXP = jsonData.userLevelXP + amount - levelLim;
-            jsonData.userLevel++;
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            int levelLim = CurrentLevelLimit;
+            if (jsonData.userLevelXP + m_am >= levelLim)
             {
-                if (GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel <= jsonData.userLevel)
+                ret = true;
+                int afterLeft = levelLim - jsonData.userLevelXP;
+                jsonData.userLevelXP = jsonData.userLevelXP + m_am - levelLim;
+                m_am -= afterLeft;
+                jsonData.userLevel++;
+                for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
                 {
-                    unlockedContent = unlockedContent + "-" + GlobalDatabase.singleton.allWeaponDatas[i].itemName + "\n";
+                    if (GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel <= jsonData.userLevel)
+                        unlockedContent = unlockedContent + "-" + GlobalDatabase.singleton.allWeaponDatas[i].itemName + "\n";
                 }
+                if (RoomManager.Instance.currentSceneIndex != 0)
+                {
+                    MenuManager.PopupData tmp;
+                    tmp.title = "Level Up";
+                    tmp.content = "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent);
+                    tmp.queueType = MenuManager.PopupQueue.OnMainMenuLoad;
+                    if (!MenuManager.instance.queuedModalWindows.Contains(tmp)) MenuManager.instance.QueueModalWindow(tmp.title, tmp.content, MenuManager.PopupQueue.OnMainMenuLoad);
+                }
+                else MenuManager.instance.AddModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
+                FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
             }
-            if (RoomManager.Instance.currentSceneIndex != 0)
-            {
-                MenuManager.PopupData tmp;
-                tmp.title = "Level Up";
-                tmp.content = "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent);
-                tmp.queueType = MenuManager.PopupQueue.OnMainMenuLoad;
-                if (!MenuManager.instance.queuedModalWindows.Contains(tmp)) MenuManager.instance.QueueModalWindow(tmp.title, tmp.content, MenuManager.PopupQueue.OnMainMenuLoad);
-            }
-            else MenuManager.instance.AddModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
-            FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
-        else
+        if (jsonData.userLevelXP + amount < CurrentLevelLimit)
         {
             if (RoomManager.Instance.currentSceneIndex != 0) MenuManager.instance.QueueModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent), MenuManager.PopupQueue.OnMainMenuLoad);
             else MenuManager.instance.AddModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
-            jsonData.userLevelXP += amount;
+            jsonData.userLevelXP += m_am;
             FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
+
         return ret;
     }
     public int GetUserXPValue()
