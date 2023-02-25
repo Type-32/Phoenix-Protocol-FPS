@@ -15,23 +15,15 @@ public class GunManager : Gun
     public GunAttachments attachment;
     public GunLogic logic;
     public new GunAudio audio;
-    //public PhotonView gunPV;
 
-    [Space]
-    [Header("References")]
+    [Space, Header("References")]
     public MouseLookScript fpsCam;
-    //public GadgetUsageScript gadgetFunc;
     public ParticleSystem muzzleFire;
     public GameObject shellEject;
-    //public Transform shellEjectPos;
-    //public GameObject bulletImpact;
-    //public GameObject bulletImpactBlood;
     public GameObject pickup;
     public GameObject gunVisual;
     public GameObject handsVisual;
     public GameObject thirdPersonHandsVisual;
-    //public Joint rightHandEnd;
-    //public Joint leftHandEnd;
     public Recoil camRecoil;
 
     [Space]
@@ -52,25 +44,12 @@ public class GunManager : Gun
     private void Awake()
     {
 
-        //gunPV = GetComponent<PhotonView>();
-        //InitializeAwake();
-        //player = FindObjectOfType<PlayerControllerManager>();
     }
     void Start()
     {
-        //InitializeStart();
-        //fpsCam = FindObjectOfType<MouseLookScript>();
-        //player = FindObjectOfType<PlayerControllerManager>();
         camRecoil = GetComponentInParent<Recoil>();
-        //gadgetFunc = FindObjectOfType<GadgetUsageScript>();
         holder = GetComponentInParent<EquipmentHolder>();
     }
-    /*
-    private void Update()
-    {
-        if (!player.pv.IsMine) return;
-
-    }*/
     public void DeterminatesFunction()
     {
         if (ui.ui.player.playerManager.openedLoadoutMenu)
@@ -88,10 +67,6 @@ public class GunManager : Gun
     }
     public void SelfDestruct()
     {
-        //ui.ui.currentAmmo.text = "??";
-        //ui.ui.ammoPool.text = "??";
-        //ui.ui.fireModeIndicator.text = "----";
-        Debug.Log("Gun Destructed ");
         Destroy(gameObject);
     }
     public void GetPickupsForGun()
@@ -160,7 +135,6 @@ public class GunManager : Gun
         animate.CoreAnimations();
         logic.GunGeneralLogic();
         if (!core.enableGunCoreFunc) return;
-        //Debug.Log("Using Weapon " + stats.weaponData.itemName);
         core.FiremodeSwitchMechanics();
         core.AimingMechanics();
 

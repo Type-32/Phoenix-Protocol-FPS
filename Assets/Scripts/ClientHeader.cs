@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,7 +62,172 @@ namespace LauncherManifest
             }
         }
     }
+    public class ParameterData
+    {
+        public string identifier;
+        public enum ParameterType
+        {
+            Null,
+            Integer,
+            Float,
+            Boolean,
+            String
+        }
+        public ParameterType type;
+        public Type reference;
+        public object value;
+        public ParameterData(string identifier, ParameterType type)
+        {
+            this.identifier = identifier;
+            this.type = type;
+            switch (type)
+            {
+                case ParameterType.Integer:
+                    reference = typeof(int);
+                    break;
+                case ParameterType.Boolean:
+                    reference = typeof(bool);
+                    break;
+                case ParameterType.Float:
+                    reference = typeof(float);
+                    break;
+                case ParameterType.String:
+                    reference = typeof(string);
+                    break;
+            }
 
+        }
+        public ParameterData()
+        {
+            identifier = "-null";
+            type = ParameterType.Null;
+            switch (type)
+            {
+                case ParameterType.Integer:
+                    reference = typeof(int);
+                    break;
+                case ParameterType.Boolean:
+                    reference = typeof(bool);
+                    break;
+                case ParameterType.Float:
+                    reference = typeof(float);
+                    break;
+                case ParameterType.String:
+                    reference = typeof(string);
+                    break;
+            }
+        }
+    }
+    public static class LauncherParametersDatabase
+    {
+        public static ParameterData Username_ID { get { return new("-username", ParameterData.ParameterType.String); } }
+    }
+    public struct LauncherParameters
+    {
+        internal static LauncherParameters empty;
+        private List<ParameterData> args;
+        internal LauncherParameters(List<ParameterData> paramArgs)
+        {
+            args = new();
+            args = paramArgs;
+        }
+        internal LauncherParameters(string param)
+        {
+            args = new();
+            int st = 0;
+            for (int i = 0; i < param.Length; i++)
+            {
+                if (param[i] == '-') st = i;
+                if (param[i] == ' ')
+                {
+                    int gt = 0;
+                    string det = "", par = "";
+                    ParameterData pd = new();
+                    for (int j = st; j < i - 1; j++)
+                    {
+                        if (param[i] == ':') gt = i;
+                        else
+                        {
+                            if (gt != 0)
+                            {
+                                det += param[i];
+                            }
+                            else
+                            {
+                                par += param[i];
+                            }
+                        }
+                    }
+                    if (det.Length <= 0 || gt == 0)
+                    {
+                        pd.reference = null;
+                        pd.type = ParameterData.ParameterType.Null;
+                        pd.value = null;
+                    }
+                    else
+                    {
+                        if (det.Contains('.'))
+                        {
+                            bool c_ch = false;
+                            for (int g = 0; g < det.Length; g++)
+                            {
+                                if (g >= 'a' && g <= 'z')
+                                {
+                                    c_ch = true;
+                                    break;
+                                }
+                            }
+                            if (c_ch)
+                            {
+                                pd.reference = typeof(float);
+                                pd.type = ParameterData.ParameterType.Float;
+                                pd.value = float.Parse(det);
+                            }
+                        }
+                        else
+                        {
+                            bool c_ch = false;
+                            for (int g = 0; g < det.Length; g++)
+                            {
+                                if (g >= 'a' && g <= 'z')
+                                {
+                                    c_ch = true;
+                                    break;
+                                }
+                            }
+                            if (c_ch)
+                            {
+                                pd.reference = typeof(string);
+                                pd.type = ParameterData.ParameterType.String;
+                                pd.value = det;
+                            }
+                            else if (det == "true" || det == "false")
+                            {
+                                pd.reference = typeof(bool);
+                                pd.type = ParameterData.ParameterType.Boolean;
+                                pd.value = bool.Parse(det);
+                            }
+                            else
+                            {
+                                pd.reference = typeof(int);
+                                pd.type = ParameterData.ParameterType.Integer;
+                                pd.value = int.Parse(det);
+                            }
+                        }
+                    }
+                    if (par.Length > 1)
+                    {
+                        pd.identifier = par;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    args.Add(pd);
+                }
+            }
+        }
+    }
     public struct Version
     {
         internal static Version zero = new Version(0, 0, 0, "");
@@ -263,98 +429,19 @@ namespace UserConfiguration
     }
     public static class UserSystem
     {
-        [Tooltip("Read only. Returns the Locally Saved User XP Level.")]
-        public static int LocalUserLevel
-        {
-            get
-            {
-                return FileOps<UserDataJSON>.Read(UserDataPath).userLevel;
-            }
-        }
-        public static string UserDataConfigKey
-        {
-            get
-            {
-                return "UserDataConfig.json";
-            }
-        }
-        public static string LoadoutDataConfigKey
-        {
-            get
-            {
-                return "LoadoutDataConfig.json";
-            }
-        }
-        public static string RewardDataConfigKey
-        {
-            get
-            {
-                return "RewardConfig.json";
-            }
-        }
-        public static string SettingsOptionsKey
-        {
-            get
-            {
-                return "SettingsOptions.json";
-            }
-        }
-        public static string AppearancesConfigKey
-        {
-            get
-            {
-                return "AppearancesConfig.json";
-            }
-        }
-        public static string GunsmithConfigKey
-        {
-            get
-            {
-                return "GunsmithConfig.json";
-            }
-        }
-        public static string UserDataPath
-        {
-            get
-            {
-                return Path.Combine(Application.persistentDataPath, UserDataConfigKey);
-            }
-        }
-        public static string LoadoutDataPath
-        {
-            get
-            {
-                return Path.Combine(Application.persistentDataPath, LoadoutDataConfigKey);
-            }
-        }
-        public static string RewardDataPath
-        {
-            get
-            {
-                return Path.Combine(Application.persistentDataPath, RewardDataConfigKey);
-            }
-        }
-        public static string SettingsOptionsPath
-        {
-            get
-            {
-                return Path.Combine(Application.persistentDataPath, SettingsOptionsKey);
-            }
-        }
-        public static string AppearancesConfigPath
-        {
-            get
-            {
-                return Path.Combine(Application.persistentDataPath, AppearancesConfigKey);
-            }
-        }
-        public static string GunsmithPath
-        {
-            get
-            {
-                return Path.Combine(Application.persistentDataPath, GunsmithConfigKey);
-            }
-        }
+        public static int LocalUserLevel { get { return FileOps<UserDataJSON>.ReadFile(UserDataPath).userLevel; } }
+        public static string UserDataConfigKey { get { return "UserDataConfig.json"; } }
+        public static string LoadoutDataConfigKey { get { return "LoadoutDataConfig.json"; } }
+        public static string RewardDataConfigKey { get { return "RewardConfig.json"; } }
+        public static string SettingsOptionsKey { get { return "SettingsOptions.json"; } }
+        public static string AppearancesConfigKey { get { return "AppearancesConfig.json"; } }
+        public static string GunsmithConfigKey { get { return "GunsmithConfig.json"; } }
+        public static string UserDataPath { get { return Path.Combine(Application.persistentDataPath, UserDataConfigKey); } }
+        public static string LoadoutDataPath { get { return Path.Combine(Application.persistentDataPath, LoadoutDataConfigKey); } }
+        public static string RewardDataPath { get { return Path.Combine(Application.persistentDataPath, RewardDataConfigKey); } }
+        public static string SettingsOptionsPath { get { return Path.Combine(Application.persistentDataPath, SettingsOptionsKey); } }
+        public static string AppearancesConfigPath { get { return Path.Combine(Application.persistentDataPath, AppearancesConfigKey); } }
+        public static string GunsmithPath { get { return Path.Combine(Application.persistentDataPath, GunsmithConfigKey); } }
     }
     public static class Database
     {
