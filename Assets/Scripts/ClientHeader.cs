@@ -268,9 +268,7 @@ namespace UserConfiguration
         {
             get
             {
-                string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "UserDataConfig.json"));
-                UserDataJSON jsonData = JsonUtility.FromJson<UserDataJSON>(json);
-                return jsonData.userLevel;
+                return FileOps<UserDataJSON>.Read(UserDataPath).userLevel;
             }
         }
         public static string UserDataConfigKey
