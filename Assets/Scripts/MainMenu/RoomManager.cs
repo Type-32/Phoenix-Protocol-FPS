@@ -45,6 +45,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
                 MenuManager.instance.enterAnimMenu.SetActive(false);
                 Debug.Log("Main Scene Loaded");
             }
+            else
+            {
+                MenuManager.instance.enterAnimMenu.SetActive(true);
+            }
         }
         if (scene.buildIndex == 1)//Inside game Scene
         {
