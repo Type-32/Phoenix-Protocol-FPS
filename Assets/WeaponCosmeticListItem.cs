@@ -54,13 +54,12 @@ public class WeaponCosmeticListItem : MonoBehaviour
         if (data.purchasePrice <= jsonData.userCoins && (!app.unlockedWeaponAppearances.Contains(temp) && app.availableWeaponAppearances.Contains(temp)) && jsonData.shopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex))
         {
             MenuManager.instance.AddNotification("Success Purchase", "You have successfully purchased the " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + "!");
-            jsonData.userCoins -= data.purchasePrice;
+            UserDatabase.Instance.AddUserCurrency(data.purchasePrice);
             app.unlockedWeaponAppearances.Add(temp);
             app.availableWeaponAppearances.Remove(temp);
 
             FileOps<AppearancesDataJSON>.WriteFile(app, UserSystem.AppearancesConfigPath);
             FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
-            MenuManager.instance.UpdateCoin(jsonData.userCoins);
             script.RemoveWeaponCosmeticListItem(this);
         }
         else

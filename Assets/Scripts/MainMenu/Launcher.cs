@@ -149,7 +149,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.CloseLoadingMenu();
         MenuManager.instance.CloseRoomMenu();
         MenuManager.instance.CloseSettingsMenu();
-        MenuManager.instance.CloseUpdateLogsMenu();
         MenuManager.instance.CloseCreateRoomMenu();
         MenuManager.instance.CloseLoadoutSelectionMenu();
         MenuManager.instance.CloseCosmeticsMenu();

@@ -491,7 +491,6 @@ public class PlayerManager : MonoBehaviour
         //MainMenuUIManager.instance.CloseMultiplayerMenu();
         MenuManager.instance.CloseRoomMenu();
         MenuManager.instance.CloseSettingsMenu();
-        MenuManager.instance.CloseUpdateLogsMenu();
         MenuManager.instance.CloseCreateRoomMenu();
         MenuManager.instance.CloseLoadoutSelectionMenu();
         MenuManager.instance.CloseCosmeticsMenu();

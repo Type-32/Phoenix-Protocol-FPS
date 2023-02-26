@@ -14,6 +14,8 @@ public class UserDatabase : MonoBehaviour
     public static UserDatabase Instance;
     public UserDataJSON emptyUserDataJSON;
     public int levelLimiter = 800;
+    public delegate void UpdateUserData(UserDataJSON userData);
+    public static event UpdateUserData OnUserDataUpdated;
     private void Awake()
     {
         Instance = this;
@@ -35,7 +37,7 @@ public class UserDatabase : MonoBehaviour
     public void ReadUserDataFromJSON()
     {
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        MenuManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, (float)jsonData.userLevelXP, jsonData.userCoins);
+        //MenuManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, (float)jsonData.userLevelXP, jsonData.userCoins);
         //Debug.Log((jsonData.userLevelXP / (jsonData.userLevel * UserDatabase.Instance.levelLimiter)));
         if (!jsonData.hasInitialized)
         {
@@ -49,15 +51,17 @@ public class UserDatabase : MonoBehaviour
     {
         AppearancesDataJSON jsonData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
     }
+    public void SetUserData(UserDataJSON userData)
+    {
+        FileOps<UserDataJSON>.WriteFile(userData, UserSystem.UserDataPath);
+        OnUserDataUpdated?.Invoke(userData);
+    }
     public void AddUserCurrency(int amount)
     {
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         jsonData.userCoins += amount;
-        if (RoomManager.Instance.currentSceneIndex == 0)
-        {
-            MenuManager.instance.UpdateCoin(jsonData.userCoins);
-        }
         FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
+        OnUserDataUpdated?.Invoke(jsonData);
     }
     public bool AddUserLevelXP(int amount)
     {
@@ -87,17 +91,15 @@ public class UserDatabase : MonoBehaviour
                 if (!MenuManager.instance.queuedModalWindows.Contains(tmp)) MenuManager.instance.QueueModalWindow(tmp.title, tmp.content, MenuManager.PopupQueue.OnMainMenuLoad);
             }
             else MenuManager.instance.AddModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
-            FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
-        if (jsonData.userLevelXP + m_am < CurrentLevelLimit)
+        if (jsonData.userLevelXP + m_am < CurrentLevelLimit && amount != 0)
         {
             if (RoomManager.Instance.currentSceneIndex != 0) MenuManager.instance.QueueModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent), MenuManager.PopupQueue.OnMainMenuLoad);
             else MenuManager.instance.AddModalWindow("Level Up", "Congratulations! You have leveled up!" + (string.IsNullOrEmpty(unlockedContent) ? "" : "\nYou have unlocked the following content:\n" + unlockedContent));
             jsonData.userLevelXP += m_am;
-            FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
-        jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        MenuManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), jsonData.userLevel, (float)jsonData.userLevelXP, jsonData.userCoins);
+        FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
+        OnUserDataUpdated?.Invoke(jsonData);
         return ret;
     }
     public int GetUserXPValue()

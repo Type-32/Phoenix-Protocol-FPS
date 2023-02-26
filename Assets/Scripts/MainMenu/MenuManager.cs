@@ -155,9 +155,7 @@ public class MenuManager : MonoBehaviour
         CloseCosmeticsMenu();
         CloseCreateRoomMenu();
         CloseSettingsMenu();
-        CloseUpdateLogsMenu();
         ToggleGunsmithMenu(false);
-        //CloseLoadoutSelectionMenu();
         OpenMainMenu();
         for (int i = 0; i < versionTexts.Count; i++)
         {
@@ -172,7 +170,6 @@ public class MenuManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        MenuManager.instance.SetUserGUIData(PlayerPrefs.GetString("Username"), UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue(), UserDatabase.Instance.GetUserCoinValue());
     }
 
     #region Main Menus
@@ -189,20 +186,6 @@ public class MenuManager : MonoBehaviour
     #endregion
 
     #region Update Logs Menus
-    public void OpenUpdateLogsMenu()
-    {
-        openedUpdateLogsMenu = true;
-        updateLogsMenu.SetActive(openedUpdateLogsMenu);
-    }
-    public void CloseUpdateLogsMenu()
-    {
-
-    }
-    public void ToggleUpdateLogsMenu(bool toggle)
-    {
-        openedUpdateLogsMenu = toggle;
-        updateLogsMenu.SetActive(toggle);
-    }
     #endregion
 
     #region Cosmetics Menu
@@ -218,13 +201,36 @@ public class MenuManager : MonoBehaviour
     }
     public void ToggleCosmeticsMenu()
     {
-        if (openedMultiplayerMenu)
+        if (openedCosmeticsMenu)
         {
-            CloseMainMenu();
+            CloseCosmeticsMenu();
         }
         else
         {
-            OpenMainMenu();
+            OpenCosmeticsMenu();
+        }
+    }
+    #endregion
+    #region Multiplayer Menu
+    public void OpenMultiplayerMenu()
+    {
+        openedMultiplayerMenu = true;
+        multiplayerMenu.SetActive(openedMultiplayerMenu);
+    }
+    public void CloseMultiplayerMenu()
+    {
+        openedMultiplayerMenu = false;
+        multiplayerMenu.SetActive(openedMultiplayerMenu);
+    }
+    public void ToggleMultiplayerMenu()
+    {
+        if (openedMultiplayerMenu)
+        {
+            CloseMultiplayerMenu();
+        }
+        else
+        {
+            OpenMultiplayerMenu();
         }
     }
     #endregion
@@ -749,26 +755,6 @@ public class MenuManager : MonoBehaviour
     #endregion
 
     #region User GUI
-    public void SetUserGUIData(string name, int level, float levelProgress, int coin)
-    {
-        username.text = name;
-        userLevel.text = level.ToString();
-        userLevelProgress.value = levelProgress / (float)(level * UserDatabase.Instance.levelLimiter);
-        userCoins.text = "$" + coin.ToString();
-    }
-    public void UpdateName(string name)
-    {
-        username.text = name;
-    }
-    public void UpdateCoin(int coin)
-    {
-        userCoins.text = "$" + coin.ToString();
-    }
-    public void UpdateLevels(int level, float levelProgress)
-    {
-        userLevel.text = level.ToString();
-        userLevelProgress.value = levelProgress;
-    }
     public void SetRoomMenuPreviewData(int maxKillCount = 30, bool roomVisibility = true, int mapInfoIndex = 0, int maxPlayers = 10, string roomMode = "Free For All")
     {
         string content = "";

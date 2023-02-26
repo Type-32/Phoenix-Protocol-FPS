@@ -189,11 +189,10 @@ public class ShopMenuScript : MonoBehaviour
             {
                 MenuManager.instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
                 FindForWeaponDataInList(data).SetItemData(data, true, true);
-                jsonData.userCoins -= data.purchasePrice;
+                UserDatabase.Instance.AddUserCurrency(data.purchasePrice);
                 //jsonData.shopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
                 jsonData.shopData.ownedWeaponIndexes.Add(Database.FindWeaponDataIndex(data));
                 purchasePreview.interactable = false;
-                MenuManager.instance.UpdateCoin(jsonData.userCoins);
 
                 FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                 MenuManager.instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutItemSelections();

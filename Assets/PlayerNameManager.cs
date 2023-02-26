@@ -23,7 +23,6 @@ public class PlayerNameManager : MonoBehaviour
     {
         SetPlayerName();
         PlayerPrefs.SetString("Username", GetPlayerFieldName());
-        MenuManager.instance.UpdateName(GetPlayerFieldName());
     }
     public void SetPlayerName()
     {
