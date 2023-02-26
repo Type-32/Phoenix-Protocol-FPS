@@ -26,37 +26,15 @@ public class GunAnimation : MonoBehaviour
     [HideInInspector] public float aimInterpolation = 0f, sprintInterpolation = 0f, walkInterpolation = 0f;
 
     #region Private Variables
-    private Vector3 initialPosition;
-    private Quaternion initialRotation;
-    private Quaternion originRotation;
+    private Vector3 initialPosition, gunInitialPosition, currentPosition, targetPosition, gunCurrentPosition, gunTargetPosition, gunCurrentRotation, gunTargetRotation;
+    private Quaternion initialRotation, originRotation, gunInitialRotation, gunOriginRotation;
 
-    private Vector3 gunInitialPosition;
-    private Quaternion gunInitialRotation;
-    private Quaternion gunOriginRotation;
+    private float mouseInputX,mouseInputY;
 
-    private float mouseInputX;
-    private float mouseInputY;
+    private float slideSwayIntensity = 0.1f, maxSlideSwayIntensity = 0.2f, slideRotSwayIntensity = 1f, maxSlideRotSwayIntensity = 2f;
+    private float swayIntensityValve = 0f, maxSwayIntensityValve = 0f, rotSwayIntensityValve = 0f, maxRotSwayIntensityValve = 0f;
 
-    private Vector3 currentPosition;
-    private Vector3 targetPosition;
-    private Vector3 gunCurrentPosition;
-    private Vector3 gunTargetPosition;
-    private Vector3 gunCurrentRotation;
-    private Vector3 gunTargetRotation;
-
-    private float slideSwayIntensity = 0.1f;
-    private float maxSlideSwayIntensity = 0.2f;
-    private float slideRotSwayIntensity = 1f;
-    private float maxSlideRotSwayIntensity = 2f;
-
-    private float swayIntensityValve = 0f;
-    private float maxSwayIntensityValve = 0f;
-    private float rotSwayIntensityValve = 0f;
-    private float maxRotSwayIntensityValve = 0f;
-
-    Vector3 rotationalRecoil;
-    Vector3 positionalRecoil;
-    Vector3 Rot;
+    Vector3 rotationalRecoil, positionalRecoil, Rot;
     #endregion
 
     public float aimBobAmount = 0.015f;
@@ -78,6 +56,7 @@ public class GunAnimation : MonoBehaviour
     }*/
     public void InitializeValues()
     {
+        animate = gun.player.cameraAnim;
         slideSwayIntensity = stats.swayIntensity * 1.5f;
         maxSlideSwayIntensity = stats.maxSwayIntensity * 1.5f;
         slideRotSwayIntensity = stats.rotSwayIntensity * 2f;
