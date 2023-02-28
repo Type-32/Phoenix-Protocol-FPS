@@ -16,6 +16,10 @@ public class MenuManager : MonoBehaviour
 {
     public static MenuManager instance;
     //[SerializeField] private Button multiplayerButton;
+    public delegate void ToggleMenu(bool state = true, string name = "null", int id = -1);
+    public delegate MenuIdentifier SearchMenu(string name = "null", int id = -1);
+    public static event ToggleMenu OnMenuToggled;
+    public static event SearchMenu OnSearchMenu;
     [SerializeField] private Button createRoomButton;
     [Space]
     [Header("Menus")]
@@ -34,6 +38,7 @@ public class MenuManager : MonoBehaviour
     public GameObject gunsmithMenu;
     public GameObject enterAnimMenu;
     public List<GameObject> setActiveMenuList = new();
+    public List<MenuIdentifier> MenuIdentifiers = new();
 
     [Space]
     [Header("Misc Components")]
@@ -142,8 +147,22 @@ public class MenuManager : MonoBehaviour
         gunsmithMenuState += OnGunsmithMenuToggled;
         //Debug.Log("Initializing Awake Main menu");
     }
+    public void CloseMenu(int id) { OnMenuToggled?.Invoke(false, "null", id); }
+    public void CloseMenu(string id) { OnMenuToggled?.Invoke(false, id); }
+    public void CloseMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(false, id.menuName, id.menuID); }
+    public void OpenMenu(int id) { OnMenuToggled?.Invoke(true, "null", id); }
+    public void OpenMenu(string id) { OnMenuToggled?.Invoke(true, id); }
+    public void OpenMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(true, id.menuName, id.menuID); }
+    public MenuIdentifier FindMenu(int id) { return OnSearchMenu?.Invoke("null", id); }
+    public MenuIdentifier FindMenu(string id) { return OnSearchMenu?.Invoke(id); }
     void Start()
     {
+        int tmep = 0;
+        foreach (MenuIdentifier id in MenuIdentifiers)
+        {
+            id.SetID(tmep);
+            tmep++;
+        }
         Debug.Log("Loaded Scene from Main Menu");
         JoiningMasterLobby(false);
         SetCreateRoomInputField(true);
@@ -155,6 +174,7 @@ public class MenuManager : MonoBehaviour
         CloseCosmeticsMenu();
         CloseCreateRoomMenu();
         CloseSettingsMenu();
+        CloseMultiplayerMenu();
         ToggleGunsmithMenu(false);
         OpenMainMenu();
         for (int i = 0; i < versionTexts.Count; i++)
@@ -238,13 +258,11 @@ public class MenuManager : MonoBehaviour
     #region Room Menus
     public void OpenRoomMenu()
     {
-        openedRoomMenu = true;
-        roomMenu.SetActive(openedRoomMenu);
+        OpenMenu("room");
     }
     public void CloseRoomMenu()
     {
-        openedRoomMenu = false;
-        roomMenu.SetActive(openedRoomMenu);
+        CloseMenu("room");
     }
     public void ToggleRoomMenu()
     {
@@ -298,13 +316,11 @@ public class MenuManager : MonoBehaviour
     #region Loading Menus
     public void OpenLoadingMenu()
     {
-        openedLoadingMenu = true;
-        loadingMenu.SetActive(openedLoadingMenu);
+        OpenMenu("loading");
     }
     public void CloseLoadingMenu()
     {
-        openedLoadingMenu = false;
-        loadingMenu.SetActive(openedLoadingMenu);
+        CloseMenu("loading");
     }
     public void ToggleLoadingMenu()
     {
@@ -322,13 +338,11 @@ public class MenuManager : MonoBehaviour
     #region Settings Menus
     public void OpenSettingsMenu()
     {
-        openedSettingsMenu = true;
-        settingsMenu.SetActive(openedSettingsMenu);
+        OpenMenu("settings");
     }
     public void CloseSettingsMenu()
     {
-        openedSettingsMenu = false;
-        settingsMenu.SetActive(openedSettingsMenu);
+        CloseMenu("settings");
     }
     public void ToggleSettingsMenu()
     {
@@ -346,16 +360,14 @@ public class MenuManager : MonoBehaviour
     #region Create Room Menu
     public void OpenCreateRoomMenu()
     {
-        openedCreateRoomMenu = true;
-        createRoomMenu.SetActive(openedCreateRoomMenu);
+        OpenMenu("createRoom");
         OnChangedMaxPlayers(int.Parse(maxPlayers.text));
         OnSelectedGamemode(selectedGamemodes);
         OnSelectedGamemode(selectedGamemodes);
     }
     public void CloseCreateRoomMenu()
     {
-        openedCreateRoomMenu = false;
-        createRoomMenu.SetActive(openedCreateRoomMenu);
+        CloseMenu("createRoom");
     }
     public void ToggleCreateRoomMenu()
     {
@@ -373,13 +385,11 @@ public class MenuManager : MonoBehaviour
     #region Loadout Selection Menu
     public void OpenLoadoutSelectionMenu()
     {
-        openedLoadoutSelectionMenu = true;
-        loadoutSelectionMenu.SetActive(openedLoadoutSelectionMenu);
+        OpenMenu("loadout");
     }
     public void CloseLoadoutSelectionMenu()
     {
-        openedLoadoutSelectionMenu = false;
-        loadoutSelectionMenu.SetActive(openedLoadoutSelectionMenu);
+        CloseMenu("loadout");
     }
     public void ToggleLoadoutSelectionMenu()
     {

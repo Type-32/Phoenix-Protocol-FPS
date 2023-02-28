@@ -9,26 +9,39 @@ public class MenuIdentifier : MonoBehaviour
 {
     public delegate void ChangeState(bool value);
     public event ChangeState OnReceivedInstruction;
-    [SerializeField] string menuName;
-    [SerializeField] int menuID = -1;
+    [SerializeField] public string menuName;
+    [SerializeField] public int menuID = -1;
     [SerializeField] bool selfManagable = false;
-    void Start()
+    void Awake()
     {
-        //MenuManager.ToggleMenu += ReceiveInstruction;
+        MenuManager.OnMenuToggled += ReceiveInstruction;
+        MenuManager.OnSearchMenu += SearchedInstruction;
     }
-    void ReceiveInstruction(bool state, bool closeOtherMenus, int id, string name)
+    void ReceiveInstruction(bool state, string name, int id)
     {
-        if (selfManagable) return;
+        //if (selfManagable) return;
         if (id != -1 && id == menuID)
         {
             gameObject.SetActive(state);
         }
-        if (name != null && menuName == name)
+        if (name != "null" && menuName == name)
         {
             gameObject.SetActive(state);
         }
-        if (closeOtherMenus) gameObject.SetActive(false);
         OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy);
+    }
+    MenuIdentifier SearchedInstruction(string name, int id)
+    {
+        if (id != -1 && id == menuID)
+        {
+            return this;
+        }
+        if (name != "null" && menuName == name)
+        {
+            return this;
+        }
+        OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy);
+        return null;
     }
     public void SetID(int id) => menuID = id;
     public void SetName(string name) => menuName = name;

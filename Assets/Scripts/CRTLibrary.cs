@@ -1,7 +1,10 @@
+using System.Runtime.Serialization.Json;
+using System.Net.Http;
 using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using UnityEngine;
@@ -292,6 +295,29 @@ namespace PrototypeLib
                         return false;
                     }
                     return true;
+                }
+            }
+        }
+        namespace OnlineServices.MieServices
+        {
+            public static class MieServicesConfig
+            {
+                public static string CloudFetchLink { get { return "https://cloud.smartsheep.studio/api/serverless-functions/1/execute"; } }
+            }
+            public static class MieCloudOps<T> where T : new()
+            {
+                public static async Task<T?> FetchCloudKey(string key)
+                {
+                    HttpClient client = new();
+                    var res = await client.GetStringAsync(MieServicesConfig.CloudFetchLink);
+                    var releases = JsonUtility.FromJson<string?>(res);
+                    if (releases == null)
+                    {
+                        Debug.LogError("Fetched Releases is null.");
+                        return new T();
+                    }
+                    else
+                        return JsonUtility.FromJson<T>(releases);
                 }
             }
         }
