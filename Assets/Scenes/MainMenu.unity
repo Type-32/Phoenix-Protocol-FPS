@@ -30328,7 +30328,7 @@ GameObject:
   - component: {fileID: 609805191}
   - component: {fileID: 609805190}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: ModeMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39408,7 +39408,7 @@ GameObject:
   - component: {fileID: 746387729}
   - component: {fileID: 746387728}
   m_Layer: 5
-  m_Name: PassedTime
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73415,16 +73415,16 @@ MonoBehaviour:
   statText: {fileID: 1429214946}
   mapIconImage: {fileID: 1789539427}
   passedTime: {fileID: 1990324175}
-  modeMessage: {fileID: 1901549693}
+  modeMessage: {fileID: 609805190}
   versionTexts:
   - {fileID: 1063523568}
   modalWindowList: []
   notificationList: []
   modalWindowPrefab: {fileID: 348258448}
   notificationPrefab: {fileID: 1257066344}
-  username: {fileID: 0}
-  userLevel: {fileID: 0}
-  userCoins: {fileID: 0}
+  username: {fileID: 1901549693}
+  userLevel: {fileID: 780082490}
+  userCoins: {fileID: 1505247960}
   userLevelProgress: {fileID: 0}
 --- !u!114 &1395783785
 MonoBehaviour:
@@ -100141,7 +100141,7 @@ GameObject:
   - component: {fileID: 1901549694}
   - component: {fileID: 1901549693}
   m_Layer: 5
-  m_Name: MSG
+  m_Name: Username
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103414,7 +103414,7 @@ GameObject:
   - component: {fileID: 1990324176}
   - component: {fileID: 1990324175}
   m_Layer: 5
-  m_Name: Text (Legacy) (1)
+  m_Name: PassedTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
