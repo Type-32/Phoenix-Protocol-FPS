@@ -100,6 +100,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Text statText;
     [SerializeField] Image mapIconImage;
 
+    [Header("QuickMatch UI HUD")]
+    [SerializeField] Text passedTime, modeMessage;
+
     [Space, Header("Version Manifests")]
     [SerializeField] private List<Text> versionTexts = new();
 

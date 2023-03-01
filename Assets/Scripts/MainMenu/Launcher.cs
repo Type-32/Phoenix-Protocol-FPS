@@ -13,6 +13,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public List<RoomInfo> rl = new List<RoomInfo>();
     [Space]
     public static Launcher Instance;
+    public bool isMatchmaking = false;
     public List<MapItemInfo> mapItemInfo = new List<MapItemInfo>();
     [SerializeField] private Transform roomListContent;
     [SerializeField] private GameObject roomListItemPrefab;
