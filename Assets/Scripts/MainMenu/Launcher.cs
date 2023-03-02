@@ -7,13 +7,13 @@ using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Michsky.MUIP;
 using UserConfiguration;
+using System.Threading.Tasks;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    public List<RoomInfo> rl = new List<RoomInfo>();
+    public List<RoomInfo> rl = new();
     [Space]
     public static Launcher Instance;
-    public bool isMatchmaking = false;
     public List<MapItemInfo> mapItemInfo = new List<MapItemInfo>();
     [SerializeField] private Transform roomListContent;
     [SerializeField] private GameObject roomListItemPrefab;
@@ -23,6 +23,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private Text roomCodeText;
     public LoadoutSelectionScript loadoutSelection;
     public string startKey = "103274803";
+    [SerializeField] Animator matchmakingAnimator;
+    private List<IEnumerator<bool>> matchFindPeriods = new();
+    private bool isMatchmaking = false;
+    private RoomInfo stashedSelectedRoomInfo;
     // Start is called before the first frame update
     void Start()
     {
@@ -75,12 +79,77 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.CloseCreateRoomMenu();
         MenuManager.instance.OpenLoadingMenu();
     }
-    public void QuickMatch()
+    IEnumerator JoinRoomDelayed(int tryJoinDelay, string roomName, string[] expectedUsers = null)
     {
+        yield return new WaitForSeconds(tryJoinDelay);
+        PhotonNetwork.JoinRoom(roomName, expectedUsers);
+    }
+    public async void QuickMatch()
+    {
+        isMatchmaking = false;
+        matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
         MenuManager.instance.OpenLoadingMenu();
-        MenuManager.instance.CloseMainMenu();
-        PhotonNetwork.JoinRandomRoom();
+        //? MenuManager.instance.CloseMainMenu();
+        // TODO PhotonNetwork.JoinRandomRoom();
         SetLoadoutValuesToPlayer();
+        bool retVal = (bool)await PeriodicFindMatch(10, 3, MenuManager.Gamemodes.FFA);
+        if (retVal)
+        {
+            StartCoroutine(JoinRoomDelayed(3, stashedSelectedRoomInfo.Name));
+        }
+        else
+        {
+
+        }
+    }
+
+    private bool CheckAvailableRooms(MenuManager.Gamemodes gamemodes)
+    {
+        foreach (RoomInfo tp in rl)
+        {
+            if (tp.MaxPlayers > tp.PlayerCount)
+            {
+                switch (gamemodes)
+                {
+                    case MenuManager.Gamemodes.FFA:
+                        if ((string)tp.CustomProperties["roomMode"] == "Free For All")
+                        {
+                            return true;
+                        }
+                        break;
+                    case MenuManager.Gamemodes.TDM:
+                        if ((string)tp.CustomProperties["roomMode"] == "Team Deathmatch")
+                        {
+                            return true;
+                        }
+                        break;
+                    case MenuManager.Gamemodes.DZ:
+                        if ((string)tp.CustomProperties["roomMode"] == "Drop Zones")
+                        {
+                            return true;
+                        }
+                        break;
+                    case MenuManager.Gamemodes.CTF:
+                        if ((string)tp.CustomProperties["roomMode"] == "Capture The Flag")
+                        {
+                            return true;
+                        }
+                        break;
+                }
+            }
+        }
+        return false;
+    }
+    public async Task<bool?> PeriodicFindMatch(int maxTimes, int secPerTime, MenuManager.Gamemodes gamemodes, int times = 0)
+    {
+        await Task.Delay(secPerTime * 1000);
+        bool ret = CheckAvailableRooms(gamemodes);//! Undeletable
+        if (times != maxTimes) ret = (bool)await PeriodicFindMatch(maxTimes, secPerTime, gamemodes, times + 1);
+        return ret;
+    }
+    public void StopPeriodicFindMatch(int times, int secPerTime)
+    {
+
     }
     public override void OnConnected()
     {
@@ -167,7 +236,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             rl.Add(roomList[i]);
             if (roomList[i].RemovedFromList)
             {
-                //rl.Add(roomList[i]);
+                rl.Remove(roomList[i]);
                 continue;
             }
             Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);

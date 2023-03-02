@@ -132,12 +132,14 @@ public class MenuManager : MonoBehaviour
     public Text userLevel;
     public Text userCoins;
     public Slider userLevelProgress;
+    private bool startQMTimer = false;
+    private float QMTimerSeconds, QMTimerMinutes;
 
     public enum Gamemodes
     {
         FFA = 1,
         TDM = 2,
-        KOTH = 3,
+        CTF = 3,
         DZ = 4
     }
     private void Awake()
@@ -158,6 +160,7 @@ public class MenuManager : MonoBehaviour
     public void OpenMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(true, id.menuName, id.menuID); }
     public MenuIdentifier FindMenu(int id) { return OnSearchMenu?.Invoke("null", id); }
     public MenuIdentifier FindMenu(string id) { return OnSearchMenu?.Invoke(id); }
+    public MenuIdentifier FindMenu(bool state) { return OnSearchMenu?.Invoke(state ? "true" : "false"); }
     void Start()
     {
         int tmep = 0;
@@ -194,7 +197,34 @@ public class MenuManager : MonoBehaviour
     private void OnEnable()
     {
     }
-
+    public void SetQuickMatchUIInfo(string topMessage, bool startTimer)
+    {
+        startQMTimer = startTimer;
+        if (!startQMTimer)
+        {
+            QMTimerMinutes = 0;
+            QMTimerSeconds = 0;
+            passedTime.text = "Match Found";
+        }
+        modeMessage.text = topMessage;
+    }
+    public void CloseCurrentMenu()
+    {
+        CloseMenu(FindMenu(true));
+    }
+    private void FixedUpdate()
+    {
+        if (startQMTimer)
+        {
+            QMTimerSeconds += Time.fixedDeltaTime;
+            if ((int)QMTimerSeconds >= 60)
+            {
+                QMTimerSeconds = 0;
+                QMTimerMinutes++;
+            }
+            passedTime.text = ((int)QMTimerMinutes < 10 ? $"0{(int)QMTimerMinutes}:" : $"{(int)QMTimerMinutes}:") + ((int)QMTimerSeconds < 10 ? $"0{(int)QMTimerSeconds}" : $"{(int)QMTimerSeconds}");
+        }
+    }
     #region Main Menus
     public void OpenMainMenu()
     {
@@ -206,12 +236,7 @@ public class MenuManager : MonoBehaviour
         openedMainMenu = false;
         mainMenu.SetActive(openedMainMenu);
     }
-    #endregion
 
-    #region Update Logs Menus
-    #endregion
-
-    #region Cosmetics Menu
     public void OpenCosmeticsMenu()
     {
         openedCosmeticsMenu = true;
@@ -233,8 +258,7 @@ public class MenuManager : MonoBehaviour
             OpenCosmeticsMenu();
         }
     }
-    #endregion
-    #region Multiplayer Menu
+
     public void OpenMultiplayerMenu()
     {
         openedMultiplayerMenu = true;
@@ -256,9 +280,7 @@ public class MenuManager : MonoBehaviour
             OpenMultiplayerMenu();
         }
     }
-    #endregion
 
-    #region Room Menus
     public void OpenRoomMenu()
     {
         OpenMenu("room");
@@ -278,9 +300,7 @@ public class MenuManager : MonoBehaviour
             OpenRoomMenu();
         }
     }
-    #endregion
 
-    #region Find Room Menus
     public void OpenFindRoomMenu()
     {
         openedFindRoomMenu = true;
@@ -314,9 +334,7 @@ public class MenuManager : MonoBehaviour
     {
         return int.Parse(findRoomInputField.text);
     }
-    #endregion
 
-    #region Loading Menus
     public void OpenLoadingMenu()
     {
         OpenMenu("loading");
@@ -336,9 +354,7 @@ public class MenuManager : MonoBehaviour
             OpenLoadingMenu();
         }
     }
-    #endregion
 
-    #region Settings Menus
     public void OpenSettingsMenu()
     {
         OpenMenu("settings");
@@ -358,9 +374,7 @@ public class MenuManager : MonoBehaviour
             OpenSettingsMenu();
         }
     }
-    #endregion
 
-    #region Create Room Menu
     public void OpenCreateRoomMenu()
     {
         OpenMenu("createRoom");
@@ -383,9 +397,7 @@ public class MenuManager : MonoBehaviour
             OpenCreateRoomMenu();
         }
     }
-    #endregion
 
-    #region Loadout Selection Menu
     public void OpenLoadoutSelectionMenu()
     {
         OpenMenu("loadout");
@@ -405,9 +417,7 @@ public class MenuManager : MonoBehaviour
             OpenLoadoutSelectionMenu();
         }
     }
-    #endregion
 
-    #region Gunsmith Menu
     public Action gunsmithMenuState;
     public void ToggleGunsmithMenu(bool state)
     {
@@ -419,9 +429,7 @@ public class MenuManager : MonoBehaviour
     {
 
     }
-    #endregion
 
-    #region Main
     public Gamemodes GetGamemode()
     {
         return selectedGamemodes;
@@ -483,9 +491,7 @@ public class MenuManager : MonoBehaviour
     {
         return roomTitle.text;
     }
-    #endregion
 
-    #region Room Creation
     public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomModes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit, bool randomRespawn = true)
     {
         Hashtable hash = new();
@@ -508,8 +514,8 @@ public class MenuManager : MonoBehaviour
             case Gamemodes.TDM:
                 roomOptions.CustomRoomProperties.Add("roomMode", "Team Deathmatch");
                 break;
-            case Gamemodes.KOTH:
-                roomOptions.CustomRoomProperties.Add("roomMode", "King of the Hills");
+            case Gamemodes.CTF:
+                roomOptions.CustomRoomProperties.Add("roomMode", "Capture The Flag");
                 break;
             case Gamemodes.DZ:
                 roomOptions.CustomRoomProperties.Add("roomMode", "Drop Zones");
@@ -520,31 +526,6 @@ public class MenuManager : MonoBehaviour
         roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
         roomOptions.CustomRoomProperties.Add("maxKillLimit", maxKillLimit);
         roomOptions.MaxPlayers = (byte)maxPlayer;
-
-        /*
-        hash.Add("roomName", roomName);
-        hash.Add("roomHostName", roomHostName);
-        hash.Add("mapInfoIndex", mapInfoIndex);
-        hash.Add("maxPlayer", maxPlayer);
-        switch (roomModes)
-        {
-            case Gamemodes.FFA:
-                hash.Add("roomMode", "Free For All");
-                break;
-            case Gamemodes.TDM:
-                hash.Add("roomMode", "Team Deathmatch");
-                break;
-            case Gamemodes.KOTH:
-                hash.Add("roomMode", "King of the Hills");
-                break;
-            case Gamemodes.DZ:
-                hash.Add("roomMode", "Drop Zones");
-                break;
-        }
-        hash.Add("roomMapIndex", mapIndex);
-        hash.Add("roomVisibility", roomVisibility);
-        hash.Add("roomCode", roomCode);
-        roomOptions.CustomRoomProperties = hash;*/
         return roomOptions;
     }
     public RoomOptions GetGeneratedRoomOptions()
@@ -572,7 +553,7 @@ public class MenuManager : MonoBehaviour
             case Gamemodes.TDM:
                 temp = "Team Deathmatch";
                 break;
-            case Gamemodes.KOTH:
+            case Gamemodes.CTF:
                 temp = "King of the Hills";
                 break;
             case Gamemodes.DZ:
@@ -641,10 +622,10 @@ public class MenuManager : MonoBehaviour
                 selectedGamemodes = Gamemodes.TDM;
                 break;
             case Gamemodes.TDM:
-                gamemodes.text = "KOTH";
-                selectedGamemodes = Gamemodes.KOTH;
+                gamemodes.text = "CTF";
+                selectedGamemodes = Gamemodes.CTF;
                 break;
-            case Gamemodes.KOTH:
+            case Gamemodes.CTF:
                 gamemodes.text = "DZ";
                 selectedGamemodes = Gamemodes.DZ;
                 break;
@@ -664,10 +645,10 @@ public class MenuManager : MonoBehaviour
                 selectedGamemodes = Gamemodes.DZ;
                 break;
             case Gamemodes.DZ:
-                gamemodes.text = "KOTH";
-                selectedGamemodes = Gamemodes.KOTH;
+                gamemodes.text = "CTF";
+                selectedGamemodes = Gamemodes.CTF;
                 break;
-            case Gamemodes.KOTH:
+            case Gamemodes.CTF:
                 gamemodes.text = "TDM";
                 selectedGamemodes = Gamemodes.TDM;
                 break;
@@ -685,9 +666,7 @@ public class MenuManager : MonoBehaviour
         else roomVisibility = true;
         OnChangedVisibility(roomVisibility);
     }
-    #endregion
 
-    #region Shop Menu
     public void ToggleShopMenu(bool value)
     {
         openedShopMenu = value;
@@ -698,9 +677,6 @@ public class MenuManager : MonoBehaviour
             shopMenu.GetComponent<ShopMenuScript>().TogglePreviewUI(value);
         }
     }
-    #endregion
-
-    #region Popup Menu
     public void TogglePopupMenu(bool value)
     {
         openedPopupMenu = value;
@@ -765,9 +741,6 @@ public class MenuManager : MonoBehaviour
         }
         return false;
     }
-    #endregion
-
-    #region User GUI
     public void SetRoomMenuPreviewData(int maxKillCount = 30, bool roomVisibility = true, int mapInfoIndex = 0, int maxPlayers = 10, string roomMode = "Free For All")
     {
         string content = "";

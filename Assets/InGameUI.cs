@@ -109,7 +109,7 @@ public class InGameUI : MonoBehaviour
     {
         FreeForAllUI.SetActive(toggle);
     }
-    public void ToggleKOTH_UI(bool toggle)
+    public void ToggleCTF_UI(bool toggle)
     {
         KingOfTheHillUI.SetActive(toggle);
     }

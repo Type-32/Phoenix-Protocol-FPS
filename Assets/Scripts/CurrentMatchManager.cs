@@ -56,28 +56,28 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 roomMode = MenuManager.Gamemodes.FFA;
                 internalUI.ToggleFFA_UI(true);
                 internalUI.ToggleTDM_UI(false);
-                internalUI.ToggleKOTH_UI(false);
+                internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "Team Deathmatch":
                 roomMode = MenuManager.Gamemodes.TDM;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(true);
-                internalUI.ToggleKOTH_UI(false);
+                internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "King of the Hills":
-                roomMode = MenuManager.Gamemodes.KOTH;
+                roomMode = MenuManager.Gamemodes.CTF;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
-                internalUI.ToggleKOTH_UI(true);
+                internalUI.ToggleCTF_UI(true);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "Drop Zones":
                 roomMode = MenuManager.Gamemodes.DZ;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
-                internalUI.ToggleKOTH_UI(false);
+                internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(true);
                 break;
         }
@@ -263,7 +263,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         {
 
         }
-        else if (roomMode == MenuManager.Gamemodes.KOTH)
+        else if (roomMode == MenuManager.Gamemodes.CTF)
         {
 
         }

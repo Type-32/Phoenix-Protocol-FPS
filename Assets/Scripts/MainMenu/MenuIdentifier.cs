@@ -36,9 +36,13 @@ public class MenuIdentifier : MonoBehaviour
         {
             return this;
         }
-        if (name != "null" && menuName == name)
+        if (name != "null" && (name != "true" && name != "false") && menuName == name)
         {
             return this;
+        }
+        if (name == "true" || name == "false")
+        {
+            if (gameObject.activeInHierarchy == bool.Parse(name)) return this;
         }
         OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy);
         return null;
