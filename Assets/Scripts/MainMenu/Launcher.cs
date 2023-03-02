@@ -26,6 +26,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] Animator matchmakingAnimator;
     private List<IEnumerator<bool>> matchFindPeriods = new();
     private bool isMatchmaking = false;
+    public bool foundMatch = false;
     private RoomInfo stashedSelectedRoomInfo;
     // Start is called before the first frame update
     void Start()
@@ -84,25 +85,56 @@ public class Launcher : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(tryJoinDelay);
         PhotonNetwork.JoinRoom(roomName, expectedUsers);
     }
-    public async void QuickMatch()
+    private async Task MatchmakingAsync(MenuManager.Gamemodes gm)
     {
-        isMatchmaking = false;
+        isMatchmaking = true;
         matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
-        MenuManager.instance.OpenLoadingMenu();
+        MenuManager.instance.SetQuickMatchUIInfo($"Attempting to find a {gm.ToString()} match...", true);
+        //MenuManager.instance.OpenLoadingMenu();
         //? MenuManager.instance.CloseMainMenu();
         // TODO PhotonNetwork.JoinRandomRoom();
         SetLoadoutValuesToPlayer();
-        bool retVal = (bool)await PeriodicFindMatch(10, 3, MenuManager.Gamemodes.FFA);
-        if (retVal)
+        MenuManager.instance.quitMatchmakingButton.SetActive(true);
+        foundMatch = (bool)await PeriodicFindMatch(14, 4, gm); // (14 + 1) * 4 = 60 seconds, until automatically quit matchmaking to save performance.
+        if (foundMatch)
         {
+            MenuManager.instance.quitMatchmakingButton.SetActive(false);
+            MenuManager.instance.SetQuickMatchUIInfo("Joining Match...", false);
             StartCoroutine(JoinRoomDelayed(3, stashedSelectedRoomInfo.Name));
         }
         else
         {
-
+            if (isMatchmaking)
+            {
+                isMatchmaking = false;
+                MenuManager.instance.quitMatchmakingButton.SetActive(false);
+                matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
+                MenuManager.instance.SetQuickMatchUIInfo("Stopping Matchmaking...", false);
+                MenuManager.instance.AddModalWindow("Not Found", $"There are no available matches with the {gm.ToString()} gamemode. Matchmaking is stopped in order to preserve threading performance.");
+                MenuManager.instance.AddNotification("Matchmaking", "You have quitted matchmaking.");
+            }
         }
     }
-
+    public async void QuickMatch(int gmIndex)
+    {
+        await MatchmakingAsync(gmIndex == 1 ? MenuManager.Gamemodes.TDM : gmIndex == 2 ? MenuManager.Gamemodes.FFA : gmIndex == 3 ? MenuManager.Gamemodes.CTF : gmIndex == 4 ? MenuManager.Gamemodes.DZ : MenuManager.Gamemodes.FFA);
+    }
+    public void StopQuickMatch()
+    {
+        ModalWindowManager tmp = MenuManager.instance.AddModalWindow("Leave Matchmaking", "Are you sure you want to leave Matchmaking?");
+        tmp.showCancelButton = true;
+        tmp.UpdateUI();
+        tmp.onConfirm.AddListener(LeaveQMListener);
+    }
+    private void LeaveQMListener()
+    {
+        MenuManager.instance.SetQuickMatchUIInfo("Leaving Matchmaking...", false);
+        foundMatch = false;
+        isMatchmaking = false;
+        MenuManager.instance.quitMatchmakingButton.SetActive(false);
+        MenuManager.instance.AddNotification("Matchmaking", "You have quitted matchmaking.");
+        matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
+    }
     private bool CheckAvailableRooms(MenuManager.Gamemodes gamemodes)
     {
         foreach (RoomInfo tp in rl)
@@ -142,14 +174,13 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public async Task<bool?> PeriodicFindMatch(int maxTimes, int secPerTime, MenuManager.Gamemodes gamemodes, int times = 0)
     {
+        if (!isMatchmaking) return false;
         await Task.Delay(secPerTime * 1000);
+        if (!isMatchmaking) return false;
         bool ret = CheckAvailableRooms(gamemodes);//! Undeletable
-        if (times != maxTimes) ret = (bool)await PeriodicFindMatch(maxTimes, secPerTime, gamemodes, times + 1);
+        if (times < maxTimes) ret = (bool)await PeriodicFindMatch(maxTimes, secPerTime, gamemodes, times + 1);
         return ret;
-    }
-    public void StopPeriodicFindMatch(int times, int secPerTime)
-    {
-
+        //return false;
     }
     public override void OnConnected()
     {

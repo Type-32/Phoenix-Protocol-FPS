@@ -100,8 +100,12 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Text statText;
     [SerializeField] Image mapIconImage;
 
+    [Header("Top Navi-Bar UI")]
+    [SerializeField] GameObject quitButton;
+    [SerializeField] GameObject backButton;
     [Header("QuickMatch UI HUD")]
     [SerializeField] Text passedTime, modeMessage;
+    [SerializeField] public GameObject quitMatchmakingButton;
 
     [Space, Header("Version Manifests")]
     [SerializeField] private List<Text> versionTexts = new();
@@ -134,7 +138,7 @@ public class MenuManager : MonoBehaviour
     public Slider userLevelProgress;
     private bool startQMTimer = false;
     private float QMTimerSeconds, QMTimerMinutes;
-
+    [Serializable, SerializeField]
     public enum Gamemodes
     {
         FFA = 1,
@@ -152,6 +156,11 @@ public class MenuManager : MonoBehaviour
         gunsmithMenuState += OnGunsmithMenuToggled;
         //Debug.Log("Initializing Awake Main menu");
     }
+    public void SetQuitButtonState(bool state)
+    {
+        quitButton.SetActive(state);
+        backButton.SetActive(!state);
+    }
     public void CloseMenu(int id) { OnMenuToggled?.Invoke(false, "null", id); }
     public void CloseMenu(string id) { OnMenuToggled?.Invoke(false, id); }
     public void CloseMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(false, id.menuName, id.menuID); }
@@ -161,6 +170,11 @@ public class MenuManager : MonoBehaviour
     public MenuIdentifier FindMenu(int id) { return OnSearchMenu?.Invoke("null", id); }
     public MenuIdentifier FindMenu(string id) { return OnSearchMenu?.Invoke(id); }
     public MenuIdentifier FindMenu(bool state) { return OnSearchMenu?.Invoke(state ? "true" : "false"); }
+    public static void OnInstructedMenuIdentifier(bool val, string nm)
+    {
+        if (val && nm == "main") MenuManager.instance.SetQuitButtonState(true);
+        else MenuManager.instance.SetQuitButtonState(false);
+    }
     void Start()
     {
         int tmep = 0;
@@ -183,6 +197,7 @@ public class MenuManager : MonoBehaviour
         CloseMultiplayerMenu();
         ToggleGunsmithMenu(false);
         OpenMainMenu();
+        quitMatchmakingButton.SetActive(false);
         for (int i = 0; i < versionTexts.Count; i++)
         {
             versionTexts[i].text = "V" + LocalLaunchedClient.LocalGameVersion.ToString();
@@ -204,13 +219,16 @@ public class MenuManager : MonoBehaviour
         {
             QMTimerMinutes = 0;
             QMTimerSeconds = 0;
-            passedTime.text = "Match Found";
+            passedTime.text = Launcher.Instance.foundMatch ? "Match Found" : "Pasued";
         }
         modeMessage.text = topMessage;
     }
     public void CloseCurrentMenu()
     {
-        CloseMenu(FindMenu(true));
+        foreach (MenuIdentifier ip in MenuIdentifiers)
+        {
+            CloseMenu(ip);
+        }
     }
     private void FixedUpdate()
     {
@@ -228,59 +246,30 @@ public class MenuManager : MonoBehaviour
     #region Main Menus
     public void OpenMainMenu()
     {
-        openedMainMenu = true;
-        mainMenu.SetActive(openedMainMenu);
+        OpenMenu("main");
     }
     public void CloseMainMenu()
     {
-        openedMainMenu = false;
-        mainMenu.SetActive(openedMainMenu);
+        CloseMenu("main");
     }
 
     public void OpenCosmeticsMenu()
     {
-        openedCosmeticsMenu = true;
-        cosmeticsMenu.SetActive(openedCosmeticsMenu);
+        OpenMenu("cosmetics");
     }
     public void CloseCosmeticsMenu()
     {
-        openedCosmeticsMenu = false;
-        cosmeticsMenu.SetActive(openedCosmeticsMenu);
-    }
-    public void ToggleCosmeticsMenu()
-    {
-        if (openedCosmeticsMenu)
-        {
-            CloseCosmeticsMenu();
-        }
-        else
-        {
-            OpenCosmeticsMenu();
-        }
+        CloseMenu("cosmetics");
     }
 
     public void OpenMultiplayerMenu()
     {
-        openedMultiplayerMenu = true;
-        multiplayerMenu.SetActive(openedMultiplayerMenu);
+        OpenMenu("multiplayer");
     }
     public void CloseMultiplayerMenu()
     {
-        openedMultiplayerMenu = false;
-        multiplayerMenu.SetActive(openedMultiplayerMenu);
+        CloseMenu("multiplayer");
     }
-    public void ToggleMultiplayerMenu()
-    {
-        if (openedMultiplayerMenu)
-        {
-            CloseMultiplayerMenu();
-        }
-        else
-        {
-            OpenMultiplayerMenu();
-        }
-    }
-
     public void OpenRoomMenu()
     {
         OpenMenu("room");
@@ -303,24 +292,11 @@ public class MenuManager : MonoBehaviour
 
     public void OpenFindRoomMenu()
     {
-        openedFindRoomMenu = true;
-        findRoomMenu.SetActive(openedFindRoomMenu);
+        OpenMenu("findRoom");
     }
     public void CloseFindRoomMenu()
     {
-        openedFindRoomMenu = false;
-        findRoomMenu.SetActive(openedFindRoomMenu);
-    }
-    public void ToggleFindRoomMenu()
-    {
-        if (openedFindRoomMenu)
-        {
-            CloseFindRoomMenu();
-        }
-        else
-        {
-            OpenFindRoomMenu();
-        }
+        CloseMenu("findRoom");
     }
     public void SetFindRoomText(string text)
     {
@@ -682,7 +658,7 @@ public class MenuManager : MonoBehaviour
         openedPopupMenu = value;
         popupMenu.SetActive(value);
     }
-    public void AddModalWindow(string title, string content)
+    public ModalWindowManager AddModalWindow(string title, string content)
     {
         ModalWindowManager item = Instantiate(modalWindowPrefab, popupHolder).GetComponent<ModalWindowManager>();
         item.gameObject.SetActive(true);
@@ -690,6 +666,7 @@ public class MenuManager : MonoBehaviour
         item.descriptionText = content;
         item.UpdateUI();
         item.Open();
+        return item;
         //popupWindows.Add(item)
         //Debug.Log("Popup Instantiated");
     }

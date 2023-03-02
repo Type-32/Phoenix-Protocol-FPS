@@ -57,6 +57,7 @@ public class ShopMenuScript : MonoBehaviour
     }
     public void InitializeCosmeticsMenu(AppearancesDataJSON jsonData)
     {
+        return;
         for (int i = 0; i < jsonData.availableWeaponAppearances.Count; i++)
         {
             WeaponCosmeticListItem temp = Instantiate(weaponCosmeticListItem, weaponCosmeticListItemHolder).GetComponent<WeaponCosmeticListItem>();

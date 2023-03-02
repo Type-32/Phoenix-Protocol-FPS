@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class MenuIdentifier : MonoBehaviour
 {
-    public delegate void ChangeState(bool value);
+    public delegate void ChangeState(bool value, string name = null);
     public event ChangeState OnReceivedInstruction;
     [SerializeField] public string menuName;
     [SerializeField] public int menuID = -1;
@@ -16,6 +16,7 @@ public class MenuIdentifier : MonoBehaviour
     {
         MenuManager.OnMenuToggled += ReceiveInstruction;
         MenuManager.OnSearchMenu += SearchedInstruction;
+        OnReceivedInstruction += MenuManager.OnInstructedMenuIdentifier;
     }
     void ReceiveInstruction(bool state, string name, int id)
     {
@@ -28,7 +29,7 @@ public class MenuIdentifier : MonoBehaviour
         {
             gameObject.SetActive(state);
         }
-        OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy);
+        OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy, menuName);
     }
     MenuIdentifier SearchedInstruction(string name, int id)
     {
@@ -42,9 +43,9 @@ public class MenuIdentifier : MonoBehaviour
         }
         if (name == "true" || name == "false")
         {
-            if (gameObject.activeInHierarchy == bool.Parse(name)) return this;
+            if (gameObject.activeSelf == bool.Parse(name)) return this;
         }
-        OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy);
+        OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy, menuName);
         return null;
     }
     public void SetID(int id) => menuID = id;

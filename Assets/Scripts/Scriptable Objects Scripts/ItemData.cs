@@ -9,6 +9,7 @@ public class ItemData : ScriptableObject
     [Space]
     [Header("Generic")]
     public string itemName;
+    [TextArea]
     public string itemDescription;
     public Sprite itemIcon;
     public bool equippedByDefault = false;
