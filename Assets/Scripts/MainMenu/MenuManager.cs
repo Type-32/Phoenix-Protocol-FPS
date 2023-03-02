@@ -23,15 +23,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button createRoomButton;
     [Space]
     [Header("Menus")]
-    public GameObject mainMenu;
-    public GameObject updateLogsMenu;
-    public GameObject multiplayerMenu;
-    public GameObject roomMenu;
-    public GameObject findRoomMenu;
-    public GameObject loadingMenu;
-    public GameObject settingsMenu;
-    public GameObject cosmeticsMenu;
-    public GameObject createRoomMenu;
     public GameObject loadoutSelectionMenu;
     public GameObject popupMenu;
     public GameObject shopMenu;
@@ -53,13 +44,10 @@ public class MenuManager : MonoBehaviour
     [Space]
     [Header("Menu States")]
     public bool openedMainMenu = false;
-    public bool openedUpdateLogsMenu = false;
-    public bool openedCosmeticsMenu = false;
     public bool openedMultiplayerMenu = false;
     public bool openedRoomMenu = false;
     public bool openedFindRoomMenu = false;
     public bool openedLoadingMenu = false;
-    public bool openedSettingsMenu = false;
     public bool openedCreateRoomMenu = false;
     public bool openedLoadoutSelectionMenu = false;
     public bool openedPopupMenu = false;
