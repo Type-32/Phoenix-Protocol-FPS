@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button createRoomButton;
     [Space]
     [Header("Menus")]
+    public GameObject roomMenu, mainMenu;
     public GameObject loadoutSelectionMenu;
     public GameObject popupMenu;
     public GameObject shopMenu;
@@ -148,6 +149,11 @@ public class MenuManager : MonoBehaviour
     {
         quitButton.SetActive(state);
         backButton.SetActive(!state);
+    }
+    public void SetMainMenuState(bool state)
+    {
+        mainMenu.SetActive(state);
+        roomMenu.SetActive(!state);
     }
     public void CloseMenu(int id) { OnMenuToggled?.Invoke(false, "null", id); }
     public void CloseMenu(string id) { OnMenuToggled?.Invoke(false, id); }
