@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button createRoomButton;
     [Space]
     [Header("Menus")]
+    public RoomMenuComponent RoomMenuComp;
     public GameObject roomMenu, mainMenu;
     public GameObject loadoutSelectionMenu;
     public GameObject popupMenu;
@@ -84,10 +85,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Text selectedGamemode;
     [SerializeField] Text selectedMaxPlayers;
     [SerializeField] Text selectedMaxKillLimit;
-
-    [Header("Room Menu Preview")]
-    [SerializeField] Text statText;
-    [SerializeField] Image mapIconImage;
 
     [Header("Top Navi-Bar UI")]
     [SerializeField] GameObject quitButton;
@@ -711,13 +708,6 @@ public class MenuManager : MonoBehaviour
             return true;
         }
         return false;
-    }
-    public void SetRoomMenuPreviewData(int maxKillCount = 30, bool roomVisibility = true, int mapInfoIndex = 0, int maxPlayers = 10, string roomMode = "Free For All")
-    {
-        string content = "";
-        mapIconImage.sprite = Launcher.Instance.mapItemInfo[mapInfoIndex].mapIcon;
-        content += "Map Name: " + Launcher.Instance.mapItemInfo[mapInfoIndex].mapName + "\nGamemode: " + roomMode + "\nMax Players: " + maxPlayers + "\nRoom Visibility: " + (roomVisibility ? "Public" : "Private") + "\nMax Kill Count: " + maxKillCount.ToString();
-        statText.text = content;
     }
     #endregion
 }

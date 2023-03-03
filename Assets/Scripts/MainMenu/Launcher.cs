@@ -8,6 +8,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Michsky.MUIP;
 using UserConfiguration;
 using System.Threading.Tasks;
+using InfoTypes.InRoomPreview;
+using PrototypeLib.Modules.FileOpsIO;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -20,7 +22,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] private Transform playerListContent;
     [SerializeField] private GameObject playerListItemPrefab;
     [SerializeField] private GameObject startGameButton;
-    [SerializeField] private Text roomCodeText;
     public LoadoutSelectionScript loadoutSelection;
     public string startKey = "103274803";
     [SerializeField] Animator matchmakingAnimator;
@@ -186,11 +187,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         SetLoadoutValuesToPlayer();
     }
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        MenuManager.instance.CloseCurrentMenu();
+        MenuManager.instance.OpenMenu("main");
+        MenuManager.instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
+    }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseMainMenu();
-        MenuManager.instance.OpenCreateRoomMenu();
+        MenuManager.instance.CloseCurrentMenu();
+        MenuManager.instance.OpenMenu("main");
+        MenuManager.instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -216,10 +223,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         SetLoadoutValuesToPlayer();
         Debug.Log("Connected to Room");
-        MenuManager.instance.OpenRoomMenu();
-        MenuManager.instance.CloseFindRoomMenu();
-        MenuManager.instance.CloseMainMenu();
-        MenuManager.instance.CloseLoadingMenu();
+        MenuManager.instance.SetMainMenuState(false);
+        MenuManager.instance.CloseCurrentMenu();
+        MenuManager.instance.OpenMenu("main");
         MenuManager.instance.SetRoomTitle(PhotonNetwork.CurrentRoom.Name);
         Player[] players = PhotonNetwork.PlayerList;
 
@@ -231,11 +237,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
         }
+        LoadoutDataJSON tp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
+        MenuManager.instance.RoomMenuComp.SetRoomInfoPreview(
+            new MapPreviewInfo(mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapName, mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapIcon),
+            new StatisticsPreviewInfo((string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"], PhotonNetwork.CurrentRoom.MaxPlayers, (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"]),
+            new LoadoutPreviewInfo(GlobalDatabase.singleton.allWeaponDatas[tp.Slots[tp.SelectedSlot].Weapon1], GlobalDatabase.singleton.allWeaponDatas[tp.Slots[tp.SelectedSlot].Weapon2], GlobalDatabase.singleton.allEquipmentDatas[tp.Slots[tp.SelectedSlot].Equipment1], GlobalDatabase.singleton.allEquipmentDatas[tp.Slots[tp.SelectedSlot].Equipment2])
+        );
         startGameButton.SetActive(CheckIfStartAllowed());
-        Debug.Log((int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"]);
-        int tmp = (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"];
-        roomCodeText.text = (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"] ? "" : ("Room Code: " + tmp.ToString());
-        MenuManager.instance.SetRoomMenuPreviewData((int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"], ((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"]) - 1, PhotonNetwork.CurrentRoom.MaxPlayers, (string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"]);
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
@@ -244,16 +252,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("Disconnected from Room");
-        MenuManager.instance.CloseMainMenu();
-        MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseFindRoomMenu();
-        MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.CloseRoomMenu();
-        MenuManager.instance.CloseSettingsMenu();
-        MenuManager.instance.CloseCreateRoomMenu();
-        MenuManager.instance.CloseLoadoutSelectionMenu();
-        MenuManager.instance.CloseCosmeticsMenu();
-        MenuManager.instance.OpenMainMenu();
+        MenuManager.instance.CloseCurrentMenu();
+        MenuManager.instance.OpenMenu("main");
+        MenuManager.instance.SetMainMenuState(true);
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {

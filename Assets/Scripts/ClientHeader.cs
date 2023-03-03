@@ -2,9 +2,77 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using System.IO;
 using PrototypeLib.Modules.FileOpsIO;
 
+namespace InfoTypes
+{
+    namespace InRoomPreview
+    {
+        using UnityEngine.UI;
+        public struct MapPreviewInfo
+        {
+            public string mapName;
+            public Sprite mapIcon;
+            internal MapPreviewInfo(string n, Sprite i)
+            {
+                mapName = n;
+                mapIcon = i;
+            }
+        }
+        public struct StatisticsPreviewInfo
+        {
+            public string gamemode;
+            public int maxPlayers;
+            public int roomCode;
+            public bool visibility;
+            internal StatisticsPreviewInfo(MenuManager.Gamemodes gm, int mp, int rc, bool v)
+            {
+                gamemode = "";
+                switch (gm)
+                {
+                    case MenuManager.Gamemodes.FFA:
+                        gamemode = "Free For All";
+                        break;
+                    case MenuManager.Gamemodes.TDM:
+                        gamemode = "Team Deathmatch";
+                        break;
+                    case MenuManager.Gamemodes.CTF:
+                        gamemode = "Capture The Flag";
+                        break;
+                    case MenuManager.Gamemodes.DZ:
+                        gamemode = "Drop Zones";
+                        break;
+                }
+                maxPlayers = mp;
+                roomCode = rc;
+                visibility = v;
+            }
+            internal StatisticsPreviewInfo(string gm, int mp, int rc, bool v)
+            {
+                gamemode = gm;
+                maxPlayers = mp;
+                roomCode = rc;
+                visibility = v;
+            }
+        }
+        public struct LoadoutPreviewInfo
+        {
+            public string w_Name1, w_Name2;
+            public Sprite w_Icon1, w_Icon2, e_Icon1, e_Icon2;
+            internal LoadoutPreviewInfo(WeaponData w1, WeaponData w2, EquipmentData e1, EquipmentData e2)
+            {
+                w_Name1 = "Primary - " + w1.itemName;
+                w_Name2 = "Secondary - " + w2.itemName;
+                w_Icon1 = w1.itemIcon;
+                w_Icon2 = w2.itemIcon;
+                e_Icon1 = e1.itemIcon;
+                e_Icon2 = e2.itemIcon;
+            }
+        }
+    }
+}
 namespace LauncherManifest
 {
     public static class LauncherConfig
