@@ -35538,26 +35538,26 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1395783784}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMultiplayerMenu
+        m_MethodName: CloseCurrentMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: main
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1395783784}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: CloseMenu
+        m_MethodName: OpenMenu
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: main
+          m_StringArgument: multiplayer
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &726272587
@@ -37761,8 +37761,8 @@ RectTransform:
   m_Father: {fileID: 447895188}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.15662652}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.8433735, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -38782,18 +38782,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1051357a85409da43923a71eb348ee12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapIcon: {fileID: 0}
-  primaryIcon: {fileID: 0}
-  secondaryIcon: {fileID: 0}
-  EquipmentIcon1: {fileID: 0}
-  EquipmentIcon2: {fileID: 0}
-  mapText: {fileID: 0}
-  gamemodeText: {fileID: 0}
-  maxPlayersText: {fileID: 0}
-  roomCodeText: {fileID: 0}
-  visibilityText: {fileID: 0}
-  primaryText: {fileID: 0}
-  secondaryText: {fileID: 0}
+  mapIcon: {fileID: 892225270}
+  primaryIcon: {fileID: 713191568}
+  secondaryIcon: {fileID: 2039161841}
+  EquipmentIcon1: {fileID: 1951354623}
+  EquipmentIcon2: {fileID: 1672847863}
+  mapText: {fileID: 1761549647}
+  gamemodeText: {fileID: 405467027}
+  maxPlayersText: {fileID: 1591823273}
+  roomCodeText: {fileID: 407436565}
+  visibilityText: {fileID: 1866890112}
+  primaryText: {fileID: 810597594}
+  secondaryText: {fileID: 1526400204}
 --- !u!1 &791874098
 GameObject:
   m_ObjectHideFlags: 0
@@ -69899,9 +69899,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   createRoomButton: {fileID: 2041925788}
-  RoomMenuComp: {fileID: 0}
-  roomMenu: {fileID: 0}
-  mainMenu: {fileID: 0}
+  RoomMenuComp: {fileID: 791527854}
+  roomMenu: {fileID: 791527852}
+  mainMenu: {fileID: 1598001220}
   loadoutSelectionMenu: {fileID: 755469626}
   popupMenu: {fileID: 1646108811}
   shopMenu: {fileID: 1204035681}
@@ -69932,7 +69932,7 @@ MonoBehaviour:
   - {fileID: 755469629}
   connectionIndicator: {fileID: 0}
   invalidInputField: {fileID: 1224194915}
-  roomTitle: {fileID: 0}
+  roomTitle: {fileID: 656749379}
   findRoomIndicator: {fileID: 369949616}
   findRoomInputField: {fileID: 223551488}
   playerNameInputField: {fileID: 709318345}
@@ -69967,8 +69967,6 @@ MonoBehaviour:
   selectedGamemode: {fileID: 1226504298}
   selectedMaxPlayers: {fileID: 192223090}
   selectedMaxKillLimit: {fileID: 896065732}
-  statText: {fileID: 0}
-  mapIconImage: {fileID: 0}
   quitButton: {fileID: 1003348696}
   backButton: {fileID: 1686819024}
   passedTime: {fileID: 1990324175}
@@ -70007,8 +70005,7 @@ MonoBehaviour:
   playerListContent: {fileID: 58741134}
   playerListItemPrefab: {fileID: 2747042721910618889, guid: e8e9e29f086c6144db445d4d8bca78ab,
     type: 3}
-  startGameButton: {fileID: 0}
-  roomCodeText: {fileID: 0}
+  startGameButton: {fileID: 815569234}
   loadoutSelection: {fileID: 755469628}
   startKey: 8943wytiu4ebtkudh98
   matchmakingAnimator: {fileID: 1678693948}

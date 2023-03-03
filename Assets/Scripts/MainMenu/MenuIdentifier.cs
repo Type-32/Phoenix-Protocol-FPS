@@ -23,13 +23,28 @@ public class MenuIdentifier : MonoBehaviour
         //if (selfManagable) return;
         if (id != -1 && id == menuID)
         {
-            gameObject.SetActive(state);
+            if (!state && !gameObject.activeInHierarchy)
+                return;
+            else
+            {
+                gameObject.SetActive(state);
+                Debug.Log($"MenuIdentifier {menuID} is Invoked.");
+            }
         }
         if (name != "null" && menuName == name)
         {
-            gameObject.SetActive(state);
+            if (!state && !gameObject.activeInHierarchy)
+                return;
+            else
+            {
+                gameObject.SetActive(state);
+                Debug.Log($"MenuIdentifier {menuName} is Invoked.");
+            }
         }
         OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy, menuName);
+        if (state && name == "main") MenuManager.instance.SetQuitButtonState(true);
+        else MenuManager.instance.SetQuitButtonState(false);
+
     }
     MenuIdentifier SearchedInstruction(string name, int id)
     {

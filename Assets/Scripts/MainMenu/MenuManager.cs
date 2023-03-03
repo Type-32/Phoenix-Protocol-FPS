@@ -168,6 +168,7 @@ public class MenuManager : MonoBehaviour
     }
     void Start()
     {
+        RefreshMenu();
         int tmep = 0;
         foreach (MenuIdentifier id in MenuIdentifiers)
         {
@@ -217,6 +218,14 @@ public class MenuManager : MonoBehaviour
     {
         foreach (MenuIdentifier ip in MenuIdentifiers)
         {
+            CloseMenu(ip);
+        }
+    }
+    public void RefreshMenu()
+    {
+        foreach (MenuIdentifier ip in MenuIdentifiers)
+        {
+            ip.gameObject.SetActive(true);
             CloseMenu(ip);
         }
     }
