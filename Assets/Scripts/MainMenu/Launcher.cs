@@ -301,7 +301,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-        MenuManager.instance.CloseRoomMenu();
+        MenuManager.instance.SetMainMenuState(true);
         MenuManager.instance.OpenLoadingMenu();
     }
 

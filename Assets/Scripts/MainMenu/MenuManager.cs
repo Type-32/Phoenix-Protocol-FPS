@@ -179,7 +179,6 @@ public class MenuManager : MonoBehaviour
         SetCreateRoomInputField(true);
         SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");
         SetInvalidInputFieldText(" ", Color.red);
-        CloseRoomMenu();
         CloseLoadingMenu();
         CloseFindRoomMenu();
         CloseCosmeticsMenu();
@@ -261,25 +260,6 @@ public class MenuManager : MonoBehaviour
     {
         CloseMenu("multiplayer");
     }
-    public void OpenRoomMenu()
-    {
-        OpenMenu("room");
-    }
-    public void CloseRoomMenu()
-    {
-        CloseMenu("room");
-    }
-    public void ToggleRoomMenu()
-    {
-        if (openedRoomMenu)
-        {
-            CloseRoomMenu();
-        }
-        else
-        {
-            OpenRoomMenu();
-        }
-    }
 
     public void OpenFindRoomMenu()
     {
@@ -310,17 +290,6 @@ public class MenuManager : MonoBehaviour
     {
         CloseMenu("loading");
     }
-    public void ToggleLoadingMenu()
-    {
-        if (openedLoadingMenu)
-        {
-            CloseLoadingMenu();
-        }
-        else
-        {
-            OpenLoadingMenu();
-        }
-    }
 
     public void OpenSettingsMenu()
     {
@@ -329,17 +298,6 @@ public class MenuManager : MonoBehaviour
     public void CloseSettingsMenu()
     {
         CloseMenu("settings");
-    }
-    public void ToggleSettingsMenu()
-    {
-        if (openedLoadingMenu)
-        {
-            CloseSettingsMenu();
-        }
-        else
-        {
-            OpenSettingsMenu();
-        }
     }
 
     public void OpenCreateRoomMenu()
@@ -353,17 +311,6 @@ public class MenuManager : MonoBehaviour
     {
         CloseMenu("createRoom");
     }
-    public void ToggleCreateRoomMenu()
-    {
-        if (openedLoadingMenu)
-        {
-            CloseCreateRoomMenu();
-        }
-        else
-        {
-            OpenCreateRoomMenu();
-        }
-    }
 
     public void OpenLoadoutSelectionMenu()
     {
@@ -372,17 +319,6 @@ public class MenuManager : MonoBehaviour
     public void CloseLoadoutSelectionMenu()
     {
         CloseMenu("loadout");
-    }
-    public void ToggleLoadoutSelectionMenu()
-    {
-        if (openedLoadoutSelectionMenu)
-        {
-            CloseLoadoutSelectionMenu();
-        }
-        else
-        {
-            OpenLoadoutSelectionMenu();
-        }
     }
 
     public Action gunsmithMenuState;
