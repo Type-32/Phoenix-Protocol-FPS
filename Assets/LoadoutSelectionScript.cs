@@ -46,9 +46,11 @@ public class LoadoutSelectionScript : MonoBehaviour
     [Space]
     [Header("More References")]
     public List<LoadoutData> loadoutDataList = new List<LoadoutData>();
+    private MenuIdentifier LocalMenuIdentifier;
     // Start is called before the first frame update
     private void Awake()
     {
+        LocalMenuIdentifier = GetComponent<MenuIdentifier>();
         LoadoutSelectionItem[] tempItems = loadoutPreviewUI.GetComponentsInChildren<LoadoutSelectionItem>();
         for (int i = 0; i < tempItems.Length; i++)
         {

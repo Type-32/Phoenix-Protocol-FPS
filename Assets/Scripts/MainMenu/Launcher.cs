@@ -28,12 +28,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     private List<IEnumerator<bool>> matchFindPeriods = new();
     private bool isMatchmaking = false;
     public bool foundMatch = false;
-    private RoomInfo stashedSelectedRoomInfo;
+    public RoomInfo stashedSelectedRoomInfo, roomListSelectedInfo;
     // Start is called before the first frame update
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        MenuManager.instance.SetFindRoomText("");
     }
     private void Awake()
     {
@@ -76,7 +75,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         //roomInfo.CustomProperties.Add("roomHostName", roomHostName.text);
         PhotonNetwork.CreateRoom(MenuManager.instance.GetRoomInputFieldText(), MenuManager.instance.GetGeneratedRoomOptions());
         Debug.Log("Trying to create a room with the name " + MenuManager.instance.GetRoomInputFieldText());
-        MenuManager.instance.SetRoomTitle(MenuManager.instance.GetRoomInputFieldText());
         //MenuManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
         MenuManager.instance.CloseCreateRoomMenu();
         MenuManager.instance.OpenLoadingMenu();
@@ -147,24 +145,28 @@ public class Launcher : MonoBehaviourPunCallbacks
                     case MenuManager.Gamemodes.FFA:
                         if ((string)tp.CustomProperties["roomMode"] == "Free For All")
                         {
+                            stashedSelectedRoomInfo = tp;
                             return true;
                         }
                         break;
                     case MenuManager.Gamemodes.TDM:
                         if ((string)tp.CustomProperties["roomMode"] == "Team Deathmatch")
                         {
+                            stashedSelectedRoomInfo = tp;
                             return true;
                         }
                         break;
                     case MenuManager.Gamemodes.DZ:
                         if ((string)tp.CustomProperties["roomMode"] == "Drop Zones")
                         {
+                            stashedSelectedRoomInfo = tp;
                             return true;
                         }
                         break;
                     case MenuManager.Gamemodes.CTF:
                         if ((string)tp.CustomProperties["roomMode"] == "Capture The Flag")
                         {
+                            stashedSelectedRoomInfo = tp;
                             return true;
                         }
                         break;
@@ -205,7 +207,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.OpenCreateRoomMenu();
         MenuManager.instance.AddModalWindow("Error", "Failed to create room. Server returned a message: " + message + "\nFail code " + returnCode.ToString());
         Debug.Log("Failed to create room, Message: " + message);
-        MenuManager.instance.SetInvalidInputFieldText("Invalid Session, returned with message: " + message, Color.red);
     }
     public override void OnCreatedRoom()
     {
@@ -226,7 +227,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.SetMainMenuState(false);
         MenuManager.instance.CloseCurrentMenu();
         MenuManager.instance.OpenMenu("main");
-        MenuManager.instance.SetRoomTitle(PhotonNetwork.CurrentRoom.Name);
         Player[] players = PhotonNetwork.PlayerList;
 
         foreach (Transform child in playerListContent)
@@ -283,19 +283,16 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             if ((int)rl[i].CustomProperties["roomCode"] == code)
             {
-                MenuManager.instance.SetFindRoomText("");
                 JoinRoom(rl[i]);
                 return;
             }
         }
-        MenuManager.instance.SetFindRoomText("Room with Code " + code + " Not Found.");
+        MenuManager.instance.AddModalWindow("Error", "Room with Code " + code + " Not Found.");
     }
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
-        MenuManager.instance.OpenLoadingMenu();
-        MenuManager.instance.CloseFindRoomMenu();
-        MenuManager.instance.CloseMainMenu();
+        MenuManager.instance.OpenMenu("loading");
         Debug.Log("Loading Room Info...");
     }
     public void LeaveRoom()

@@ -35,10 +35,6 @@ public class MenuManager : MonoBehaviour
 
     [Space]
     [Header("Misc Components")]
-    [SerializeField] private Text connectionIndicator;
-    [SerializeField] private Text invalidInputField;
-    [SerializeField] private Text roomTitle;
-    [SerializeField] private Text findRoomIndicator;
     [SerializeField] private InputField findRoomInputField;
     public TMP_InputField playerNameInputField;
     public Animator enterAnim;
@@ -178,8 +174,6 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Loaded Scene from Main Menu");
         JoiningMasterLobby(false);
         SetCreateRoomInputField(true);
-        SetConnectionIndicatorText("Attempting to connect to Multiplayer Services...");
-        SetInvalidInputFieldText(" ", Color.red);
         CloseLoadingMenu();
         CloseFindRoomMenu();
         CloseCosmeticsMenu();
@@ -277,14 +271,6 @@ public class MenuManager : MonoBehaviour
     public void CloseFindRoomMenu()
     {
         CloseMenu("findRoom");
-    }
-    public void SetFindRoomText(string text)
-    {
-        findRoomIndicator.text = text;
-    }
-    public string GetFindRoomText()
-    {
-        return findRoomIndicator.text;
     }
     public int GetRoomCodeInputField()
     {
@@ -389,19 +375,6 @@ public class MenuManager : MonoBehaviour
     public string GetRoomInputFieldText()
     {
         return roomInputField.text;
-    }
-    public void SetInvalidInputFieldText(string content, Color color)
-    {
-        invalidInputField.text = content;
-        invalidInputField.color = color;
-    }
-    public void SetRoomTitle(string text)
-    {
-        roomTitle.text = text;
-    }
-    public string GetRoomTitle()
-    {
-        return roomTitle.text;
     }
 
     public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomModes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit, bool randomRespawn = true)
