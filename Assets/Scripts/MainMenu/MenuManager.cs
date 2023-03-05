@@ -20,7 +20,6 @@ public class MenuManager : MonoBehaviour
     public delegate MenuIdentifier SearchMenu(string name = "null", int id = -1);
     public static event ToggleMenu OnMenuToggled;
     public static event SearchMenu OnSearchMenu;
-    [SerializeField] private Button createRoomButton;
     [Space]
     [Header("Menus")]
     public RoomMenuComponent RoomMenuComp;
@@ -60,7 +59,7 @@ public class MenuManager : MonoBehaviour
 
     [Space]
     [Header("Room Creation")]
-    [SerializeField] private TMP_InputField roomInputField;
+    [SerializeField] private InputField roomInputField;
     [SerializeField] private int roomMapSelectionIndex;
     [SerializeField] private Gamemodes selectedGamemodes = Gamemodes.FFA;
     [SerializeField] private int maxPlayerCount = 10;
@@ -74,13 +73,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Text gamemodes;
     [SerializeField] Text visibility;
     [SerializeField] Text maxKillLimit;
-
-    [Header("Room Preview")]
-    [SerializeField] Text selectedRoomName;
-    [SerializeField] Text selectedMap;
-    [SerializeField] Text selectedGamemode;
-    [SerializeField] Text selectedMaxPlayers;
-    [SerializeField] Text selectedMaxKillLimit;
 
     [Header("Top Navi-Bar UI")]
     [SerializeField] GameObject quitButton;
@@ -173,7 +165,6 @@ public class MenuManager : MonoBehaviour
         }
         Debug.Log("Loaded Scene from Main Menu");
         JoiningMasterLobby(false);
-        SetCreateRoomInputField(true);
         CloseLoadingMenu();
         CloseFindRoomMenu();
         CloseCosmeticsMenu();
@@ -330,24 +321,6 @@ public class MenuManager : MonoBehaviour
     public Gamemodes GetGamemode()
     {
         return selectedGamemodes;
-    }
-    public void UseCreateRoomInputField()
-    {
-        if (usingCreateRooomInputField)
-        {
-            SetCreateRoomInputField(false);
-        }
-        else
-        {
-            SetCreateRoomInputField(true);
-        }
-    }
-    public void SetCreateRoomInputField(bool value)
-    {
-        usingCreateRooomInputField = value;
-        roomInputField.gameObject.SetActive(value);
-        //if (value) createRoomButton.interactable = false;
-        //else createRoomButton.interactable = true;
     }
 
     public void JoiningMasterLobby(bool value)

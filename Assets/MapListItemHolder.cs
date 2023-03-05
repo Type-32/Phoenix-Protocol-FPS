@@ -12,7 +12,6 @@ public class MapListItemHolder : MonoBehaviour
 
     [SerializeField] List<MapListItem> items = new List<MapListItem>();
     [SerializeField] GameObject mapListItemPrefab;
-    [SerializeField] Text selectedMapName;
 
     // Start is called before the first frame update
     void Awake()
@@ -31,6 +30,7 @@ public class MapListItemHolder : MonoBehaviour
             }
         }
         OnSelectMapItem?.Invoke(false, -1);
+        Debug.Log("Instantiated Map Choices");
     }
     public void SetSelectedMap(int index)
     {

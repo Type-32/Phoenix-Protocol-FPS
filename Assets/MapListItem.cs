@@ -13,8 +13,8 @@ public class MapListItem : MonoBehaviour
     public int mapIndex;
     private void Awake()
     {
-        holder.OnSelectMapItem += OnSelectedInvoked;
         holder = MapListItemHolder.Instance;
+        holder.OnSelectMapItem += OnSelectedInvoked;
     }
     public void SetInfo(MapItemInfo info, int index)
     {
