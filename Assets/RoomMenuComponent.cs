@@ -16,7 +16,7 @@ public class RoomMenuComponent : MonoBehaviour
     private void SetStatisticsView(StatisticsPreviewInfo spi)
     {
         gamemodeText.text = spi.gamemode;
-        maxPlayersText.text = spi.maxPlayers.ToString();
+        maxPlayersText.text = spi.maxPlayers.ToString() + " Players Maximum";
         roomCodeText.text = "Room Code " + spi.roomCode.ToString();
         visibilityText.text = spi.visibility ? "Public" : "Private";
     }
