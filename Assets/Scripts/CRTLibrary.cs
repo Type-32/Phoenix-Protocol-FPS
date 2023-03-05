@@ -73,6 +73,18 @@ namespace PrototypeLib
                     this.bridge = bridge;
                     this.project = project;
                 }
+                public MieClient(int project)
+                {
+                    this.endpoint = new Uri("https://cloud.smartsheep.studio");
+                    this.bridge = new Uri("https://lamb.smartsheep.studio");
+                    this.project = project;
+                }
+                public MieClient()
+                {
+                    this.endpoint = new Uri("https://cloud.smartsheep.studio");
+                    this.bridge = new Uri("https://lamb.smartsheep.studio");
+                    this.project = 0;
+                }
 
                 public void SetAccessToken(string token)
                 {
@@ -125,6 +137,56 @@ namespace PrototypeLib
                 }
             }
 
+        }
+        namespace OAuthentication
+        {
+            using System.Net.Http;
+            using System.Net.Http.Headers;
+            using System.Net.Http.Formatting;
+            using System.Threading.Tasks;
+            public static class OAuth2
+            {
+                private const string LambBridgeTokenUrl = "https://lamb.smartsheep.studio/api/oauth/token";
+                private const string MieCloudTokenUrl = "https://cloud.smartsheep.studio/api/oauth/token";
+                public static string ClientId = "your-client-id";
+                public static string ClientSecret = "your-client-secret";
+                public class TokenResponse
+                {
+                    public string AccessToken { get; set; }
+                }
+                public static async Task<string> GetLambBridgeAccessTokenAsync()
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var authenticationHeader = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{ClientId}:{ClientSecret}"));
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationHeader);
+
+                        var formContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("grant_type", "client_credentials") });
+
+                        var response = await client.PostAsync(LambBridgeTokenUrl, formContent);
+                        response.EnsureSuccessStatusCode();
+
+                        var tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
+                        return tokenResponse.AccessToken;
+                    }
+                }
+                public static async Task<string> GetMieCloudAccessTokenAsync()
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var authenticationHeader = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{ClientId}:{ClientSecret}"));
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationHeader);
+
+                        var formContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("grant_type", "client_credentials") });
+
+                        var response = await client.PostAsync(LambBridgeTokenUrl, formContent);
+                        response.EnsureSuccessStatusCode();
+
+                        var tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
+                        return tokenResponse.AccessToken;
+                    }
+                }
+            }
         }
     }
     namespace Modules
