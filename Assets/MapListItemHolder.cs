@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MapListItemHolder : MonoBehaviour
 {
+    public delegate void SelectMapItem(bool active, int id);
+    public event SelectMapItem OnSelectMapItem;
     public static MapListItemHolder Instance;
     public int selectedMapIndex;
 
@@ -28,10 +30,12 @@ public class MapListItemHolder : MonoBehaviour
                 temp.SetInfo(Launcher.Instance.mapItemInfo[i], i + 1);
             }
         }
+        OnSelectMapItem?.Invoke(false, -1);
     }
-    public void SetSelectedMap(int index, string mapName)
+    public void SetSelectedMap(int index)
     {
         selectedMapIndex = index;
-        MenuManager.instance.OnSelectedMap(mapName);
+        OnSelectMapItem?.Invoke(false, -1);
+        OnSelectMapItem?.Invoke(true, index);
     }
 }

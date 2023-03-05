@@ -298,7 +298,6 @@ public class MenuManager : MonoBehaviour
     public void OpenCreateRoomMenu()
     {
         OpenMenu("createRoom");
-        OnChangedMaxPlayers(int.Parse(maxPlayers.text));
         OnSelectedGamemode(selectedGamemodes);
         OnSelectedGamemode(selectedGamemodes);
     }
@@ -422,14 +421,6 @@ public class MenuManager : MonoBehaviour
         roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, Gamemodes.FFA, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility, maxKillLimitNumber);
         return roomOptionsTemp;
     }
-    public void OnCreateRoomInputSubmit(string roomInput)
-    {
-        selectedRoomName.text = "Room Name: " + roomInput;
-    }
-    public void OnSelectedMap(string mapNameInput)
-    {
-        selectedMap.text = "Selected Map: " + mapNameInput;
-    }
     public void OnSelectedGamemode(Gamemodes gmInput)
     {
         string temp = "None";
@@ -448,29 +439,18 @@ public class MenuManager : MonoBehaviour
                 temp = "Free For All";
                 break;
         }
-        selectedGamemode.text = "Selected Gamemode: " + temp;
-    }
-    public void OnChangedMaxPlayers(int maxPlayersInput)
-    {
-        selectedMaxPlayers.text = "Max Players: " + maxPlayersInput.ToString();
-    }
-    public void OnChangedMaxKillLimit(int input)
-    {
-        selectedMaxKillLimit.text = "Max Kill Limit: " + input.ToString();
     }
     public void OnChangedVisibility(bool visible)
     {
         if (visible) visibility.text = "Public";
         else visibility.text = "Private";
     }
-
     public void DecreasePlayerCount()
     {
         int temp = int.Parse(maxPlayers.text);
         if (temp - 1 < 2) return;
         maxPlayerCount = temp - 1;
         maxPlayers.text = (temp - 1).ToString();
-        OnChangedMaxPlayers(temp - 1);
     }
     public void IncreasePlayerCount()
     {
@@ -478,7 +458,6 @@ public class MenuManager : MonoBehaviour
         if (temp + 1 > 20) return;
         maxPlayerCount = temp + 1;
         maxPlayers.text = (temp + 1).ToString();
-        OnChangedMaxPlayers(temp + 1);
     }
     public void DecreaseKillLimit()
     {
@@ -486,7 +465,6 @@ public class MenuManager : MonoBehaviour
         if (temp - 1 < 10) return;
         maxKillLimitNumber = temp - 1;
         maxKillLimit.text = (temp - 1).ToString();
-        OnChangedMaxKillLimit(temp - 1);
     }
     public void IncreaseKillLimit()
     {
@@ -494,7 +472,6 @@ public class MenuManager : MonoBehaviour
         if (temp + 1 > 50) return;
         maxKillLimitNumber = temp + 1;
         maxKillLimit.text = (temp + 1).ToString();
-        OnChangedMaxKillLimit(temp + 1);
     }
 
 

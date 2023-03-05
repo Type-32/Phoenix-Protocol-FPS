@@ -9,24 +9,33 @@ public class MapListItem : MonoBehaviour
 {
     MapListItemHolder holder;
     [SerializeField] Text mapName;
-    [SerializeField] Image mapIcon;
-    [SerializeField] Text mapPlayers;
-    [SerializeField] Text mapVersion;
+    [SerializeField] Image mapIcon, mapSelected;
     public int mapIndex;
     private void Awake()
     {
+        holder.OnSelectMapItem += OnSelectedInvoked;
         holder = MapListItemHolder.Instance;
     }
     public void SetInfo(MapItemInfo info, int index)
     {
         mapName.text = info.mapName;
         mapIcon.sprite = info.mapIcon;
-        mapPlayers.text = "Recommended Players: " + info.recommendedPlayers.ToString();
-        mapVersion.text = "Map Version V" + info.mapVersion;
+        mapSelected.gameObject.SetActive(true);
         mapIndex = index;
     }
     public void OnClick()
     {
-        holder.SetSelectedMap(mapIndex, mapName.text);
+        holder.SetSelectedMap(mapIndex);
+    }
+    private void OnSelectedInvoked(bool active, int id)
+    {
+        if (id == -1)
+        {
+            mapSelected.gameObject.SetActive(active);
+        }
+        else if (id == mapIndex)
+        {
+            mapSelected.gameObject.SetActive(active);
+        }
     }
 }
