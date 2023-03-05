@@ -126,8 +126,8 @@ namespace PrototypeLib
             }
             public static class FileOps<T> where T : new()
             {
-                public delegate void FileOperate();
-                public delegate void FileOperateAsync();
+                public delegate void FileOperate(string strPath);
+                public delegate void FileOperateAsync(string strPath);
                 public static event FileOperate OperatedFile;
                 public static event FileOperateAsync OperatedFileAsync;
                 public async static Task<bool> WriteFileAsync(T content, WritingData data) { return await WriteFileAsync(content, data.filePath, data.initializeIfEmpty, data.jsonFormat, data.cleanJson, data.overwriteExisted, data.encode ?? Encoding.Default); }
@@ -207,7 +207,7 @@ namespace PrototypeLib
                                 return default;
                         }
                     }
-                    OperatedFileAsync?.Invoke();
+                    OperatedFileAsync?.Invoke(filePath);
                     return (T)obj;
                 }
                 public static T ReadFile(ReadingData data) { return ReadFile(data.filePath, data.initializeIfEmpty, data.convertFromJson, data.encode ?? Encoding.Default); }
@@ -235,7 +235,7 @@ namespace PrototypeLib
                                 return default;
                         }
                     }
-                    OperatedFile?.Invoke();
+                    OperatedFile?.Invoke(filePath);
                     return (T)obj;
                 }
                 private static bool ImprintToFile(T content, WritingData data)
@@ -259,7 +259,7 @@ namespace PrototypeLib
                             }
                             File.WriteAllText(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode ?? Encoding.Default);
                         }
-                        OperatedFile?.Invoke();
+                        OperatedFile?.Invoke(data.filePath);
                     }
                     catch (Exception)
                     {
@@ -288,7 +288,7 @@ namespace PrototypeLib
                             }
                             await File.WriteAllTextAsync(data.filePath, data.jsonFormat ? data.cleanJson ? JsonUtility.ToJson(content, true) : JsonUtility.ToJson(content, false) : content.ToString(), data.encode ?? Encoding.Default);
                         }
-                        OperatedFileAsync?.Invoke();
+                        OperatedFileAsync?.Invoke(data.filePath);
                     }
                     catch (Exception)
                     {

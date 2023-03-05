@@ -3,24 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using InfoTypes.InRoomPreview;
+using UserConfiguration;
+using PrototypeLib.Modules.FileOpsIO;
 
 public class RoomMenuComponent : MonoBehaviour
 {
     [SerializeField] Image mapIcon, primaryIcon, secondaryIcon, EquipmentIcon1, EquipmentIcon2;
     [SerializeField] Text roomName, mapText, gamemodeText, maxPlayersText, roomCodeText, visibilityText, primaryText, secondaryText;
-    private void SetMapView(MapPreviewInfo mpi)
+    void Start()
+    {
+        FileOps<LoadoutDataJSON>.OperatedFile += DetectIfLoadoutModified;
+    }
+    public void SetMapView(MapPreviewInfo mpi)
     {
         mapIcon.sprite = mpi.mapIcon;
         mapText.text = mpi.mapName;
     }
-    private void SetStatisticsView(StatisticsPreviewInfo spi)
+    public void SetStatisticsView(StatisticsPreviewInfo spi)
     {
         gamemodeText.text = spi.gamemode;
         maxPlayersText.text = spi.maxPlayers.ToString() + " Players Maximum";
         roomCodeText.text = "Room Code " + spi.roomCode.ToString();
         visibilityText.text = spi.visibility ? "Public" : "Private";
     }
-    private void SetLoadoutView(LoadoutPreviewInfo lpi)
+    public void SetLoadoutView(LoadoutPreviewInfo lpi)
     {
         primaryText.text = lpi.w_Name1;
         secondaryText.text = lpi.w_Name2;
@@ -35,5 +41,13 @@ public class RoomMenuComponent : MonoBehaviour
         SetMapView(mpi);
         SetStatisticsView(spi);
         SetLoadoutView(lpi);
+    }
+    private void DetectIfLoadoutModified(string strPath)
+    {
+        if (strPath == UserSystem.LoadoutDataPath)
+        {
+            LoadoutDataJSON tmp = FileOps<LoadoutDataJSON>.ReadFile(strPath);
+            SetLoadoutView(new LoadoutPreviewInfo(GlobalDatabase.singleton.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon1], GlobalDatabase.singleton.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon2], GlobalDatabase.singleton.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment1], GlobalDatabase.singleton.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment2]));
+        }
     }
 }

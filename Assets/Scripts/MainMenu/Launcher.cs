@@ -53,6 +53,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         Hashtable temp = new();
         temp.Add("userLevel", UserConfiguration.UserSystem.LocalUserLevel);
         PhotonNetwork.LocalPlayer.SetCustomProperties(temp);
+        MenuManager.instance.multiplayerMenuButton.interactable = true;
     }
     public void CreateRoom()
     {
@@ -116,6 +117,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public async void QuickMatch(int gmIndex)
     {
+        MenuManager.instance.multiplayerMenuButton.interactable = false;
         await MatchmakingAsync(gmIndex == 1 ? MenuManager.Gamemodes.TDM : gmIndex == 2 ? MenuManager.Gamemodes.FFA : gmIndex == 3 ? MenuManager.Gamemodes.CTF : gmIndex == 4 ? MenuManager.Gamemodes.DZ : MenuManager.Gamemodes.FFA);
     }
     public void StopQuickMatch()
@@ -127,6 +129,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     private void LeaveQMListener()
     {
+        MenuManager.instance.multiplayerMenuButton.interactable = true;
         MenuManager.instance.SetQuickMatchUIInfo("Leaving Matchmaking...", false);
         foundMatch = false;
         isMatchmaking = false;
@@ -191,18 +194,21 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
+        MenuManager.instance.multiplayerMenuButton.interactable = true;
         MenuManager.instance.CloseCurrentMenu();
         MenuManager.instance.OpenMenu("main");
         MenuManager.instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        MenuManager.instance.multiplayerMenuButton.interactable = true;
         MenuManager.instance.CloseCurrentMenu();
         MenuManager.instance.OpenMenu("main");
         MenuManager.instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        MenuManager.instance.multiplayerMenuButton.interactable = true;
         MenuManager.instance.CloseLoadingMenu();
         MenuManager.instance.OpenCreateRoomMenu();
         MenuManager.instance.AddModalWindow("Error", "Failed to create room. Server returned a message: " + message + "\nFail code " + returnCode.ToString());
@@ -224,6 +230,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         SetLoadoutValuesToPlayer();
         Debug.Log("Connected to Room");
+        MenuManager.instance.multiplayerMenuButton.interactable = false;
         MenuManager.instance.SetMainMenuState(false);
         MenuManager.instance.CloseCurrentMenu();
         MenuManager.instance.OpenMenu("main");

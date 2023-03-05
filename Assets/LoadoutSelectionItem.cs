@@ -5,6 +5,7 @@ using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using UserConfiguration;
+using InfoTypes.InRoomPreview;
 
 public class LoadoutSelectionItem : MonoBehaviour
 {

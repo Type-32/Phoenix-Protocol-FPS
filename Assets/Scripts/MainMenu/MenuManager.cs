@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
     [Space]
     [Header("Menus")]
     public RoomMenuComponent RoomMenuComp;
+    public Button multiplayerMenuButton;
     public GameObject roomMenu, mainMenu;
     public GameObject loadoutSelectionMenu;
     public GameObject popupMenu;
