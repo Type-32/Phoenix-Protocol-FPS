@@ -7,7 +7,7 @@ using InfoTypes.InRoomPreview;
 public class RoomMenuComponent : MonoBehaviour
 {
     [SerializeField] Image mapIcon, primaryIcon, secondaryIcon, EquipmentIcon1, EquipmentIcon2;
-    [SerializeField] Text mapText, gamemodeText, maxPlayersText, roomCodeText, visibilityText, primaryText, secondaryText;
+    [SerializeField] Text roomName, mapText, gamemodeText, maxPlayersText, roomCodeText, visibilityText, primaryText, secondaryText;
     private void SetMapView(MapPreviewInfo mpi)
     {
         mapIcon.sprite = mpi.mapIcon;
@@ -29,8 +29,9 @@ public class RoomMenuComponent : MonoBehaviour
         EquipmentIcon1.sprite = lpi.e_Icon1;
         EquipmentIcon2.sprite = lpi.e_Icon2;
     }
-    public void SetRoomInfoPreview(MapPreviewInfo mpi, StatisticsPreviewInfo spi, LoadoutPreviewInfo lpi)
+    public void SetRoomInfoPreview(string roomName, MapPreviewInfo mpi, StatisticsPreviewInfo spi, LoadoutPreviewInfo lpi)
     {
+        this.roomName.text = roomName;
         SetMapView(mpi);
         SetStatisticsView(spi);
         SetLoadoutView(lpi);
