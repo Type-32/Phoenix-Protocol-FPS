@@ -12,13 +12,13 @@ using Unity.Mathematics;
 
 namespace PrototypeLib
 {
-    namespace Multiplayer
+    namespace OnlineServices
     {
         using Photon;
         using Photon.Pun;
         using Photon.Realtime;
         using Hashtable = ExitGames.Client.Photon.Hashtable;
-        namespace LocalPlayerIO
+        namespace PUNMultiplayer
         {
             public static class PlayerManipulaton
             {
@@ -46,6 +46,85 @@ namespace PrototypeLib
                     return false;
                 }
             }
+        }
+        namespace MieServices
+        {
+            using Flurl;
+            using Flurl.Http;
+            public struct OauthExchangeResponse
+            {
+                public string access_token;
+                public string refresh_token;
+                public long expires_in;
+                public string token_type;
+                public string scope;
+                public string uid;
+            }
+            public class MieClient
+            {
+                private readonly Uri endpoint;
+                private readonly Uri bridge;
+                private readonly int project;
+                private string accessToken;
+
+                public MieClient(Uri endpoint, Uri bridge, int project)
+                {
+                    this.endpoint = endpoint;
+                    this.bridge = bridge;
+                    this.project = project;
+                }
+
+                public void SetAccessToken(string token)
+                {
+                    accessToken = token;
+                }
+
+                public async Task<string> ExchangeAccessToken(string id, string secret, string code)
+                {
+                    var res = await new Uri(bridge, "api/oauth/token")
+                        .PostJsonAsync(new
+                        {
+                            code,
+                            grant_type = "authorization_code",
+                            redirect = new Uri(endpoint, "oauth/callback").ToString(),
+                            client_id = id,
+                            client_secret = secret,
+                        })
+                        .ReceiveJson<OauthExchangeResponse>();
+
+                    return res.access_token;
+                }
+
+                public async Task<int> CountNoSQLRecords(int id)
+                {
+                    return await new Uri(endpoint, $"api/nosql/{id}/records/count").GetAsync().ReceiveJson<int>();
+                }
+
+                public async Task<T> GetNoSQLRecords<T>(int id, int limit, int offset, string order, string query)
+                {
+                    return await new Uri(endpoint, $"api/nosql/{id}/records")
+                        .SetQueryParam("limit", limit)
+                        .SetQueryParam("offset", offset)
+                        .SetQueryParam("order", order)
+                        .SetQueryParam("query", query)
+                        .GetAsync()
+                        .ReceiveJson<T>();
+                }
+
+                public async Task<T> GetNoSQLRecord<T>(int table, int id)
+                {
+                    return await new Uri(endpoint, $"api/nosql/{table}/records/{id}").GetAsync().ReceiveJson<T>();
+                }
+
+                public async Task<T> ExecuteFunction<T>(int id, object arguments)
+                {
+                    return await new Uri(endpoint, $"serverless-function/{id}/execute")
+                        .WithOAuthBearerToken(accessToken)
+                        .PostJsonAsync(arguments)
+                        .ReceiveJson<T>();
+                }
+            }
+
         }
     }
     namespace Modules
@@ -295,29 +374,6 @@ namespace PrototypeLib
                         return false;
                     }
                     return true;
-                }
-            }
-        }
-        namespace OnlineServices.MieServices
-        {
-            public static class MieServicesConfig
-            {
-                public static string CloudFetchLink { get { return "https://cloud.smartsheep.studio/api/serverless-functions/1/execute"; } }
-            }
-            public static class MieCloudOps<T> where T : new()
-            {
-                public static async Task<T?> FetchCloudKey(string key)
-                {
-                    HttpClient client = new();
-                    var res = await client.GetStringAsync(MieServicesConfig.CloudFetchLink);
-                    var releases = JsonUtility.FromJson<string?>(res);
-                    if (releases == null)
-                    {
-                        Debug.LogError("Fetched Releases is null.");
-                        return new T();
-                    }
-                    else
-                        return JsonUtility.FromJson<T>(releases);
                 }
             }
         }
