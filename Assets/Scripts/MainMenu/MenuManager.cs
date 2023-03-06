@@ -143,7 +143,7 @@ public class MenuManager : MonoBehaviour
     }
     public void CloseMenu(int id) { OnMenuToggled?.Invoke(false, "null", id); }
     public void CloseMenu(string id) { OnMenuToggled?.Invoke(false, id); }
-    public void CloseMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(false, id.menuName, id.menuID); }
+    public void CloseMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(false, id.menuName, id.menuID); Debug.Log($"id.menuName"); }
     public void OpenMenu(int id) { OnMenuToggled?.Invoke(true, "null", id); }
     public void OpenMenu(string id) { OnMenuToggled?.Invoke(true, id); }
     public void OpenMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(true, id.menuName, id.menuID); }
