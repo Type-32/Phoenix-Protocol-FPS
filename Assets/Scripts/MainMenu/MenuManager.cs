@@ -129,7 +129,13 @@ public class MenuManager : MonoBehaviour
         }
         instance = this;
         gunsmithMenuState += OnGunsmithMenuToggled;
-        //Debug.Log("Initializing Awake Main menu");
+        RefreshMenu();
+        int tmep = 0;
+        foreach (MenuIdentifier id in MenuIdentifiers)
+        {
+            id.SetID(tmep);
+            tmep++;
+        }
     }
     public void SetQuitButtonState(bool state)
     {
@@ -143,7 +149,7 @@ public class MenuManager : MonoBehaviour
     }
     public void CloseMenu(int id) { OnMenuToggled?.Invoke(false, "null", id); }
     public void CloseMenu(string id) { OnMenuToggled?.Invoke(false, id); }
-    public void CloseMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(false, id.menuName, id.menuID); Debug.Log($"id.menuName"); }
+    public void CloseMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(false, id.menuName, id.menuID); Debug.Log($"{id.menuName}"); }
     public void OpenMenu(int id) { OnMenuToggled?.Invoke(true, "null", id); }
     public void OpenMenu(string id) { OnMenuToggled?.Invoke(true, id); }
     public void OpenMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(true, id.menuName, id.menuID); }
@@ -173,6 +179,7 @@ public class MenuManager : MonoBehaviour
         CloseSettingsMenu();
         CloseMultiplayerMenu();
         ToggleGunsmithMenu(false);
+        SetMainMenuState(true);
         OpenMainMenu();
         quitMatchmakingButton.SetActive(false);
         for (int i = 0; i < versionTexts.Count; i++)
@@ -183,8 +190,6 @@ public class MenuManager : MonoBehaviour
         {
 
         }
-        //AddPopup("test", "testlol");
-
     }
     private void OnEnable()
     {
@@ -328,7 +333,6 @@ public class MenuManager : MonoBehaviour
         isConnected = value;
         enterAnim.SetBool("isConnected", isConnected);
         StartCoroutine(DelayDisableEnterAnim(2f));
-
     }
     IEnumerator DelayDisableEnterAnim(float time)
     {

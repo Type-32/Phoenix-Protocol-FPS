@@ -28,7 +28,7 @@ public class MenuIdentifier : MonoBehaviour
             else
             {
                 gameObject.SetActive(state);
-                Debug.Log($"MenuIdentifier {menuID} is Invoked.");
+                //Debug.Log($"MenuIdentifier {menuID} is Invoked.");
             }
         }
         if (name != "null" && menuName == name)
@@ -38,7 +38,7 @@ public class MenuIdentifier : MonoBehaviour
             else
             {
                 gameObject.SetActive(state);
-                Debug.Log($"MenuIdentifier {menuName} is Invoked.");
+                //Debug.Log($"MenuIdentifier {menuName} is Invoked.");
             }
         }
         OnReceivedInstruction?.Invoke(gameObject.activeInHierarchy, menuName);
