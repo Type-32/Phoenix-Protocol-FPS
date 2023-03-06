@@ -84,6 +84,11 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(tryJoinDelay);
         PhotonNetwork.JoinRoom(roomName, expectedUsers);
+        isMatchmaking = false;
+        MenuManager.instance.quitMatchmakingButton.SetActive(false);
+        matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
+        MenuManager.instance.SetQuickMatchUIInfo("Joining Match...", false);
+        MenuManager.instance.AddNotification("Matchmaking", "You have joined a Match.");
     }
     private async Task MatchmakingAsync(MenuManager.Gamemodes gm)
     {
@@ -137,55 +142,64 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.instance.AddNotification("Matchmaking", "You have quitted matchmaking.");
         matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
     }
-    private bool CheckAvailableRooms(MenuManager.Gamemodes gamemodes)
+    private string CheckAvailableRooms(MenuManager.Gamemodes gamemodes)
     {
+        Debug.Log($"Room Counts {rl.Count}");
         foreach (RoomInfo tp in rl)
         {
             if (tp.MaxPlayers > tp.PlayerCount)
             {
+                Debug.Log($"Room Counts {rl.Count}, Room Mode {(string)tp.CustomProperties["roomMode"]}");
                 switch (gamemodes)
                 {
                     case MenuManager.Gamemodes.FFA:
                         if ((string)tp.CustomProperties["roomMode"] == "Free For All")
                         {
                             stashedSelectedRoomInfo = tp;
-                            return true;
+                            return tp.Name;
                         }
                         break;
                     case MenuManager.Gamemodes.TDM:
                         if ((string)tp.CustomProperties["roomMode"] == "Team Deathmatch")
                         {
                             stashedSelectedRoomInfo = tp;
-                            return true;
+                            return tp.Name;
                         }
                         break;
                     case MenuManager.Gamemodes.DZ:
                         if ((string)tp.CustomProperties["roomMode"] == "Drop Zones")
                         {
                             stashedSelectedRoomInfo = tp;
-                            return true;
+                            return tp.Name;
                         }
                         break;
                     case MenuManager.Gamemodes.CTF:
                         if ((string)tp.CustomProperties["roomMode"] == "Capture The Flag")
                         {
                             stashedSelectedRoomInfo = tp;
-                            return true;
+                            return tp.Name;
                         }
                         break;
                 }
             }
         }
-        return false;
+        return "";
     }
     public async Task<bool?> PeriodicFindMatch(int maxTimes, int secPerTime, MenuManager.Gamemodes gamemodes, int times = 0)
     {
         if (!isMatchmaking) return false;
         await Task.Delay(secPerTime * 1000);
         if (!isMatchmaking) return false;
-        bool ret = CheckAvailableRooms(gamemodes);//! Undeletable
-        if (times < maxTimes) ret = (bool)await PeriodicFindMatch(maxTimes, secPerTime, gamemodes, times + 1);
-        return ret;
+        string ret = CheckAvailableRooms(gamemodes);//! Undeletable
+        bool pfm = false;
+        if (times < maxTimes)
+        {
+            if (string.IsNullOrEmpty(ret))
+                pfm = (bool)await PeriodicFindMatch(maxTimes, secPerTime, gamemodes, times + 1);
+            else
+                pfm = true;
+        }
+        return pfm;
         //return false;
     }
     public override void OnConnected()
