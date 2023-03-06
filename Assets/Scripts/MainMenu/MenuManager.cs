@@ -163,13 +163,7 @@ public class MenuManager : MonoBehaviour
     }
     void Start()
     {
-        RefreshMenu();
-        int tmep = 0;
-        foreach (MenuIdentifier id in MenuIdentifiers)
-        {
-            id.SetID(tmep);
-            tmep++;
-        }
+        //RefreshMenu();
         Debug.Log("Loaded Scene from Main Menu");
         JoiningMasterLobby(false);
         CloseLoadingMenu();

@@ -110,7 +110,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            CloseAllMenus();
+            //CloseAllMenus();
         }
         currentSceneIndex = scene.buildIndex;
     }
@@ -131,6 +131,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         RoomManager temp = Instantiate(gameObject).GetComponent<RoomManager>();
         //temp.CloseAllMenus();
         //StartCoroutine(temp.CloseMainMenuDelayed(0.2f));
+        temp.loadEnterAnim = loadEnterAnim;
         Destroy(gameObject);
     }
     public void CheckQueue()
