@@ -42,11 +42,10 @@ public class RoomMenuComponent : MonoBehaviour
         SetStatisticsView(spi);
         SetLoadoutView(lpi);
     }
-    private void DetectIfLoadoutModified(string strPath)
+    private void DetectIfLoadoutModified(string strPath, LoadoutDataJSON tmp)
     {
         if (strPath == UserSystem.LoadoutDataPath)
         {
-            LoadoutDataJSON tmp = FileOps<LoadoutDataJSON>.ReadFile(strPath);
             SetLoadoutView(new LoadoutPreviewInfo(GlobalDatabase.singleton.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon1], GlobalDatabase.singleton.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon2], GlobalDatabase.singleton.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment1], GlobalDatabase.singleton.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment2]));
         }
     }

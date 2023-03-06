@@ -290,8 +290,6 @@ public class MenuManager : MonoBehaviour
     public void OpenCreateRoomMenu()
     {
         OpenMenu("createRoom");
-        OnSelectedGamemode(selectedGamemodes);
-        OnSelectedGamemode(selectedGamemodes);
     }
     public void CloseCreateRoomMenu()
     {
@@ -395,25 +393,6 @@ public class MenuManager : MonoBehaviour
         roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, Gamemodes.FFA, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility, maxKillLimitNumber);
         return roomOptionsTemp;
     }
-    public void OnSelectedGamemode(Gamemodes gmInput)
-    {
-        string temp = "None";
-        switch (gmInput)
-        {
-            case Gamemodes.TDM:
-                temp = "Team Deathmatch";
-                break;
-            case Gamemodes.CTF:
-                temp = "King of the Hills";
-                break;
-            case Gamemodes.DZ:
-                temp = "Drop Zones";
-                break;
-            case Gamemodes.FFA:
-                temp = "Free For All";
-                break;
-        }
-    }
     public void OnChangedVisibility(bool visible)
     {
         if (visible) visibility.text = "Public";
@@ -470,7 +449,6 @@ public class MenuManager : MonoBehaviour
                 selectedGamemodes = Gamemodes.FFA;
                 break;
         }
-        OnSelectedGamemode(selectedGamemodes);
     }
     public void PreviousGamemodeSelect()
     {
@@ -493,7 +471,6 @@ public class MenuManager : MonoBehaviour
                 selectedGamemodes = Gamemodes.FFA;
                 break;
         }
-        OnSelectedGamemode(selectedGamemodes);
     }
 
     public void ToggleVisibilitySelect()
