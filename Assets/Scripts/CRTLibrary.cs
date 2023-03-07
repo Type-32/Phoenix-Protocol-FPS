@@ -23,6 +23,7 @@ namespace PrototypeLib
         using Hashtable = ExitGames.Client.Photon.Hashtable;
         namespace UnityCloudServices
         {
+            //! Deprecated
             /*
             using Unity.Services.CloudSave;
             using Unity.Services.Authentication;
@@ -171,6 +172,7 @@ namespace PrototypeLib
         }
         namespace OAuthentication
         {
+            //! Deprecated
             using System.Net.Http;
             using System.Net.Http.Headers;
             using System.Net.Http.Formatting;
