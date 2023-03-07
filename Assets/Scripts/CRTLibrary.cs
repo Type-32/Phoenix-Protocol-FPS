@@ -10,6 +10,8 @@ using System.IO;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Services.CloudSave;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
 
 namespace PrototypeLib
 {
@@ -21,8 +23,10 @@ namespace PrototypeLib
         using Hashtable = ExitGames.Client.Photon.Hashtable;
         namespace UnityCloudServices
         {
+            /*
             using Unity.Services.CloudSave;
             using Unity.Services.Authentication;
+            using Unity.Services.Core;
             public static class CloudKeyConfig
             {
                 public static string UserDataConfigKey { get { return "UserDataConfig"; } }
@@ -43,6 +47,7 @@ namespace PrototypeLib
                     CloudSaveService.Instance.SaveAsync(slotName, data, OnSaveSuccess, OnSaveFailure);
                 }
             }
+            */
         }
         namespace PUNMultiplayer
         {
