@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.IO;
 using UnityEngine;
 using Unity.Mathematics;
+using Unity.Services.CloudSave;
 
 namespace PrototypeLib
 {
@@ -18,6 +19,31 @@ namespace PrototypeLib
         using Photon.Pun;
         using Photon.Realtime;
         using Hashtable = ExitGames.Client.Photon.Hashtable;
+        namespace UnityCloudServices
+        {
+            using Unity.Services.CloudSave;
+            using Unity.Services.Authentication;
+            public static class CloudKeyConfig
+            {
+                public static string UserDataConfigKey { get { return "UserDataConfig"; } }
+                public static string LoadoutDataConfigKey { get { return "LoadoutDataConfig"; } }
+                public static string RewardDataConfigKey { get { return "RewardConfig"; } }
+                public static string SettingsOptionsKey { get { return "SettingsOptions"; } }
+                public static string AppearancesConfigKey { get { return "AppearancesConfig"; } }
+                public static string GunsmithConfigKey { get { return "GunsmithConfig"; } }
+            }
+            public class CloudSavesManager<T> where T : new()
+            {
+                public void Save(T content, string slotName)
+                {
+                    // Serialize the custom class to a JSON string
+                    string data = JsonUtility.ToJson(content);
+
+                    // Save the data to the cloud
+                    CloudSaveService.Instance.SaveAsync(slotName, data, OnSaveSuccess, OnSaveFailure);
+                }
+            }
+        }
         namespace PUNMultiplayer
         {
             public static class PlayerManipulaton

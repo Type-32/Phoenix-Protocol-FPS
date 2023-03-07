@@ -8,10 +8,8 @@ using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
-using LauncherManifest;
 using UserConfiguration;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -297,11 +295,12 @@ public class PlayerManager : MonoBehaviour
     }
     void CreateController()
     {
+        /*
         cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
         if (cameraData)
         {
             cameraData.renderPostProcessing = false;
-        }
+        }*/
         audioListener.enabled = false;
         respawning = true;
         respawnButton.interactable = false;
@@ -399,11 +398,12 @@ public class PlayerManager : MonoBehaviour
         hurtVolume.weight = 1f;
         if (cameraObject != null)
         {
+            /*
             cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
             if (cameraData)
             {
                 cameraData.renderPostProcessing = true;
-            }
+            }*/
         }
 
         PhotonNetwork.Destroy(controller);
