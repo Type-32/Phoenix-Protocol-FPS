@@ -121,6 +121,12 @@ public class CloudServicesManager : MonoBehaviour
     public static CloudServicesManager Instance;
     private async void Awake()
     {
+        if (Instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
         Instance = this;
         // Cloud Save needs to be initialized along with the other Unity Services that
         // it depends on (namely, Authentication), and then the user must sign in.

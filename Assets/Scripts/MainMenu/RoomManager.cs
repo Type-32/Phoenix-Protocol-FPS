@@ -128,6 +128,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public void SelfDestruction()
     {
+        return;
         RoomManager temp = Instantiate(gameObject).GetComponent<RoomManager>();
         //temp.CloseAllMenus();
         //StartCoroutine(temp.CloseMainMenuDelayed(0.2f));

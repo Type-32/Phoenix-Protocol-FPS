@@ -22,6 +22,8 @@ public class MenuManager : MonoBehaviour
     public static event SearchMenu OnSearchMenu;
     [Space]
     [Header("Menus")]
+    public GameObject login;
+    public GameObject main;
     public RoomMenuComponent RoomMenuComp;
     public Button multiplayerMenuButton;
     public GameObject roomMenu, mainMenu;
@@ -129,7 +131,6 @@ public class MenuManager : MonoBehaviour
         }
         instance = this;
         gunsmithMenuState += OnGunsmithMenuToggled;
-        RefreshMenu();
         int tmep = 0;
         foreach (MenuIdentifier id in MenuIdentifiers)
         {
@@ -165,6 +166,7 @@ public class MenuManager : MonoBehaviour
     {
         //RefreshMenu();
         Debug.Log("Loaded Scene from Main Menu");
+        RefreshMenu();
         JoiningMasterLobby(false);
         CloseLoadingMenu();
         CloseFindRoomMenu();
