@@ -22,27 +22,34 @@ public class MenuIdentifier : MonoBehaviour
     public void ReceiveInstruction(bool state, string name, int id)
     {
         //if (selfManagable) return;
-        if (id != -1 && id == menuID)
+        if (menuObject != null)
         {
-            if (!state && !menuObject.activeInHierarchy)
-                return;
-            else
+            if (id != -1 && id == menuID)
             {
-                menuObject.SetActive(state);
-                //Debug.Log($"MenuIdentifier {menuID} is Invoked.");
+                if (!state && !menuObject.activeInHierarchy)
+                    return;
+                else
+                {
+                    menuObject.SetActive(state);
+                    //Debug.Log($"MenuIdentifier {menuID} is Invoked.");
+                }
+            }
+            if (name != "null" && menuName == name)
+            {
+                if (!state && !menuObject.activeInHierarchy)
+                    return;
+                else
+                {
+                    menuObject.SetActive(state);
+                    //Debug.Log($"MenuIdentifier {menuName} is Invoked.");
+                }
             }
         }
-        if (name != "null" && menuName == name)
+        else
         {
-            if (!state && !menuObject.activeInHierarchy)
-                return;
-            else
-            {
-                menuObject.SetActive(state);
-                //Debug.Log($"MenuIdentifier {menuName} is Invoked.");
-            }
+            Debug.LogWarning($"There is no menuObject reference under the MenuIdentifier: {menuName}");
         }
-        OnReceivedInstruction?.Invoke(menuObject.activeInHierarchy, menuName);
+        OnReceivedInstruction?.Invoke(menuObject != null ? menuObject.activeInHierarchy : false, menuName);
         if (state && name == "main") MenuManager.instance.SetQuitButtonState(true);
         else MenuManager.instance.SetQuitButtonState(false);
 
