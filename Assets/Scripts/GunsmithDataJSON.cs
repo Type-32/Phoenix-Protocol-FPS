@@ -12,21 +12,21 @@ public class GunsmithDataJSON
         {
             get
             {
-                return GlobalDatabase.singleton.allWeaponDatas[weaponIndex].damage;
+                return GlobalDatabase.Instance.allWeaponDatas[weaponIndex].damage;
             }
         }
         public int o_MagazineCapacity
         {
             get
             {
-                return GlobalDatabase.singleton.allWeaponDatas[weaponIndex].maxAmmoPerMag;
+                return GlobalDatabase.Instance.allWeaponDatas[weaponIndex].maxAmmoPerMag;
             }
         }
         public float o_Range
         {
             get
             {
-                return GlobalDatabase.singleton.allWeaponDatas[weaponIndex].range;
+                return GlobalDatabase.Instance.allWeaponDatas[weaponIndex].range;
             }
         }
         public CatridgeType o_Catridge
@@ -40,14 +40,14 @@ public class GunsmithDataJSON
         {
             get
             {
-                return GlobalDatabase.singleton.allWeaponDatas[weaponIndex].maxDurability;
+                return GlobalDatabase.Instance.allWeaponDatas[weaponIndex].maxDurability;
             }
         }
         public float o_Reload
         {
             get
             {
-                return GlobalDatabase.singleton.allWeaponDatas[weaponIndex].reloadTime;
+                return GlobalDatabase.Instance.allWeaponDatas[weaponIndex].reloadTime;
             }
         }
         public float o_Hipfire
@@ -217,7 +217,8 @@ public class GunsmithDataJSON
     }
     #endregion
     [System.Serializable]
-    public struct SmithingResources{
+    public struct SmithingResources
+    {
         public int iron;
         public int mechanisms;
         public int composites;

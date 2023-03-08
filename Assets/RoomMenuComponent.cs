@@ -46,7 +46,7 @@ public class RoomMenuComponent : MonoBehaviour
     {
         if (strPath == UserSystem.LoadoutDataPath)
         {
-            SetLoadoutView(new LoadoutPreviewInfo(GlobalDatabase.singleton.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon1], GlobalDatabase.singleton.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon2], GlobalDatabase.singleton.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment1], GlobalDatabase.singleton.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment2]));
+            SetLoadoutView(new LoadoutPreviewInfo(GlobalDatabase.Instance.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon1], GlobalDatabase.Instance.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon2], GlobalDatabase.Instance.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment1], GlobalDatabase.Instance.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment2]));
         }
     }
 }

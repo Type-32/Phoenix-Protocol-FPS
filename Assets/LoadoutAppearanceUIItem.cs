@@ -23,9 +23,9 @@ public class LoadoutAppearanceUIItem : MonoBehaviour
     }
     public int FindIndexFromData(WeaponAppearanceMeshData data)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
         {
-            if (GlobalDatabase.singleton.allWeaponAppearanceDatas[i] == data) return i;
+            if (GlobalDatabase.Instance.allWeaponAppearanceDatas[i] == data) return i;
         }
         return -1;
     }

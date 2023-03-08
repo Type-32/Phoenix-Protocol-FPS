@@ -67,17 +67,17 @@ public class InGameUI : MonoBehaviour
     }
     public Sprite FindWeaponIcon(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
-            if (i == index) return GlobalDatabase.singleton.allWeaponDatas[i].itemIcon;
+            if (i == index) return GlobalDatabase.Instance.allWeaponDatas[i].itemIcon;
         }
         return null;
     }
     public Sprite FindEquipmentIcon(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allEquipmentDatas.Count; i++)
         {
-            if (i == index) return GlobalDatabase.singleton.allEquipmentDatas[i].itemIcon;
+            if (i == index) return GlobalDatabase.Instance.allEquipmentDatas[i].itemIcon;
         }
         return null;
     }

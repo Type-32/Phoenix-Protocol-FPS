@@ -25,9 +25,9 @@ public class LoadoutEquipmentSelectionItem : MonoBehaviour
 
     public void OnClickButton()
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allEquipmentDatas.Count; i++)
         {
-            if (GlobalDatabase.singleton.allEquipmentDatas[i] == equipmentData)
+            if (GlobalDatabase.Instance.allEquipmentDatas[i] == equipmentData)
             {
                 loadoutSelection.loadoutPreviewUI.SetEquipmentSlotInfo(loadoutSelection.forSelectedSlot, equipmentData);
             }

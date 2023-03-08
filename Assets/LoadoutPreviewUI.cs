@@ -173,17 +173,17 @@ public class LoadoutPreviewUI : MonoBehaviour
     }
     Sprite FindAttachmentIcon(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
         {
-            if (i == index) return GlobalDatabase.singleton.allWeaponAttachmentDatas[i].attachmentIcon;
+            if (i == index) return GlobalDatabase.Instance.allWeaponAttachmentDatas[i].attachmentIcon;
         }
         return null;
     }
     Sprite FindAppearanceIcon(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
         {
-            if (i == index) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i].itemIcon;
+            if (i == index) return GlobalDatabase.Instance.allWeaponAppearanceDatas[i].itemIcon;
         }
         return null;
     }

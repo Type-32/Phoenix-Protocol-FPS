@@ -69,7 +69,7 @@ public class ShopMenuScript : MonoBehaviour
     {
         bool informPopupNeeded = false;
         string content = "You have unlocked the following content(s) in your last session: \n";
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
             ShopWeaponItem item = Instantiate(shopWeaponItemPrefab, shopWeaponItemHolder).GetComponent<ShopWeaponItem>();
             bool un = false, pur = false;
@@ -78,14 +78,14 @@ public class ShopMenuScript : MonoBehaviour
                 if (jsonData.shopData.availableWeaponIndexes.Contains(i))
                 {
                     un = pur = false;
-                    if (jsonData.userLevel >= GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel)
+                    if (jsonData.userLevel >= GlobalDatabase.Instance.allWeaponDatas[i].unlockingLevel)
                     {
                         un = true;
                         pur = false;
                         informPopupNeeded = true;
                         jsonData.shopData.availableWeaponIndexes.Remove(i);
                         jsonData.shopData.unlockedWeaponIndexes.Add(i);
-                        content = content + GlobalDatabase.singleton.allWeaponDatas[i].itemName + "\n";
+                        content = content + GlobalDatabase.Instance.allWeaponDatas[i].itemName + "\n";
                     }
                 }
                 if (jsonData.shopData.unlockedWeaponIndexes.Contains(i))
@@ -97,24 +97,24 @@ public class ShopMenuScript : MonoBehaviour
                 {
                     un = pur = true;
                 }
-                item.SetItemData(GlobalDatabase.singleton.allWeaponDatas[i], un, pur);
+                item.SetItemData(GlobalDatabase.Instance.allWeaponDatas[i], un, pur);
                 shopWeaponList.Add(item);
             }
             else
             {
-                if (jsonData.userLevel >= GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel)
+                if (jsonData.userLevel >= GlobalDatabase.Instance.allWeaponDatas[i].unlockingLevel)
                 {
                     un = true;
                     pur = false;
                     informPopupNeeded = true;
                     jsonData.shopData.unlockedWeaponIndexes.Add(i);
-                    content = content + GlobalDatabase.singleton.allWeaponDatas[i].itemName + "\n";
+                    content = content + GlobalDatabase.Instance.allWeaponDatas[i].itemName + "\n";
                 }
                 else
                 {
                     jsonData.shopData.availableWeaponIndexes.Add(i);
                 }
-                item.SetItemData(GlobalDatabase.singleton.allWeaponDatas[i], un, pur);
+                item.SetItemData(GlobalDatabase.Instance.allWeaponDatas[i], un, pur);
                 shopWeaponList.Add(item);
             }
         }

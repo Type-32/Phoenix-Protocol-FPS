@@ -77,10 +77,10 @@ public class UserDatabase : MonoBehaviour
             m_am -= afterLeft;
             jsonData.userLevelXP = 0;
             jsonData.userLevel++;
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allWeaponDatas[i].unlockingLevel <= jsonData.userLevel)
-                    unlockedContent = unlockedContent + "-" + GlobalDatabase.singleton.allWeaponDatas[i].itemName + "\n";
+                if (GlobalDatabase.Instance.allWeaponDatas[i].unlockingLevel <= jsonData.userLevel)
+                    unlockedContent = unlockedContent + "-" + GlobalDatabase.Instance.allWeaponDatas[i].itemName + "\n";
             }
             if (RoomManager.Instance.currentSceneIndex != 0)
             {

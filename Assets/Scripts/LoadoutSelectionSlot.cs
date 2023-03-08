@@ -38,9 +38,9 @@ public class LoadoutSelectionSlot : MonoBehaviourPunCallbacks
         if (playerManager.pv.IsMine)
         {
             Hashtable hash = new Hashtable();
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allWeaponDatas[i] == weaponData) hash.Add("weaponDataChanged", i);
+                if (GlobalDatabase.Instance.allWeaponDatas[i] == weaponData) hash.Add("weaponDataChanged", i);
             }
             hash.Add("weaponDataChangedMode", mode);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash); //Setup Hashtable to send Changed data to server side

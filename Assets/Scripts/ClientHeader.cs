@@ -390,7 +390,7 @@ namespace UserConfiguration
                     if (!jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex))
                     {
                         Debug.Log("Returned " + WeaponValidation.NoRegistry.ToString());
-                        if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                        if (GlobalDatabase.Instance.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
                         {
                             if (correctValidation)
                             {
@@ -408,7 +408,7 @@ namespace UserConfiguration
                     }
                     else
                     {
-                        if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                        if (GlobalDatabase.Instance.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
                         {
                             if (correctValidation)
                             {
@@ -433,7 +433,7 @@ namespace UserConfiguration
                 }
                 else
                 {
-                    if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                    if (GlobalDatabase.Instance.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
                     {
                         if (correctValidation)
                         {
@@ -461,7 +461,7 @@ namespace UserConfiguration
             }
             else
             {
-                if (GlobalDatabase.singleton.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
+                if (GlobalDatabase.Instance.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
                 {
                     if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex) || jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex))
                     {
@@ -515,97 +515,97 @@ namespace UserConfiguration
     {
         public static WeaponData FindWeaponData(int index)
         {
-            if (index < GlobalDatabase.singleton.allWeaponDatas.Count)
+            if (index < GlobalDatabase.Instance.allWeaponDatas.Count)
             {
-                return GlobalDatabase.singleton.allWeaponDatas[index];
+                return GlobalDatabase.Instance.allWeaponDatas[index];
             }
             return null;
         }
         public static int FindWeaponDataIndex(WeaponData data)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allWeaponDatas[i] == data) return i;
+                if (GlobalDatabase.Instance.allWeaponDatas[i] == data) return i;
             }
             return -1;
         }
         public static EquipmentData FindEquipmentData(int index)
         {
-            if (index < GlobalDatabase.singleton.allWeaponDatas.Count)
+            if (index < GlobalDatabase.Instance.allWeaponDatas.Count)
             {
-                return GlobalDatabase.singleton.allEquipmentDatas[index];
+                return GlobalDatabase.Instance.allEquipmentDatas[index];
             }
             return null;
         }
         public static int FindEquipmentDataIndex(EquipmentData data)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allEquipmentDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allEquipmentDatas[i] == data) return i;
+                if (GlobalDatabase.Instance.allEquipmentDatas[i] == data) return i;
             }
             return -1;
         }
         public static int FindAttachmentIndex(WeaponAttachmentData data)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allWeaponAttachmentDatas[i] == data) return i;
+                if (GlobalDatabase.Instance.allWeaponAttachmentDatas[i] == data) return i;
             }
             return -1;
         }
         public static WeaponAttachmentData FindAttachment(int index)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
             {
-                if (i == index) return GlobalDatabase.singleton.allWeaponAttachmentDatas[i];
+                if (i == index) return GlobalDatabase.Instance.allWeaponAttachmentDatas[i];
             }
             return null;
         }
         public static int FindLoadoutDataIndex(LoadoutData data)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allLoadoutDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allLoadoutDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allLoadoutDatas[i] == data) return i;
+                if (GlobalDatabase.Instance.allLoadoutDatas[i] == data) return i;
             }
             return -1;
         }
         public static LoadoutData FindLoadoutData(int index)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allLoadoutDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allLoadoutDatas.Count; i++)
             {
-                if (i == index) return GlobalDatabase.singleton.allLoadoutDatas[i];
+                if (i == index) return GlobalDatabase.Instance.allLoadoutDatas[i];
             }
             return null;
         }
         public static int FindWeaponAppearanceDataIndex(WeaponAppearanceMeshData data)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allWeaponAppearanceDatas[i] == data) return i;
+                if (GlobalDatabase.Instance.allWeaponAppearanceDatas[i] == data) return i;
             }
             return -1;
         }
         public static WeaponAppearanceMeshData FindWeaponAppearanceData(int index)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
             {
-                if (i == index) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i];
+                if (i == index) return GlobalDatabase.Instance.allWeaponAppearanceDatas[i];
             }
             return null;
         }
         public static int FindPlayerCosmeticDataIndex(PlayerCosmeticData data)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allPlayerCosmeticDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allPlayerCosmeticDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allPlayerCosmeticDatas[i] == data) return i;
+                if (GlobalDatabase.Instance.allPlayerCosmeticDatas[i] == data) return i;
             }
             return -1;
         }
         public static PlayerCosmeticData FindPlayerCosmeticData(int index)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allPlayerCosmeticDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allPlayerCosmeticDatas.Count; i++)
             {
-                if (i == index) return GlobalDatabase.singleton.allPlayerCosmeticDatas[i];
+                if (i == index) return GlobalDatabase.Instance.allPlayerCosmeticDatas[i];
             }
             return null;
         }
@@ -706,8 +706,8 @@ namespace UserConfiguration
                 WeaponAppearance t1 = new();
                 WeaponAppearance t2 = new();
                 //Debug.LogWarning("Slots Length: " + loadoutJsonData.Slots.Length);
-                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1) t1 = new(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
-                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1) t2 = new(GlobalDatabase.singleton.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
+                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1) t1 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
+                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1) t2 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
                 if (loadoutJsonData.Slots[i].WeaponSkin1 != -1)
                 {
                     if (!appearanceData.unlockedWeaponAppearances.Contains(t1))
@@ -763,9 +763,9 @@ namespace UserConfiguration
         }
         public static WeaponAppearanceMeshData FindWeaponAppearanceMeshData(int appearanceIndex, int weaponIndex)
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
             {
-                if (i == appearanceIndex && GlobalDatabase.singleton.allWeaponAppearanceDatas[i].weaponData.GlobalWeaponIndex == weaponIndex) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i];
+                if (i == appearanceIndex && GlobalDatabase.Instance.allWeaponAppearanceDatas[i].weaponData.GlobalWeaponIndex == weaponIndex) return GlobalDatabase.Instance.allWeaponAppearanceDatas[i];
             }
             return null;
         }

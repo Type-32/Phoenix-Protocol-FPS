@@ -12,9 +12,9 @@ public class EquipmentData : ItemData
     {
         get
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allEquipmentDatas.Count; i++)
             {
-                if (this == GlobalDatabase.singleton.allEquipmentDatas[i]) return i;
+                if (this == GlobalDatabase.Instance.allEquipmentDatas[i]) return i;
             }
             return -1;
         }

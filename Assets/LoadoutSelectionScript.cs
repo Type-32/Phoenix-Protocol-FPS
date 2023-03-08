@@ -77,9 +77,9 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public int FindGlobalWeaponIndex(WeaponData data)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
-            if (GlobalDatabase.singleton.allWeaponDatas[i] == data) return i;
+            if (GlobalDatabase.Instance.allWeaponDatas[i] == data) return i;
         }
         return -1;
     }
@@ -92,7 +92,7 @@ public class LoadoutSelectionScript : MonoBehaviour
 
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
-            //data.Slots[i] = GlobalDatabase.singleton.emptyLoadoutSlotDataJSON;
+            //data.Slots[i] = GlobalDatabase.Instance.emptyLoadoutSlotDataJSON;
             //data.Slots[i].WeaponData1 = loadoutDataList[i].weaponData[0];
             //data.Slots[i].WeaponData2 = loadoutDataList[i].weaponData[1];
             data.Slots[i].Weapon1 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[0]);
@@ -161,8 +161,8 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].selectedSidebarrelLeft[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Leftbarrel2);
             loadoutDataList[i].selectedSidebarrelRight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel1);
             loadoutDataList[i].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel2);
-            loadoutDataList[i].selectedAppearanceData[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1] : null));
-            loadoutDataList[i].selectedAppearanceData[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2] : null));
+            loadoutDataList[i].selectedAppearanceData[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1] : null));
+            loadoutDataList[i].selectedAppearanceData[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2] : null));
 
             loadoutDataList[i].selectedSightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Sight1 : -1;
             loadoutDataList[i].selectedSightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Sight2 : -1;
@@ -174,25 +174,25 @@ public class LoadoutSelectionScript : MonoBehaviour
             loadoutDataList[i].selectedSidebarrelLeftIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Leftbarrel2 : -1;
             loadoutDataList[i].selectedSidebarrelRightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Rightbarrel1 : -1;
             loadoutDataList[i].selectedSidebarrelRightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Rightbarrel2 : -1;
-            loadoutDataList[i].selectedAppearanceDataIndex[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? jsonData.Slots[i].WeaponSkin1 : -1));
-            loadoutDataList[i].selectedAppearanceDataIndex[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.singleton.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? jsonData.Slots[i].WeaponSkin2 : -1));
+            loadoutDataList[i].selectedAppearanceDataIndex[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? jsonData.Slots[i].WeaponSkin1 : -1));
+            loadoutDataList[i].selectedAppearanceDataIndex[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? jsonData.Slots[i].WeaponSkin2 : -1));
         }
         if (checkChange) WriteLoadoutDataToJSON();
     }
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
-            if (i == index) return GlobalDatabase.singleton.allWeaponDatas[i];
+            if (i == index) return GlobalDatabase.Instance.allWeaponDatas[i];
         }
         return null;
     }
     public WeaponAttachmentData FindAttachmentDataFromIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
         {
-            if (i == index) return GlobalDatabase.singleton.allWeaponAttachmentDatas[i];
+            if (i == index) return GlobalDatabase.Instance.allWeaponAttachmentDatas[i];
         }
         return null;
     }
@@ -236,23 +236,23 @@ public class LoadoutSelectionScript : MonoBehaviour
             }
             loadoutEquipmentSelects.Clear();
         }
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
             if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
             LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
             //loadoutDataList[i].loadoutIndex = i;
             loadoutWeaponSelects.Add(temp);
-            temp.weaponData = GlobalDatabase.singleton.allWeaponDatas[i];
+            temp.weaponData = GlobalDatabase.Instance.allWeaponDatas[i];
             temp.weaponIndex = i;
             temp.customButtonsHolder = this.customButtonsHolder;
             FileOps<UserDataJSON>.WriteFile(jsonUserData, UserSystem.UserDataPath);
         }
-        for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allEquipmentDatas.Count; i++)
         {
             LoadoutEquipmentSelectionItem temp = Instantiate(loadoutEquipmentSelectionItemPrefab, loadoutEquipmentSelectsHolder).GetComponent<LoadoutEquipmentSelectionItem>();
             //loadoutDataList[i].loadoutIndex = i;
             loadoutEquipmentSelects.Add(temp);
-            temp.equipmentData = GlobalDatabase.singleton.allEquipmentDatas[i];
+            temp.equipmentData = GlobalDatabase.Instance.allEquipmentDatas[i];
             temp.equipmentIndex = i;
             temp.customButtonsHolder = this.customButtonsHolder;
             FileOps<UserDataJSON>.WriteFile(jsonUserData, UserSystem.UserDataPath);

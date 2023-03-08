@@ -23,9 +23,9 @@ public class LoadoutAttachUIItem : MonoBehaviour
     }
     public int FindIndexFromData(WeaponAttachmentData data)
     {
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
         {
-            if (GlobalDatabase.singleton.allWeaponAttachmentDatas[i] == data) return i;
+            if (GlobalDatabase.Instance.allWeaponAttachmentDatas[i] == data) return i;
         }
         return -1;
     }

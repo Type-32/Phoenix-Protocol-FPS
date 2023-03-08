@@ -42,17 +42,17 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
     }
     public Sprite FindIconFromAttachmentIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
         {
-            if (index == i) return GlobalDatabase.singleton.allWeaponAttachmentDatas[i].attachmentIcon;
+            if (index == i) return GlobalDatabase.Instance.allWeaponAttachmentDatas[i].attachmentIcon;
         }
         return nullIcon;
     }
     public Sprite FindIconFromAppearanceIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
         {
-            if (index == i) return GlobalDatabase.singleton.allWeaponAppearanceDatas[i].itemIcon;
+            if (index == i) return GlobalDatabase.Instance.allWeaponAppearanceDatas[i].itemIcon;
         }
         return nullIcon;
     }

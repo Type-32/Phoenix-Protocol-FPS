@@ -18,14 +18,14 @@ public class ChoiceHolderScript : MonoBehaviour
     }
     public void InstantiateAllChoiceSlots(int index)
     {
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
-            InstantiateChoiceSlot(GlobalDatabase.singleton.allWeaponDatas[i], index);
+            InstantiateChoiceSlot(GlobalDatabase.Instance.allWeaponDatas[i], index);
         }
     }
     public void ClearChoiceSlot()
     {
-        for(int i = 0; i < slotScripts.Count; i++)
+        for (int i = 0; i < slotScripts.Count; i++)
         {
             Destroy(slotScripts[i].gameObject);
         }
@@ -38,9 +38,9 @@ public class ChoiceHolderScript : MonoBehaviour
     }
     public Button FindElementInSelection(WeaponData data)
     {
-        for(int i = 0; i < slotScripts.Count; i++)
+        for (int i = 0; i < slotScripts.Count; i++)
         {
-            if(data == slotScripts[i].weaponData)
+            if (data == slotScripts[i].weaponData)
             {
                 return slotScripts[i].gameObject.GetComponent<Button>();
             }

@@ -8,10 +8,10 @@ public class UpdateLogsManager : MonoBehaviour
     public GameObject updateLogsItemPrefab;
     private void Start()
     {
-        for(int i = 0; i < GlobalDatabase.singleton.allLogDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allLogDatas.Count; i++)
         {
             LogsItem temp = Instantiate(updateLogsItemPrefab, updateLogsItemHolder).GetComponent<LogsItem>();
-            temp.SetInfo(GlobalDatabase.singleton.allLogDatas[i].description, GlobalDatabase.singleton.allLogDatas[i].version);
+            temp.SetInfo(GlobalDatabase.Instance.allLogDatas[i].description, GlobalDatabase.Instance.allLogDatas[i].version);
         }
     }
 }

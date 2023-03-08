@@ -100,17 +100,17 @@ public class PlayerManager : MonoBehaviour
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
-            if (index == i) return GlobalDatabase.singleton.allWeaponDatas[i];
+            if (index == i) return GlobalDatabase.Instance.allWeaponDatas[i];
         }
         return null;
     }
     public EquipmentData FindEquipmentDataFromIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.singleton.allEquipmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allEquipmentDatas.Count; i++)
         {
-            if (index == i) return GlobalDatabase.singleton.allEquipmentDatas[i];
+            if (index == i) return GlobalDatabase.Instance.allEquipmentDatas[i];
         }
         return null;
     }
@@ -163,10 +163,10 @@ public class PlayerManager : MonoBehaviour
     {
         if (!pv.IsMine)
         {
-            slotHolderScript.slotWeaponData[0] = GlobalDatabase.singleton.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]];
-            slotHolderScript.slotWeaponData[1] = GlobalDatabase.singleton.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]];
-            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
-            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
+            slotHolderScript.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]];
+            slotHolderScript.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]];
+            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
+            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
             deathUI.SetActive(false);
             hasRespawned = true;
             CloseMenu();
@@ -183,10 +183,10 @@ public class PlayerManager : MonoBehaviour
             }
             StartCoroutine(DelayedSyncIsTeam(0.25f));
             settingsMenu.SettingsMenuAwakeFunction();
-            slotHolderScript.slotWeaponData[0] = GlobalDatabase.singleton.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedMainWeaponIndex"]];
-            slotHolderScript.slotWeaponData[1] = GlobalDatabase.singleton.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]];
-            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
-            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.singleton.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
+            slotHolderScript.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedMainWeaponIndex"]];
+            slotHolderScript.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]];
+            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
+            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
             OnJoiningOngoingRoom();
             deathInfoCanvas.alpha = 0f;
             randomPlayerColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255), 1);

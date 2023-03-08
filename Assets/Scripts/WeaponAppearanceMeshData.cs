@@ -10,9 +10,9 @@ public class WeaponAppearanceMeshData : ItemData
     {
         get
         {
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponAppearanceDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
             {
-                if (GlobalDatabase.singleton.allWeaponAppearanceDatas[i] == this) return i;
+                if (GlobalDatabase.Instance.allWeaponAppearanceDatas[i] == this) return i;
             }
             return -1;
         }

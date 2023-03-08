@@ -14,9 +14,9 @@ public class WeaponData : ItemData
         get
         {
             int temp = -1;
-            for (int i = 0; i < GlobalDatabase.singleton.allWeaponDatas.Count; i++)
+            for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
             {
-                if (this == GlobalDatabase.singleton.allWeaponDatas[i])
+                if (this == GlobalDatabase.Instance.allWeaponDatas[i])
                 {
                     temp = i;
                     break;

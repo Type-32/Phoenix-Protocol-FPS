@@ -1073,7 +1073,7 @@ namespace Photon.Pun
             StartupStopwatch = new Stopwatch();
             StartupStopwatch.Start();
 
-            // using a singleton PhotonHandler to control the new client (which is also a singleton for PUN)
+            // using a Instance PhotonHandler to control the new client (which is also a Instance for PUN)
             PhotonHandler.Instance.Client = NetworkingClient;
 
 

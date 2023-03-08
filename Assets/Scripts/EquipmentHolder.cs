@@ -28,13 +28,13 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         {
             for (int i = 0; i < 2; i++)
             {
-                InstantiateWeapon(GlobalDatabase.singleton.allWeaponDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedMainWeaponIndex"]) : ((int)player.pv.Owner.CustomProperties["selectedSecondWeaponIndex"])], i);
+                InstantiateWeapon(GlobalDatabase.Instance.allWeaponDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedMainWeaponIndex"]) : ((int)player.pv.Owner.CustomProperties["selectedSecondWeaponIndex"])], i);
                 //weaponSlots[i].InitializeAwake();
                 //weaponSlots[i].InitializeStart();
             }
             for (int i = 0; i < 2; i++)
             {
-                InstantiateEquipment(GlobalDatabase.singleton.allEquipmentDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex1"]) : ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex2"])], i);
+                InstantiateEquipment(GlobalDatabase.Instance.allEquipmentDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex1"]) : ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex2"])], i);
             }
             Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
@@ -299,7 +299,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         if (!player.pv.IsMine && targetPlayer == player.pv.Owner && changedProps.ContainsKey("weaponIndex"))
         {
             EquipItem((int)changedProps["weaponIndex"]);
-            //player.playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.singleton.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+            //player.playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
         }
     }
     public void WeaponFunction()

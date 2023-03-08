@@ -14,9 +14,9 @@ public class GunAttachmentItem : MonoBehaviour
     public int FindIndexFromData(WeaponAttachmentData _data)
     {
         if (_data == null) return -1;
-        for(int i = 0; i < GlobalDatabase.singleton.allWeaponAttachmentDatas.Count; i++)
+        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
         {
-            if(GlobalDatabase.singleton.allWeaponAttachmentDatas[i] == _data) return i;
+            if (GlobalDatabase.Instance.allWeaponAttachmentDatas[i] == _data) return i;
         }
         return -1;
     }

@@ -13,17 +13,17 @@ public class GlobalDatabase : MonoBehaviour
     public List<PlayerCosmeticData> allPlayerCosmeticDatas = new();
     public List<LoadoutData> allLoadoutDatas = new();
     public List<UpdateLogData> allLogDatas = new();
-    public static GlobalDatabase singleton;
+    public static GlobalDatabase Instance;
     public LoadoutSelectionScript loadoutSelectionScript;
     private void Awake()
     {
-        if (singleton)
+        if (Instance)
         {
             Destroy(gameObject);
             return;
         }
         DontDestroyOnLoad(gameObject);
-        singleton = this;
+        Instance = this;
         CosmeticSystem.ValidateLoadoutCosmetics();
         loadoutSelectionScript.ReadLoadoutDataFromJSON();
         for (int i = 0; i < allWeaponDatas.Count; i++)

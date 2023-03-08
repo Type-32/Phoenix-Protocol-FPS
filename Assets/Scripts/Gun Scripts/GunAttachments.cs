@@ -86,7 +86,7 @@ public class GunAttachments : MonoBehaviour
             }
             if ((int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex1"] != -1)
             {
-                gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.singleton.allWeaponAppearanceDatas[(int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex1"]].mesh;
+                gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.Instance.allWeaponAppearanceDatas[(int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex1"]].mesh;
             }
 
         }
@@ -107,7 +107,7 @@ public class GunAttachments : MonoBehaviour
             }
             if ((int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex2"] != -1)
             {
-                gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.singleton.allWeaponAppearanceDatas[(int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex2"]].mesh;
+                gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.Instance.allWeaponAppearanceDatas[(int)gun.player.pv.Owner.CustomProperties["SMWA_AppearanceIndex2"]].mesh;
             }
         }
     }
