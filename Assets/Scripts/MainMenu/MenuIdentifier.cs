@@ -17,7 +17,10 @@ public class MenuIdentifier : MonoBehaviour
     {
         MenuManager.OnMenuToggled += ReceiveInstruction;
         MenuManager.OnSearchMenu += SearchedInstruction;
-        OnReceivedInstruction += MenuManager.OnInstructedMenuIdentifier;
+    }
+    void Start()
+    {
+        OnReceivedInstruction += MenuManager.Instance.OnInstructedMenuIdentifier;
     }
     public void ReceiveInstruction(bool state, string name, int id)
     {
@@ -50,8 +53,8 @@ public class MenuIdentifier : MonoBehaviour
             Debug.LogWarning($"There is no menuObject reference under the MenuIdentifier: {menuName}");
         }
         OnReceivedInstruction?.Invoke(menuObject != null ? menuObject.activeInHierarchy : false, menuName);
-        if (state && name == "main") MenuManager.instance.SetQuitButtonState(true);
-        else MenuManager.instance.SetQuitButtonState(false);
+        if (state && name == "main") MenuManager.Instance.SetQuitButtonState(true);
+        else MenuManager.Instance.SetQuitButtonState(false);
 
     }
     public MenuIdentifier SearchedInstruction(string name, int id)

@@ -50,62 +50,62 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined Lobby");
-        MenuManager.instance.JoiningMasterLobby(true);
+        MenuManager.Instance.JoiningMasterLobby(true);
         Hashtable temp = new();
         temp.Add("userLevel", UserConfiguration.UserSystem.LocalUserLevel);
         PhotonNetwork.LocalPlayer.SetCustomProperties(temp);
-        MenuManager.instance.multiplayerMenuButton.interactable = true;
+        MenuManager.Instance.multiplayerMenuButton.interactable = true;
     }
     public void CreateRoom()
     {
         if (MapListItemHolder.Instance.selectedMapIndex == -1)
         {
             Debug.LogWarning("Cannot Create a room with an invalid map selection! ");
-            MenuManager.instance.AddModalWindow("Error", "Cannot Create Room: Invalid Map Selection");
+            MenuManager.Instance.AddModalWindow("Error", "Cannot Create Room: Invalid Map Selection");
             return;
         }
-        if (string.IsNullOrEmpty(MenuManager.instance.GetRoomInputFieldText()))
+        if (string.IsNullOrEmpty(MenuManager.Instance.GetRoomInputFieldText()))
         {
             Debug.LogWarning("Cannot Create a room with a null Input Field! ");
-            //MenuManager.instance.SetInvalidInputFieldText("Invalid Name: Input Field Cannot be Null", Color.red);
-            MenuManager.instance.AddModalWindow("Error", "Cannot Create Room: Invalid Room Name");
-            MenuManager.instance.RoomInputFieldText("");
+            //MenuManager.Instance.SetInvalidInputFieldText("Invalid Name: Input Field Cannot be Null", Color.red);
+            MenuManager.Instance.AddModalWindow("Error", "Cannot Create Room: Invalid Room Name");
+            MenuManager.Instance.RoomInputFieldText("");
             return;
         }
         //roomInfo.CustomProperties.Add("roomIcon", roomIcon.sprite);
         //roomInfo.CustomProperties.Add("roomMode", roomMode.text);
         //roomInfo.CustomProperties.Add("roomHostName", roomHostName.text);
-        PhotonNetwork.CreateRoom(MenuManager.instance.GetRoomInputFieldText(), MenuManager.instance.GetGeneratedRoomOptions());
-        Debug.Log("Trying to create a room with the name " + MenuManager.instance.GetRoomInputFieldText());
-        //MenuManager.instance.SetInvalidInputFieldText("Creating Room...", Color.black);
-        MenuManager.instance.CloseCreateRoomMenu();
-        MenuManager.instance.OpenLoadingMenu();
+        PhotonNetwork.CreateRoom(MenuManager.Instance.GetRoomInputFieldText(), MenuManager.Instance.GetGeneratedRoomOptions());
+        Debug.Log("Trying to create a room with the name " + MenuManager.Instance.GetRoomInputFieldText());
+        //MenuManager.Instance.SetInvalidInputFieldText("Creating Room...", Color.black);
+        MenuManager.Instance.CloseCreateRoomMenu();
+        MenuManager.Instance.OpenLoadingMenu();
     }
     IEnumerator JoinRoomDelayed(int tryJoinDelay, string roomName, string[] expectedUsers = null)
     {
         yield return new WaitForSeconds(tryJoinDelay);
         PhotonNetwork.JoinRoom(roomName, expectedUsers);
         isMatchmaking = false;
-        MenuManager.instance.quitMatchmakingButton.SetActive(false);
+        MenuManager.Instance.quitMatchmakingButton.SetActive(false);
         matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
-        MenuManager.instance.SetQuickMatchUIInfo("Joining Match...", false);
-        MenuManager.instance.AddNotification("Matchmaking", "You have joined a Match.");
+        MenuManager.Instance.SetQuickMatchUIInfo("Joining Match...", false);
+        MenuManager.Instance.AddNotification("Matchmaking", "You have joined a Match.");
     }
     private async Task MatchmakingAsync(MenuManager.Gamemodes gm)
     {
         isMatchmaking = true;
         matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
-        MenuManager.instance.SetQuickMatchUIInfo($"Attempting to find a {gm.ToString()} match...", true);
-        //MenuManager.instance.OpenLoadingMenu();
-        //? MenuManager.instance.CloseMainMenu();
+        MenuManager.Instance.SetQuickMatchUIInfo($"Attempting to find a {gm.ToString()} match...", true);
+        //MenuManager.Instance.OpenLoadingMenu();
+        //? MenuManager.Instance.CloseMainMenu();
         // TODO PhotonNetwork.JoinRandomRoom();
         SetLoadoutValuesToPlayer();
-        MenuManager.instance.quitMatchmakingButton.SetActive(true);
+        MenuManager.Instance.quitMatchmakingButton.SetActive(true);
         foundMatch = (bool)await PeriodicFindMatch(14, 4, gm); // (14 + 1) * 4 = 60 seconds, until automatically quit matchmaking to save performance.
         if (foundMatch)
         {
-            MenuManager.instance.quitMatchmakingButton.SetActive(false);
-            MenuManager.instance.SetQuickMatchUIInfo("Joining Match...", false);
+            MenuManager.Instance.quitMatchmakingButton.SetActive(false);
+            MenuManager.Instance.SetQuickMatchUIInfo("Joining Match...", false);
             StartCoroutine(JoinRoomDelayed(3, stashedSelectedRoomInfo.Name));
         }
         else
@@ -113,34 +113,34 @@ public class Launcher : MonoBehaviourPunCallbacks
             if (isMatchmaking)
             {
                 isMatchmaking = false;
-                MenuManager.instance.quitMatchmakingButton.SetActive(false);
+                MenuManager.Instance.quitMatchmakingButton.SetActive(false);
                 matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
-                MenuManager.instance.SetQuickMatchUIInfo("Stopping Matchmaking...", false);
-                MenuManager.instance.AddModalWindow("Not Found", $"There are no available matches with the {gm.ToString()} gamemode. Matchmaking is stopped in order to preserve threading performance.");
-                MenuManager.instance.AddNotification("Matchmaking", "You have quitted matchmaking.");
+                MenuManager.Instance.SetQuickMatchUIInfo("Stopping Matchmaking...", false);
+                MenuManager.Instance.AddModalWindow("Not Found", $"There are no available matches with the {gm.ToString()} gamemode. Matchmaking is stopped in order to preserve threading performance.");
+                MenuManager.Instance.AddNotification("Matchmaking", "You have quitted matchmaking.");
             }
         }
     }
     public async void QuickMatch(int gmIndex)
     {
-        MenuManager.instance.multiplayerMenuButton.interactable = false;
+        MenuManager.Instance.multiplayerMenuButton.interactable = false;
         await MatchmakingAsync(gmIndex == 1 ? MenuManager.Gamemodes.TDM : gmIndex == 2 ? MenuManager.Gamemodes.FFA : gmIndex == 3 ? MenuManager.Gamemodes.CTF : gmIndex == 4 ? MenuManager.Gamemodes.DZ : MenuManager.Gamemodes.FFA);
     }
     public void StopQuickMatch()
     {
-        ModalWindowManager tmp = MenuManager.instance.AddModalWindow("Leave Matchmaking", "Are you sure you want to leave Matchmaking?");
+        ModalWindowManager tmp = MenuManager.Instance.AddModalWindow("Leave Matchmaking", "Are you sure you want to leave Matchmaking?");
         tmp.showCancelButton = true;
         tmp.UpdateUI();
         tmp.onConfirm.AddListener(LeaveQMListener);
     }
     private void LeaveQMListener()
     {
-        MenuManager.instance.multiplayerMenuButton.interactable = true;
-        MenuManager.instance.SetQuickMatchUIInfo("Leaving Matchmaking...", false);
+        MenuManager.Instance.multiplayerMenuButton.interactable = true;
+        MenuManager.Instance.SetQuickMatchUIInfo("Leaving Matchmaking...", false);
         foundMatch = false;
         isMatchmaking = false;
-        MenuManager.instance.quitMatchmakingButton.SetActive(false);
-        MenuManager.instance.AddNotification("Matchmaking", "You have quitted matchmaking.");
+        MenuManager.Instance.quitMatchmakingButton.SetActive(false);
+        MenuManager.Instance.AddNotification("Matchmaking", "You have quitted matchmaking.");
         matchmakingAnimator.SetBool("isMatchmaking", isMatchmaking);
     }
     private string CheckAvailableRooms(MenuManager.Gamemodes gamemodes)
@@ -209,30 +209,30 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        MenuManager.instance.multiplayerMenuButton.interactable = true;
-        MenuManager.instance.CloseCurrentMenu();
-        MenuManager.instance.OpenMenu("main");
-        MenuManager.instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
+        MenuManager.Instance.multiplayerMenuButton.interactable = true;
+        MenuManager.Instance.CloseCurrentMenu();
+        MenuManager.Instance.OpenMenu("main");
+        MenuManager.Instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        MenuManager.instance.multiplayerMenuButton.interactable = true;
-        MenuManager.instance.CloseCurrentMenu();
-        MenuManager.instance.OpenMenu("main");
-        MenuManager.instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
+        MenuManager.Instance.multiplayerMenuButton.interactable = true;
+        MenuManager.Instance.CloseCurrentMenu();
+        MenuManager.Instance.OpenMenu("main");
+        MenuManager.Instance.AddModalWindow("Error Match", $"An Error Returned Whilst Joining Match:\n{message}\n\nReturn Code: {returnCode}");
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        MenuManager.instance.multiplayerMenuButton.interactable = true;
-        MenuManager.instance.CloseLoadingMenu();
-        MenuManager.instance.OpenCreateRoomMenu();
-        MenuManager.instance.AddModalWindow("Error", "Failed to create room. Server returned a message: " + message + "\nFail code " + returnCode.ToString());
+        MenuManager.Instance.multiplayerMenuButton.interactable = true;
+        MenuManager.Instance.CloseLoadingMenu();
+        MenuManager.Instance.OpenCreateRoomMenu();
+        MenuManager.Instance.AddModalWindow("Error", "Failed to create room. Server returned a message: " + message + "\nFail code " + returnCode.ToString());
         Debug.Log("Failed to create room, Message: " + message);
     }
     public override void OnCreatedRoom()
     {
-        PhotonNetwork.CurrentRoom.SetCustomProperties(MenuManager.instance.GetGeneratedRoomOptions().CustomRoomProperties);
-        if ((bool)MenuManager.instance.GetGeneratedRoomOptions().CustomRoomProperties["roomVisibility"])
+        PhotonNetwork.CurrentRoom.SetCustomProperties(MenuManager.Instance.GetGeneratedRoomOptions().CustomRoomProperties);
+        if ((bool)MenuManager.Instance.GetGeneratedRoomOptions().CustomRoomProperties["roomVisibility"])
         {
             PhotonNetwork.CurrentRoom.IsVisible = true;
         }
@@ -245,10 +245,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         SetLoadoutValuesToPlayer();
         Debug.Log("Connected to Room");
-        MenuManager.instance.multiplayerMenuButton.interactable = false;
-        MenuManager.instance.SetMainMenuState(false);
-        MenuManager.instance.CloseCurrentMenu();
-        MenuManager.instance.OpenMenu("main");
+        MenuManager.Instance.multiplayerMenuButton.interactable = false;
+        MenuManager.Instance.SetMainMenuState(false);
+        MenuManager.Instance.CloseCurrentMenu();
+        MenuManager.Instance.OpenMenu("main");
         Player[] players = PhotonNetwork.PlayerList;
 
         foreach (Transform child in playerListContent)
@@ -260,7 +260,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
         }
         LoadoutDataJSON tp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
-        MenuManager.instance.RoomMenuComp.SetRoomInfoPreview(
+        MenuManager.Instance.RoomMenuComp.SetRoomInfoPreview(
             PhotonNetwork.CurrentRoom.Name,
             new MapPreviewInfo(mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapName, mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapIcon),
             new StatisticsPreviewInfo((string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"], PhotonNetwork.CurrentRoom.MaxPlayers, (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"]),
@@ -275,9 +275,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("Disconnected from Room");
-        MenuManager.instance.CloseCurrentMenu();
-        MenuManager.instance.OpenMenu("main");
-        MenuManager.instance.SetMainMenuState(true);
+        MenuManager.Instance.CloseCurrentMenu();
+        MenuManager.Instance.OpenMenu("main");
+        MenuManager.Instance.SetMainMenuState(true);
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
@@ -301,7 +301,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void FindRoomThroughCode()
     {
-        int code = MenuManager.instance.GetRoomCodeInputField();
+        int code = MenuManager.Instance.GetRoomCodeInputField();
         for (int i = 0; i < rl.Count; i++)
         {
             if ((int)rl[i].CustomProperties["roomCode"] == code)
@@ -310,19 +310,19 @@ public class Launcher : MonoBehaviourPunCallbacks
                 return;
             }
         }
-        MenuManager.instance.AddModalWindow("Error", "Room with Code " + code + " Not Found.");
+        MenuManager.Instance.AddModalWindow("Error", "Room with Code " + code + " Not Found.");
     }
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
-        MenuManager.instance.OpenMenu("loading");
+        MenuManager.Instance.OpenMenu("loading");
         Debug.Log("Loading Room Info...");
     }
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-        MenuManager.instance.SetMainMenuState(true);
-        MenuManager.instance.OpenLoadingMenu();
+        MenuManager.Instance.SetMainMenuState(true);
+        MenuManager.Instance.OpenLoadingMenu();
     }
 
     public bool CheckIfStartAllowed()
@@ -333,11 +333,11 @@ public class Launcher : MonoBehaviourPunCallbacks
             flag = true;
             if (flag)
             {
-                if (MenuManager.instance.GetGamemode() == MenuManager.Gamemodes.FFA)
+                if (MenuManager.Instance.GetGamemode() == MenuManager.Gamemodes.FFA)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 1 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.gameObject.SetActive(true);
                 }
-                else if (MenuManager.instance.GetGamemode() == MenuManager.Gamemodes.TDM)
+                else if (MenuManager.Instance.GetGamemode() == MenuManager.Gamemodes.TDM)
                 {
                     if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 || PhotonNetwork.MasterClient.NickName == startKey) startGameButton.gameObject.SetActive(true);
                 }

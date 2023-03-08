@@ -53,7 +53,7 @@ public class WeaponCosmeticListItem : MonoBehaviour
         WeaponAppearance temp = new WeaponAppearance(data);
         if (data.purchasePrice <= jsonData.userCoins && (!app.unlockedWeaponAppearances.Contains(temp) && app.availableWeaponAppearances.Contains(temp)) && jsonData.shopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex))
         {
-            MenuManager.instance.AddNotification("Success Purchase", "You have successfully purchased the " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + "!");
+            MenuManager.Instance.AddNotification("Success Purchase", "You have successfully purchased the " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + "!");
             UserDatabase.Instance.AddUserCurrency(data.purchasePrice);
             app.unlockedWeaponAppearances.Add(temp);
             app.availableWeaponAppearances.Remove(temp);
@@ -64,9 +64,9 @@ public class WeaponCosmeticListItem : MonoBehaviour
         }
         else
         {
-            if (!jsonData.shopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex)) MenuManager.instance.AddNotification("Failed Purchase", "You do not have the weapon " + data.weaponData.itemName + " to obtain this weapon skin.");
-            else if (data.purchasePrice > jsonData.userCoins) MenuManager.instance.AddNotification("Failed Purchase", "You do not have enough money to purchase " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + ".");
-            else MenuManager.instance.AddNotification("Failed Purchase", "An error occured while trying to purchase " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + ".");
+            if (!jsonData.shopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex)) MenuManager.Instance.AddNotification("Failed Purchase", "You do not have the weapon " + data.weaponData.itemName + " to obtain this weapon skin.");
+            else if (data.purchasePrice > jsonData.userCoins) MenuManager.Instance.AddNotification("Failed Purchase", "You do not have enough money to purchase " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + ".");
+            else MenuManager.Instance.AddNotification("Failed Purchase", "An error occured while trying to purchase " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + ".");
         }
     }
 }

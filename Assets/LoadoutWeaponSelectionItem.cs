@@ -52,7 +52,7 @@ public class LoadoutWeaponSelectionItem : MonoBehaviour
         loadoutSelection.OpenLoadoutButtonsVisual();
         Launcher.Instance.SetLoadoutValuesToPlayer();
         customButtonsHolder.OnClickClearButton();
-        MenuManager.instance.AddNotification("Weapon Selection", "You've selected " + weaponData.itemName + " as your " + (loadoutSelection.forSelectedSlot == 0 ? "primary weapon." : "secondary weapon."));
+        MenuManager.Instance.AddNotification("Weapon Selection", "You've selected " + weaponData.itemName + " as your " + (loadoutSelection.forSelectedSlot == 0 ? "primary weapon." : "secondary weapon."));
     }
 
     public void SetDamageValue(float amount)

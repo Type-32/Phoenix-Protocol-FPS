@@ -7,7 +7,7 @@ public class GunsmithMenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MenuManager.instance.ToggleGunsmithMenu(false);
+        MenuManager.Instance.ToggleGunsmithMenu(false);
     }
 
     // Update is called once per frame

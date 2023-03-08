@@ -14,7 +14,7 @@ using LauncherManifest;
 
 public class MenuManager : MonoBehaviour
 {
-    public static MenuManager instance;
+    public static MenuManager Instance;
     //[SerializeField] private Button multiplayerButton;
     public delegate void ToggleMenu(bool state = true, string name = "null", int id = -1);
     public delegate MenuIdentifier SearchMenu(string name = "null", int id = -1);
@@ -129,7 +129,7 @@ public class MenuManager : MonoBehaviour
         {
             tp.SetActive(true);
         }
-        instance = this;
+        Instance = this;
         gunsmithMenuState += OnGunsmithMenuToggled;
         int tmep = 0;
         foreach (MenuIdentifier id in MenuIdentifiers)

@@ -32,10 +32,10 @@ public class PlayerNameManager : MonoBehaviour
 
     public string GetPlayerFieldName()
     {
-        return MenuManager.instance.playerNameInputField.text;
+        return MenuManager.Instance.playerNameInputField.text;
     }
     public void SetPlayerFieldName(string value)
     {
-        MenuManager.instance.playerNameInputField.text = value;
+        MenuManager.Instance.playerNameInputField.text = value;
     }
 }
