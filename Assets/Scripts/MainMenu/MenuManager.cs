@@ -157,10 +157,21 @@ public class MenuManager : MonoBehaviour
     public MenuIdentifier FindMenu(int id) { return OnSearchMenu?.Invoke("null", id); }
     public MenuIdentifier FindMenu(string id) { return OnSearchMenu?.Invoke(id); }
     public MenuIdentifier FindMenu(bool state) { return OnSearchMenu?.Invoke(state ? "true" : "false"); }
-    public static void OnInstructedMenuIdentifier(bool val, string nm)
+    public void OnInstructedMenuIdentifier(bool val, string nm)
     {
-        if (val && nm == "main") MenuManager.instance.SetQuitButtonState(true);
-        else MenuManager.instance.SetQuitButtonState(false);
+        if (val && nm == "main") SetQuitButtonState(true);
+        else SetQuitButtonState(false);
+        switch (nm)
+        {
+            case "main":
+                openedMainMenu = val;
+                break;
+            case "multiplayer":
+                openedMultiplayerMenu = val;
+                break;
+            case ("room" or ""):
+                break;
+        }
     }
     void Start()
     {
