@@ -130,8 +130,10 @@ public class CloudServicesManager : MonoBehaviour
         Instance = this;
         // Cloud Save needs to be initialized along with the other Unity Services that
         // it depends on (namely, Authentication), and then the user must sign in.
-        //UnityServices.Initialize() will initialize all services that are subscribed to Core
         await UnityServices.InitializeAsync();
+        AuthenticationService.Instance.SignedIn += OnSignedIn;
+        AuthenticationService.Instance.SignedOut += OnSignedOut;
+        AuthenticationService.Instance.SignInFailed += OnSignErrorProvided;
         Debug.Log($"Unity services initialization: {UnityServices.State}");
 
         //Shows if a cached session token exist
@@ -140,12 +142,6 @@ public class CloudServicesManager : MonoBehaviour
         // Shows Current profile
         Debug.Log(AuthenticationService.Instance.Profile);
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        AuthenticationService.Instance.SignedIn += OnSignedIn;
-
-        AuthenticationService.Instance.SignedOut += OnSignedOut;
-        //You can listen to events to display custom messages
-        AuthenticationService.Instance.SignInFailed += OnSignErrorProvided;
-        //Debug.Log("Signed in?");
         /*
 
         await ForceSaveSingleData("primitive_key", "value!");
