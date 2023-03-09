@@ -11,6 +11,9 @@ using Michsky.MUIP;
 using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using LauncherManifest;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using Unity.Services.CloudSave;
 
 public class MenuManager : MonoBehaviour
 {
@@ -344,7 +347,8 @@ public class MenuManager : MonoBehaviour
     IEnumerator DelayDisableEnterAnim(float time)
     {
         yield return new WaitForSeconds(time);
-        RoomManager.Instance.loadEnterAnim = false;
+        if (!AuthenticationService.Instance.IsSignedIn) StartCoroutine(DelayDisableEnterAnim(1f));
+        else RoomManager.Instance.loadEnterAnim = false;
     }
     public string SetConnectionIndicatorText(string content)
     {

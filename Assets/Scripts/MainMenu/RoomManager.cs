@@ -62,12 +62,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         if (scene.buildIndex == 0)
         {
-            Debug.Log("OnLoadedScene is Invoked.");
+            //Debug.Log("OnLoadedScene is Invoked.");
             CheckQueue();
             if (!loadEnterAnim)
             {
                 MenuManager.Instance.enterAnimMenu.SetActive(false);
-                Debug.Log("Main Scene Loaded");
+                //Debug.Log("Main Scene Loaded");
             }
             else
             {
