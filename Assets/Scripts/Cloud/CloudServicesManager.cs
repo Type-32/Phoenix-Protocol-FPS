@@ -130,10 +130,22 @@ public class CloudServicesManager : MonoBehaviour
         Instance = this;
         // Cloud Save needs to be initialized along with the other Unity Services that
         // it depends on (namely, Authentication), and then the user must sign in.
+        //UnityServices.Initialize() will initialize all services that are subscribed to Core
         await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        Debug.Log($"Unity services initialization: {UnityServices.State}");
 
-        Debug.Log("Signed in?");
+        //Shows if a cached session token exist
+        Debug.Log($"Cached Session Token Exist: {AuthenticationService.Instance.SessionTokenExists}");
+
+        // Shows Current profile
+        Debug.Log(AuthenticationService.Instance.Profile);
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        AuthenticationService.Instance.SignedIn += OnSignedIn;
+
+        AuthenticationService.Instance.SignedOut += OnSignedOut;
+        //You can listen to events to display custom messages
+        AuthenticationService.Instance.SignInFailed += OnSignErrorProvided;
+        //Debug.Log("Signed in?");
         /*
 
         await ForceSaveSingleData("primitive_key", "value!");
@@ -152,6 +164,25 @@ public class CloudServicesManager : MonoBehaviour
         await ListAllKeys();
         await RetrieveEverything();
         */
+    }
+    private void OnSignedIn()
+    {
+        //Shows how to get a playerID
+        Debug.Log($"PlayedID: {AuthenticationService.Instance.PlayerId}");
+
+        //Shows how to get an access token
+        Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
+
+        const string successMessage = "Sign in anonymously succeeded!";
+        Debug.Log(successMessage);
+    }
+    private void OnSignedOut()
+    {
+        Debug.Log("Signed Out!");
+    }
+    private void OnSignErrorProvided(RequestFailedException errorResponse)
+    {
+        Debug.LogError("RequestFailedException returned with the following message: " + errorResponse.Message);
     }
     private async Task ListAllKeys()
     {
@@ -175,7 +206,6 @@ public class CloudServicesManager : MonoBehaviour
             Debug.LogError(e);
         }
     }
-
     private async Task ForceSaveSingleData(string key, string value)
     {
         try
@@ -213,7 +243,6 @@ public class CloudServicesManager : MonoBehaviour
             Debug.LogError(e);
         }
     }
-
     private async Task ForceSaveObjectData<T>(string key, T value)
     {
         try
@@ -242,7 +271,6 @@ public class CloudServicesManager : MonoBehaviour
             Debug.LogError(e);
         }
     }
-
     private async Task<T> RetrieveSpecificData<T>(string key)
     {
         try
