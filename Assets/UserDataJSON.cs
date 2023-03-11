@@ -19,3 +19,12 @@ public class UserDataJSON
         userCoins = 1000;
     }
 }
+[System.Serializable]
+public class UserProfileDataJSON
+{
+    public string description;
+    public UserProfileDataJSON()
+    {
+        description = "Legend!";
+    }
+}
