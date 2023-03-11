@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UserConfiguration;
 using LauncherManifest;
-using PrototypeLib.Modules.FileOpsIO;
-
+using PrototypeLib.Modules.FileOperations.IO;
 public class WeaponCosmeticListItem : MonoBehaviour
 {
     ShopMenuScript script;

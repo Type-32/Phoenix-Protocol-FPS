@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UserConfiguration;
 using LauncherManifest;
-using PrototypeLib.Modules.FileOpsIO;
-
+using PrototypeLib.Modules.FileOperations.IO;
 public class LoadoutCustomization : MonoBehaviour
 {
     [SerializeField] LoadoutSelectionScript loadoutSelection;

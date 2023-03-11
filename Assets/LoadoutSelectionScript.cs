@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UserConfiguration;
 using TMPro;
-using PrototypeLib.Modules.FileOpsIO;
-
+using PrototypeLib.Modules.FileOperations.IO;
 public class LoadoutSelectionScript : MonoBehaviour
 {
     public UserDatabase database;

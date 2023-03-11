@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using InfoTypes.InRoomPreview;
 using UserConfiguration;
-using PrototypeLib.Modules.FileOpsIO;
-
+using PrototypeLib.Modules.FileOperations.IO;
 public class RoomMenuComponent : MonoBehaviour
 {
     [SerializeField] Image mapIcon, primaryIcon, secondaryIcon, EquipmentIcon1, EquipmentIcon2;

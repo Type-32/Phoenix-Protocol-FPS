@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Core;
 using System.IO;
-using PrototypeLib.Modules.FileOpsIO;
-
+using PrototypeLib.Modules.FileOperations.IO;
 namespace InfoTypes
 {
     namespace InRoomPreview
@@ -513,14 +512,6 @@ namespace UserConfiguration
     }
     public static class Database
     {
-        public static WeaponData FindWeaponData(int index)
-        {
-            if (index < GlobalDatabase.Instance.allWeaponDatas.Count)
-            {
-                return GlobalDatabase.Instance.allWeaponDatas[index];
-            }
-            return null;
-        }
         public static int FindWeaponDataIndex(WeaponData data)
         {
             for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
@@ -544,70 +535,6 @@ namespace UserConfiguration
                 if (GlobalDatabase.Instance.allEquipmentDatas[i] == data) return i;
             }
             return -1;
-        }
-        public static int FindAttachmentIndex(WeaponAttachmentData data)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
-            {
-                if (GlobalDatabase.Instance.allWeaponAttachmentDatas[i] == data) return i;
-            }
-            return -1;
-        }
-        public static WeaponAttachmentData FindAttachment(int index)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
-            {
-                if (i == index) return GlobalDatabase.Instance.allWeaponAttachmentDatas[i];
-            }
-            return null;
-        }
-        public static int FindLoadoutDataIndex(LoadoutData data)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allLoadoutDatas.Count; i++)
-            {
-                if (GlobalDatabase.Instance.allLoadoutDatas[i] == data) return i;
-            }
-            return -1;
-        }
-        public static LoadoutData FindLoadoutData(int index)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allLoadoutDatas.Count; i++)
-            {
-                if (i == index) return GlobalDatabase.Instance.allLoadoutDatas[i];
-            }
-            return null;
-        }
-        public static int FindWeaponAppearanceDataIndex(WeaponAppearanceMeshData data)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
-            {
-                if (GlobalDatabase.Instance.allWeaponAppearanceDatas[i] == data) return i;
-            }
-            return -1;
-        }
-        public static WeaponAppearanceMeshData FindWeaponAppearanceData(int index)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
-            {
-                if (i == index) return GlobalDatabase.Instance.allWeaponAppearanceDatas[i];
-            }
-            return null;
-        }
-        public static int FindPlayerCosmeticDataIndex(PlayerCosmeticData data)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allPlayerCosmeticDatas.Count; i++)
-            {
-                if (GlobalDatabase.Instance.allPlayerCosmeticDatas[i] == data) return i;
-            }
-            return -1;
-        }
-        public static PlayerCosmeticData FindPlayerCosmeticData(int index)
-        {
-            for (int i = 0; i < GlobalDatabase.Instance.allPlayerCosmeticDatas.Count; i++)
-            {
-                if (i == index) return GlobalDatabase.Instance.allPlayerCosmeticDatas[i];
-            }
-            return null;
         }
     }
     public static class GunsmithSystem

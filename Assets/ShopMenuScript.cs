@@ -1,4 +1,4 @@
-using PrototypeLib.Modules.FileOpsIO;
+using PrototypeLib.Modules.FileOperations.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
