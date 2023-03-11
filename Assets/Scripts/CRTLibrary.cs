@@ -167,6 +167,14 @@ namespace PrototypeLib
                         .PostJsonAsync(arguments)
                         .ReceiveJson<T>();
                 }
+                public async Task RetrieveTokenURL()
+                {
+                    var client = new RestClient("https://{yourDomain}/oauth/token");
+                    var request = new RestRequest(Method.POST);
+                    request.AddHeader("content-type", "application/x-www-form-urlencoded");
+                    request.AddParameter("application/x-www-form-urlencoded", "grant_type=password&username=%7Busername%7D&password=%7Bpassword%7D&audience=%7ByourApiIdentifier%7D&scope=read%3Asample&client_id={yourClientId}&client_secret=%7ByourClientSecret%7D", ParameterType.RequestBody);
+                    IRestResponse response = client.Execute(request);
+                }
             }
 
         }
