@@ -1,12 +1,7 @@
-using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
-using PrototypeLib.OnlineServices.MieServices;
-using PrototypeLib.OnlineServices.OAuthentication;
+using PrototypeLib.OnlineServices.Authentication;
 
 public class LoginMenu : MonoBehaviour
 {
@@ -21,11 +16,9 @@ public class LoginMenu : MonoBehaviour
 
     public async Task<bool> TryLogin()
     {
-        MieClient client = new();
-        OAuth2.ClientId = username.text;
-        OAuth2.ClientSecret = password.text;
-        var retrieve = await OAuth2.GetLambBridgeAccessTokenAsync();
-        if (retrieve != null) { client.SetAccessToken(retrieve); return true; }
+        var retrieve = await OAuth2.GetAccessToken(username.text, password.text);
+        if (retrieve != null) { return true; }
+        // TODO: Add SDK impl
         return false;
     }
     public async void OnClickLogin()

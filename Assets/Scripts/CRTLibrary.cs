@@ -1,17 +1,6 @@
-using System.Runtime.Serialization.Json;
-using System.Net.Http;
-using System.Collections;
 using System.Collections.Generic;
 using System;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.IO;
-using UnityEngine;
-using Unity.Mathematics;
-using Unity.Services.CloudSave;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 
 namespace PrototypeLib
 {
@@ -79,153 +68,39 @@ namespace PrototypeLib
                 }
             }
         }
-        namespace MieServices
+        namespace Authentication
         {
-            using Flurl;
-            using Flurl.Http;
-            public struct OauthExchangeResponse
-            {
-                public string access_token;
-                public string refresh_token;
-                public long expires_in;
-                public string token_type;
-                public string scope;
-                public string uid;
-            }
-            public class MieClient
-            {
-                private readonly Uri endpoint;
-                private readonly Uri bridge;
-                private readonly int project;
-                private string accessToken;
-
-                public MieClient(Uri endpoint, Uri bridge, int project)
-                {
-                    this.endpoint = endpoint;
-                    this.bridge = bridge;
-                    this.project = project;
-                }
-                public MieClient(int project)
-                {
-                    this.endpoint = new Uri("https://cloud.smartsheep.studio");
-                    this.bridge = new Uri("https://lamb.smartsheep.studio");
-                    this.project = project;
-                }
-                public MieClient()
-                {
-                    this.endpoint = new Uri("https://cloud.smartsheep.studio");
-                    this.bridge = new Uri("https://lamb.smartsheep.studio");
-                    this.project = 0;
-                }
-
-                public void SetAccessToken(string token)
-                {
-                    accessToken = token;
-                }
-
-                public async Task<string> ExchangeAccessToken(string id, string secret, string code)
-                {
-                    var res = await new Uri(bridge, "api/oauth/token")
-                        .PostJsonAsync(new
-                        {
-                            code,
-                            grant_type = "authorization_code",
-                            redirect = new Uri(endpoint, "oauth/callback").ToString(),
-                            client_id = id,
-                            client_secret = secret,
-                        })
-                        .ReceiveJson<OauthExchangeResponse>();
-
-                    return res.access_token;
-                }
-
-                public async Task<int> CountNoSQLRecords(int id)
-                {
-                    return await new Uri(endpoint, $"api/nosql/{id}/records/count").GetAsync().ReceiveJson<int>();
-                }
-
-                public async Task<T> GetNoSQLRecords<T>(int id, int limit, int offset, string order, string query)
-                {
-                    return await new Uri(endpoint, $"api/nosql/{id}/records")
-                        .SetQueryParam("limit", limit)
-                        .SetQueryParam("offset", offset)
-                        .SetQueryParam("order", order)
-                        .SetQueryParam("query", query)
-                        .GetAsync()
-                        .ReceiveJson<T>();
-                }
-
-                public async Task<T> GetNoSQLRecord<T>(int table, int id)
-                {
-                    return await new Uri(endpoint, $"api/nosql/{table}/records/{id}").GetAsync().ReceiveJson<T>();
-                }
-
-                public async Task<T> ExecuteFunction<T>(int id, object arguments)
-                {
-                    return await new Uri(endpoint, $"serverless-function/{id}/execute")
-                        .WithOAuthBearerToken(accessToken)
-                        .PostJsonAsync(arguments)
-                        .ReceiveJson<T>();
-                }
-                public async Task RetrieveTokenURL()
-                {
-                    /*
-                    var client = new RestClient("https://{yourDomain}/oauth/token");
-                    var request = new RestRequest(Method.POST);
-                    request.AddHeader("content-type", "application/x-www-form-urlencoded");
-                    request.AddParameter("application/x-www-form-urlencoded", "grant_type=password&username=%7Busername%7D&password=%7Bpassword%7D&audience=%7ByourApiIdentifier%7D&scope=read%3Asample&client_id={yourClientId}&client_secret=%7ByourClientSecret%7D", ParameterType.RequestBody);
-                    IRestResponse response = client.Execute(request);*/
-                }
-            }
-
-        }
-        namespace OAuthentication
-        {
-            //! Deprecated
             using System.Net.Http;
             using System.Net.Http.Headers;
-            using System.Net.Http.Formatting;
             using System.Threading.Tasks;
             public static class OAuth2
             {
-                private const string LambBridgeTokenUrl = "https://lamb.smartsheep.studio/api/oauth/token";
-                private const string MieCloudTokenUrl = "https://cloud.smartsheep.studio/api/oauth/token";
-                public static string ClientId = "your-client-id";
-                public static string ClientSecret = "your-client-secret";
+                private const string APIUrl = "http://localhost:5173/o/oauth/token";
+                public static string ClientId = "4";
+                public static string ClientSecret = "a6eddc040a864290";
                 public class TokenResponse
                 {
-                    public string AccessToken { get; set; }
+                    public string access_token { get; set; }
+                    public string refresh_token { get; set; }
                 }
-                public static async Task<string> GetLambBridgeAccessTokenAsync()
+                public static async Task<string> GetAccessToken(string username, string password)
                 {
                     using (var client = new HttpClient())
                     {
-                        var authenticationHeader = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{ClientId}:{ClientSecret}"));
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationHeader);
+                        var formContent = new FormUrlEncodedContent(new[] { 
+                            new KeyValuePair<string, string>("grant_type", "password"), 
+                            new KeyValuePair<string, string>("username", username),
+                            new KeyValuePair<string, string>("password", password),
+                            new KeyValuePair<string, string>("scope", "all"),
+                            new KeyValuePair<string, string>("client_id", ClientId),
+                            new KeyValuePair<string, string>("client_secret", ClientSecret)
+                        });
 
-                        var formContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("grant_type", "client_credentials") });
-
-                        var response = await client.PostAsync(LambBridgeTokenUrl, formContent);
+                        var response = await client.PostAsync(APIUrl, formContent);
                         response.EnsureSuccessStatusCode();
 
                         var tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
-                        return tokenResponse.AccessToken;
-                    }
-                }
-                public static async Task<string> GetMieCloudAccessTokenAsync()
-                {
-                    using (var client = new HttpClient())
-                    {
-                        var authenticationHeader = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{ClientId}:{ClientSecret}"));
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationHeader);
-
-                        var formContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("grant_type", "client_credentials") });
-
-                        var response = await client.PostAsync(LambBridgeTokenUrl, formContent);
-                        response.EnsureSuccessStatusCode();
-
-                        var tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
-                        return tokenResponse.AccessToken;
+                        return tokenResponse.access_token;
                     }
                 }
             }
