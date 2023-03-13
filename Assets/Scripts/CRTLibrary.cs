@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace PrototypeLib
         using Photon.Pun;
         using Photon.Realtime;
         using Hashtable = ExitGames.Client.Photon.Hashtable;
+        using System.Net.Http;
         namespace UnityCloudServices
         {
             //! Deprecated
@@ -87,8 +89,8 @@ namespace PrototypeLib
                 {
                     using (var client = new HttpClient())
                     {
-                        var formContent = new FormUrlEncodedContent(new[] { 
-                            new KeyValuePair<string, string>("grant_type", "password"), 
+                        var formContent = new FormUrlEncodedContent(new[] {
+                            new KeyValuePair<string, string>("grant_type", "password"),
                             new KeyValuePair<string, string>("username", username),
                             new KeyValuePair<string, string>("password", password),
                             new KeyValuePair<string, string>("scope", "all"),
