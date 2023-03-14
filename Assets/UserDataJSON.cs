@@ -23,8 +23,14 @@ public class UserDataJSON
 public class UserProfileDataJSON
 {
     public string description;
+    public Sprite userPFP;
+    public int totalKills, totalDeaths, totalXPGained;
     public UserProfileDataJSON()
     {
         description = "Legend!";
+        userPFP = null;
+        totalKills = 0;
+        totalDeaths = 0;
+        totalXPGained = 0;
     }
 }
