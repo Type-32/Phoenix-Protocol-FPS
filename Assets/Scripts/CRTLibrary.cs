@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@ namespace PrototypeLib
         using System.Text.Json;
         using System.Text.Json.Nodes;
         using Hashtable = ExitGames.Client.Photon.Hashtable;
+        using System.Net.Http;
         namespace UnityCloudServices
         {
             //! Deprecated
