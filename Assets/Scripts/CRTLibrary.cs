@@ -1,14 +1,15 @@
 using System.Collections.Generic;
-using System;
 using System.Threading.Tasks;
 
 namespace PrototypeLib
 {
     namespace OnlineServices
     {
-        using Photon;
         using Photon.Pun;
-        using Photon.Realtime;
+        using System.Net.Http;
+        using System.Text;
+        using System.Text.Json;
+        using System.Text.Json.Nodes;
         using Hashtable = ExitGames.Client.Photon.Hashtable;
         namespace UnityCloudServices
         {
@@ -68,16 +69,46 @@ namespace PrototypeLib
                 }
             }
         }
+        namespace LambConnector
+        {
+            public static class Configuration
+            {
+                public const string APIUrl = "http://localhost:5173/api";
+                public static string APIToken = "";
+                public static string ProjectId = "1";
+            }
+            public static class Identities
+            {
+                public static async Task SaveIdentity(int identityId, UserDataJSON data)
+                {
+                    var url = Configuration.APIUrl + $"/projects/{Configuration.ProjectId}/oauth-clients/{Authentication.OAuth2.ClientId}/identities/{identityId}";
+
+                    using (var client = new HttpClient())
+                    {
+                        var jsonContent = new JsonObject();
+                        jsonContent.Add("nickname", data.username);
+                        jsonContent.Add("permissions", new JsonArray());
+                        jsonContent.Add("data", JsonSerializer.Serialize(data));
+
+                        var message = new HttpRequestMessage(HttpMethod.Put, url);
+                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Configuration.APIToken);
+                        message.Content = new StringContent(jsonContent.ToString(), Encoding.UTF8, "application/json");
+
+                        var response = await client.SendAsync(message);
+                        response.EnsureSuccessStatusCode();
+                    }
+                }
+            }
+        }
         namespace Authentication
         {
             using System.Net.Http;
-            using System.Net.Http.Headers;
             using System.Threading.Tasks;
             public static class OAuth2
             {
-                private const string APIUrl = "http://localhost:5173/o/oauth/token";
-                public static string ClientId = "4";
-                public static string ClientSecret = "a6eddc040a864290";
+                public const string APIUrl = "http://localhost:5173/o/oauth/token";
+                public static string ClientId = "1";
+                public static string ClientSecret = "1d83494fdd6642b5";
                 public class TokenResponse
                 {
                     public string access_token { get; set; }
@@ -87,8 +118,8 @@ namespace PrototypeLib
                 {
                     using (var client = new HttpClient())
                     {
-                        var formContent = new FormUrlEncodedContent(new[] { 
-                            new KeyValuePair<string, string>("grant_type", "password"), 
+                        var formContent = new FormUrlEncodedContent(new[] {
+                            new KeyValuePair<string, string>("grant_type", "password"),
                             new KeyValuePair<string, string>("username", username),
                             new KeyValuePair<string, string>("password", password),
                             new KeyValuePair<string, string>("scope", "all"),
@@ -113,13 +144,10 @@ namespace PrototypeLib
             namespace IO
             {
                 using System;
-                using System.Threading.Tasks;
-                using System.Collections;
-                using System.Collections.Generic;
-                using UnityEngine;
-                using Unity.Mathematics;
-                using System.Text;
                 using System.IO;
+                using System.Text;
+                using System.Threading.Tasks;
+                using UnityEngine;
                 public class WritingData
                 {
                     public string filePath;
