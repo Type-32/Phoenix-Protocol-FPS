@@ -11,7 +11,6 @@ using PrototypeLib.Modules.FileOperations.IO;
 public class UserDatabase : MonoBehaviour
 {
     public static UserDatabase Instance;
-    public UserDataJSON emptyUserDataJSON;
     public int levelLimiter = 800;
     public delegate void UpdateUserData(UserDataJSON userData);
     public static event UpdateUserData OnUserDataUpdated;

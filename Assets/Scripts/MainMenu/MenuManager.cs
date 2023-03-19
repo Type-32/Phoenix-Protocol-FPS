@@ -143,11 +143,13 @@ public class MenuManager : MonoBehaviour
     }
     public void SetQuitButtonState(bool state)
     {
+        if (quitButton == null || backButton == null) return;
         quitButton.SetActive(state);
         backButton.SetActive(!state);
     }
     public void SetMainMenuState(bool state)
     {
+        if (mainMenu == null || roomMenu == null) return;
         mainMenu.SetActive(state);
         roomMenu.SetActive(!state);
     }

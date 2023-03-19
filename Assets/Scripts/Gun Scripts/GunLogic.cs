@@ -23,40 +23,22 @@ public class GunLogic : MonoBehaviour
     }
     void HipfireSpreadConstantLogic()
     {
-        if (gun.stats.isAiming)
-        {
-            spreadConstant = Mathf.Lerp(spreadConstant, gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun ? 0.3f : 0f, gun.stats.weaponData.aimSpeed);
-        }
-        else
-        {
-            spreadConstant = Mathf.Lerp(spreadConstant, gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun ? 1.2f : 1f, gun.stats.weaponData.aimSpeed);
-        }
+        //Using Lambda Expression to single-fy the code
+        spreadConstant = gun.stats.isAiming ? Mathf.Lerp(spreadConstant, gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun ? 0.3f : 0f, gun.stats.weaponData.aimSpeed) : Mathf.Lerp(spreadConstant, gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun ? 1.1f : gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Pistol ? 0.25f : 0.75f, gun.stats.weaponData.aimSpeed);
     }
     void AimingLogic()
     {
-        if ((Input.GetButton("Fire2") || (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightBracket))) && !gun.player.stats.isSliding) gun.stats.isAiming = true;
-        else gun.stats.isAiming = false;
+        gun.stats.isAiming = ((Input.GetButton("Fire2") || (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.RightBracket))) && !gun.player.stats.isSliding) ? true : false;
     }
     void GunMovementLogic()
     {
         gun.stats.isWalking = gun.player.stats.isWalking;
-
-        if (Input.GetKey("left shift") && !gun.stats.isAiming && !gun.player.stats.isCrouching && gun.stats.isWalking) gun.stats.isSprinting = true;
-        else gun.stats.isSprinting = false;
+        gun.stats.isSprinting = (Input.GetKey("left shift") && !gun.stats.isAiming && !gun.player.stats.isCrouching && gun.stats.isWalking) ? true : false;
     }
     void AttachmentLogic()
     {
         if (Input.GetKeyDown("h"))
-        {
-            if (gun.stats.isAttaching)
-            {
-                gun.stats.isAttaching = false;
-            }
-            else
-            {
-                gun.stats.isAttaching = true;
-            }
-        }
+            gun.stats.isAttaching = gun.stats.isAttaching ? false : true;
         if (gun.stats.isAiming) gun.stats.isAttaching = false;
     }
 }

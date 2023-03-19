@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Equipment Data", menuName = "New Equipment Data", order = 1)]
+[CreateAssetMenu(fileName = "Equipment Data", menuName = "Project Phoenix/Loadouts/New Equipment Data", order = 1)]
 public class EquipmentData : ItemData
 {
     public GameObject equipmentPrefab;

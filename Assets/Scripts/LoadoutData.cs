@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Loadout Data", menuName = "New Loadout Data", order = 1)]
+[CreateAssetMenu(fileName = "New Loadout Data", menuName = "Project Phoenix/Loadouts/New Loadout Data", order = 1)]
 public class LoadoutData : ScriptableObject
 {
     public string loadoutName = "Custom Loadout";

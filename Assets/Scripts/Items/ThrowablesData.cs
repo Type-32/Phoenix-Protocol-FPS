@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "New Throwables Data", menuName = "New Throwables Data", order = 1)]
+[CreateAssetMenu(fileName = "New Throwables Data", menuName = "Project Phoenix/Loadouts/New Throwables Data", order = 1)]
 public class ThrowablesData : ItemData
 {
     public GameObject throwablesPrefab;

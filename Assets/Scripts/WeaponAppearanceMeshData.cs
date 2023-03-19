@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "New Weapon Appearance Mesh Data", menuName = "New Weapon Appearance Mesh Data", order = 1)]
+[CreateAssetMenu(fileName = "New Weapon Appearance Mesh Data", menuName = "Project Phoenix/Loadouts/New Weapon Appearance Mesh Data", order = 1)]
 public class WeaponAppearanceMeshData : ItemData
 {
     public WeaponData weaponData;

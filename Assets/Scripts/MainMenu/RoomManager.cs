@@ -26,6 +26,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public void SetLoadingScreenState(bool state, int duration)
     {
+        if (!gameObject.activeSelf) return;
         StartCoroutine(SetLoadingScreenState_IEN(state, duration));
     }
     public void SetLoadingPreview(MapItemInfo itemInfo, bool showScreen)
@@ -129,7 +130,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public void SelfDestruction()
     {
-        return;
+        //return;
         RoomManager temp = Instantiate(gameObject).GetComponent<RoomManager>();
         //temp.CloseAllMenus();
         //StartCoroutine(temp.CloseMainMenuDelayed(0.2f));

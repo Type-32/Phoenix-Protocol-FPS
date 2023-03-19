@@ -118,6 +118,8 @@ public class CloudServicesManager : MonoBehaviour
             Debug.LogError("User data save failed: " + result.Message);
         }
     }*/
+
+    /*
     public static CloudServicesManager Instance;
     private async void Awake()
     {
@@ -159,8 +161,9 @@ public class CloudServicesManager : MonoBehaviour
         await ForceDeleteSpecificData("object_key");
         await ListAllKeys();
         await RetrieveEverything();
-        */
-    }
+        
+    }*/
+    /*
     private void OnSignedIn()
     {
         //Shows how to get a playerID
@@ -345,5 +348,5 @@ public class CloudServicesManager : MonoBehaviour
         {
             Debug.LogError(e);
         }
-    }
+    }*/
 }

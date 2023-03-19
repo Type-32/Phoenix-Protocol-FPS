@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Map Item Info", menuName = "New Map Item Info", order = 1)]
+[CreateAssetMenu(fileName = "New Map Item Info", menuName = "Project Phoenix/Informatics/New Map Item Info", order = 1)]
 public class MapItemInfo : ScriptableObject
 {
     public string mapName;
