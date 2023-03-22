@@ -8,6 +8,7 @@ using UserConfiguration;
 
 public class LoginMenu : MonoBehaviour
 {
+    public Animator loginMenuAnimator;
     [SerializeField] InputField username, password;
     [SerializeField] Text passwordDisplay;
     private int lastCount = 0;
@@ -37,7 +38,7 @@ public class LoginMenu : MonoBehaviour
         Debug.Log(state ? "Success!" : "Failure.");
         if (state)
         {
-            gameObject.SetActive(false);
+
         }
     }
     public void OnChangedPasswordCharacter(string content)
