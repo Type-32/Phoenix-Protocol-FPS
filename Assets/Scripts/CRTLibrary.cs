@@ -55,6 +55,23 @@ namespace PrototypeLib
             }
             public static class Identities
             {
+                public static async Task<T> ReadIdentity<T>(string accessToken)
+                {
+                    var url = Configuration.APIToken + $"/users";
+
+                    using (var client = new HttpClient())
+                    {
+                        var message = new HttpRequestMessage(HttpMethod.Get, url);
+                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer ", accessToken);
+
+                        var response = await client.SendAsync(message);
+                        response.EnsureSuccessStatusCode();
+                        
+                        var identity = (await response.Content.ReadAsAsync<JsonObject>())["identity"];
+                        return JsonSerializer.Deserialize<T>(identity?.ToString());
+                    }
+                }
+
                 public static async Task SaveIdentity<T>(int identityId, T data)
                 {
                     var url = Configuration.APIUrl + $"/projects/{Configuration.ProjectId}/oauth-clients/{Authentication.OAuth2.ClientId}/identities/{identityId}";
@@ -68,7 +85,7 @@ namespace PrototypeLib
                         jsonContent.Add("data", JsonUtility.ToJson(data));
 
                         var message = new HttpRequestMessage(HttpMethod.Put, url);
-                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Configuration.APIToken);
+                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer ", Configuration.APIToken);
                         message.Content = new StringContent(jsonContent.ToString(), Encoding.UTF8, "application/json");
 
                         var response = await client.SendAsync(message);
