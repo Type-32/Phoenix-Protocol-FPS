@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using PrototypeLib.OnlineServices.Authentication;
+using PrototypeLib.OnlineServices.LambConnector;
 
 public class LoginMenu : MonoBehaviour
 {
@@ -17,14 +18,18 @@ public class LoginMenu : MonoBehaviour
     public async Task<bool> TryLogin()
     {
         var retrieve = await OAuth2.GetAccessToken(username.text, password.text);
-        if (retrieve != null) { return true; }
+        if (retrieve != null) return true;
         // TODO: Add SDK impl
         return false;
     }
     public async void OnClickLogin()
     {
-        var state = await TryLogin();
+        bool state = await TryLogin();
         Debug.Log(state ? "Success!" : "Failure.");
+        if (state)
+        {
+
+        }
     }
     public void OnChangedPasswordCharacter(string content)
     {

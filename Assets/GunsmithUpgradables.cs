@@ -7,5 +7,5 @@ using UnityEngine.UI;
 public class GunsmithUpgradables : ScriptableObject
 {
     public Sprite skillIcon;
-    public GunsmithDataJSON.SmithingUpgrades upgrade;
+    public SmithingUpgrades upgrade;
 }

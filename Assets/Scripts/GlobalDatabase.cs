@@ -34,7 +34,7 @@ public class GlobalDatabase : MonoBehaviour
         {
             CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
         }
-        GunsmithDataJSON gmt = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
+        UserDataJSON gmt = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         for (int i = 0; i < gmt.weaponSmithings.Count; i++)
         {
             GunsmithSystem.VerifyWeaponSmithingData(gmt.weaponSmithings[i]);

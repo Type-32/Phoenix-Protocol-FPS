@@ -13,35 +13,7 @@ namespace PrototypeLib
         using System.Text.Json.Nodes;
         using Hashtable = ExitGames.Client.Photon.Hashtable;
         using System.Net.Http;
-        namespace UnityCloudServices
-        {
-            //! Deprecated
-            /*
-            using Unity.Services.CloudSave;
-            using Unity.Services.Authentication;
-            using Unity.Services.Core;
-            public static class CloudKeyConfig
-            {
-                public static string UserDataConfigKey { get { return "UserDataConfig"; } }
-                public static string LoadoutDataConfigKey { get { return "LoadoutDataConfig"; } }
-                public static string RewardDataConfigKey { get { return "RewardConfig"; } }
-                public static string SettingsOptionsKey { get { return "SettingsOptions"; } }
-                public static string AppearancesConfigKey { get { return "AppearancesConfig"; } }
-                public static string GunsmithConfigKey { get { return "GunsmithConfig"; } }
-            }
-            public class CloudSavesManager<T> where T : new()
-            {
-                public void Save(T content, string slotName)
-                {
-                    // Serialize the custom class to a JSON string
-                    string data = JsonUtility.ToJson(content);
-
-                    // Save the data to the cloud
-                    CloudSaveService.Instance.SaveAsync(slotName, data, OnSaveSuccess, OnSaveFailure);
-                }
-            }
-            */
-        }
+        using UnityEngine;
         namespace PUNMultiplayer
         {
             public static class PlayerManipulaton
@@ -73,6 +45,8 @@ namespace PrototypeLib
         }
         namespace LambConnector
         {
+            using PrototypeLib.Modules.FileOperations.IO;
+            using UserConfiguration;
             public static class Configuration
             {
                 public const string APIUrl = "http://localhost:5173/api";
@@ -81,16 +55,17 @@ namespace PrototypeLib
             }
             public static class Identities
             {
-                public static async Task SaveIdentity(int identityId, UserDataJSON data)
+                public static async Task SaveIdentity<T>(int identityId, T data)
                 {
                     var url = Configuration.APIUrl + $"/projects/{Configuration.ProjectId}/oauth-clients/{Authentication.OAuth2.ClientId}/identities/{identityId}";
 
                     using (var client = new HttpClient())
                     {
+                        UserDataJSON localCache = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
                         var jsonContent = new JsonObject();
-                        jsonContent.Add("nickname", data.username);
+                        jsonContent.Add("nickname", localCache.username);
                         jsonContent.Add("permissions", new JsonArray());
-                        jsonContent.Add("data", JsonSerializer.Serialize(data));
+                        jsonContent.Add("data", JsonUtility.ToJson(data));
 
                         var message = new HttpRequestMessage(HttpMethod.Put, url);
                         message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Configuration.APIToken);
@@ -418,6 +393,5 @@ namespace PrototypeLib
                 }
             }
         }
-
     }
 }

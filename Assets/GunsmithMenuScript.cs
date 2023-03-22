@@ -10,9 +10,4 @@ public class GunsmithMenuScript : MonoBehaviour
         MenuManager.Instance.ToggleGunsmithMenu(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

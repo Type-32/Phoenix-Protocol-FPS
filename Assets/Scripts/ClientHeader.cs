@@ -502,13 +502,11 @@ namespace UserConfiguration
         public static string RewardDataConfigKey { get { return "RewardConfig.json"; } }
         public static string SettingsOptionsKey { get { return "SettingsOptions.json"; } }
         public static string AppearancesConfigKey { get { return "AppearancesConfig.json"; } }
-        public static string GunsmithConfigKey { get { return "GunsmithConfig.json"; } }
         public static string UserDataPath { get { return Path.Combine(Application.persistentDataPath, UserDataConfigKey); } }
         public static string LoadoutDataPath { get { return Path.Combine(Application.persistentDataPath, LoadoutDataConfigKey); } }
         public static string RewardDataPath { get { return Path.Combine(Application.persistentDataPath, RewardDataConfigKey); } }
         public static string SettingsOptionsPath { get { return Path.Combine(Application.persistentDataPath, SettingsOptionsKey); } }
         public static string AppearancesConfigPath { get { return Path.Combine(Application.persistentDataPath, AppearancesConfigKey); } }
-        public static string GunsmithPath { get { return Path.Combine(Application.persistentDataPath, GunsmithConfigKey); } }
     }
     public static class Database
     {
@@ -539,19 +537,19 @@ namespace UserConfiguration
     }
     public static class GunsmithSystem
     {
-        public static GunsmithDataJSON.WeaponSmithingData FindWeaponSmithingData(int weaponIndex)
+        public static WeaponSmithingData FindWeaponSmithingData(int weaponIndex)
         {
-            GunsmithDataJSON data = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
+            UserDataJSON data = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             for (int i = 0; i < data.weaponSmithings.Count; i++)
             {
                 if (weaponIndex == data.weaponSmithings[i].weaponIndex) return data.weaponSmithings[i];
             }
             return null;
         }
-        public static bool VerifyWeaponSmithingData(GunsmithDataJSON.WeaponSmithingData data, bool correctValidation = true)
+        public static bool VerifyWeaponSmithingData(WeaponSmithingData data, bool correctValidation = true)
         {
-            GunsmithDataJSON temp = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
-            if (FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).shopData.ownedWeaponIndexes.Contains(data.weaponIndex))
+            UserDataJSON temp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+            if (temp.shopData.ownedWeaponIndexes.Contains(data.weaponIndex))
                 return true;
             else
             {
@@ -560,7 +558,7 @@ namespace UserConfiguration
                     if (temp.weaponSmithings.Contains(data))
                     {
                         temp.weaponSmithings.Remove(data);
-                        FileOps<GunsmithDataJSON>.WriteFile(temp, UserSystem.GunsmithPath);
+                        FileOps<UserDataJSON>.WriteFile(temp, UserSystem.UserDataPath);
                     }
                 }
             }
@@ -568,14 +566,15 @@ namespace UserConfiguration
         }
         public static bool AddWeaponToData(WeaponData data)
         {
+            var ud = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             bool success = false;
-            if (FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
+            if (ud.shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
             {
                 if (FindWeaponSmithingData(data.GlobalWeaponIndex) == null)
                 {
-                    GunsmithDataJSON jsonData = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
-                    jsonData.weaponSmithings.Add(new GunsmithDataJSON.WeaponSmithingData(data.GlobalWeaponIndex));
-                    FileOps<GunsmithDataJSON>.WriteFile(jsonData, UserSystem.GunsmithPath);
+                    UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+                    jsonData.weaponSmithings.Add(new WeaponSmithingData(data.GlobalWeaponIndex));
+                    FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                     success = true;
                 }
             }
@@ -584,12 +583,12 @@ namespace UserConfiguration
         public static bool RemoveWeaponFromData(WeaponData data)
         {
             bool success = false;
-            GunsmithDataJSON.WeaponSmithingData temp = FindWeaponSmithingData(data.GlobalWeaponIndex);
+            WeaponSmithingData temp = FindWeaponSmithingData(data.GlobalWeaponIndex);
             if (temp != null)
             {
-                GunsmithDataJSON jsonData = FileOps<GunsmithDataJSON>.ReadFile(UserSystem.GunsmithPath);
+                UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
                 jsonData.weaponSmithings.Remove(temp);
-                FileOps<GunsmithDataJSON>.WriteFile(jsonData, UserSystem.GunsmithPath);
+                FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                 success = true;
             }
             return success;
