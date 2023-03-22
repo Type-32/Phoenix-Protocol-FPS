@@ -14,6 +14,8 @@ using LauncherManifest;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
+using PrototypeLib.Modules.FileOperations.IO;
+using UserConfiguration;
 
 public class MenuManager : MonoBehaviour
 {
@@ -139,6 +141,14 @@ public class MenuManager : MonoBehaviour
         {
             id.SetID(tmep);
             tmep++;
+        }
+        if (string.IsNullOrEmpty(FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).accessToken))
+        {
+            login.SetActive(true);
+        }
+        else
+        {
+            login.SetActive(false);
         }
     }
     public void SetQuitButtonState(bool state)

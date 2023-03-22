@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using PrototypeLib.OnlineServices.Authentication;
 using PrototypeLib.OnlineServices.LambConnector;
+using PrototypeLib.Modules.FileOperations.IO;
+using UserConfiguration;
 
 public class LoginMenu : MonoBehaviour
 {
@@ -17,9 +19,15 @@ public class LoginMenu : MonoBehaviour
 
     public async Task<bool> TryLogin()
     {
+        UserDataJSON udj = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         var retrieve = await OAuth2.GetAccessToken(username.text, password.text);
         Debug.Log(retrieve);
-        if (retrieve != null) return true;
+        if (retrieve != null)
+        {
+            udj.accessToken = retrieve;
+            FileOps<UserDataJSON>.WriteFile(udj, UserSystem.UserDataPath);
+            return true;
+        }
         // TODO: Add SDK impl
         return false;
     }
@@ -29,7 +37,7 @@ public class LoginMenu : MonoBehaviour
         Debug.Log(state ? "Success!" : "Failure.");
         if (state)
         {
-
+            gameObject.SetActive(false);
         }
     }
     public void OnChangedPasswordCharacter(string content)

@@ -51,7 +51,7 @@ namespace PrototypeLib
             {
                 public const string APIUrl = "http://cloud.smartsheep.studio/api";
                 public static string APIToken = "";
-                public static string ProjectId = "1";
+                public static string ProjectId = "3";
             }
             public static class Identities
             {
@@ -84,8 +84,8 @@ namespace PrototypeLib
             public static class OAuth2
             {
                 public const string APIUrl = "http://cloud.smartsheep.studio/o/oauth/token";
-                public static string ClientId = "1";
-                public static string ClientSecret = "1d83494fdd6642b5";
+                public static string ClientId = "2";
+                public static string ClientSecret = "75013fe4961749d4";
                 public class TokenResponse
                 {
                     public string access_token { get; set; }

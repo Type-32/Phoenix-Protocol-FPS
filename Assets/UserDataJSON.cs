@@ -9,6 +9,7 @@ public class UserDataJSON
     public int userLevel;
     public int userLevelXP;
     public int userCoins;
+    public string accessToken;
     public ShopDataJSON shopData;
     public UserProfileData profileData;
     public SmithingResources userResources;
@@ -25,6 +26,7 @@ public class UserDataJSON
         userResources.composites = 500; //Gained Through Matches, approx. 150~400 per match
         userResources.mechanisms = 50; //Gained Through Combining Iron and Composites, approx. 10~50 per fusion, around 600~1500 iron needed and 150~400 composites needed
         userResources.tools = 5; //Gained Through Match Kills, approx 1~3 per match
+        accessToken = "";
         weaponSmithings = new();
         profileData = new();
     }
