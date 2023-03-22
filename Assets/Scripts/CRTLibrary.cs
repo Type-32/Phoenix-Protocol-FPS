@@ -49,7 +49,7 @@ namespace PrototypeLib
             using UserConfiguration;
             public static class Configuration
             {
-                public const string APIUrl = "http://localhost:5173/api";
+                public const string APIUrl = "http://cloud.smartsheep.studio/api";
                 public static string APIToken = "";
                 public static string ProjectId = "1";
             }
@@ -83,7 +83,7 @@ namespace PrototypeLib
             using System.Threading.Tasks;
             public static class OAuth2
             {
-                public const string APIUrl = "http://localhost:5173/o/oauth/token";
+                public const string APIUrl = "http://cloud.smartsheep.studio/o/oauth/token";
                 public static string ClientId = "1";
                 public static string ClientSecret = "1d83494fdd6642b5";
                 public class TokenResponse
