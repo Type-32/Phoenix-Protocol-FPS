@@ -18,6 +18,7 @@ public class LoginMenu : MonoBehaviour
     public async Task<bool> TryLogin()
     {
         var retrieve = await OAuth2.GetAccessToken(username.text, password.text);
+        Debug.Log(retrieve);
         if (retrieve != null) return true;
         // TODO: Add SDK impl
         return false;

@@ -349,7 +349,7 @@ public class MenuManager : MonoBehaviour
     IEnumerator DelayDisableEnterAnim(float time)
     {
         yield return new WaitForSeconds(time);
-        if (!AuthenticationService.Instance.IsSignedIn) StartCoroutine(DelayDisableEnterAnim(1f));
+        if (true) StartCoroutine(DelayDisableEnterAnim(1f));
         else RoomManager.Instance.loadEnterAnim = false;
     }
     public string SetConnectionIndicatorText(string content)
