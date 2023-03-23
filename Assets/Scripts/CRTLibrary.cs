@@ -69,7 +69,7 @@ namespace PrototypeLib
 
                         var identity = (await response.Content.ReadAsAsync<JsonObject>())["identity"];
                         Debug.Log(identity);
-                        return JsonUtility.FromJson<T>(identity?.ToString());
+                        return JsonSerializer.Deserialize<T>(identity?.ToString());
                     }
                 }
 
