@@ -49,7 +49,7 @@ namespace PrototypeLib
             using UserConfiguration;
             public static class Configuration
             {
-                public const string APIUrl = "http://cloud.smartsheep.studio/api";
+                public const string APIUrl = "https://cloud.smartsheep.studio/api";
                 public static string APIToken = "";
                 public static string ProjectId = "3";
             }
@@ -57,7 +57,7 @@ namespace PrototypeLib
             {
                 public static async Task<T> ReadIdentity<T>(string accessToken)
                 {
-                    var url = Configuration.APIToken + $"/users";
+                    var url = Configuration.APIUrl + "/users";
 
                     using (var client = new HttpClient())
                     {
@@ -101,7 +101,7 @@ namespace PrototypeLib
             using System.Threading.Tasks;
             public static class OAuth2
             {
-                public const string APIUrl = "http://cloud.smartsheep.studio/o/oauth/token";
+                public const string APIUrl = "https://cloud.smartsheep.studio/o/oauth/token";
                 public static string ClientId = "2";
                 public static string ClientSecret = "75013fe4961749d4";
                 public class TokenResponse
