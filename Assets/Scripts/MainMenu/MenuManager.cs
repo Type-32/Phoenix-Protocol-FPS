@@ -142,14 +142,7 @@ public class MenuManager : MonoBehaviour
             id.SetID(tmep);
             tmep++;
         }
-        if (string.IsNullOrEmpty(FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).accessToken))
-        {
-            login.SetActive(true);
-        }
-        else
-        {
-            login.SetActive(false);
-        }
+        login.SetActive(true);
     }
     public void SetQuitButtonState(bool state)
     {

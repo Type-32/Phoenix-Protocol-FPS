@@ -62,7 +62,7 @@ namespace PrototypeLib
                     using (var client = new HttpClient())
                     {
                         var message = new HttpRequestMessage(HttpMethod.Get, url);
-                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer ", accessToken);
+                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
                         var response = await client.SendAsync(message);
                         response.EnsureSuccessStatusCode();

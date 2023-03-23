@@ -14,9 +14,24 @@ public class LoginMenu : MonoBehaviour
     [SerializeField] Text passwordDisplay, exceptionText;
     private int lastCount = 0;
     // Start is called before the first frame update
-    void Start()
+    async void Start()
     {
+        UserDataJSON ludj = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath), oudj;
+        if (string.IsNullOrEmpty(ludj.accessToken))
+        {
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            try
+            {
+                oudj = await Identities.ReadIdentity<UserDataJSON>(ludj.accessToken);
+            }
+            catch (Exception e)
+            {
 
+            }
+        }
     }
 
     public async Task<bool> TryLogin()

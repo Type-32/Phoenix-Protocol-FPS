@@ -25,8 +25,7 @@ public class OnlineServicesManager : Singleton<OnlineServicesManager>
             Debug.Log(retrieve);
             if (retrieve != null)
             {
-                udj.accessToken = retrieve;
-                OnlineServicesManager.AccessToken = retrieve;
+                udj.accessToken = OnlineServicesManager.AccessToken = Configuration.APIToken = retrieve;
                 FileOps<UserDataJSON>.WriteFile(udj, path);
 
                 T oudj = await Identities.ReadIdentity<T>(retrieve);
