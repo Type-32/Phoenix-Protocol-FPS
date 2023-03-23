@@ -5,12 +5,13 @@ using PrototypeLib.OnlineServices.Authentication;
 using PrototypeLib.OnlineServices.LambConnector;
 using PrototypeLib.Modules.FileOperations.IO;
 using UserConfiguration;
+using System;
 
 public class LoginMenu : MonoBehaviour
 {
     public Animator loginMenuAnimator;
     [SerializeField] InputField username, password;
-    [SerializeField] Text passwordDisplay;
+    [SerializeField] Text passwordDisplay, exceptionText;
     private int lastCount = 0;
     // Start is called before the first frame update
     void Start()
@@ -21,12 +22,15 @@ public class LoginMenu : MonoBehaviour
     public async Task<bool> TryLogin()
     {
         UserDataJSON udj = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        var retrieve = await OAuth2.GetAccessToken(username.text, password.text);
-        Debug.Log(retrieve);
-        if (retrieve != null)
+        UserDataJSON oudj = await OnlineServicesManager.LoginAndRetrieveData<UserDataJSON>(username.text, password.text, UserSystem.UserDataPath);
+        if (udj.Equals(oudj))
         {
-            udj.accessToken = retrieve;
-            FileOps<UserDataJSON>.WriteFile(udj, UserSystem.UserDataPath);
+            Debug.Log("User Data JSON is the same as Cloud Save User Data JSON.");
+            return true;
+        }
+        else
+        {
+            Debug.Log("User Data JSON is NOT same as Cloud Save User Data JSON.");
             return true;
         }
         // TODO: Add SDK impl
@@ -38,7 +42,7 @@ public class LoginMenu : MonoBehaviour
         Debug.Log(state ? "Success!" : "Failure.");
         if (state)
         {
-
+            await Identities.ReadIdentity<UserDataJSON>(OnlineServicesManager.AccessToken);
         }
     }
     public void OnChangedPasswordCharacter(string content)

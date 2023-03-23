@@ -66,9 +66,10 @@ namespace PrototypeLib
 
                         var response = await client.SendAsync(message);
                         response.EnsureSuccessStatusCode();
-                        
+
                         var identity = (await response.Content.ReadAsAsync<JsonObject>())["identity"];
-                        return JsonSerializer.Deserialize<T>(identity?.ToString());
+                        Debug.Log(identity);
+                        return JsonUtility.FromJson<T>(identity?.ToString());
                     }
                 }
 
