@@ -16,6 +16,9 @@ public class LoginMenu : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
+        //TODO Recheck Cloud Saves Code For Later
+        return;
+
         UserDataJSON ludj = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath), oudj;
         if (string.IsNullOrEmpty(ludj.accessToken))
         {

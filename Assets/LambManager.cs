@@ -12,6 +12,9 @@ public class OnlineServicesManager : Singleton<OnlineServicesManager>
     public static bool RetrievedOnlineData = false;
     protected override void Awake()
     {
+        //TODO Recheck Cloud Saves Code For Later
+        return;
+
         base.Awake();
         RetrievedOnlineData = false;
         AccessToken = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).accessToken;
