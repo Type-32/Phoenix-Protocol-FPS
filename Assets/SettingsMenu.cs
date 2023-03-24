@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Michsky.MUIP;
 using LauncherManifest;
 using UserConfiguration;
+using PrototypeLib.Modules.FileOperations.IO;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -28,9 +29,7 @@ public class SettingsMenu : MonoBehaviour
         data.QualityIndex = qualityDropdown.selectedItemIndex;
         data.ResolutionIndex = resolutionDropdown.selectedItemIndex;
 
-        //Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey));
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey), json);
+        FileOps<SettingsOptionsJSON>.WriteFile(data, UserSystem.SettingsOptionsPath);
         //Debug.LogWarning("Writing Settings Options To Files...");
     }
     public void InitializeSettingsOptionsToJSON()
@@ -69,7 +68,7 @@ public class SettingsMenu : MonoBehaviour
         SetSensitivity(jsonData.MouseSensitivity);
         SetQuality(jsonData.QualityIndex);
         SetResolution(jsonData.ResolutionIndex);
-        
+
     }
     public void SetVolume(float volume)
     {

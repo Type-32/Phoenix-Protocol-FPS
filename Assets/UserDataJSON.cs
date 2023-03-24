@@ -9,29 +9,131 @@ public class UserDataJSON
     public int userLevel;
     public int userLevelXP;
     public int userCoins;
-    public string accessToken;
-    public ShopDataJSON shopData;
-    public UserProfileData profileData;
-    public SmithingResources userResources;
-    public List<WeaponSmithingData> weaponSmithings = new();
+    public string AccessToken;
+    public ShopDataJSON ShopData;
+    public UserProfileData ProfileData;
+    public SmithingResources SmithingResources;
+    public LoadoutDataJSON LoadoutData;
+    public AppearancesDataJSON AppearancesData;
+    public List<WeaponSmithingData> WeaponSmithings = new();
     public UserDataJSON()
     {
-        username = "Player " + (2023).ToString();
+        username = $"User {Random.Range(1000, 9999)}";
         hasInitialized = false;
         userLevel = 1;
         userLevelXP = 0;
         userCoins = 1000;
-        userResources.iron = 1000; //Gained Through Matches, approx. 500~2500 per match
-        userResources.experience = 0; //Gained Through Matches, approx. 50~300 per match
-        userResources.composites = 500; //Gained Through Matches, approx. 150~400 per match
-        userResources.mechanisms = 50; //Gained Through Combining Iron and Composites, approx. 10~50 per fusion, around 600~1500 iron needed and 150~400 composites needed
-        userResources.tools = 5; //Gained Through Match Kills, approx 1~3 per match
-        accessToken = "";
-        weaponSmithings = new();
-        profileData = new();
+        SmithingResources.iron = 1000; //Gained Through Matches, approx. 500~2500 per match
+        SmithingResources.experience = 0; //Gained Through Matches, approx. 50~300 per match
+        SmithingResources.composites = 500; //Gained Through Matches, approx. 150~400 per match
+        SmithingResources.mechanisms = 50; //Gained Through Combining Iron and Composites, approx. 10~50 per fusion, around 600~1500 iron needed and 150~400 composites needed
+        SmithingResources.tools = 5; //Gained Through Match Kills, approx 1~3 per match
+        AccessToken = "";
+        WeaponSmithings = new();
+        ProfileData = new();
+        AppearancesData = new();
     }
 }
+[System.Serializable]
+public class LoadoutDataJSON
+{
+    public int SelectedSlot = 0;
+    public List<LoadoutSlotDataJSON> Slots;
+    public LoadoutDataJSON()
+    {
+        SelectedSlot = 0;
+        Slots = new();
+        for (int i = 0; i < 8; i++) Slots.Add(new LoadoutSlotDataJSON($"Custom Loadout {i}"));
+    }
+    public LoadoutDataJSON(int count)
+    {
+        SelectedSlot = 0;
+        Slots = new();
+        for (int i = 0; i < count; i++) Slots.Add(new LoadoutSlotDataJSON($"Custom Loadout {i}"));
+    }
+}
+[System.Serializable]
+public class LoadoutSlotDataJSON
+{
+    public string SlotName;
+    public bool EquippedByDefault;
+    public int Weapon1;
+    public int Weapon2;
+    public int Equipment1;
+    public int Equipment2;
+
+    public int WA_Sight1;
+    public int WA_Sight2;
+    public int WA_Barrel1;
+    public int WA_Barrel2;
+    public int WA_Underbarrel1;
+    public int WA_Underbarrel2;
+    public int WA_Rightbarrel1;
+    public int WA_Rightbarrel2;
+    public int WA_Leftbarrel1;
+    public int WA_Leftbarrel2;
+    public int WeaponSkin1;
+    public int WeaponSkin2;
+    public LoadoutSlotDataJSON(string slotName)
+    {
+        SlotName = slotName;
+        EquippedByDefault = false;
+        Weapon1 = 0;
+        Weapon2 = 2;
+        Equipment1 = 0;
+        Equipment2 = 0;
+        WA_Sight1 = -1;
+        WA_Sight2 = -1;
+        WA_Barrel1 = -1;
+        WA_Barrel2 = -1;
+        WA_Underbarrel1 = -1;
+        WA_Underbarrel2 = -1;
+        WA_Rightbarrel1 = -1;
+        WA_Rightbarrel2 = -1;
+        WA_Leftbarrel1 = -1;
+        WA_Leftbarrel2 = -1;
+        WeaponSkin1 = -1;
+        WeaponSkin2 = -1;
+    }
+}
+[System.Serializable]
+public class AppearancesDataJSON
+{
+    public List<int> ownedPlayerAppearances = new();
+    public List<int> availablePlayerAppearances = new();
+    public List<WeaponAppearance> unlockedWeaponAppearances = new();
+    public List<WeaponAppearance> availableWeaponAppearances = new();
+    public AppearancesDataJSON()
+    {
+        ownedPlayerAppearances = new();
+        availablePlayerAppearances = new();
+        unlockedWeaponAppearances = new();
+        availableWeaponAppearances = new();
+    }
+}
+
 #region Backend Types
+[System.Serializable]
+public class WeaponAppearance
+{
+    public int weaponIndex;
+    public int appearanceIndex;
+    internal WeaponAppearance()
+    {
+        weaponIndex = 0;
+        appearanceIndex = -1;
+    }
+    public WeaponAppearance(int weaponIndex, int appearanceIndex)
+    {
+        this.weaponIndex = weaponIndex;
+        this.appearanceIndex = appearanceIndex;
+    }
+    public WeaponAppearance(WeaponAppearanceMeshData data)
+    {
+        weaponIndex = data.weaponData.GlobalWeaponIndex;
+        appearanceIndex = data.WeaponAppearanceMeshDataIndex;
+    }
+}
 [System.Serializable]
 public class UserProfileData
 {

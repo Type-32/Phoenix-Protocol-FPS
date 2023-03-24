@@ -17,7 +17,7 @@ public class OnlineServicesManager : Singleton<OnlineServicesManager>
 
         base.Awake();
         RetrievedOnlineData = false;
-        AccessToken = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).accessToken;
+        AccessToken = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AccessToken;
     }
     public static async Task<T?> LoginAndRetrieveData<T>(string username, string password, string path)
     {
@@ -28,7 +28,7 @@ public class OnlineServicesManager : Singleton<OnlineServicesManager>
             Debug.Log(retrieve);
             if (retrieve != null)
             {
-                udj.accessToken = OnlineServicesManager.AccessToken = Configuration.APIToken = retrieve;
+                udj.AccessToken = OnlineServicesManager.AccessToken = Configuration.APIToken = retrieve;
                 FileOps<UserDataJSON>.WriteFile(udj, path);
 
                 T oudj = await Identities.ReadIdentity<T>(retrieve);

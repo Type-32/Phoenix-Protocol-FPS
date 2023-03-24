@@ -49,7 +49,7 @@ public class ShopMenuScript : MonoBehaviour
     {
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         InitializeWeaponsMenu(jsonData);
-        InitializeCosmeticsMenu(FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath));
+        InitializeCosmeticsMenu(jsonData.AppearancesData);
         weaponsMenu.SetActive(false);
         cosmeticsMenu.SetActive(false);
         TogglePreviewUI(false);
@@ -73,9 +73,9 @@ public class ShopMenuScript : MonoBehaviour
         {
             ShopWeaponItem item = Instantiate(shopWeaponItemPrefab, shopWeaponItemHolder).GetComponent<ShopWeaponItem>();
             bool un = false, pur = false;
-            if (jsonData.shopData.availableWeaponIndexes.Contains(i) || jsonData.shopData.unlockedWeaponIndexes.Contains(i) || jsonData.shopData.ownedWeaponIndexes.Contains(i))
+            if (jsonData.ShopData.availableWeaponIndexes.Contains(i) || jsonData.ShopData.unlockedWeaponIndexes.Contains(i) || jsonData.ShopData.ownedWeaponIndexes.Contains(i))
             {
-                if (jsonData.shopData.availableWeaponIndexes.Contains(i))
+                if (jsonData.ShopData.availableWeaponIndexes.Contains(i))
                 {
                     un = pur = false;
                     if (jsonData.userLevel >= GlobalDatabase.Instance.allWeaponDatas[i].unlockingLevel)
@@ -83,17 +83,17 @@ public class ShopMenuScript : MonoBehaviour
                         un = true;
                         pur = false;
                         informPopupNeeded = true;
-                        jsonData.shopData.availableWeaponIndexes.Remove(i);
-                        jsonData.shopData.unlockedWeaponIndexes.Add(i);
+                        jsonData.ShopData.availableWeaponIndexes.Remove(i);
+                        jsonData.ShopData.unlockedWeaponIndexes.Add(i);
                         content = content + GlobalDatabase.Instance.allWeaponDatas[i].itemName + "\n";
                     }
                 }
-                if (jsonData.shopData.unlockedWeaponIndexes.Contains(i))
+                if (jsonData.ShopData.unlockedWeaponIndexes.Contains(i))
                 {
                     un = true;
                     pur = false;
                 }
-                if (jsonData.shopData.ownedWeaponIndexes.Contains(i))
+                if (jsonData.ShopData.ownedWeaponIndexes.Contains(i))
                 {
                     un = pur = true;
                 }
@@ -107,12 +107,12 @@ public class ShopMenuScript : MonoBehaviour
                     un = true;
                     pur = false;
                     informPopupNeeded = true;
-                    jsonData.shopData.unlockedWeaponIndexes.Add(i);
+                    jsonData.ShopData.unlockedWeaponIndexes.Add(i);
                     content = content + GlobalDatabase.Instance.allWeaponDatas[i].itemName + "\n";
                 }
                 else
                 {
-                    jsonData.shopData.availableWeaponIndexes.Add(i);
+                    jsonData.ShopData.availableWeaponIndexes.Add(i);
                 }
                 item.SetItemData(GlobalDatabase.Instance.allWeaponDatas[i], un, pur);
                 shopWeaponList.Add(item);
@@ -191,8 +191,8 @@ public class ShopMenuScript : MonoBehaviour
                 MenuManager.Instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
                 FindForWeaponDataInList(data).SetItemData(data, true, true);
                 UserDatabase.Instance.AddUserCurrency(data.purchasePrice);
-                //jsonData.shopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
-                jsonData.shopData.ownedWeaponIndexes.Add(Database.FindWeaponDataIndex(data));
+                //jsonData.ShopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
+                jsonData.ShopData.ownedWeaponIndexes.Add(Database.FindWeaponDataIndex(data));
                 purchasePreview.interactable = false;
 
                 FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);

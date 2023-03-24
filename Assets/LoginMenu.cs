@@ -20,7 +20,7 @@ public class LoginMenu : MonoBehaviour
         return;
 
         UserDataJSON ludj = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath), oudj;
-        if (string.IsNullOrEmpty(ludj.accessToken))
+        if (string.IsNullOrEmpty(ludj.AccessToken))
         {
             gameObject.SetActive(true);
         }
@@ -28,7 +28,7 @@ public class LoginMenu : MonoBehaviour
         {
             try
             {
-                oudj = await Identities.ReadIdentity<UserDataJSON>(ludj.accessToken);
+                oudj = await Identities.ReadIdentity<UserDataJSON>(ludj.AccessToken);
             }
             catch (Exception e)
             {

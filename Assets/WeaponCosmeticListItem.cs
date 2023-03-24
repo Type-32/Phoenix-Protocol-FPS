@@ -48,22 +48,20 @@ public class WeaponCosmeticListItem : MonoBehaviour
     public void PurchaseItem()
     {
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        AppearancesDataJSON app = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
         WeaponAppearance temp = new WeaponAppearance(data);
-        if (data.purchasePrice <= jsonData.userCoins && (!app.unlockedWeaponAppearances.Contains(temp) && app.availableWeaponAppearances.Contains(temp)) && jsonData.shopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex))
+        if (data.purchasePrice <= jsonData.userCoins && (!jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp) && jsonData.AppearancesData.availableWeaponAppearances.Contains(temp)) && jsonData.ShopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex))
         {
             MenuManager.Instance.AddNotification("Success Purchase", "You have successfully purchased the " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + "!");
             UserDatabase.Instance.AddUserCurrency(data.purchasePrice);
-            app.unlockedWeaponAppearances.Add(temp);
-            app.availableWeaponAppearances.Remove(temp);
+            jsonData.AppearancesData.unlockedWeaponAppearances.Add(temp);
+            jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
 
-            FileOps<AppearancesDataJSON>.WriteFile(app, UserSystem.AppearancesConfigPath);
             FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
             script.RemoveWeaponCosmeticListItem(this);
         }
         else
         {
-            if (!jsonData.shopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex)) MenuManager.Instance.AddNotification("Failed Purchase", "You do not have the weapon " + data.weaponData.itemName + " to obtain this weapon skin.");
+            if (!jsonData.ShopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex)) MenuManager.Instance.AddNotification("Failed Purchase", "You do not have the weapon " + data.weaponData.itemName + " to obtain this weapon skin.");
             else if (data.purchasePrice > jsonData.userCoins) MenuManager.Instance.AddNotification("Failed Purchase", "You do not have enough money to purchase " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + ".");
             else MenuManager.Instance.AddNotification("Failed Purchase", "An error occured while trying to purchase " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + ".");
         }

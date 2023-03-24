@@ -47,10 +47,10 @@ public class LoadoutSelectionItem : MonoBehaviour
                 tempIndex2 = i;
             }
         }
-        LoadoutDataJSON tmp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
-        tmp.SelectedSlot = loadoutIndex;
-        Debug.Log(tmp.Slots[tmp.SelectedSlot].SlotName + " Selected the Slot name");
-        FileOps<LoadoutDataJSON>.WriteFile(tmp, UserSystem.LoadoutDataPath);
+        UserDataJSON tmp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+        tmp.LoadoutData.SelectedSlot = loadoutIndex;
+        Debug.Log(tmp.LoadoutData.Slots[tmp.LoadoutData.SelectedSlot].SlotName + " Selected the Slot name");
+        FileOps<UserDataJSON>.WriteFile(tmp, UserSystem.UserDataPath);
         loadoutSelection.OnSelectLoadoutCallback(loadoutIndex, tempIndex1, tempIndex2, 0, 0);
         selectionVisual.SetActive(true);
         //loadoutSelection.WriteLoadoutDataToJSON();

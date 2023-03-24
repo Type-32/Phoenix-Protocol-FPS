@@ -10,6 +10,8 @@ using System.Linq;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UserConfiguration;
 using UnityEngine.Rendering;
+using PrototypeLib.Modules.FileOperations.IO;
+using UserConfiguration;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -678,10 +680,7 @@ public class PlayerManager : MonoBehaviour
             data.MouseSensitivity = settingsMenu.sensitivitySlider.value;
             data.QualityIndex = settingsMenu.qualityDropdown.selectedItemIndex;
             data.ResolutionIndex = settingsMenu.resolutionDropdown.selectedItemIndex;
-
-            Debug.Log("Persistent Data Path: " + Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey));
-            string json = JsonUtility.ToJson(data, true);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.SettingsOptionsKey), json);
+            FileOps<SettingsOptionsJSON>.WriteFile(data, UserSystem.SettingsOptionsPath);
             if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerSensitivity(data.MouseSensitivity);
             if (controller != null) controller.GetComponent<PlayerStats>().SetPlayerFOV(data.FieldOfView);
             Debug.LogWarning("Writing Settings Options To Files...");

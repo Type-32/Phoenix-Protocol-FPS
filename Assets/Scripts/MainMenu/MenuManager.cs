@@ -353,7 +353,7 @@ public class MenuManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         if (true) StartCoroutine(DelayDisableEnterAnim(1f));
-        else RoomManager.Instance.loadEnterAnim = false;
+        //else RoomManager.Instance.loadEnterAnim = false;
     }
     public string SetConnectionIndicatorText(string content)
     {

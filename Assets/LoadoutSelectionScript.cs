@@ -84,32 +84,27 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void WriteLoadoutDataToJSON()
     {
-        LoadoutDataJSON data = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
-        data.SelectedSlot = selectedLoadoutIndex;
-        //string json = JsonUtility.ToJson(data, true);
-        //File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey), json);
+        UserDataJSON data = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+        data.LoadoutData.SelectedSlot = selectedLoadoutIndex;
 
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
-            //data.Slots[i] = GlobalDatabase.Instance.emptyLoadoutSlotDataJSON;
-            //data.Slots[i].WeaponData1 = loadoutDataList[i].weaponData[0];
-            //data.Slots[i].WeaponData2 = loadoutDataList[i].weaponData[1];
-            data.Slots[i].Weapon1 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[0]);
-            data.Slots[i].Weapon2 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[1]);
-            data.Slots[i].Equipment1 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[0]);
-            data.Slots[i].Equipment2 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[1]);
-            data.Slots[i].WA_Sight1 = loadoutDataList[i].selectedSightIndex[0];
-            data.Slots[i].WA_Sight2 = loadoutDataList[i].selectedSightIndex[1];
-            data.Slots[i].WA_Barrel1 = loadoutDataList[i].selectedBarrelIndex[0];
-            data.Slots[i].WA_Barrel2 = loadoutDataList[i].selectedBarrelIndex[1];
-            data.Slots[i].WA_Underbarrel1 = loadoutDataList[i].selectedUnderbarrelIndex[0];
-            data.Slots[i].WA_Underbarrel2 = loadoutDataList[i].selectedUnderbarrelIndex[1];
-            data.Slots[i].WA_Rightbarrel1 = loadoutDataList[i].selectedSidebarrelRightIndex[0];
-            data.Slots[i].WA_Rightbarrel2 = loadoutDataList[i].selectedSidebarrelRightIndex[1];
-            data.Slots[i].WA_Leftbarrel1 = loadoutDataList[i].selectedSidebarrelLeftIndex[0];
-            data.Slots[i].WA_Leftbarrel2 = loadoutDataList[i].selectedSidebarrelLeftIndex[1];
-            data.Slots[i].WeaponSkin1 = loadoutDataList[i].selectedAppearanceDataIndex[0];
-            data.Slots[i].WeaponSkin2 = loadoutDataList[i].selectedAppearanceDataIndex[1];
+            data.LoadoutData.Slots[i].Weapon1 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[0]);
+            data.LoadoutData.Slots[i].Weapon2 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[1]);
+            data.LoadoutData.Slots[i].Equipment1 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[0]);
+            data.LoadoutData.Slots[i].Equipment2 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[1]);
+            data.LoadoutData.Slots[i].WA_Sight1 = loadoutDataList[i].selectedSightIndex[0];
+            data.LoadoutData.Slots[i].WA_Sight2 = loadoutDataList[i].selectedSightIndex[1];
+            data.LoadoutData.Slots[i].WA_Barrel1 = loadoutDataList[i].selectedBarrelIndex[0];
+            data.LoadoutData.Slots[i].WA_Barrel2 = loadoutDataList[i].selectedBarrelIndex[1];
+            data.LoadoutData.Slots[i].WA_Underbarrel1 = loadoutDataList[i].selectedUnderbarrelIndex[0];
+            data.LoadoutData.Slots[i].WA_Underbarrel2 = loadoutDataList[i].selectedUnderbarrelIndex[1];
+            data.LoadoutData.Slots[i].WA_Rightbarrel1 = loadoutDataList[i].selectedSidebarrelRightIndex[0];
+            data.LoadoutData.Slots[i].WA_Rightbarrel2 = loadoutDataList[i].selectedSidebarrelRightIndex[1];
+            data.LoadoutData.Slots[i].WA_Leftbarrel1 = loadoutDataList[i].selectedSidebarrelLeftIndex[0];
+            data.LoadoutData.Slots[i].WA_Leftbarrel2 = loadoutDataList[i].selectedSidebarrelLeftIndex[1];
+            data.LoadoutData.Slots[i].WeaponSkin1 = loadoutDataList[i].selectedAppearanceDataIndex[0];
+            data.LoadoutData.Slots[i].WeaponSkin2 = loadoutDataList[i].selectedAppearanceDataIndex[1];
         }
 
         string json = JsonUtility.ToJson(data, true);
@@ -118,20 +113,18 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void ReadLoadoutDataFromJSON()
     {
-        LoadoutDataJSON jsonData = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
         UserDataJSON jsonUserData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        AppearancesDataJSON appearancesData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
-        selectedLoadoutIndex = jsonData.SelectedSlot;
-        selectedMainWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon1;
-        selectedSecondWeaponIndex = jsonData.Slots[selectedLoadoutIndex].Weapon2;
-        selectedEquipmentIndex1 = jsonData.Slots[selectedLoadoutIndex].Equipment1;
-        selectedEquipmentIndex2 = jsonData.Slots[selectedLoadoutIndex].Equipment2;
+        selectedLoadoutIndex = jsonUserData.LoadoutData.SelectedSlot;
+        selectedMainWeaponIndex = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Weapon1;
+        selectedSecondWeaponIndex = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Weapon2;
+        selectedEquipmentIndex1 = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Equipment1;
+        selectedEquipmentIndex2 = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Equipment2;
         bool checkChange = false;
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
-            if (jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1))
+            if (jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon1))
             {
-                loadoutDataList[i].weaponData[0] = FindWeaponDataFromIndex(jsonData.Slots[i].Weapon1);
+                loadoutDataList[i].weaponData[0] = FindWeaponDataFromIndex(jsonUserData.LoadoutData.Slots[i].Weapon1);
             }
             else
             {
@@ -139,42 +132,42 @@ public class LoadoutSelectionScript : MonoBehaviour
                 loadoutDataList[i].weaponData[0] = FindWeaponDataFromIndex(0);
             }
 
-            if (jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2))
+            if (jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon2))
             {
-                loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(jsonData.Slots[i].Weapon2);
+                loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(jsonUserData.LoadoutData.Slots[i].Weapon2);
             }
             else
             {
                 checkChange = true;
                 loadoutDataList[i].weaponData[1] = FindWeaponDataFromIndex(2);
             }
-            loadoutDataList[i].equipmentData[0] = Database.FindEquipmentData(jsonData.Slots[i].Equipment1);
-            loadoutDataList[i].equipmentData[1] = Database.FindEquipmentData(jsonData.Slots[i].Equipment2);
-            loadoutDataList[i].selectedSight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Sight1);
-            loadoutDataList[i].selectedSight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Sight2);
-            loadoutDataList[i].selectedBarrel[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Barrel1);
-            loadoutDataList[i].selectedBarrel[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Barrel2);
-            loadoutDataList[i].selectedUnderbarrel[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Underbarrel1);
-            loadoutDataList[i].selectedUnderbarrel[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Underbarrel2);
-            loadoutDataList[i].selectedSidebarrelLeft[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Leftbarrel1);
-            loadoutDataList[i].selectedSidebarrelLeft[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Leftbarrel2);
-            loadoutDataList[i].selectedSidebarrelRight[0] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel1);
-            loadoutDataList[i].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(jsonData.Slots[i].WA_Rightbarrel2);
-            loadoutDataList[i].selectedAppearanceData[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1] : null));
-            loadoutDataList[i].selectedAppearanceData[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? null : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2] : null));
+            loadoutDataList[i].equipmentData[0] = Database.FindEquipmentData(jsonUserData.LoadoutData.Slots[i].Equipment1);
+            loadoutDataList[i].equipmentData[1] = Database.FindEquipmentData(jsonUserData.LoadoutData.Slots[i].Equipment2);
+            loadoutDataList[i].selectedSight[0] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Sight1);
+            loadoutDataList[i].selectedSight[1] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Sight2);
+            loadoutDataList[i].selectedBarrel[0] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Barrel1);
+            loadoutDataList[i].selectedBarrel[1] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Barrel2);
+            loadoutDataList[i].selectedUnderbarrel[0] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Underbarrel1);
+            loadoutDataList[i].selectedUnderbarrel[1] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Underbarrel2);
+            loadoutDataList[i].selectedSidebarrelLeft[0] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Leftbarrel1);
+            loadoutDataList[i].selectedSidebarrelLeft[1] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Leftbarrel2);
+            loadoutDataList[i].selectedSidebarrelRight[0] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Rightbarrel1);
+            loadoutDataList[i].selectedSidebarrelRight[1] = FindAttachmentDataFromIndex(jsonUserData.LoadoutData.Slots[i].WA_Rightbarrel2);
+            loadoutDataList[i].selectedAppearanceData[0] = (jsonUserData.LoadoutData.Slots[i].WeaponSkin1 == -1 ? null : (jsonUserData.AppearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonUserData.LoadoutData.Slots[i].WeaponSkin1])) ? GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonUserData.LoadoutData.Slots[i].WeaponSkin1] : null));
+            loadoutDataList[i].selectedAppearanceData[1] = (jsonUserData.LoadoutData.Slots[i].WeaponSkin2 == -1 ? null : (jsonUserData.AppearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonUserData.LoadoutData.Slots[i].WeaponSkin2])) ? GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonUserData.LoadoutData.Slots[i].WeaponSkin2] : null));
 
-            loadoutDataList[i].selectedSightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Sight1 : -1;
-            loadoutDataList[i].selectedSightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Sight2 : -1;
-            loadoutDataList[i].selectedBarrelIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Barrel1 : -1;
-            loadoutDataList[i].selectedBarrelIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Barrel2 : -1;
-            loadoutDataList[i].selectedUnderbarrelIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Underbarrel1 : -1;
-            loadoutDataList[i].selectedUnderbarrelIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Underbarrel2 : -1;
-            loadoutDataList[i].selectedSidebarrelLeftIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Leftbarrel1 : -1;
-            loadoutDataList[i].selectedSidebarrelLeftIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Leftbarrel2 : -1;
-            loadoutDataList[i].selectedSidebarrelRightIndex[0] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon1) ? jsonData.Slots[i].WA_Rightbarrel1 : -1;
-            loadoutDataList[i].selectedSidebarrelRightIndex[1] = jsonUserData.shopData.ownedWeaponIndexes.Contains(jsonData.Slots[i].Weapon2) ? jsonData.Slots[i].WA_Rightbarrel2 : -1;
-            loadoutDataList[i].selectedAppearanceDataIndex[0] = (jsonData.Slots[i].WeaponSkin1 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin1])) ? jsonData.Slots[i].WeaponSkin1 : -1));
-            loadoutDataList[i].selectedAppearanceDataIndex[1] = (jsonData.Slots[i].WeaponSkin2 == -1 ? -1 : (appearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.Slots[i].WeaponSkin2])) ? jsonData.Slots[i].WeaponSkin2 : -1));
+            loadoutDataList[i].selectedSightIndex[0] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon1) ? jsonUserData.LoadoutData.Slots[i].WA_Sight1 : -1;
+            loadoutDataList[i].selectedSightIndex[1] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon2) ? jsonUserData.LoadoutData.Slots[i].WA_Sight2 : -1;
+            loadoutDataList[i].selectedBarrelIndex[0] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon1) ? jsonUserData.LoadoutData.Slots[i].WA_Barrel1 : -1;
+            loadoutDataList[i].selectedBarrelIndex[1] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon2) ? jsonUserData.LoadoutData.Slots[i].WA_Barrel2 : -1;
+            loadoutDataList[i].selectedUnderbarrelIndex[0] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon1) ? jsonUserData.LoadoutData.Slots[i].WA_Underbarrel1 : -1;
+            loadoutDataList[i].selectedUnderbarrelIndex[1] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon2) ? jsonUserData.LoadoutData.Slots[i].WA_Underbarrel2 : -1;
+            loadoutDataList[i].selectedSidebarrelLeftIndex[0] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon1) ? jsonUserData.LoadoutData.Slots[i].WA_Leftbarrel1 : -1;
+            loadoutDataList[i].selectedSidebarrelLeftIndex[1] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon2) ? jsonUserData.LoadoutData.Slots[i].WA_Leftbarrel2 : -1;
+            loadoutDataList[i].selectedSidebarrelRightIndex[0] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon1) ? jsonUserData.LoadoutData.Slots[i].WA_Rightbarrel1 : -1;
+            loadoutDataList[i].selectedSidebarrelRightIndex[1] = jsonUserData.ShopData.ownedWeaponIndexes.Contains(jsonUserData.LoadoutData.Slots[i].Weapon2) ? jsonUserData.LoadoutData.Slots[i].WA_Rightbarrel2 : -1;
+            loadoutDataList[i].selectedAppearanceDataIndex[0] = (jsonUserData.LoadoutData.Slots[i].WeaponSkin1 == -1 ? -1 : (jsonUserData.AppearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonUserData.LoadoutData.Slots[i].WeaponSkin1])) ? jsonUserData.LoadoutData.Slots[i].WeaponSkin1 : -1));
+            loadoutDataList[i].selectedAppearanceDataIndex[1] = (jsonUserData.LoadoutData.Slots[i].WeaponSkin2 == -1 ? -1 : (jsonUserData.AppearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonUserData.LoadoutData.Slots[i].WeaponSkin2])) ? jsonUserData.LoadoutData.Slots[i].WeaponSkin2 : -1));
         }
         if (checkChange) WriteLoadoutDataToJSON();
     }
@@ -198,7 +191,7 @@ public class LoadoutSelectionScript : MonoBehaviour
 
     public void InstantiateLoadoutSelections()
     {
-        LoadoutDataJSON tp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
+        UserDataJSON tp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         Debug.Log("Called Loadout Instantiation");
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
@@ -207,12 +200,12 @@ public class LoadoutSelectionScript : MonoBehaviour
             temp.DeselectLoadout();
             temp.loadoutIndex = i;
             loadoutDataList[i].loadoutIndex = i;
-            loadoutDataList[i].loadoutName = tp.Slots[i].SlotName;
-            temp.SetLoadoutName(tp.Slots[i].SlotName);
+            loadoutDataList[i].loadoutName = tp.LoadoutData.Slots[i].SlotName;
+            temp.SetLoadoutName(tp.LoadoutData.Slots[i].SlotName);
             loadoutItems.Add(temp);
-            if (i == tp.SelectedSlot) temp.SelectLoadout();
+            if (i == tp.LoadoutData.SelectedSlot) temp.SelectLoadout();
             temp.ToggleSelectVisual(true);
-            selectedLoadoutIndex = tp.SelectedSlot;
+            selectedLoadoutIndex = tp.LoadoutData.SelectedSlot;
         }
         //loadoutItems[selectedLoadoutIndex].SelectLoadout();
     }
@@ -237,7 +230,7 @@ public class LoadoutSelectionScript : MonoBehaviour
         }
         for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
-            if (!jsonUserData.shopData.ownedWeaponIndexes.Contains(i)) continue;
+            if (!jsonUserData.ShopData.ownedWeaponIndexes.Contains(i)) continue;
             LoadoutWeaponSelectionItem temp = Instantiate(loadoutWeaponSelectionItemPrefab, loadoutWeaponSelectsHolder).GetComponent<LoadoutWeaponSelectionItem>();
             //loadoutDataList[i].loadoutIndex = i;
             loadoutWeaponSelects.Add(temp);
@@ -351,10 +344,10 @@ public class LoadoutSelectionScript : MonoBehaviour
     }
     public void ConfirmRename()
     {
-        LoadoutDataJSON tmp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
+        UserDataJSON tmp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         loadoutItems[forRenamingSlot].SetLoadoutName(renameInputField.text);
-        tmp.Slots[forRenamingSlot].SlotName = renameInputField.text;
-        FileOps<LoadoutDataJSON>.WriteFile(tmp, UserSystem.LoadoutDataPath);
+        tmp.LoadoutData.Slots[forRenamingSlot].SlotName = renameInputField.text;
+        FileOps<UserDataJSON>.WriteFile(tmp, UserSystem.UserDataPath);
         ToggleRenameUI(false);
     }
 }

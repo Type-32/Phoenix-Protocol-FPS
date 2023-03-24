@@ -110,12 +110,12 @@ namespace Unity.Services.Authentication.Samples
         /// When the player triggers the Facebook login by signing in or by creating a new player profile,
         /// and you have received the Facebook access token, call the following API to authenticate the player
         /// </summary>
-        /// <param name="accessToken">The facebook user access token.</param>
-        async Task SignInWithFacebookAsync(string accessToken)
+        /// <param name="AccessToken">The facebook user access token.</param>
+        async Task SignInWithFacebookAsync(string AccessToken)
         {
             try
             {
-                await AuthenticationService.Instance.SignInWithFacebookAsync(accessToken);
+                await AuthenticationService.Instance.SignInWithFacebookAsync(AccessToken);
                 SetStatus("Signed in with Facebook!");
                 UpdateUI();
             }
@@ -132,12 +132,12 @@ namespace Unity.Services.Authentication.Samples
         /// the game should prompt the player to trigger the Facebook login and get the access token from Facebook.
         /// Then, call the following API to link the player to the Facebook Access token
         /// </summary>
-        /// <param name="accessToken">The facebook user access token.</param>
-        async Task LinkWithFacebookAsync(string accessToken)
+        /// <param name="AccessToken">The facebook user access token.</param>
+        async Task LinkWithFacebookAsync(string AccessToken)
         {
             try
             {
-                await AuthenticationService.Instance.LinkWithFacebookAsync(accessToken);
+                await AuthenticationService.Instance.LinkWithFacebookAsync(AccessToken);
                 SetStatus("Linked with Facebook!");
                 UpdateUI();
             }

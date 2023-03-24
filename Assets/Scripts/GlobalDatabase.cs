@@ -35,9 +35,9 @@ public class GlobalDatabase : MonoBehaviour
             CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
         }
         UserDataJSON gmt = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        for (int i = 0; i < gmt.weaponSmithings.Count; i++)
+        for (int i = 0; i < gmt.WeaponSmithings.Count; i++)
         {
-            GunsmithSystem.VerifyWeaponSmithingData(gmt.weaponSmithings[i]);
+            GunsmithSystem.VerifyWeaponSmithingData(gmt.WeaponSmithings[i]);
         }
     }
     public int FindIndexFromWeaponData(WeaponData data)

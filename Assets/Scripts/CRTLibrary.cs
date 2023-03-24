@@ -55,14 +55,14 @@ namespace PrototypeLib
             }
             public static class Identities
             {
-                public static async Task<T> ReadIdentity<T>(string accessToken)
+                public static async Task<T> ReadIdentity<T>(string AccessToken)
                 {
                     var url = Configuration.APIUrl + "/users";
 
                     using (var client = new HttpClient())
                     {
                         var message = new HttpRequestMessage(HttpMethod.Get, url);
-                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+                        message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AccessToken);
 
                         var response = await client.SendAsync(message);
                         response.EnsureSuccessStatusCode();

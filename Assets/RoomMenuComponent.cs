@@ -11,7 +11,7 @@ public class RoomMenuComponent : MonoBehaviour
     [SerializeField] Text roomName, mapText, gamemodeText, maxPlayersText, roomCodeText, visibilityText, primaryText, secondaryText;
     void Start()
     {
-        FileOps<LoadoutDataJSON>.OperatedFile += DetectIfLoadoutModified;
+        FileOps<UserDataJSON>.OperatedFile += DetectIfLoadoutModified;
     }
     public void SetMapView(MapPreviewInfo mpi)
     {
@@ -41,11 +41,11 @@ public class RoomMenuComponent : MonoBehaviour
         SetStatisticsView(spi);
         SetLoadoutView(lpi);
     }
-    private void DetectIfLoadoutModified(string strPath, LoadoutDataJSON tmp)
+    private void DetectIfLoadoutModified(string strPath, UserDataJSON tmp)
     {
-        if (strPath == UserSystem.LoadoutDataPath)
+        if (strPath == UserSystem.UserDataPath)
         {
-            SetLoadoutView(new LoadoutPreviewInfo(GlobalDatabase.Instance.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon1], GlobalDatabase.Instance.allWeaponDatas[tmp.Slots[tmp.SelectedSlot].Weapon2], GlobalDatabase.Instance.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment1], GlobalDatabase.Instance.allEquipmentDatas[tmp.Slots[tmp.SelectedSlot].Equipment2]));
+            SetLoadoutView(new LoadoutPreviewInfo(GlobalDatabase.Instance.allWeaponDatas[tmp.LoadoutData.Slots[tmp.LoadoutData.SelectedSlot].Weapon1], GlobalDatabase.Instance.allWeaponDatas[tmp.LoadoutData.Slots[tmp.LoadoutData.SelectedSlot].Weapon2], GlobalDatabase.Instance.allEquipmentDatas[tmp.LoadoutData.Slots[tmp.LoadoutData.SelectedSlot].Equipment1], GlobalDatabase.Instance.allEquipmentDatas[tmp.LoadoutData.Slots[tmp.LoadoutData.SelectedSlot].Equipment2]));
         }
     }
 }

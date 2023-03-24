@@ -379,28 +379,27 @@ namespace UserConfiguration
         public static WeaponValidation ValidateWeapon(int weaponIndex, bool correctValidation)
         {
             UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-            LoadoutDataJSON loadoutJsonData = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
-            // AppearancesDataJSON appearanceData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
+            // AppearancesDataJSON appearanceData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             WeaponValidation result = WeaponValidation.Valid;
-            if (!jsonData.shopData.availableWeaponIndexes.Contains(weaponIndex))
+            if (!jsonData.ShopData.availableWeaponIndexes.Contains(weaponIndex))
             {
-                if (!jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex))
+                if (!jsonData.ShopData.unlockedWeaponIndexes.Contains(weaponIndex))
                 {
-                    if (!jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex))
+                    if (!jsonData.ShopData.ownedWeaponIndexes.Contains(weaponIndex))
                     {
                         Debug.Log("Returned " + WeaponValidation.NoRegistry.ToString());
                         if (GlobalDatabase.Instance.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
                         {
                             if (correctValidation)
                             {
-                                jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
+                                jsonData.ShopData.availableWeaponIndexes.Add(weaponIndex);
                             }
                         }
                         else
                         {
                             if (correctValidation)
                             {
-                                jsonData.shopData.unlockedWeaponIndexes.Add(weaponIndex);
+                                jsonData.ShopData.unlockedWeaponIndexes.Add(weaponIndex);
                             }
                         }
                         result = WeaponValidation.NoRegistry;
@@ -411,18 +410,18 @@ namespace UserConfiguration
                         {
                             if (correctValidation)
                             {
-                                if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
-                                if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
-                                jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
-                                for (int i = 0; i < loadoutJsonData.Slots.Count; i++)
+                                if (jsonData.ShopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.ShopData.ownedWeaponIndexes.Remove(weaponIndex);
+                                if (jsonData.ShopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.ShopData.unlockedWeaponIndexes.Remove(weaponIndex);
+                                jsonData.ShopData.availableWeaponIndexes.Add(weaponIndex);
+                                for (int i = 0; i < jsonData.LoadoutData.Slots.Count; i++)
                                 {
-                                    if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
+                                    if (jsonData.LoadoutData.Slots[i].Weapon1 == weaponIndex)
                                     {
-                                        loadoutJsonData.Slots[i].Weapon1 = 0;
+                                        jsonData.LoadoutData.Slots[i].Weapon1 = 0;
                                     }
-                                    if (loadoutJsonData.Slots[i].Weapon2 == weaponIndex)
+                                    if (jsonData.LoadoutData.Slots[i].Weapon2 == weaponIndex)
                                     {
-                                        loadoutJsonData.Slots[i].Weapon2 = 2;
+                                        jsonData.LoadoutData.Slots[i].Weapon2 = 2;
                                     }
                                 }
                             }
@@ -436,23 +435,23 @@ namespace UserConfiguration
                     {
                         if (correctValidation)
                         {
-                            Debug.Log("Owned Index Count Before " + jsonData.shopData.ownedWeaponIndexes.Count);
-                            if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex);
-                            if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex);
-                            jsonData.shopData.availableWeaponIndexes.Add(weaponIndex);
+                            Debug.Log("Owned Index Count Before " + jsonData.ShopData.ownedWeaponIndexes.Count);
+                            if (jsonData.ShopData.ownedWeaponIndexes.Contains(weaponIndex)) jsonData.ShopData.ownedWeaponIndexes.Remove(weaponIndex);
+                            if (jsonData.ShopData.unlockedWeaponIndexes.Contains(weaponIndex)) jsonData.ShopData.unlockedWeaponIndexes.Remove(weaponIndex);
+                            jsonData.ShopData.availableWeaponIndexes.Add(weaponIndex);
                             //UserDatabase.Instance.WriteInputDataToJSON(jsonData);
-                            for (int i = 0; i < loadoutJsonData.Slots.Count; i++)
+                            for (int i = 0; i < jsonData.LoadoutData.Slots.Count; i++)
                             {
-                                if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
+                                if (jsonData.LoadoutData.Slots[i].Weapon1 == weaponIndex)
                                 {
-                                    loadoutJsonData.Slots[i].Weapon1 = 0;
+                                    jsonData.LoadoutData.Slots[i].Weapon1 = 0;
                                 }
-                                if (loadoutJsonData.Slots[i].Weapon2 == weaponIndex)
+                                if (jsonData.LoadoutData.Slots[i].Weapon2 == weaponIndex)
                                 {
-                                    loadoutJsonData.Slots[i].Weapon2 = 2;
+                                    jsonData.LoadoutData.Slots[i].Weapon2 = 2;
                                 }
                             }
-                            Debug.Log("Owned Index Count After " + jsonData.shopData.ownedWeaponIndexes.Count);
+                            Debug.Log("Owned Index Count After " + jsonData.ShopData.ownedWeaponIndexes.Count);
                         }
                         result = WeaponValidation.FalseUnlockRegistry;
                     }
@@ -462,22 +461,22 @@ namespace UserConfiguration
             {
                 if (GlobalDatabase.Instance.allWeaponDatas[weaponIndex].unlockingLevel > UserSystem.LocalUserLevel)
                 {
-                    if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex) || jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex))
+                    if (jsonData.ShopData.ownedWeaponIndexes.Contains(weaponIndex) || jsonData.ShopData.unlockedWeaponIndexes.Contains(weaponIndex))
                     {
                         bool flag = false;
                         if (correctValidation)
                         {
-                            if (jsonData.shopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
-                            if (jsonData.shopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.shopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
-                            for (int i = 0; i < loadoutJsonData.Slots.Count; i++)
+                            if (jsonData.ShopData.ownedWeaponIndexes.Contains(weaponIndex)) { jsonData.ShopData.ownedWeaponIndexes.Remove(weaponIndex); flag = true; }
+                            if (jsonData.ShopData.unlockedWeaponIndexes.Contains(weaponIndex)) { jsonData.ShopData.unlockedWeaponIndexes.Remove(weaponIndex); flag = true; }
+                            for (int i = 0; i < jsonData.LoadoutData.Slots.Count; i++)
                             {
-                                if (loadoutJsonData.Slots[i].Weapon1 == weaponIndex)
+                                if (jsonData.LoadoutData.Slots[i].Weapon1 == weaponIndex)
                                 {
-                                    loadoutJsonData.Slots[i].Weapon1 = 0;
+                                    jsonData.LoadoutData.Slots[i].Weapon1 = 0;
                                 }
-                                if (loadoutJsonData.Slots[i].Weapon2 == weaponIndex)
+                                if (jsonData.LoadoutData.Slots[i].Weapon2 == weaponIndex)
                                 {
-                                    loadoutJsonData.Slots[i].Weapon2 = 2;
+                                    jsonData.LoadoutData.Slots[i].Weapon2 = 2;
                                 }
                             }
                         }
@@ -486,10 +485,7 @@ namespace UserConfiguration
                 }
             }
             if (correctValidation)
-            {
                 FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
-                FileOps<LoadoutDataJSON>.WriteFile(loadoutJsonData, UserSystem.LoadoutDataPath);
-            }
             Debug.Log("Returned " + result.ToString());
             return result;
         }
@@ -503,7 +499,7 @@ namespace UserConfiguration
         public static string SettingsOptionsKey { get { return "SettingsOptions.json"; } }
         public static string AppearancesConfigKey { get { return "AppearancesConfig.json"; } }
         public static string UserDataPath { get { return Path.Combine(Application.persistentDataPath, UserDataConfigKey); } }
-        public static string LoadoutDataPath { get { return Path.Combine(Application.persistentDataPath, LoadoutDataConfigKey); } }
+        //public static string LoadoutDataPath { get { return Path.Combine(Application.persistentDataPath, LoadoutDataConfigKey); } }
         public static string RewardDataPath { get { return Path.Combine(Application.persistentDataPath, RewardDataConfigKey); } }
         public static string SettingsOptionsPath { get { return Path.Combine(Application.persistentDataPath, SettingsOptionsKey); } }
         public static string AppearancesConfigPath { get { return Path.Combine(Application.persistentDataPath, AppearancesConfigKey); } }
@@ -540,24 +536,24 @@ namespace UserConfiguration
         public static WeaponSmithingData FindWeaponSmithingData(int weaponIndex)
         {
             UserDataJSON data = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-            for (int i = 0; i < data.weaponSmithings.Count; i++)
+            for (int i = 0; i < data.WeaponSmithings.Count; i++)
             {
-                if (weaponIndex == data.weaponSmithings[i].weaponIndex) return data.weaponSmithings[i];
+                if (weaponIndex == data.WeaponSmithings[i].weaponIndex) return data.WeaponSmithings[i];
             }
             return null;
         }
         public static bool VerifyWeaponSmithingData(WeaponSmithingData data, bool correctValidation = true)
         {
             UserDataJSON temp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-            if (temp.shopData.ownedWeaponIndexes.Contains(data.weaponIndex))
+            if (temp.ShopData.ownedWeaponIndexes.Contains(data.weaponIndex))
                 return true;
             else
             {
                 if (correctValidation)
                 {
-                    if (temp.weaponSmithings.Contains(data))
+                    if (temp.WeaponSmithings.Contains(data))
                     {
-                        temp.weaponSmithings.Remove(data);
+                        temp.WeaponSmithings.Remove(data);
                         FileOps<UserDataJSON>.WriteFile(temp, UserSystem.UserDataPath);
                     }
                 }
@@ -568,12 +564,12 @@ namespace UserConfiguration
         {
             var ud = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             bool success = false;
-            if (ud.shopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
+            if (ud.ShopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
             {
                 if (FindWeaponSmithingData(data.GlobalWeaponIndex) == null)
                 {
                     UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-                    jsonData.weaponSmithings.Add(new WeaponSmithingData(data.GlobalWeaponIndex));
+                    jsonData.WeaponSmithings.Add(new WeaponSmithingData(data.GlobalWeaponIndex));
                     FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                     success = true;
                 }
@@ -587,7 +583,7 @@ namespace UserConfiguration
             if (temp != null)
             {
                 UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-                jsonData.weaponSmithings.Remove(temp);
+                jsonData.WeaponSmithings.Remove(temp);
                 FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                 success = true;
             }
@@ -599,25 +595,25 @@ namespace UserConfiguration
         public static bool VerifyWeaponAppearanceData(WeaponAppearanceMeshData data, bool correctValidation = true)
         {
             WeaponAppearance temp = new WeaponAppearance(data);
-            AppearancesDataJSON jsonData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
+            UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             bool isValid = false;
-            if (jsonData.unlockedWeaponAppearances.Contains(temp))
+            if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp))
             {
                 isValid = true;
-                if (jsonData.availableWeaponAppearances.Contains(temp))
+                if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                 {
-                    jsonData.availableWeaponAppearances.Remove(temp);
+                    jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
                     isValid = false;
                 }
             }
             else
             {
-                if (jsonData.availableWeaponAppearances.Contains(temp))
+                if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                     isValid = true;
                 else
                 {
-                    jsonData.availableWeaponAppearances.Add(temp);
-                    if (correctValidation) FileOps<AppearancesDataJSON>.WriteFile(jsonData, UserSystem.AppearancesConfigPath);
+                    jsonData.AppearancesData.availableWeaponAppearances.Add(temp);
+                    if (correctValidation) FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                 }
             }
             return isValid;
@@ -625,61 +621,59 @@ namespace UserConfiguration
         public static bool ValidateLoadoutCosmetics(bool correctValidation = true)
         {
             bool isValid = true;
-            LoadoutDataJSON loadoutJsonData = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
-            AppearancesDataJSON appearanceData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
+            UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             for (int i = 0; i < 8; i++)
             {
                 WeaponAppearance t1 = new();
                 WeaponAppearance t2 = new();
-                //Debug.LogWarning("Slots Length: " + loadoutJsonData.Slots.Length);
-                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1) t1 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin1]);
-                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1) t2 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[loadoutJsonData.Slots[i].WeaponSkin2]);
-                if (loadoutJsonData.Slots[i].WeaponSkin1 != -1)
+                //Debug.LogWarning("Slots Length: " + jsonData.LoadoutData.Slots.Length);
+                if (jsonData.LoadoutData.Slots[i].WeaponSkin1 != -1) t1 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.LoadoutData.Slots[i].WeaponSkin1]);
+                if (jsonData.LoadoutData.Slots[i].WeaponSkin2 != -1) t2 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.LoadoutData.Slots[i].WeaponSkin2]);
+                if (jsonData.LoadoutData.Slots[i].WeaponSkin1 != -1)
                 {
-                    if (!appearanceData.unlockedWeaponAppearances.Contains(t1))
+                    if (!jsonData.AppearancesData.unlockedWeaponAppearances.Contains(t1))
                     {
                         isValid = false;
-                        loadoutJsonData.Slots[i].WeaponSkin1 = -1;
-                        if (!appearanceData.availableWeaponAppearances.Contains(t1))
+                        jsonData.LoadoutData.Slots[i].WeaponSkin1 = -1;
+                        if (!jsonData.AppearancesData.availableWeaponAppearances.Contains(t1))
                         {
-                            appearanceData.availableWeaponAppearances.Add(t1);
+                            jsonData.AppearancesData.availableWeaponAppearances.Add(t1);
                         }
                     }
                     else
                     {
-                        if (appearanceData.availableWeaponAppearances.Contains(t1))
+                        if (jsonData.AppearancesData.availableWeaponAppearances.Contains(t1))
                         {
                             isValid = false;
-                            appearanceData.availableWeaponAppearances.Remove(t1);
+                            jsonData.AppearancesData.availableWeaponAppearances.Remove(t1);
                         }
                     }
                 }
 
-                if (loadoutJsonData.Slots[i].WeaponSkin2 != -1)
+                if (jsonData.LoadoutData.Slots[i].WeaponSkin2 != -1)
                 {
-                    if (!appearanceData.unlockedWeaponAppearances.Contains(t2))
+                    if (!jsonData.AppearancesData.unlockedWeaponAppearances.Contains(t2))
                     {
                         isValid = false;
-                        loadoutJsonData.Slots[i].WeaponSkin2 = -1;
-                        if (!appearanceData.availableWeaponAppearances.Contains(t2))
+                        jsonData.LoadoutData.Slots[i].WeaponSkin2 = -1;
+                        if (!jsonData.AppearancesData.availableWeaponAppearances.Contains(t2))
                         {
-                            appearanceData.availableWeaponAppearances.Add(t2);
+                            jsonData.AppearancesData.availableWeaponAppearances.Add(t2);
                         }
                     }
                     else
                     {
-                        if (appearanceData.availableWeaponAppearances.Contains(t2))
+                        if (jsonData.AppearancesData.availableWeaponAppearances.Contains(t2))
                         {
                             isValid = false;
-                            appearanceData.availableWeaponAppearances.Remove(t2);
+                            jsonData.AppearancesData.availableWeaponAppearances.Remove(t2);
                         }
                     }
                 }
             }
             if (correctValidation)
             {
-                FileOps<AppearancesDataJSON>.WriteFile(appearanceData, UserSystem.AppearancesConfigPath);
-                FileOps<LoadoutDataJSON>.WriteFile(loadoutJsonData, UserSystem.LoadoutDataPath);
+                FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
             }
             return isValid;
         }

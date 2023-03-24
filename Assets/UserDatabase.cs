@@ -47,7 +47,7 @@ public class UserDatabase : MonoBehaviour
     }
     public void ReadAppearanceDataFromJSON()
     {
-        AppearancesDataJSON jsonData = FileOps<AppearancesDataJSON>.ReadFile(UserSystem.AppearancesConfigPath);
+        //AppearancesDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
     }
     public void SetUserData(UserDataJSON userData)
     {

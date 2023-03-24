@@ -258,7 +258,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
         }
-        LoadoutDataJSON tp = FileOps<LoadoutDataJSON>.ReadFile(UserSystem.LoadoutDataPath);
+        LoadoutDataJSON tp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).LoadoutData;
         MenuManager.Instance.RoomMenuComp.SetRoomInfoPreview(
             PhotonNetwork.CurrentRoom.Name,
             new MapPreviewInfo(mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapName, mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapIcon),

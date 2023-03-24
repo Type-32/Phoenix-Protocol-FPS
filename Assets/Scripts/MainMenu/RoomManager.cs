@@ -9,9 +9,8 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class RoomManager : MonoBehaviourPunCallbacks
+public class RoomManager : PunCallbackSingleton<RoomManager>
 {
-    public static RoomManager Instance;
     [HideInInspector] public CurrentMatchManager cmm;
     public int currentSceneIndex = 0;
     public bool loadEnterAnim = true;
@@ -36,15 +35,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
         mapNameText.text = itemInfo.mapName;
         gamemodeText.text = $"{(string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"]}  -  {((int)PhotonNetwork.CurrentRoom.MaxPlayers).ToString()} Players Maximum";
     }
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        DontDestroyOnLoad(gameObject);
-        Instance = this;
+        base.Awake();
         SceneManager.sceneLoaded += OnSceneLoaded;
         canvas.gameObject.SetActive(true);
     }
