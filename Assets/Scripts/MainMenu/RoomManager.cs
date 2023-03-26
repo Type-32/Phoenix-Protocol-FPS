@@ -28,12 +28,25 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
         if (!gameObject.activeSelf) return;
         StartCoroutine(SetLoadingScreenState_IEN(state, duration));
     }
+    [PunRPC]
+    void PunRPC_SetLoadingScreenState(bool state, int duration)
+    {
+        SetLoadingScreenState(state, duration);
+    }
+    public void SetLoadingScreenStateRPC(bool state, int duration)
+    {
+        photonView.RPC(nameof(PunRPC_SetLoadingScreenState), RpcTarget.All, state, duration);
+    }
     public void SetLoadingPreview(MapItemInfo itemInfo, bool showScreen)
     {
         SetLoadingScreenState(showScreen, 0);
         mapPreviewImage.sprite = itemInfo.mapIcon;
         mapNameText.text = itemInfo.mapName;
         gamemodeText.text = $"{(string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"]}  -  {((int)PhotonNetwork.CurrentRoom.MaxPlayers).ToString()} Players Maximum";
+    }
+    public void SetLoadingPreviewRPC(int itemInfoIndex, bool showScreen)
+    {
+        photonView.RPC(nameof(RPC_SetLoadingPreview), RpcTarget.All, itemInfoIndex, showScreen);
     }
     protected override void Awake()
     {
@@ -70,35 +83,30 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
         }
         if (scene.buildIndex == 1)//Inside game Scene
         {
-            SetLoadingScreenState(false, 1);
             cmm = FindObjectOfType<CurrentMatchManager>();
             GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
             cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 2)
         {
-            SetLoadingScreenState(false, 1);
             cmm = FindObjectOfType<CurrentMatchManager>();
             GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
             cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 3)
         {
-            SetLoadingScreenState(false, 1);
             cmm = FindObjectOfType<CurrentMatchManager>();
             GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
             cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 4)
         {
-            SetLoadingScreenState(false, 1);
             cmm = FindObjectOfType<CurrentMatchManager>();
             GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
             cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
         }
         else if (scene.buildIndex == 5)
         {
-            SetLoadingScreenState(false, 1);
             cmm = FindObjectOfType<CurrentMatchManager>();
             GameObject temp = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
             cmm.localClientPlayer = temp.GetComponent<PlayerManager>();
@@ -158,5 +166,10 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
             }
             MenuManager.Instance.queuedNotifications.Clear();
         }
+    }
+    [PunRPC]
+    private void RPC_SetLoadingPreview(int infoIndex, bool state)
+    {
+        SetLoadingPreview(Launcher.Instance.mapItemInfo[infoIndex], state);
     }
 }

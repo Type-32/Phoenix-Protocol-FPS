@@ -18,6 +18,7 @@ public class InGameUI : MonoBehaviour
     public GameObject DropZonesUI;
     public GameObject MatchFinishUI;
     public GameObject MatchFinishStatsUI;
+    public Animator UIAnimator;
 
     [Space]
     [Header("Main References")]

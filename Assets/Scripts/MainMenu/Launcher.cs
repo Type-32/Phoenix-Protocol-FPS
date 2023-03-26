@@ -32,7 +32,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        RoomManager.Instance.SetLoadingScreenState(false, 0);
+        RoomManager.Instance.SetLoadingScreenStateRPC(false, 0);
     }
     private void Awake()
     {
@@ -394,11 +394,12 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(temp);
     }
-    public void StartGame()
+    public async void StartGame()
     {
         SetLoadoutValuesToPlayer();
-        RoomManager.Instance.SetLoadingPreview(mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1], true);
+        RoomManager.Instance.SetLoadingPreviewRPC((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1, true);
         PhotonNetwork.CurrentRoom.CustomProperties["gameStarted"] = true;
+        await Task.Delay(3000);
         PhotonNetwork.LoadLevel((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"]);
     }
     public void QuitApplication()

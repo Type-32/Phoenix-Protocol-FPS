@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System.Threading.Tasks;
 
 public class CurrentMatchManager : MonoBehaviourPunCallbacks
 {
@@ -21,17 +22,20 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public int maxKillLimit;
     public Scoreboard scoreboard;
 
+
     [Space]
     [Header("FFA")]
     public Player punTopPlayer;
-    public PlayerManager topPlayer;
-    public PlayerManager localClientPlayer;
+    public PlayerManager topPlayer, localClientPlayer, masterClientPlayer;
 
     [Space, Header("TDM")]
     public List<PlayerManager> teamBlue = new();
     public List<PlayerManager> teamRed = new();
     public int teamBluePoints = 0;
     public int teamRedPoints = 0;
+
+    [Space, Header("DZ")]
+    public int dropTimes = 1;
 
     // Start is called before the first frame update
     private void Awake()
@@ -43,18 +47,17 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         //pv = GetComponent<PhotonView>();
         //photonView.ViewID = 998;
     }
-    private void Start()
+    private async void Start()
     {
         internalUI.ToggleMatchEndUI(false);
         internalUI.TDM_ToggleMatchEndUI(false, false, false);
         internalUI.ToggleMatchEndStats(false, 0f);
-        gameStarted = true;
         gameEnded = false;
         switch (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"])
         {
             case "Free For All":
                 roomMode = MenuManager.Gamemodes.FFA;
-                internalUI.ToggleFFA_UI(true);
+                internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
@@ -62,7 +65,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             case "Team Deathmatch":
                 roomMode = MenuManager.Gamemodes.TDM;
                 internalUI.ToggleFFA_UI(false);
-                internalUI.ToggleTDM_UI(true);
+                internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
@@ -70,7 +73,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 roomMode = MenuManager.Gamemodes.CTF;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
-                internalUI.ToggleCTF_UI(true);
+                internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "Drop Zones":
@@ -78,20 +81,60 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleCTF_UI(false);
-                internalUI.ToggleDZ_UI(true);
+                internalUI.ToggleDZ_UI(false);
                 break;
         }
-        topPlayer = FindObjectOfType<PlayerManager>();
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            while (players.Count < PhotonNetwork.CurrentRoom.PlayerCount)
+            {
+                await Task.Delay(1000);
+                photonView.RPC(nameof(RPC_RetrieveAllPlayerManagers), RpcTarget.All);
+            }
+            RoomManager.Instance.SetLoadingScreenState(false, 2);
+            gameStarted = true;
+        }
         OnPlayerKillUpdate();
         //UpdateTopPlayerHUD(topPlayer.kills, topPlayer.pv.Owner.NickName);
+    }
+    [PunRPC]
+    void RPC_RetrieveAllPlayerManagers()
+    {
+        PlayerManager[] t = FindObjectsOfType<PlayerManager>();
+        players.Clear();
+        foreach (PlayerManager i in t)
+        {
+            players.Add(i);
+            if (i.pv.ControllerActorNr == PhotonNetwork.CurrentRoom.MasterClientId)
+            {
+                masterClientPlayer = i;
+                topPlayer = i;
+            }
+        }
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         punPlayers.Add(newPlayer);
+        //players.Add(FindPlayerManager(newPlayer));
     }
     public override void OnPlayerLeftRoom(Player newPlayer)
     {
         punPlayers.Remove(newPlayer);
+        players.Remove(FindPlayerManager(newPlayer));
+    }
+    public PlayerManager FindPlayerManager(Player player)
+    {
+        PlayerManager[] tpm = FindObjectsOfType<PlayerManager>();
+        PlayerManager res = null;
+        foreach (PlayerManager i in tpm)
+        {
+            if (player == i.pv.Owner)
+            {
+                res = i;
+                break;
+            }
+        }
+        return res;
     }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
@@ -106,27 +149,6 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }*/
     }
     //public override void On
-    public void OnPlayerKillReceiveCallback()
-    {
-        punPlayers = scoreboard.LocalPlayerDatas;
-        if (roomMode != MenuManager.Gamemodes.FFA) return;
-        int temp = -100000;
-        if (punTopPlayer == null) punTopPlayer = punPlayers[Random.Range(0, punPlayers.Count - 1)];
-        for (int i = 0; i < players.Count; i++)
-        {
-            if ((int)punPlayers[i].CustomProperties["kills"] >= temp)
-            {
-                punTopPlayer = punPlayers[i];
-                temp = (int)punPlayers[i].CustomProperties["kills"];
-            }
-        }
-        UpdateTopPlayerHUD((int)punTopPlayer.CustomProperties["kills"], punTopPlayer.NickName);
-        for (int i = 0; i < players.Count; i++)
-        {
-            if (punTopPlayer.UserId == players[i].pv.Owner.UserId) topPlayer = players[i];
-        }
-        Debug.Log("Received Pun Kill Update");
-    }
     public void OnPlayerKillUpdate()
     {
         if (roomMode != MenuManager.Gamemodes.FFA) return;
@@ -156,20 +178,6 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }
         internalUI.topPlayerName.text = topPlayer.pv.Owner.NickName;
         internalUI.topPlayerScore.text = ((int)topPlayer.pv.Owner.CustomProperties["kills"]).ToString();
-    }
-    public void OnPlayerListUpdate(List<PlayerManager> playerList)
-    {
-        players = playerList;
-    }
-    public void AddPlayer(PlayerManager player)
-    {
-        if (!players.Contains(player)) players.Add(player);
-        OnPlayerListUpdate(players);
-    }
-    public void RemovePlayer(PlayerManager player)
-    {
-        if (players.Contains(player)) players.Remove(player);
-        OnPlayerListUpdate(players);
     }
     public void TeamDeathmatchKillLogic(int amount, bool team)
     {
@@ -250,6 +258,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     }
     private void FixedUpdate()
     {
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient) return;
         if (gameEnded)
         {
             return;
@@ -261,7 +270,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }
         else if (roomMode == MenuManager.Gamemodes.TDM)
         {
-
+            TeamDeathmatchFunctions();
         }
         else if (roomMode == MenuManager.Gamemodes.CTF)
         {
@@ -269,7 +278,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }
         else if (roomMode == MenuManager.Gamemodes.DZ)
         {
-
+            DropZonesFunctions();
         }
     }
     void FreeForAllFunctions()
@@ -291,6 +300,10 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         {
             TDMWin(false);
         }
+    }
+    void DropZonesFunctions()
+    {
+
     }
     public void TDMWin(bool winnerIsTeam)
     {
@@ -345,6 +358,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         gameEnded = true;
         Cursor.lockState = CursorLockMode.None;
         internalUI.TDM_ToggleMatchEndUI(true, winnerIsTeam, localClientPlayer.IsTeam);
+        internalUI.UIAnimator.SetBool("MatchEnded", true);
         internalUI.SetMatchEndMessage((winnerIsTeam ? "Blue Team" : "Red Team") + " Won the match!");
         //StartCoroutine(QuitEveryPlayer(3f));
         if (localClientPlayer.controller != null)
@@ -352,7 +366,6 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true, -1);
         }
         localClientPlayer.CloseMenu();
-        internalUI.ToggleMatchEndStats(true, 2f);
         int gainedCoins = (int)(localClientPlayer.totalGainedXP * (5f / 6f));
         internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
         UserDatabase.Instance.AddUserLevelXP(localClientPlayer.totalGainedXP);
@@ -365,14 +378,15 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         gameEnded = true;
         Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
+        internalUI.UIAnimator.SetBool("MatchEnded", true);
         internalUI.SetMatchEndMessage(winnerName + " Won the match!");
         //StartCoroutine(QuitEveryPlayer(3f));
-        if (localClientPlayer.controller != null)
+        PlayerControllerManager[] pcm = FindObjectsOfType<PlayerControllerManager>();
+        foreach (PlayerControllerManager i in pcm)
         {
-            localClientPlayer.controller.GetComponent<PlayerControllerManager>().Die(true, -1);
+            i.SetPlayerControlState(false);
         }
         localClientPlayer.CloseMenu();
-        internalUI.ToggleMatchEndStats(true, 2f);
         int gainedCoins = (int)(localClientPlayer.totalGainedXP * (5f / 6f));
         internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
         UserDatabase.Instance.AddUserLevelXP(localClientPlayer.totalGainedXP);
@@ -486,7 +500,6 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         {
             players.Add(tmp[i]);
         }
-        OnPlayerListUpdate(players);
     }
     [PunRPC]
     void RPC_FindForPlayerID(string id)

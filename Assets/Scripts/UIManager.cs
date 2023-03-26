@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     public GameObject targetIndicatorPrefab;
     public CanvasGroup crosshairGroup;
     public RectTransform reticle;
+    public GameObject FFA_UI, TDM_UI, CTF_UI, DZ_UI;
 
     [Space]
     [Header("HUD Stats")]

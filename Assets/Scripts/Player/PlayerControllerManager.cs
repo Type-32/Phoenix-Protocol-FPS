@@ -111,6 +111,26 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             DisableAllMinimapDots();
             playerMinimapDot.SetActive(true);
             ui.hud.GetComponent<CanvasGroup>().alpha = 1;
+            ui.FFA_UI.SetActive(false);
+            ui.TDM_UI.SetActive(false);
+            ui.CTF_UI.SetActive(false);
+            ui.DZ_UI.SetActive(false);
+            if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.FFA)
+            {
+                ui.FFA_UI.SetActive(true);
+            }
+            else if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.TDM)
+            {
+                ui.TDM_UI.SetActive(true);
+            }
+            else if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.CTF)
+            {
+                ui.CTF_UI.SetActive(true);
+            }
+            else if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.DZ)
+            {
+                ui.DZ_UI.SetActive(true);
+            }
         }
         else
         {
@@ -144,7 +164,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     private void Update()
     {
         if (!pv.IsMine) return;
-        if (transform.position.y < -35) Die(true, -1);
+        if (transform.position.y < -50) Die(true, -1);
         DerivePlayerStatsToHUD();
         PlayerGUIReference();
         if (Input.GetKeyDown("l"))
@@ -718,5 +738,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                 //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
             }
         }
+    }
+    public void SetPlayerControlState(bool state)
+    {
+        stats.mouseMovementEnabled = state;
+        stats.gunInteractionEnabled = state;
+        stats.playerMovementEnabled = state;
+        stats.playerCameraBobEnabled = state;
     }
 }

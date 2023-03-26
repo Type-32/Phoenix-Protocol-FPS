@@ -47,6 +47,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] CanvasGroup deathGUICanvas;
     [SerializeField] CanvasGroup deathInfoCanvas;
     [SerializeField] Text killStatus, killerUsername;
+    public GameObject FFA_UI, TDM_UI, CTF_UI, DZ_UI;
 
     [Space]
     public bool openedLoadoutMenu = false;
@@ -176,6 +177,26 @@ public class PlayerManager : MonoBehaviour
             randomPlayerColor = Color.red;
             deathInfoCanvas.alpha = 0f;
             deathInfoCanvas.gameObject.SetActive(false);
+            FFA_UI.SetActive(false);
+            TDM_UI.SetActive(false);
+            CTF_UI.SetActive(false);
+            DZ_UI.SetActive(false);
+            if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.FFA)
+            {
+                FFA_UI.SetActive(true);
+            }
+            else if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.TDM)
+            {
+                TDM_UI.SetActive(true);
+            }
+            else if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.CTF)
+            {
+                CTF_UI.SetActive(true);
+            }
+            else if (CurrentMatchManager.Instance.roomMode == MenuManager.Gamemodes.DZ)
+            {
+                DZ_UI.SetActive(true);
+            }
         }
         else
         {
@@ -482,7 +503,7 @@ public class PlayerManager : MonoBehaviour
         //while (PhotonNetwork.IsConnected)
         while (PhotonNetwork.InRoom)
             yield return null;
-        cmm.RemovePlayer(this);
+        //cmm.RemovePlayer(this);
         SceneManager.LoadScene(0);
         roomManager.SelfDestruction();
         Debug.Log("Self Destruction Occured");
