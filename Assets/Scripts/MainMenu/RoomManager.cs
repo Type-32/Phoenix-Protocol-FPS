@@ -22,10 +22,11 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
     {
         yield return new WaitForSeconds(duration);
         mapPreviewLoading.SetBool("FinishedLoad", !state);
+        Debug.Log("Loading Screen State " + state.ToString());
     }
     public void SetLoadingScreenState(bool state, int duration)
     {
-        if (!gameObject.activeSelf) return;
+        if (gameObject == null) return;
         StartCoroutine(SetLoadingScreenState_IEN(state, duration));
     }
     [PunRPC]
@@ -46,6 +47,7 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
     }
     public void SetLoadingPreviewRPC(int itemInfoIndex, bool showScreen)
     {
+        Debug.Log("Loading PreviewRPC Set");
         photonView.RPC(nameof(RPC_SetLoadingPreview), RpcTarget.All, itemInfoIndex, showScreen);
     }
     protected override void Awake()

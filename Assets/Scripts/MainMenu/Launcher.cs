@@ -32,7 +32,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        RoomManager.Instance.SetLoadingScreenStateRPC(false, 0);
+        RoomManager.Instance.SetLoadingScreenState(false, 0);
     }
     private void Awake()
     {

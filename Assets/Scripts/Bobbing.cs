@@ -38,7 +38,7 @@ public class Bobbing : MonoBehaviour
         if ((Mathf.Abs(Input.GetAxis("Horizontal")) > 0f || Mathf.Abs(Input.GetAxis("Vertical")) > 0f))
         {
             timer += Time.deltaTime * (player.stats.isSprinting ? sprintBobSpeed : player.stats.isCrouching ? crouchBobSpeed : walkBobSpeed);
-            transform.localPosition = new Vector3(defaultXPos + Mathf.Cos(timer / 2) * (player.stats.isSprinting ? sprintBobAmount : player.stats.isCrouching ? crouchBobAmount : walkBobAmount), defaultYPos + Mathf.Sin(timer) * (player.stats.isSprinting ? sprintBobAmount : player.stats.isCrouching ? crouchBobAmount : walkBobAmount), transform.localPosition.z);
+            transform.localPosition = new Vector3(defaultXPos + (Mathf.Cos(timer / 2) * 0.8f) * (player.stats.isSprinting ? sprintBobAmount : player.stats.isCrouching ? crouchBobAmount : walkBobAmount), defaultYPos + Mathf.Sin(timer) * (player.stats.isSprinting ? sprintBobAmount : player.stats.isCrouching ? crouchBobAmount : walkBobAmount), transform.localPosition.z);
         }
     }
 }

@@ -48,4 +48,8 @@ public class GlobalDatabase : MonoBehaviour
         }
         return -1;
     }
+    public int RandomWeapon(bool returnIndex = true) { return Random.Range(0, allWeaponDatas.Count - 1); }
+    public WeaponData RandomWeaponData(bool returnIndex = true) { return allWeaponDatas[RandomWeapon(returnIndex)]; }
+    public int RandomEquipment(bool returnIndex = true) { return Random.Range(0, allEquipmentDatas.Count - 1); }
+    public EquipmentData RandomEquipmentData(bool returnIndex = true) { return allEquipmentDatas[RandomEquipment(returnIndex)]; }
 }

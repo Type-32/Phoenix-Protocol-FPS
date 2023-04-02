@@ -86,16 +86,25 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            while (players.Count < PhotonNetwork.CurrentRoom.PlayerCount)
-            {
-                await Task.Delay(1000);
-                photonView.RPC(nameof(RPC_RetrieveAllPlayerManagers), RpcTarget.All);
-            }
-            RoomManager.Instance.SetLoadingScreenState(false, 2);
-            gameStarted = true;
+            Debug.Log("Player is master client.");
+            await WaitForPlayerList();
         }
         OnPlayerKillUpdate();
         //UpdateTopPlayerHUD(topPlayer.kills, topPlayer.pv.Owner.NickName);
+    }
+    public async Task WaitForPlayerList()
+    {
+        Debug.Log("Waiting for Instances to be instantiated...");
+        int rot = 1;
+        while (players.Count < PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            Debug.Log($"Finding Players... {players.Count}/{PhotonNetwork.CurrentRoom.PlayerCount}, Attempt {rot}");
+            rot++;
+            await Task.Delay(1000);
+            photonView.RPC(nameof(RPC_RetrieveAllPlayerManagers), RpcTarget.All);
+        }
+        RoomManager.Instance.SetLoadingScreenStateRPC(false, 2);
+        gameStarted = true;
     }
     [PunRPC]
     void RPC_RetrieveAllPlayerManagers()

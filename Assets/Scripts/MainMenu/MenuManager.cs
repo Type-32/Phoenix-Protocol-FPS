@@ -142,7 +142,7 @@ public class MenuManager : MonoBehaviour
             id.SetID(tmep);
             tmep++;
         }
-        login.SetActive(true);
+        //login.SetActive(true);
     }
     public void SetQuitButtonState(bool state)
     {
