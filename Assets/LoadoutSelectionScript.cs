@@ -50,6 +50,7 @@ public class LoadoutSelectionScript : MonoBehaviour
     private void Awake()
     {
         LocalMenuIdentifier = GetComponent<MenuIdentifier>();
+        LocalMenuIdentifier.OnReceivedInstruction += OnDisabledMenu;
         LoadoutSelectionItem[] tempItems = loadoutPreviewUI.GetComponentsInChildren<LoadoutSelectionItem>();
         for (int i = 0; i < tempItems.Length; i++)
         {
@@ -73,6 +74,10 @@ public class LoadoutSelectionScript : MonoBehaviour
         DisableWeaponSelection();
         DisableEquipmentSelection();
         //MenuManager.Instance.CloseLoadoutSelectionMenu();
+    }
+    void OnDisabledMenu(bool value, string name = null)
+    {
+        if (!value && name == "loadout") WriteLoadoutDataToJSON();
     }
     public int FindGlobalWeaponIndex(WeaponData data)
     {
@@ -106,9 +111,7 @@ public class LoadoutSelectionScript : MonoBehaviour
             data.LoadoutData.Slots[i].WeaponSkin1 = loadoutDataList[i].selectedAppearanceDataIndex[0];
             data.LoadoutData.Slots[i].WeaponSkin2 = loadoutDataList[i].selectedAppearanceDataIndex[1];
         }
-
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, UserSystem.LoadoutDataConfigKey), json);
+        FileOps<UserDataJSON>.WriteFile(data, UserSystem.UserDataPath);
         Debug.LogWarning("Writing Loadout Data To Files...");
     }
     public void ReadLoadoutDataFromJSON()

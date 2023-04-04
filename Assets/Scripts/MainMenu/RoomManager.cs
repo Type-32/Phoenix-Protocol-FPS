@@ -22,7 +22,6 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
     {
         yield return new WaitForSeconds(duration);
         mapPreviewLoading.SetBool("FinishedLoad", !state);
-        Debug.Log("Loading Screen State " + state.ToString());
     }
     public void SetLoadingScreenState(bool state, int duration)
     {
@@ -36,6 +35,7 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
     }
     public void SetLoadingScreenStateRPC(bool state, int duration)
     {
+        Debug.Log("Loading Screen State " + state.ToString());
         photonView.RPC(nameof(PunRPC_SetLoadingScreenState), RpcTarget.All, state, duration);
     }
     public void SetLoadingPreview(MapItemInfo itemInfo, bool showScreen)

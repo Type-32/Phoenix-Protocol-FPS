@@ -86,8 +86,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         }
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            Debug.Log("Player is master client.");
             await WaitForPlayerList();
+            Debug.Log("Player is master client.");
         }
         OnPlayerKillUpdate();
         //UpdateTopPlayerHUD(topPlayer.kills, topPlayer.pv.Owner.NickName);
@@ -96,7 +96,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Waiting for Instances to be instantiated...");
         int rot = 1;
-        while (players.Count != PhotonNetwork.CurrentRoom.PlayerCount)
+        while (players.Count != PhotonNetwork.CurrentRoom.PlayerCount || players.Count < PhotonNetwork.CurrentRoom.PlayerCount)
         {
             Debug.Log($"Finding Players... {players.Count}/{PhotonNetwork.CurrentRoom.PlayerCount}, Attempt {rot}");
             rot++;
