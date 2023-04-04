@@ -8,8 +8,8 @@ public class MouseLookScript : MonoBehaviour
 
     [SerializeField] PlayerControllerManager player;
     private Vector2 MouseInput;
-    private float mouseX;
-    private float mouseY;
+    public float mouseX;
+    public float mouseY;
     public float mouseSensitivityValve;
     private float regularSensitivity;
     private float aimingSensitivity;

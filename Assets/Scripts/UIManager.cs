@@ -73,6 +73,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text ffa_topName;
     [SerializeField] Text ffa_topKills;
 
+    [Space, Header("Sway")]
+    [SerializeField]
+    GameObject ui_sway, ui_base;
+
+    [Space, Header("UI Sway")]
+    [SerializeField] float swayIntensity, maxSwayIntensity, smoothness;
+    private Vector3 initPos, targetPos;
+
+    void Awake()
+    {
+        initPos = ui_base.transform.localPosition;
+    }
     private void OnEnable()
     {
         CreateIndicator += Create;
@@ -122,6 +134,8 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         if (!player.pv.IsMine) return;
+        UISway();
+        UpdatePosition();
         if (objectiveTargetIndicators.Count > 0)
         {
             for (int i = 0; i < objectiveTargetIndicators.Count; i++)
@@ -196,6 +210,17 @@ public class UIManager : MonoBehaviour
             crosshairGroup.alpha = Mathf.Lerp(crosshairGroup.alpha, 1f, Time.deltaTime * 5f);
         }
     }
+    private void UISway()
+    {
+        Vector3 finalPos = new Vector3(Mathf.Clamp((-player.fpsCam.mouseX) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), Mathf.Clamp((-Input.GetAxis("Mouse Y") + player.body.velocity.y) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), 0f);
+        ui_base.transform.localPosition = Vector3.Lerp(ui_base.transform.localPosition, finalPos + initPos, Time.deltaTime * smoothness);
+    }
+    private void UpdatePosition()
+    {
+        targetPos = Vector3.Lerp(targetPos, initPos, Time.deltaTime * smoothness);
+        ui_base.transform.localPosition = Vector3.Lerp(ui_base.transform.localPosition, targetPos, Time.deltaTime * smoothness);
+    }
+
     public void AddReticleSize(float amount)
     {
         targetSize += amount;

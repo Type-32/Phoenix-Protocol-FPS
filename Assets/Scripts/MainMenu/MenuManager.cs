@@ -117,7 +117,7 @@ public class MenuManager : MonoBehaviour
     public Text username;
     public Text userLevel;
     public Text userCoins;
-    public Slider userLevelProgress;
+    public Image userLevelProgress;
     private bool startQMTimer = false;
     private float QMTimerSeconds, QMTimerMinutes;
     [Serializable, SerializeField]
@@ -130,6 +130,7 @@ public class MenuManager : MonoBehaviour
     }
     private void Awake()
     {
+        FileOps<UserDataJSON>.OperatedFile += DetectIfUserDataModified;
         foreach (GameObject tp in setActiveMenuList)
         {
             tp.SetActive(true);
@@ -143,6 +144,16 @@ public class MenuManager : MonoBehaviour
             tmep++;
         }
         //login.SetActive(true);
+    }
+    private void DetectIfUserDataModified(string strPath, UserDataJSON tmp)
+    {
+        if (strPath == UserSystem.UserDataPath)
+        {
+            username.text = tmp.username;
+            userLevel.text = tmp.userLevel.ToString();
+            userLevelProgress.fillAmount = tmp.userLevelXP / (tmp.userLevel * UserDatabase.Instance.levelLimiter);
+            userCoins.text = tmp.userCoins.ToString();
+        }
     }
     public void SetQuitButtonState(bool state)
     {

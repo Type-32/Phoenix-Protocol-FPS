@@ -419,8 +419,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         ui.gameObject.SetActive(false);
         SetPlayerControlState(false);
         pv.RPC(nameof(RPC_DisableWeaponHolder), RpcTarget.All);
-
-        await Task.Delay(1000);
         playerManager.Die(isSuicide, ViewID, killer);
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;

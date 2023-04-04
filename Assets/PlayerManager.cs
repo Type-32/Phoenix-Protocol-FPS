@@ -48,6 +48,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] CanvasGroup deathInfoCanvas;
     [SerializeField] Text killStatus, killerUsername;
     public GameObject FFA_UI, TDM_UI, CTF_UI, DZ_UI;
+    [SerializeField] Image prevIcon1, prevIcon2, prevIcon3, prevIcon4;
 
     [Space]
     public bool openedLoadoutMenu = false;
@@ -210,6 +211,10 @@ public class PlayerManager : MonoBehaviour
             slotHolderScript.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]];
             slotHolderScript.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
             slotHolderScript.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
+            prevIcon1.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]].itemIcon;
+            prevIcon2.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]].itemIcon;
+            prevIcon3.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]].itemIcon;
+            prevIcon4.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]].itemIcon;
             OnJoiningOngoingRoom();
             deathInfoCanvas.alpha = 0f;
             randomPlayerColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255), 1);
@@ -407,7 +412,7 @@ public class PlayerManager : MonoBehaviour
         //pv.RPC(nameof(RPC_InstantiateDeadBody), RpcTarget.All, controller.transform.position, controller.transform.rotation);
         audioListener.enabled = true;
         streakKills = 0;
-        cameraObject.fieldOfView = controller.GetComponent<PlayerControllerManager>().fpsCam.playerMainCamera.fieldOfView;
+        cameraObject.fieldOfView = FileOps<SettingsOptionsJSON>.ReadFile(UserSystem.SettingsOptionsPath).FieldOfView;
         respawning = true;
         secondCount = 0;
         deathGUICanvas.alpha = 0f;
@@ -588,8 +593,8 @@ public class PlayerManager : MonoBehaviour
             {
                 if (!hasRespawned)
                 {
-                    deathInfoCanvas.alpha = Mathf.Lerp(deathInfoCanvas.alpha, 0f, Time.deltaTime);
-                    deathGUICanvas.alpha = Mathf.Lerp(deathGUICanvas.alpha, 1f, Time.deltaTime * 2);
+                    deathInfoCanvas.alpha = Mathf.Lerp(deathInfoCanvas.alpha, 0f, Time.deltaTime * 2);
+                    deathGUICanvas.alpha = Mathf.Lerp(deathGUICanvas.alpha, 1f, Time.deltaTime * 5);
                     transform.position = Vector3.Slerp(transform.position, spawnpointCamera.transform.position, Time.deltaTime * 3);
                     transform.rotation = Quaternion.Slerp(transform.rotation, spawnpointCamera.transform.rotation, Time.deltaTime * 3);
                     managerCollider.enabled = false;
@@ -610,7 +615,7 @@ public class PlayerManager : MonoBehaviour
             if (hasRespawned)
             {
                 deathGUICanvas.alpha = Mathf.Lerp(deathGUICanvas.alpha, 0f, Time.deltaTime * 5);
-                deathInfoCanvas.alpha = Mathf.Lerp(deathInfoCanvas.alpha, 0f, Time.deltaTime);
+                deathInfoCanvas.alpha = Mathf.Lerp(deathInfoCanvas.alpha, 0f, Time.deltaTime * 3);
                 transform.position = Vector3.Slerp(transform.position, spawnpoint.position, Time.deltaTime * 3);
                 transform.rotation = Quaternion.Slerp(transform.rotation, spawnpoint.rotation, Time.deltaTime * 3);
             }
