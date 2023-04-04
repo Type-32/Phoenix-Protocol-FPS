@@ -5,7 +5,10 @@ using Photon.Pun;
 
 public class GunManager : Gun
 {
-    [Header("Scripts")]
+    [Header("Generic Defaults")]
+    public bool ModelMode = false;
+    public bool ModelFire = false;
+    [Space, Header("Scripts")]
     public PlayerControllerManager player;
     public EquipmentHolder holder;
     public GunCoreFunc core;
@@ -115,17 +118,13 @@ public class GunManager : Gun
     {
         MeshRenderer[] tmp = handsVisual.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < tmp.Length; i++)
-        {
             tmp[i].material = mat;
-        }
     }
     public void SetThirdPersonViewHandsMaterial(Material mat)
     {
         MeshRenderer[] tmp = thirdPersonHandsVisual.GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < tmp.Length; i++)
-        {
             tmp[i].material = mat;
-        }
     }
     public override void Use()
     {

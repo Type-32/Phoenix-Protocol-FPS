@@ -21,7 +21,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     public float totalTime = 0f;
     public int maxKillLimit;
     public Scoreboard scoreboard;
-
+    public bool allowDownedState = false;
 
     [Space]
     [Header("FFA")]
@@ -57,7 +57,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         {
             case "Free For All":
                 roomMode = MenuManager.Gamemodes.FFA;
-                internalUI.ToggleFFA_UI(false);
+                internalUI.ToggleFFA_UI(true);
                 internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
@@ -65,15 +65,15 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
             case "Team Deathmatch":
                 roomMode = MenuManager.Gamemodes.TDM;
                 internalUI.ToggleFFA_UI(false);
-                internalUI.ToggleTDM_UI(false);
+                internalUI.ToggleTDM_UI(true);
                 internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
-            case "King of the Hills":
+            case "Capture the Flag":
                 roomMode = MenuManager.Gamemodes.CTF;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
-                internalUI.ToggleCTF_UI(false);
+                internalUI.ToggleCTF_UI(true);
                 internalUI.ToggleDZ_UI(false);
                 break;
             case "Drop Zones":
@@ -81,7 +81,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);
                 internalUI.ToggleCTF_UI(false);
-                internalUI.ToggleDZ_UI(false);
+                internalUI.ToggleDZ_UI(true);
                 break;
         }
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -96,7 +96,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Waiting for Instances to be instantiated...");
         int rot = 1;
-        while (players.Count < PhotonNetwork.CurrentRoom.PlayerCount)
+        while (players.Count != PhotonNetwork.CurrentRoom.PlayerCount)
         {
             Debug.Log($"Finding Players... {players.Count}/{PhotonNetwork.CurrentRoom.PlayerCount}, Attempt {rot}");
             rot++;

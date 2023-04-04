@@ -140,7 +140,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7442274799968123368
 MonoBehaviour:
@@ -583,7 +583,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4300579537768273762
 MonoBehaviour:
@@ -646,7 +646,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4757783071121025570
 MonoBehaviour:
@@ -761,7 +761,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2585671116365011794
 MonoBehaviour:
@@ -874,9 +874,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e864c7ae20c0e646aae9bc71c0c0b1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BotMode: 0
   controls: {fileID: 1783430866537944348}
   stats: {fileID: 1244489258922964122}
   sfx: {fileID: 4497721760704412606}
+  anim: {fileID: 0}
   ui: {fileID: 9135792978925625673}
   cam: {fileID: 3557355358055512487}
   holder: {fileID: 1648329398314349434}
@@ -906,6 +908,7 @@ MonoBehaviour:
     type: 3}
   playerDeathEffect: {fileID: 8942733760989259105, guid: 10082c62d511c0a4f8ce891d15c31590,
     type: 3}
+  playerPartHitboxes: []
   groundMask:
     serializedVersion: 2
     m_Bits: 8
@@ -968,7 +971,10 @@ MonoBehaviour:
   isCrouching: 0
   isSliding: 0
   isBreathing: 0
+  isDowned: 0
+  isDead: 0
   onGround: 0
+  enableGravity: 1
   mouseMovementEnabled: 1
   playerMovementEnabled: 1
   gunInteractionEnabled: 1
@@ -1263,7 +1269,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8819593842432633531
 MonoBehaviour:
@@ -1514,7 +1520,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &390531320277744028
 MonoBehaviour:
@@ -1663,7 +1669,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5650769901920416804
 MonoBehaviour:
@@ -1834,7 +1840,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8092182947756510507
 MonoBehaviour:
@@ -2406,6 +2412,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1607650458297770484, guid: 6065880057579b44fb72d8661f07ef35,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00013212
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607650458297770484, guid: 6065880057579b44fb72d8661f07ef35,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2051476038276295354, guid: 6065880057579b44fb72d8661f07ef35,
         type: 3}
       propertyPath: player
@@ -2425,6 +2441,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3148490773348403614, guid: 6065880057579b44fb72d8661f07ef35,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 86.847
+      objectReference: {fileID: 0}
+    - target: {fileID: 3148490773348403614, guid: 6065880057579b44fb72d8661f07ef35,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 63.796
       objectReference: {fileID: 0}
     - target: {fileID: 7617654781335134800, guid: 6065880057579b44fb72d8661f07ef35,
         type: 3}

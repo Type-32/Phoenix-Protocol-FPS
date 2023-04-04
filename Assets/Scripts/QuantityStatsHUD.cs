@@ -22,30 +22,6 @@ public class QuantityStatsHUD : MonoBehaviour
     public Text eqCounter1, eqCounter2;
     [SerializeField] Color reloadGradient;
     [SerializeField] Color fullGradient;
-    public enum FireMode
-    {
-        Automatic,
-        Single,
-        Burst,
-        SniperSingle,
-        Projectile,
-        Shotgun,
-        None
-    }
-    public enum WeaponType
-    {
-        AssaultRifle,
-        MarksmanRifle,
-        Pistol,
-        Shotgun,
-        Equipment,
-        Melee,
-        GrenadeLauncher,
-        SniperRifle,
-        Projectile,
-        None
-    }
-
     public struct AmmoHUDStats
     {
         public int currentAmmo;
@@ -96,18 +72,27 @@ public class QuantityStatsHUD : MonoBehaviour
             eqCounter2.text = stat.eqCount2.ToString();
         }
     }
-    private void Update()
-    {
-        /*
-        if (reload)
-        {
-            weaponReloadSlider.value = Mathf.Lerp(weaponReloadSlider.value, 1f, _rd * Time.deltaTime);
-            weaponReloadSliderFill.color = Color.Lerp(weaponReloadSliderFill.color, reloadGradient, _rd * Time.deltaTime * 2);
-        }
-        else
-        {
-            weaponReloadSlider.value = 0f;
-            weaponReloadSliderFill.color = fullGradient;
-        }*/
-    }
+}
+public enum FireMode
+{
+    Automatic,
+    Single,
+    Burst,
+    SniperSingle,
+    Projectile,
+    Shotgun,
+    None
+}
+public enum WeaponType
+{
+    AssaultRifle,
+    MarksmanRifle,
+    Pistol,
+    Shotgun,
+    Equipment,
+    Melee,
+    GrenadeLauncher,
+    SniperRifle,
+    Projectile,
+    None
 }

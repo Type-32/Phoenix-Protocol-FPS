@@ -5,14 +5,17 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Threading.Tasks;
 
 public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 {
-
-    [Header("Script Control")]
+    [Header("Generic Setup")]
+    public bool BotMode = false;
+    [Space, Header("Script Control")]
     public PlayerControls controls;
     public PlayerStats stats;
     public PlayerSounds sfx;
+    public PlayerAnimation anim;
     public UIManager ui;
     public MouseLookScript cam;
     public EquipmentHolder holder;
@@ -48,6 +51,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public GameObject playerCritBloodSplatter;
     public GameObject playerDeathEffect;
     //public Camera cameraView;
+    [HideInInspector] public List<PlayerHitboxPart> playerPartHitboxes = new();
 
     [Space]
     [Header("Ground Masks")]
@@ -84,6 +88,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     private void Start()
     {
+        PlayerHitboxPart[] tb = GetComponentsInChildren<PlayerHitboxPart>();
+        foreach (PlayerHitboxPart g in tb) playerPartHitboxes.Add(g);
         if (pv.IsMine)
         {
             //if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
@@ -158,11 +164,17 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     void FixedUpdate()
     {
+        if (BotMode) return;
         if (!pv.IsMine) return;
         CrosshairNametagDetect();
     }
     private void Update()
     {
+        if (BotMode)
+        {
+            if (transform.position.y < -50) Die(true, -1);
+            return;
+        }
         if (!pv.IsMine) return;
         if (transform.position.y < -50) Die(true, -1);
         DerivePlayerStatsToHUD();
@@ -389,14 +401,44 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             pv.RPC(nameof(RPC_SpawnDeathLoot), RpcTarget.All, transform.position, randomIndex);
         }
     }
-    public void Die(bool isSuicide, int ViewID, string killer = null)
+    [PunRPC]
+    public void TogglePlayerPartsHitboxes(bool value)
+    {
+        foreach (PlayerHitboxPart t in playerPartHitboxes) t.enabled = value;
+    }
+    public async void Die(bool isSuicide, int ViewID, string killer = null)
     {
         InvokePlayerDeathEffects();
+        SynchronizePlayerState(true, 5);
         SpawnDeathLoot();
         DisableAllMinimapDots();
+        pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
         usingStreakGifts = false;
+        capsuleCollider.enabled = false;
+        stats.enableGravity = false;
+        ui.gameObject.SetActive(false);
+        SetPlayerControlState(false);
+        pv.RPC(nameof(RPC_DisableWeaponHolder), RpcTarget.All);
+
+        await Task.Delay(1000);
         playerManager.Die(isSuicide, ViewID, killer);
         Debug.Log("Player " + stats.playerName + " was Killed");
+        return;
+    }
+    [PunRPC]
+    void RPC_DisableWeaponHolder()
+    {
+        holder.gameObject.SetActive(false);
+    }
+    public void Downed(bool isSuicide, int ViewID, string killer = null)
+    {
+        InvokePlayerDeathEffects();
+        SynchronizePlayerState(true, 4);
+        usingStreakGifts = false;
+        ui.gameObject.SetActive(false);
+        SetPlayerControlState(false);
+        holder.gameObject.SetActive(false);
+        Debug.Log("Player " + stats.playerName + " is Downed");
         return;
     }
     public void ToggleNightVision()
@@ -509,6 +551,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         0. Sprinting
         1. Crouching
         2. Sliding
+        3. Walking
+        4. Downed
+        5. Dead
         */
         switch (ind)
         {
@@ -523,6 +568,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                 break;
             case 3:
                 stats.isWalking = value;
+                break;
+            case 4:
+                stats.isDowned = value;
+                break;
+            case 5:
+                stats.isDead = value;
                 break;
             default:
                 break;
@@ -571,7 +622,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
             {
-                if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
+                if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.Shotgun)
                 {
                     ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine)
@@ -594,7 +645,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                     }
                     temp.Play();
                 }
-                else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.MarksmanRifle)
+                else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.MarksmanRifle)
                 {
                     ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine)
@@ -647,7 +698,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
             {
-                if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
+                if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.Shotgun)
                 {
                     ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("ShotgunFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine)
@@ -670,7 +721,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                     }
                     temp.Play();
                 }
-                else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.MarksmanRifle)
+                else if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.SniperRifle || holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.MarksmanRifle)
                 {
                     ParticleSystem temp = ObjectPooler.Instance.SpawnFromPool("MarksmanFireMuzzleFlash", holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.position, holder.weaponSlots[holder.weaponIndex].gun.muzzleFire.transform.rotation).GetComponent<ParticleSystem>();
                     if (pv.IsMine)

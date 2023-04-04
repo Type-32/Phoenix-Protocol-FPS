@@ -67,6 +67,12 @@ public class UIManager : MonoBehaviour
         public Vector3 position;
         public Quaternion rotation;
     }
+
+    [Space, Header("Gamemodes HUD")]
+    [SerializeField] Text ffa_prompt;
+    [SerializeField] Text ffa_topName;
+    [SerializeField] Text ffa_topKills;
+
     private void OnEnable()
     {
         CreateIndicator += Create;

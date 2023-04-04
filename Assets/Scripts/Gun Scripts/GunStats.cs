@@ -22,7 +22,7 @@ public class GunStats : MonoBehaviour
     [HideInInspector] public int maxAmmoPool = 120;
     [HideInInspector] public float fireRate = 15f;
     [HideInInspector] public float boltRecoveryDuration = 1.5f;
-    [HideInInspector] public QuantityStatsHUD.FireMode fireMode = QuantityStatsHUD.FireMode.Automatic;
+    [HideInInspector] public FireMode fireMode = FireMode.Automatic;
     public bool gunInteractionEnabled = true;
 
     [Space]

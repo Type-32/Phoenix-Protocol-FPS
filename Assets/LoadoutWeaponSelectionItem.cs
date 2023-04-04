@@ -30,7 +30,7 @@ public class LoadoutWeaponSelectionItem : MonoBehaviour
         fireRateBar.maxValue = 20f;
         fireRateBar.minValue = 0f;
 
-        if (weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun) SetMultipleDamageValue(weaponData.damagePerPellet, weaponData.pelletsPerFire);
+        if (weaponData.weaponType == WeaponType.Shotgun) SetMultipleDamageValue(weaponData.damagePerPellet, weaponData.pelletsPerFire);
         else SetDamageValue(weaponData.damage);
         SetAmmoValue(weaponData.maxAmmoPerMag);
         SetFireRateValue(weaponData.fireRate);

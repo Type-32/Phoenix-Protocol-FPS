@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EquipmentData : ItemData
 {
     public GameObject equipmentPrefab;
-    public QuantityStatsHUD.WeaponType equipmentType;
+    public WeaponType equipmentType;
     public int GlobalEquipmentIndex
     {
         get

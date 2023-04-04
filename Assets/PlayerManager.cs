@@ -364,7 +364,7 @@ public class PlayerManager : MonoBehaviour
     {
         Destroy(Instantiate(deadBodyPrefab, position, rotation), 3f);
     }
-    public void Die(bool isSuicide, int ViewID, string killer = null)
+    public void SetDeathUI(bool isSuicide, int ViewID, string killer = null)
     {
         if (killer != null)
         {
@@ -383,6 +383,15 @@ public class PlayerManager : MonoBehaviour
             if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
             else TDM_InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, (bool)pv.Owner.CustomProperties["team"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
         }
+    }
+    IEnumerator DelayedControllerDestroy(float value)
+    {
+        yield return new WaitForSeconds(value);
+        PhotonNetwork.Destroy(controller);
+    }
+    public void Die(bool isSuicide, int ViewID, string killer = null, float delayObjectDestroy = 2f)
+    {
+        SetDeathUI(isSuicide, ViewID, killer);
         if (trackingViewID != -1 && !isSuicide)
         {
             PlayerControllerManager[] tmp = FindObjectsOfType<PlayerControllerManager>();
@@ -398,7 +407,7 @@ public class PlayerManager : MonoBehaviour
         //pv.RPC(nameof(RPC_InstantiateDeadBody), RpcTarget.All, controller.transform.position, controller.transform.rotation);
         audioListener.enabled = true;
         streakKills = 0;
-        cameraObject.fieldOfView = PlayerPrefs.GetFloat("Field Of View");
+        cameraObject.fieldOfView = controller.GetComponent<PlayerControllerManager>().fpsCam.playerMainCamera.fieldOfView;
         respawning = true;
         secondCount = 0;
         deathGUICanvas.alpha = 0f;
@@ -429,11 +438,11 @@ public class PlayerManager : MonoBehaviour
             }*/
         }
 
-        PhotonNetwork.Destroy(controller);
+        StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
-        respawnCountdown = 4;
+        respawnCountdown = 5;
         hasRespawned = false;
         temp = 0;
         returnTemp = 0f;
@@ -575,7 +584,7 @@ public class PlayerManager : MonoBehaviour
         if (respawning)
         {
             cameraObject.fieldOfView = Mathf.Lerp(cameraObject.fieldOfView, 60f, Time.deltaTime * 2);
-            if (returnTemp >= 1.5f)
+            if (returnTemp >= 3f)
             {
                 if (!hasRespawned)
                 {
@@ -825,6 +834,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (pv.Owner == info.Sender)
             {
+                Debug.LogWarning("You killed a baddie");
                 msg.SetKilledColor(Color.red);
             }
             else

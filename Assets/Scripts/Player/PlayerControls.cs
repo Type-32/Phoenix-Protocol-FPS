@@ -142,7 +142,7 @@ public class PlayerControls : MonoBehaviour
             playerInput = player.transform.right * x + transform.forward * z;
             player.body.Move(playerInput * speedValve * Time.deltaTime);
         }
-        if (player.stats.onGround && player.stats.isJumping) velocity.y = Mathf.Sqrt(player.stats.jumpForce * -2f * player.stats.gravity);
+        if (player.stats.onGround && player.stats.isJumping) velocity.y = Mathf.Sqrt((!player.stats.isSliding ? player.stats.jumpForce : player.stats.jumpForce * 0.2f) * -2f * player.stats.gravity);
         player.capsuleCollider.height = player.stats.isCrouching ? capsuleColliderCrouchHeight : capsuleColliderInitHeight;
     }
     void FixedMovement()
@@ -151,6 +151,7 @@ public class PlayerControls : MonoBehaviour
     }
     void Gravity()
     {
+        if (!player.stats.enableGravity) return;
         velocity.y += player.stats.gravity * Time.deltaTime;
         player.body.Move(velocity * Time.deltaTime);
     }
@@ -231,13 +232,16 @@ public class PlayerControls : MonoBehaviour
     {
         if (Input.GetKey("space") && player.stats.onGround)
         {
+            /*
             if (player.stats.isSliding)
+                ActivateSlide();*/
+            if (!player.stats.isSliding)
             {
-                ActivateSlide();
-                //player.stats.onGround = true;
+                if (player.stats.isCrouching) player.stats.isCrouching = false;
+                else player.stats.isJumping = true;
             }
-            if (player.stats.isCrouching) player.stats.isCrouching = false;
-            else player.stats.isJumping = true;
+            else
+                player.stats.isJumping = true;
         }
         else player.stats.isJumping = false;
     }

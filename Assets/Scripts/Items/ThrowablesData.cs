@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ThrowablesData : ItemData
 {
     public GameObject throwablesPrefab;
-    public QuantityStatsHUD.WeaponType weaponType;
+    public WeaponType weaponType;
 
     [Space]
     [Header("Stats")]

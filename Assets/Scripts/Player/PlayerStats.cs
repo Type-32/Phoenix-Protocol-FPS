@@ -43,7 +43,10 @@ public class PlayerStats : MonoBehaviour
     public bool isCrouching = false;
     public bool isSliding = false;
     public bool isBreathing = false;
+    public bool isDowned = false;
+    public bool isDead = false;
     public bool onGround = false;
+    public bool enableGravity = true;
 
     [Space]
     [Header("Player Generic Controls")]

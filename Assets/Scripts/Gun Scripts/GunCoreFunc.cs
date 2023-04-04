@@ -18,7 +18,7 @@ public class GunCoreFunc : MonoBehaviour
     private Recoil recoilScript;
     public bool enableGunCoreFunc = true;
     private float timePassedUntillNextShot = 0f;
-    [SerializeField] private List<QuantityStatsHUD.FireMode> fmList = new List<QuantityStatsHUD.FireMode>();
+    [SerializeField] private List<FireMode> fmList = new List<FireMode>();
     [SerializeField] private int firemodeIndex = 0;
     //[SerializeField] PhotonView pv;
 
@@ -49,23 +49,31 @@ public class GunCoreFunc : MonoBehaviour
     }
     void FiremodeInitialize()
     {
-        if (gun.stats.weaponData.enableAutomatic) stats.fireMode = QuantityStatsHUD.FireMode.Automatic;
-        if (stats.weaponData.enableAutomatic) fmList.Add(QuantityStatsHUD.FireMode.Automatic);
-        if (stats.weaponData.enableBurst) fmList.Add(QuantityStatsHUD.FireMode.Burst);
-        if (stats.weaponData.enableSingle) fmList.Add(QuantityStatsHUD.FireMode.Single);
-        if (stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle || stats.weaponData.isSniperProperties)
+        if (!gun.ModelMode)
+        {
+            if (gun.stats.weaponData.enableAutomatic) stats.fireMode = FireMode.Automatic;
+            if (stats.weaponData.enableAutomatic) fmList.Add(FireMode.Automatic);
+            if (stats.weaponData.enableBurst) fmList.Add(FireMode.Burst);
+            if (stats.weaponData.enableSingle) fmList.Add(FireMode.Single);
+            if (stats.weaponData.weaponType == WeaponType.SniperRifle || stats.weaponData.isSniperProperties)
+            {
+                fmList.Clear();
+                fmList.Add(FireMode.SniperSingle);
+                stats.fireMode = FireMode.SniperSingle;
+            }
+            if (stats.weaponData.weaponType == WeaponType.Shotgun)
+            {
+                fmList.Clear();
+                fmList.Add(FireMode.Shotgun);
+                stats.fireMode = FireMode.Shotgun;
+            }
+            stats.fireMode = fmList[0];
+        }
+        else
         {
             fmList.Clear();
-            fmList.Add(QuantityStatsHUD.FireMode.SniperSingle);
-            stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
+            fmList.Add(FireMode.Single);
         }
-        if (stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.Shotgun)
-        {
-            fmList.Clear();
-            fmList.Add(QuantityStatsHUD.FireMode.Shotgun);
-            stats.fireMode = QuantityStatsHUD.FireMode.Shotgun;
-        }
-        stats.fireMode = fmList[0];
     }
     void StateInitalize()
     {
@@ -100,15 +108,6 @@ public class GunCoreFunc : MonoBehaviour
         if (Input.GetKeyDown("r") && !gun.stats.isReloading && gun.stats.ammo != gun.stats.weaponData.maxAmmoPerMag && gun.stats.ammoPool > 0) StartCoroutine(Reload());
         if (gun.stats.ammo <= 0 && gun.stats.ammoPool > 0 && !gun.stats.isReloading) StartCoroutine(Reload());
     }
-    private void RequestShootServerRpc(float range, float damage)
-    {
-        FireClientRpc(range, damage);
-    }
-
-    private void FireClientRpc(float range, float damage)
-    {
-        Shoot(range, damage);
-    }
 
     public void ShootUnderRestriction()
     {
@@ -119,22 +118,22 @@ public class GunCoreFunc : MonoBehaviour
     public void ShootUnderFiremode()
     {
         if (!gun.stats.gunInteractionEnabled) return;
-        if (stats.fireMode == QuantityStatsHUD.FireMode.Automatic)
+        if (stats.fireMode == FireMode.Automatic)
         {
             if ((Input.GetButton("Fire1") || (Input.GetKey(KeyCode.Slash))) && Time.time >= nextTimeToFire)
             {
                 ShootUnderRestriction();
             }
         }
-        else if (stats.fireMode == QuantityStatsHUD.FireMode.SniperSingle)
+        else if (stats.fireMode == FireMode.SniperSingle)
         {
             ShootWithSniperSingle();
         }
-        else if (stats.fireMode == QuantityStatsHUD.FireMode.Shotgun)
+        else if (stats.fireMode == FireMode.Shotgun)
         {
             ShootWithShotgunProperties();
         }
-        else if (stats.fireMode == QuantityStatsHUD.FireMode.Single)
+        else if (stats.fireMode == FireMode.Single)
         {
             if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && Time.time >= nextTimeToFire)
             {
@@ -144,31 +143,59 @@ public class GunCoreFunc : MonoBehaviour
     }
     public void ShootWithSniperSingle()
     {
-        if (stats.fireMode != QuantityStatsHUD.FireMode.SniperSingle) stats.fireMode = QuantityStatsHUD.FireMode.SniperSingle;
+        if (stats.fireMode != FireMode.SniperSingle) stats.fireMode = FireMode.SniperSingle;
         if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
-        if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+        if (!gun.ModelMode)
         {
-            Shoot(gun.stats.range, gun.stats.damage);
-            //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
-            timePassedUntillNextShot = 0f;
+            if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+            {
+                Shoot(gun.stats.range, gun.stats.damage);
+                //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
+                timePassedUntillNextShot = 0f;
+            }
+        }
+        else
+        {
+            if (gun.ModelFire && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+            {
+                Shoot(gun.stats.range, gun.stats.damage);
+                //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
+                timePassedUntillNextShot = 0f;
+            }
         }
     }
     public void ShootWithShotgunProperties()
     {
-        if (stats.fireMode != QuantityStatsHUD.FireMode.Shotgun) stats.fireMode = QuantityStatsHUD.FireMode.Shotgun;
+        if (stats.fireMode != FireMode.Shotgun) stats.fireMode = FireMode.Shotgun;
         if (timePassedUntillNextShot < gun.stats.boltRecoveryDuration) timePassedUntillNextShot += Time.deltaTime;
-        if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+        if (!gun.ModelMode)
         {
-            if (gun.stats.ammo <= 0 || stats.isSprinting) return;
-            for (int i = 0; i < gun.stats.weaponData.pelletsPerFire; i++) Shoot(gun.stats.range, gun.stats.weaponData.damagePerPellet);
-            gun.stats.ammo--;
-            if (gun.stats.weaponData.ejectCasingAfterRechamber) StartCoroutine(Rechamber());
-            //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
-            timePassedUntillNextShot = 0f;
+            if ((Input.GetButtonDown("Fire1") || (Input.GetKeyDown(KeyCode.Slash) || Input.GetKeyDown(KeyCode.Slash))) && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+            {
+                if (gun.stats.ammo <= 0 || stats.isSprinting) return;
+                for (int i = 0; i < gun.stats.weaponData.pelletsPerFire; i++) Shoot(gun.stats.range, gun.stats.weaponData.damagePerPellet);
+                gun.stats.ammo--;
+                if (gun.stats.weaponData.ejectCasingAfterRechamber) StartCoroutine(Rechamber());
+                //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
+                timePassedUntillNextShot = 0f;
+            }
+        }
+        else
+        {
+            if (gun.ModelFire && timePassedUntillNextShot >= gun.stats.boltRecoveryDuration)
+            {
+                if (gun.stats.ammo <= 0 || stats.isSprinting) return;
+                for (int i = 0; i < gun.stats.weaponData.pelletsPerFire; i++) Shoot(gun.stats.range, gun.stats.weaponData.damagePerPellet);
+                gun.stats.ammo--;
+                if (gun.stats.weaponData.ejectCasingAfterRechamber) StartCoroutine(Rechamber());
+                //RequestShootServerRpc(gun.stats.range, gun.stats.damage);
+                timePassedUntillNextShot = 0f;
+            }
         }
     }
     public void EnterAiming(bool check)
     {
+        if (gun.ModelMode) return;
         if (gun.fpsCam.playerMainCamera == null) return;
         if (check)
         {
@@ -197,17 +224,81 @@ public class GunCoreFunc : MonoBehaviour
     {
         gun.camRecoil.RecoilFire(verticalRecoil, horizontalRecoil, sphericalShake, positionRecoilRetaliation, positionRecoilVertical, positionTransitionalSnappiness, positionRecoilReturnSpeed, transitionalSnappiness, recoilReturnSpeed);
     }
-
-    void Shoot(float range, float damage)
+    void BotShoot(float range, float damage)
     {
         if (gun.stats.ammo <= 0 || stats.isSprinting) return;
         if (gun.shellEject != null && !gun.stats.weaponData.ejectCasingAfterRechamber) gun.shellEject.GetComponent<ParticleSystem>().Play();
-        if (gun.stats.weaponData.weaponType == QuantityStatsHUD.WeaponType.SniperRifle) StartCoroutine(Rechamber());
+        if (gun.stats.weaponData.weaponType == WeaponType.SniperRifle) StartCoroutine(Rechamber());
+
+        anim.animate.SetTrigger("isFiring");
+        if (gun.stats.weaponData.weaponType != WeaponType.Shotgun) gun.stats.ammo--;
+        RaycastHit hit;
+        Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        Vector3 shootDirection = gun.fpsCam.transform.forward;
+        if (gun.stats.weaponData.hasHipfireInaccuracy)
+        {
+            float spreadX = 0f, spreadY = 0f;
+            spreadX = Random.Range(-gun.logic.spreadConstant, gun.logic.spreadConstant);
+            spreadY = Random.Range(-gun.logic.spreadConstant, gun.logic.spreadConstant);
+            spreadX *= (gun.stats.weaponData.hipfireSpread * (gun.player.stats.isJumping ? 1.1f : gun.player.stats.isWalking ? 0.85f : gun.player.stats.isCrouching ? 0.4f : 0.6f));
+            spreadY *= (gun.stats.weaponData.hipfireSpread * (gun.player.stats.isJumping ? 1.1f : gun.player.stats.isWalking ? 0.85f : gun.player.stats.isCrouching ? 0.4f : 0.6f));
+            shootDirection.x += spreadX * 0.1f;
+            shootDirection.y += spreadY * 0.1f;
+            shootDirection.z += spreadX * 0.1f;
+        }
+        ray.origin = gun.fpsCam.transform.position;
+        ray.direction = shootDirection;
+        if (Physics.Raycast(ray, out hit, range))
+        {
+            IDamagable damageable = hit.collider.gameObject.GetComponent<IDamagable>();
+            PlayerHitboxPart part = hit.collider.gameObject.GetComponent<PlayerHitboxPart>();
+            Vector3 tempPoint = new Vector3(), tempNormal = new Vector3();
+            //Debug.Log(hit.transform.name);
+            //IDamagable player = hit.transform.GetComponent<IDamagable>();
+            if (damageable != null)
+            {
+                if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
+                {
+                    if (part.player.IsTeam != gun.player.IsTeam)
+                        damageable?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
+                }
+                else
+                {
+                    damageable?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
+                    if (part != null)
+                    {
+                        ParticleSystem psys = ObjectPooler.Instance.SpawnFromPool(part.part != PlayerHitboxPart.PlayerPart.Head ? "BloodSplatter" : "CritBloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up)).GetComponent<ParticleSystem>();
+                        psys.Play();
+                    }
+                }
+            }
+            else
+            {
+                tempPoint = hit.point;
+                tempNormal = hit.normal;
+            }
+            gun.player.InvokeGunEffects(tempPoint, tempNormal);
+        }
+        else
+            gun.player.InvokeGunEffects(new Vector3(), new Vector3());
+        anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
+        TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
+    }
+    void Shoot(float range, float damage)
+    {
+        if (gun.ModelMode)
+        {
+            BotShoot(range, damage);
+            return;
+        }
+        if (gun.stats.ammo <= 0 || stats.isSprinting) return;
+        if (gun.shellEject != null && !gun.stats.weaponData.ejectCasingAfterRechamber) gun.shellEject.GetComponent<ParticleSystem>().Play();
+        if (gun.stats.weaponData.weaponType == WeaponType.SniperRifle) StartCoroutine(Rechamber());
 
         float decreasedKickback = 0f;
 
         anim.animate.SetTrigger("isFiring");
-        if (gun.stats.weaponData.weaponType != QuantityStatsHUD.WeaponType.Shotgun) gun.stats.ammo--;
+        if (gun.stats.weaponData.weaponType != WeaponType.Shotgun) gun.stats.ammo--;
         RaycastHit hit;
         Ray ray = gun.fpsCam.playerMainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         Vector3 shootDirection = gun.fpsCam.transform.forward;
@@ -269,16 +360,8 @@ public class GunCoreFunc : MonoBehaviour
                     }
                     if (part != null)
                     {
-                        if (part.part != PlayerHitboxPart.PlayerPart.Head)
-                        {
-                            ParticleSystem psys = ObjectPooler.Instance.SpawnFromPool("BloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up)).GetComponent<ParticleSystem>();
-                            psys.Play();
-                        }
-                        else
-                        {
-                            ParticleSystem psys = ObjectPooler.Instance.SpawnFromPool("CritBloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up)).GetComponent<ParticleSystem>();
-                            psys.Play();
-                        }
+                        ParticleSystem psys = ObjectPooler.Instance.SpawnFromPool(part.part != PlayerHitboxPart.PlayerPart.Head ? "BloodSplatter" : "CritBloodSplatter", hit.point + hit.normal * 0.01f, Quaternion.LookRotation(-hit.normal, Vector3.up)).GetComponent<ParticleSystem>();
+                        psys.Play();
                     }
                 }
             }
@@ -288,20 +371,6 @@ public class GunCoreFunc : MonoBehaviour
                 tempNormal = hit.normal;
             }
             gun.player.InvokeGunEffects(tempPoint, tempNormal);
-            /*
-                        if (hit.transform.GetComponent<Rigidbody>() != null){
-                            flag = true;
-                            hit.transform.GetComponent<Rigidbody>().AddForce(-hit.normal * gun.stats.impactForce);
-                        }
-                        if (!flag)
-                        {
-                            GameObject temp = Instantiate(gun.bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
-                            if (hit.transform.GetComponent<Renderer>() == null)
-                            {
-                                temp.GetComponent<Renderer>().material = hit.transform.GetComponent<Renderer>().material;
-                            }
-                            Destroy(temp, 2f);
-                        }*/
         }
         else
         {
@@ -328,27 +397,6 @@ public class GunCoreFunc : MonoBehaviour
             else anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
         }
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
-    }
-
-    public void UpdateSightFOV()
-    {
-        /*
-        if (gun.stats.selectedSightIndex != 0)
-        {
-            int tmpSelectedSightIndex = gun.stats.selectedSightIndex;
-            if (gun.attachment.sightAttachments[tmpSelectedSightIndex].GetComponent<AttachmentScript>().attachmentSO.changesCameraDefaultFOV)
-            {
-                sightFOV = gun.attachment.sightAttachments[tmpSelectedSightIndex].GetComponent<AttachmentScript>().attachmentSO.cameraFOVChangedMultiplier * originMultiplierFOV;
-            }
-            else
-            {
-                sightFOV = originMultiplierFOV - gun.attachment.sightAttachments[tmpSelectedSightIndex].GetComponent<AttachmentScript>().attachmentSO.cameraFOVChangedAmount;
-            }
-        }
-        else
-        {
-            sightFOV = originMultiplierFOV;
-        }*/
     }
 
     IEnumerator Rechamber()

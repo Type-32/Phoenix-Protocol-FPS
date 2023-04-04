@@ -11,6 +11,7 @@ public class GunUI : MonoBehaviour
     // Start is called before the first frame update
     public void GunUIAwake()
     {
+        if (gun.ModelMode) return;
         PlayerControllerManager playerTemp = GetComponentInParent<PlayerControllerManager>();
         ui = playerTemp.GetComponentInChildren<UIManager>();
     }
@@ -22,6 +23,7 @@ public class GunUI : MonoBehaviour
     }*/
     public void UIFunctions()
     {
+        if (gun.ModelMode) return;
         temp.currentAmmo = gun.stats.ammo;
         temp.ammoPool = gun.stats.ammoPool;
         temp.firemode = gun.stats.fireMode;
