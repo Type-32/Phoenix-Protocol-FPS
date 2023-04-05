@@ -406,18 +406,20 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     {
         foreach (PlayerHitboxPart t in playerPartHitboxes) t.enabled = value;
     }
-    public async void Die(bool isSuicide, int ViewID, string killer = null)
+    public void Die(bool isSuicide, int ViewID, string killer = null)
     {
+        SetPlayerControlState(false);
+        pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
+        capsuleCollider.enabled = false;
+        body.enabled = false;
+
         InvokePlayerDeathEffects();
         SynchronizePlayerState(true, 5);
         SpawnDeathLoot();
         DisableAllMinimapDots();
-        pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
         usingStreakGifts = false;
-        capsuleCollider.enabled = false;
         stats.enableGravity = false;
         ui.gameObject.SetActive(false);
-        SetPlayerControlState(false);
         pv.RPC(nameof(RPC_DisableWeaponHolder), RpcTarget.All);
         playerManager.Die(isSuicide, ViewID, killer);
         Debug.Log("Player " + stats.playerName + " was Killed");
@@ -523,8 +525,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
-            if (info.Sender != pv.Owner) PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon);
-            if (info.Sender != pv.Owner) Die(false, pv.ViewID, info.Sender.NickName);
+            if (info.Sender != pv.Owner) { PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon); Die(false, pv.ViewID, info.Sender.NickName); }
             else if (info.Sender == pv.Owner && !isWeapon) Die(true, pv.ViewID, pv.Owner.NickName);
         }
         return;

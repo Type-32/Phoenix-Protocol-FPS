@@ -66,44 +66,40 @@ public class PlayerControls : MonoBehaviour
     }
     void Update()
     {
-        if (!player.pv.IsMine)
+        if (!player.pv.IsMine) return;
+
+        velocityDebug = player.body.velocity;
+        x = player.stats.playerMovementEnabled ? Input.GetAxis("Horizontal") : 0f;
+        z = player.stats.playerMovementEnabled ? Input.GetAxis("Vertical") : 0f;
+        player.holder.WeaponFunction();
+        //if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
+        if (slideTime <= 0f)
         {
-            //transform.position = Vector3.Lerp(transform.position, transform.position, 0.1f);
+            player.stats.isSliding = false;
+            if (!hadSlide)
+            {
+                player.SynchronizePlayerState(player.stats.isSliding, 2);
+                hadSlide = true;
+            }
         }
         else
         {
-            velocityDebug = player.body.velocity;
-            x = Input.GetAxis("Horizontal");
-            z = Input.GetAxis("Vertical");
-            player.holder.WeaponFunction();
-            //if (Input.GetKeyDown("l")) Cursor.lockState = CursorLockMode.None;
-            if (slideTime <= 0f)
-            {
-                player.stats.isSliding = false;
-                if (!hadSlide)
-                {
-                    player.SynchronizePlayerState(player.stats.isSliding, 2);
-                    hadSlide = true;
-                }
-            }
-            else
-            {
-                player.stats.isSliding = true;
-            }
-            if (slideTime > 0f)
-            {
-                slideValveSpeed = Mathf.Lerp(slideValveSpeed, player.stats.speed, Time.deltaTime * 1.5f);
-                slideTime -= Time.deltaTime;
-            }
-            Logics();
-            GroundCheck();
-            Gravity();
-
-            Movement();
-            CameraFOV();
-            InteractIndicatorCheck();
-            KeybindedActions();
+            player.stats.isSliding = true;
         }
+        if (slideTime > 0f)
+        {
+            slideValveSpeed = Mathf.Lerp(slideValveSpeed, player.stats.speed, Time.deltaTime * 1.5f);
+            slideTime -= Time.deltaTime;
+        }
+        Logics();
+        GroundCheck();
+        Gravity();
+
+        Movement();
+        CameraFOV();
+        InteractIndicatorCheck();
+        KeybindedActions();
+
     }
     public void InteractWithPickup()
     {
