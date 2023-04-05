@@ -444,7 +444,8 @@ public class PlayerManager : MonoBehaviour
             }*/
         }
 
-        StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
+        //StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
+        PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
@@ -844,13 +845,12 @@ public class PlayerManager : MonoBehaviour
             }
             else if (PhotonNetwork.LocalPlayer != info.Sender && PhotonNetwork.LocalPlayer != pv.Owner)
             {
-                Debug.LogWarning("Someone is killed by a baddie");
-                msg.SetKilledColor(Color.red);
+                Debug.LogWarning("You are killed by a baddie");
                 msg.SetKillerColor(Color.red);
             }
             else if (PhotonNetwork.LocalPlayer != info.Sender && PhotonNetwork.LocalPlayer == pv.Owner)
             {
-                Debug.LogWarning("You are killed by a baddie");
+                Debug.LogWarning("You probably are killed by a baddie");
                 msg.SetKillerColor(Color.red);
             }
             else
