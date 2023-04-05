@@ -151,7 +151,7 @@ public class MenuManager : MonoBehaviour
         {
             username.text = tmp.username;
             userLevel.text = tmp.userLevel.ToString();
-            userLevelProgress.fillAmount = tmp.userLevelXP / (tmp.userLevel * UserDatabase.Instance.levelLimiter);
+            userLevelProgress.fillAmount = (float)tmp.userLevelXP / (float)(tmp.userLevel * UserDatabase.Instance.levelLimiter);
             userCoins.text = tmp.userCoins.ToString();
         }
     }

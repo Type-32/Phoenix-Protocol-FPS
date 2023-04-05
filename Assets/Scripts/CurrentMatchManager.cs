@@ -385,6 +385,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         gameStarted = false;
         gameEnded = true;
+        localClientPlayer.controller.GetComponent<PlayerControllerManager>()?.SetPlayerControlState(false);
         Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
         internalUI.UIAnimator.SetBool("MatchEnded", true);

@@ -520,7 +520,7 @@ public class PlayerManager : MonoBehaviour
             yield return null;
         //cmm.RemovePlayer(this);
         SceneManager.LoadScene(0);
-        roomManager.SelfDestruction();
+        //roomManager.SelfDestruction();
         Debug.Log("Self Destruction Occured");
         Debug.Log("Loaded Scene from Player Manager");
     }
