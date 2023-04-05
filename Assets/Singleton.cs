@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
@@ -27,7 +28,16 @@ public class PunCallbackSingleton<T> : MonoBehaviourPunCallbacks where T : PunCa
     {
         if (instance != null)
         {
-            Destroy(gameObject);
+            T[] tmp = FindObjectsOfType<T>();
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                if (tmp[i].gameObject != gameObject)
+                {
+                    Destroy(tmp[i].gameObject);
+                }
+            }
+            DontDestroyOnLoad(gameObject);
+            instance = (T)this;
         }
         else
         {
