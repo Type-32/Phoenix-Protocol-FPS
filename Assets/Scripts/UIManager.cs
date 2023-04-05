@@ -212,7 +212,8 @@ public class UIManager : MonoBehaviour
     }
     private void UISway()
     {
-        Vector3 finalPos = new Vector3(Mathf.Clamp((-player.fpsCam.mouseX) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), Mathf.Clamp((-Input.GetAxis("Mouse Y") + player.body.velocity.y) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), 0f);
+        if (!player.stats.mouseMovementEnabled) return;
+        Vector3 finalPos = new Vector3(Mathf.Clamp((-player.fpsCam.mouseX) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), Mathf.Clamp((-Input.GetAxis("Mouse Y") + player.body.velocity.y - (player.stats.isJumping ? 3f : 0f)) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), 0f);
         ui_base.transform.localPosition = Vector3.Lerp(ui_base.transform.localPosition, finalPos + initPos, Time.deltaTime * smoothness);
     }
     private void UpdatePosition()

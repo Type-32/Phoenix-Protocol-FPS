@@ -401,41 +401,39 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             pv.RPC(nameof(RPC_SpawnDeathLoot), RpcTarget.All, transform.position, randomIndex);
         }
     }
-    [PunRPC]
     public void TogglePlayerPartsHitboxes(bool value)
     {
-        foreach (PlayerHitboxPart t in playerPartHitboxes) t.enabled = value;
+        foreach (PlayerHitboxPart t in GetComponentsInChildren<PlayerHitboxPart>()) t.enabled = value;
         capsuleCollider.enabled = value;
         body.enabled = value;
     }
     public void Die(bool isSuicide, int ViewID, string killer = null)
     {
         stats.isDead = true;
-        playerManager.Die(isSuicide, ViewID, killer);
         SetPlayerControlState(false);
-        pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
+        //pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
+        //pv.RPC(nameof(RPC_DisableWeaponHolder), RpcTarget.All);
+        TogglePlayerPartsHitboxes(false);
+        holder.gameObject.SetActive(false);
         fpsCam.playerMainCamera.GetComponent<AudioListener>().enabled = false;
+        capsuleCollider.enabled = false;
+        body.enabled = false;
+        playerManager.Die(isSuicide, ViewID, killer);
 
         InvokePlayerDeathEffects();
-        SynchronizePlayerState(true, 5);
+        //SynchronizePlayerState(true, 5);
         SpawnDeathLoot();
         DisableAllMinimapDots();
         usingStreakGifts = false;
         stats.enableGravity = false;
         ui.gameObject.SetActive(false);
-        pv.RPC(nameof(RPC_DisableWeaponHolder), RpcTarget.All);
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;
-    }
-    [PunRPC]
-    void RPC_DisableWeaponHolder()
-    {
-        holder.gameObject.SetActive(false);
     }
     public void Downed(bool isSuicide, int ViewID, string killer = null)
     {
         InvokePlayerDeathEffects();
-        SynchronizePlayerState(true, 4);
+        //SynchronizePlayerState(true, 4);
         usingStreakGifts = false;
         ui.gameObject.SetActive(false);
         SetPlayerControlState(false);

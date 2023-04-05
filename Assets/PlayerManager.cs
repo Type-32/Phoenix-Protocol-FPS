@@ -385,8 +385,8 @@ public class PlayerManager : MonoBehaviour
         {
             killStatus.text = "You have";
             killerUsername.text = "Suicided";
-            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
-            else TDM_InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, (bool)pv.Owner.CustomProperties["team"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
+            //if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
+            //else TDM_InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, (bool)pv.Owner.CustomProperties["team"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
         }
     }
     IEnumerator DelayedControllerDestroy(float value)
@@ -444,8 +444,8 @@ public class PlayerManager : MonoBehaviour
             }*/
         }
 
-        //StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
-        PhotonNetwork.Destroy(controller);
+        StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
+        //PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
