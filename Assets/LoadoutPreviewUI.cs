@@ -11,7 +11,7 @@ public class LoadoutPreviewUI : MonoBehaviour
     [SerializeField] LoadoutSelectionScript loadoutSelection;
     public Text[] texts;
     public Image[] images;
-    public ButtonManager[] buttons;
+    public LoadoutWeaponStatisticsDisplay[] statDisplays;
     public Transform[] attachPreviewHolders;
     public GameObject attachPreviewPrefab;
     public Image customizeWeaponIcon;
@@ -36,7 +36,6 @@ public class LoadoutPreviewUI : MonoBehaviour
         {
             texts[index <= 1 ? index : 0].text = temp + weaponData.itemName;
             images[index <= 1 ? index : 0].sprite = weaponData.itemIcon;
-            buttons[index <= 1 ? index : 0].gameObject.SetActive(true);
             attachPreviewHolders[index <= 1 ? index : 0].gameObject.SetActive(true);
             loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = weaponData;
             if (index <= 1)
@@ -50,14 +49,15 @@ public class LoadoutPreviewUI : MonoBehaviour
                     loadoutSelection.selectedSecondWeaponIndex = Database.FindWeaponDataIndex(weaponData);
                 }
             }
+            statDisplays[index <= 1 ? index : 0].SetInfo(weaponData);
         }
         else
         {
             texts[index <= 1 ? index : 0].text = temp + "None";
             images[index <= 1 ? index : 0].sprite = nullWeaponIcon;
-            buttons[index <= 1 ? index : 0].gameObject.SetActive(false);
             //attachPreviewHolders[index <= 1 ? index : 0].gameObject.SetActive(false);
             loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[index] = null;
+            statDisplays[index <= 1 ? index : 0].SetInfo(0, 0, 0);
         }
         SetPreviewCustomizations(index, weaponData);
         loadoutSelection.WriteLoadoutDataToJSON();
@@ -133,27 +133,27 @@ public class LoadoutPreviewUI : MonoBehaviour
         if (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedBarrelIndex[tmp] != -1)
         {
             LAPreview i = Instantiate(attachPreviewPrefab, attachPreviewHolders[tmp]).GetComponentInChildren<LAPreview>();
-            i.SetIcon(FindAttachmentIcon(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedBarrelIndex[tmp]));
+            i.SetInfo(GlobalDatabase.Instance.allWeaponAttachmentDatas[loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedBarrelIndex[tmp]]);
         }
         if (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[tmp] != -1)
         {
             LAPreview i = Instantiate(attachPreviewPrefab, attachPreviewHolders[tmp]).GetComponentInChildren<LAPreview>();
-            i.SetIcon(FindAttachmentIcon(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[tmp]));
+            i.SetInfo(GlobalDatabase.Instance.allWeaponAttachmentDatas[loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[tmp]]);
         }
         if (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[tmp] != -1)
         {
             LAPreview i = Instantiate(attachPreviewPrefab, attachPreviewHolders[tmp]).GetComponentInChildren<LAPreview>();
-            i.SetIcon(FindAttachmentIcon(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[tmp]));
+            i.SetInfo(GlobalDatabase.Instance.allWeaponAttachmentDatas[loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[tmp]]);
         }
         if (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[tmp] != -1)
         {
             LAPreview i = Instantiate(attachPreviewPrefab, attachPreviewHolders[tmp]).GetComponentInChildren<LAPreview>();
-            i.SetIcon(FindAttachmentIcon(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[tmp]));
+            i.SetInfo(GlobalDatabase.Instance.allWeaponAttachmentDatas[loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[tmp]]);
         }
         if (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[tmp] != -1)
         {
             LAPreview i = Instantiate(attachPreviewPrefab, attachPreviewHolders[tmp]).GetComponentInChildren<LAPreview>();
-            i.SetIcon(FindAttachmentIcon(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[tmp]));
+            i.SetInfo(GlobalDatabase.Instance.allWeaponAttachmentDatas[loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[tmp]]);
         }
         if (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[tmp] != -1)
         {

@@ -188,6 +188,18 @@ public class MenuManager : MonoBehaviour
             case "multiplayer":
                 openedMultiplayerMenu = val;
                 break;
+            case "findroom":
+                openedFindRoomMenu = val;
+                break;
+            case "createroom":
+                openedCreateRoomMenu = val;
+                break;
+            case "room":
+                openedRoomMenu = val;
+                break;
+            case "loadout":
+                openedLoadoutSelectionMenu = val;
+                break;
             case ("room" or ""):
                 break;
         }
