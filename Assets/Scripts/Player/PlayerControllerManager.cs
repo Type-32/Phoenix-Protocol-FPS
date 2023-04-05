@@ -405,14 +405,14 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void TogglePlayerPartsHitboxes(bool value)
     {
         foreach (PlayerHitboxPart t in playerPartHitboxes) t.enabled = value;
+        capsuleCollider.enabled = value;
+        body.enabled = value;
     }
     public void Die(bool isSuicide, int ViewID, string killer = null)
     {
         playerManager.Die(isSuicide, ViewID, killer);
         SetPlayerControlState(false);
         pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
-        capsuleCollider.enabled = false;
-        body.enabled = false;
         fpsCam.playerMainCamera.GetComponent<AudioListener>().enabled = false;
 
         InvokePlayerDeathEffects();
