@@ -396,6 +396,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void Die(bool isSuicide, int ViewID, string killer = null, float delayObjectDestroy = 2f)
     {
+        Debug.Log("Die() Invoked");
         SetDeathUI(isSuicide, ViewID, killer);
         if (trackingViewID != -1 && !isSuicide)
         {
@@ -408,7 +409,6 @@ public class PlayerManager : MonoBehaviour
                 }
             }
         }
-        if (pv.IsMine) SynchronizeValues(kills, deaths);
         //pv.RPC(nameof(RPC_InstantiateDeadBody), RpcTarget.All, controller.transform.position, controller.transform.rotation);
         audioListener.enabled = true;
         streakKills = 0;
@@ -428,6 +428,7 @@ public class PlayerManager : MonoBehaviour
         Hashtable hash = new Hashtable();
         hash.Add("deaths", deaths);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        if (pv.IsMine) SynchronizeValues(kills, deaths);
 
         managerCollider.enabled = true;
         managerRigidbody.useGravity = true;
@@ -486,7 +487,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (!pv.IsMine) return;
         respawnUI.redeployButton.interactable = false;
-        //RespawnPlayer();
         Die(true, -1);
     }
     public void RespawnPlayer()

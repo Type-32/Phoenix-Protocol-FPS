@@ -408,10 +408,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void Die(bool isSuicide, int ViewID, string killer = null)
     {
+        playerManager.Die(isSuicide, ViewID, killer);
         SetPlayerControlState(false);
         pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
         capsuleCollider.enabled = false;
         body.enabled = false;
+        fpsCam.playerMainCamera.GetComponent<AudioListener>().enabled = false;
 
         InvokePlayerDeathEffects();
         SynchronizePlayerState(true, 5);
@@ -421,7 +423,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         stats.enableGravity = false;
         ui.gameObject.SetActive(false);
         pv.RPC(nameof(RPC_DisableWeaponHolder), RpcTarget.All);
-        playerManager.Die(isSuicide, ViewID, killer);
         Debug.Log("Player " + stats.playerName + " was Killed");
         return;
     }
