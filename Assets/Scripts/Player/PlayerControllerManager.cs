@@ -410,6 +410,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void Die(bool isSuicide, int ViewID, string killer = null)
     {
+        stats.isDead = true;
         playerManager.Die(isSuicide, ViewID, killer);
         SetPlayerControlState(false);
         pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
@@ -475,6 +476,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [PunRPC]
     void RPC_TakeDamage(float amount, bool bypassArmor, Vector3 targetPos, Quaternion targetRot, int weaponIndex, bool isWeapon, PhotonMessageInfo info)
     {
+        if (stats.isDead) return;
         if (info.Sender == pv.Owner && isWeapon) return;
         Debug.Log("Took Damage " + amount + " from " + info.Sender.NickName + " using " + (isWeapon ? "Weapon " : "Equipment ") + (weaponIndex.ToString()));
         //tempTransform.position = transform.position;
@@ -526,8 +528,23 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (stats.health <= 0f)
         {
             int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
-            if (info.Sender != pv.Owner) { PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon); Die(false, pv.ViewID, info.Sender.NickName); }
-            else if (info.Sender == pv.Owner && !isWeapon) Die(true, pv.ViewID, pv.Owner.NickName);
+            if (info.Sender != pv.Owner)
+            {
+                if (CurrentMatchManager.Instance.allowDownedState)
+                { stats.isDowned = true; stats.isDead = false; }
+                else
+                { stats.isDowned = true; stats.isDead = true; }
+                PlayerManager.Find(info.Sender).GetKill(pv.Owner.NickName, (weaponIndex == -1 ? tm : weaponIndex), isWeapon);
+                Die(false, pv.ViewID, info.Sender.NickName);
+            }
+            else if (info.Sender == pv.Owner && !isWeapon)
+            {
+                if (CurrentMatchManager.Instance.allowDownedState)
+                { stats.isDowned = true; stats.isDead = false; }
+                else
+                { stats.isDowned = true; stats.isDead = true; }
+                Die(true, pv.ViewID, pv.Owner.NickName);
+            }
         }
         return;
     }

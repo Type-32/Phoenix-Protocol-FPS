@@ -837,14 +837,25 @@ public class PlayerManager : MonoBehaviour
         msg.SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
         if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Free For All")
         {
-            if (pv.Owner == info.Sender)
+            if (PhotonNetwork.LocalPlayer == info.Sender && PhotonNetwork.LocalPlayer == pv.Owner)
             {
                 Debug.LogWarning("You killed a baddie");
                 msg.SetKilledColor(Color.red);
             }
-            else
+            else if (PhotonNetwork.LocalPlayer != info.Sender && PhotonNetwork.LocalPlayer != pv.Owner)
+            {
+                Debug.LogWarning("Someone is killed by a baddie");
+                msg.SetKilledColor(Color.red);
+                msg.SetKillerColor(Color.red);
+            }
+            else if (PhotonNetwork.LocalPlayer != info.Sender && PhotonNetwork.LocalPlayer == pv.Owner)
             {
                 Debug.LogWarning("You are killed by a baddie");
+                msg.SetKillerColor(Color.red);
+            }
+            else
+            {
+                Debug.LogWarning("Unknown is killed by a baddie");
                 msg.SetKilledColor(Color.red);
                 msg.SetKillerColor(Color.red);
             }

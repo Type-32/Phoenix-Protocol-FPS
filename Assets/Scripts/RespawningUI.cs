@@ -9,7 +9,7 @@ public class RespawningUI : MonoBehaviour
     public Button redeployButton;
     void Awake()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -28,11 +28,4 @@ public class RespawningUI : MonoBehaviour
         playerManager.CloseLoadoutMenu();
         playerManager.RespawnPlayer();
     }*/
-    public void OnRedeployButtonPress()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        //dmc.deathCam.RespawnPlayer();
-        playerManager.CloseLoadoutMenu();
-        playerManager.RedeployPlayer();
-    }
 }
