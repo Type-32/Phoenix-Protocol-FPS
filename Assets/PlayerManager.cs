@@ -444,8 +444,8 @@ public class PlayerManager : MonoBehaviour
             }*/
         }
 
-        StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
-        //PhotonNetwork.Destroy(controller);
+        //StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
+        PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
