@@ -56,6 +56,10 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
         SceneManager.sceneLoaded += OnSceneLoaded;
         canvas.gameObject.SetActive(true);
     }
+    protected override void Start()
+    {
+        base.Start();
+    }
 
     public override void OnEnable()
     {
