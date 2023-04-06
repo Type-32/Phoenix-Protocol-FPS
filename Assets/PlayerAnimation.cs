@@ -14,6 +14,8 @@ public class PlayerAnimation : MonoBehaviour
             animator.SetBool("isCrouching", player.stats.isCrouching);
             animator.SetBool("isSliding", player.stats.isSliding);
             animator.SetBool("isWalking", player.stats.isWalking);
+            animator.SetBool("isDowned", player.stats.isDowned);
+            animator.SetBool("isDead", player.stats.isDead);
         }
     }
 }

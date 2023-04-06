@@ -403,21 +403,38 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void TogglePlayerPartsHitboxes(bool value)
     {
-        foreach (PlayerHitboxPart t in GetComponentsInChildren<PlayerHitboxPart>()) t.enabled = value;
+        foreach (PlayerHitboxPart t in gameObject.GetComponentsInChildren<PlayerHitboxPart>()) t.enabled = value;
         capsuleCollider.enabled = value;
         body.enabled = value;
     }
+    [PunRPC]
+    public void RPC_OnZeroedHealth(bool isDeath = true)
+    {
+        if (isDeath)
+        {
+            Debug.Log($"{pv.Owner.NickName} is dead");
+            stats.isDead = stats.isDowned = true;
+            SetPlayerControlState(false);
+            TogglePlayerPartsHitboxes(false);
+            holder.gameObject.SetActive(false);
+            fpsCam.playerMainCamera.GetComponent<AudioListener>().enabled = false;
+            capsuleCollider.enabled = false;
+            body.enabled = false;
+        }
+        else
+        {
+            Debug.Log($"{pv.Owner.NickName} is downed");
+            stats.isDowned = true;
+            SetPlayerControlState(false);
+            holder.gameObject.SetActive(false);
+            fpsCam.playerMainCamera.GetComponent<AudioListener>().enabled = false;
+            capsuleCollider.enabled = false;
+            body.enabled = false;
+        }
+    }
     public void Die(bool isSuicide, int ViewID, string killer = null)
     {
-        stats.isDead = true;
-        SetPlayerControlState(false);
-        //pv.RPC(nameof(TogglePlayerPartsHitboxes), RpcTarget.All, false);
-        //pv.RPC(nameof(RPC_DisableWeaponHolder), RpcTarget.All);
-        TogglePlayerPartsHitboxes(false);
-        holder.gameObject.SetActive(false);
-        fpsCam.playerMainCamera.GetComponent<AudioListener>().enabled = false;
-        capsuleCollider.enabled = false;
-        body.enabled = false;
+        pv.RPC(nameof(RPC_OnZeroedHealth), RpcTarget.All, true);
         playerManager.Die(isSuicide, ViewID, killer);
 
         InvokePlayerDeathEffects();
@@ -435,9 +452,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         InvokePlayerDeathEffects();
         //SynchronizePlayerState(true, 4);
         usingStreakGifts = false;
-        ui.gameObject.SetActive(false);
-        SetPlayerControlState(false);
-        holder.gameObject.SetActive(false);
+        pv.RPC(nameof(RPC_OnZeroedHealth), RpcTarget.All, false);
         Debug.Log("Player " + stats.playerName + " is Downed");
         return;
     }

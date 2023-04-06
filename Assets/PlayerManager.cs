@@ -12,6 +12,7 @@ using UserConfiguration;
 using UnityEngine.Rendering;
 using PrototypeLib.Modules.FileOperations.IO;
 using UserConfiguration;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -394,7 +395,7 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(value);
         PhotonNetwork.Destroy(controller);
     }
-    public void Die(bool isSuicide, int ViewID, string killer = null, float delayObjectDestroy = 2f)
+    public void Downed(bool isSuicide, int ViewID, string killer = null, float delayObjectDestroy = 3f)
     {
         Debug.Log("Die() Invoked");
         SetDeathUI(isSuicide, ViewID, killer);
@@ -429,23 +430,21 @@ public class PlayerManager : MonoBehaviour
         hash.Add("deaths", deaths);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         if (pv.IsMine) SynchronizeValues(kills, deaths);
-
-        managerCollider.enabled = true;
-        managerRigidbody.useGravity = true;
-        managerRigidbody.isKinematic = true;
         hurtVolume.weight = 1f;
         if (cameraObject != null)
         {
-            /*
             cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
             if (cameraData)
             {
                 cameraData.renderPostProcessing = true;
-            }*/
+            }
         }
-
-        //StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
-        PhotonNetwork.Destroy(controller);
+    }
+    public void Die(bool isSuicide, int ViewID, string killer = null, float delayObjectDestroy = 3f)
+    {
+        Downed(isSuicide, ViewID, killer, delayObjectDestroy);
+        StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
+        //PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
         respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
