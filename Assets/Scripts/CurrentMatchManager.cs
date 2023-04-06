@@ -271,6 +271,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.LocalPlayer.IsMasterClient) return;
         if (gameEnded)
         {
+            Cursor.lockState = CursorLockMode.None;
             return;
         }
         if (!gameStarted) return;
@@ -392,6 +393,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         {
             i.stats.isDead = i.stats.isDowned = true;
             i.Die(true, pv.ViewID, pv.Owner.NickName);
+            Cursor.lockState = CursorLockMode.None;
         }
         Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
