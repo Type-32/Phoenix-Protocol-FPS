@@ -390,7 +390,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         PlayerControllerManager[] pcm = FindObjectsOfType<PlayerControllerManager>();
         foreach (PlayerControllerManager i in pcm)
         {
-            i.SetPlayerControlState(false);
+            i.Die(true, -1);
         }
         Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
