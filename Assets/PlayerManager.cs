@@ -324,12 +324,11 @@ public class PlayerManager : MonoBehaviour
     }
     void CreateController()
     {
-        /*
         cameraObject.gameObject.TryGetComponent(out UniversalAdditionalCameraData cameraData);
         if (cameraData)
         {
             cameraData.renderPostProcessing = false;
-        }*/
+        }
         audioListener.enabled = false;
         respawning = true;
         respawnButton.interactable = false;
