@@ -390,7 +390,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         PlayerControllerManager[] pcm = FindObjectsOfType<PlayerControllerManager>();
         foreach (PlayerControllerManager i in pcm)
         {
-            i.Die(true, -1);
+            i.stats.isDead = i.stats.isDowned = true;
+            i.Die(true, pv.ViewID, pv.Owner.NickName);
         }
         Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
