@@ -435,6 +435,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public void Die(bool isSuicide, int ViewID, string killer = null)
     {
         pv.RPC(nameof(RPC_OnZeroedHealth), RpcTarget.All, true);
+        holder.gameObject.SetActive(false);
         playerManager.Die(isSuicide, ViewID, killer);
 
         InvokePlayerDeathEffects();
