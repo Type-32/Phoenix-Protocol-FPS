@@ -57,9 +57,9 @@ public class MouseLookScript : MonoBehaviour
         {
             if (player.stats.isCrouching) transform.localPosition = new Vector3(transform.localPosition.x, 1.1f, transform.localPosition.z);
             else transform.localPosition = new Vector3(transform.localPosition.x, 1.461f, transform.localPosition.z);
-
         }
         if (!player.pv.IsMine) return;
+        if (!player.stats.mouseMovementEnabled) return;
         CameraInput();
         CameraMovement();
         transform.localPosition = Vector3.Lerp(transform.localPosition, temp, Time.deltaTime * 8);

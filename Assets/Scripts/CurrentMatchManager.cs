@@ -392,8 +392,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         {
             i.SetPlayerControlState(false);
         }
+        Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
-        internalUI.ToggleMatchEndStats(true, 0);
         internalUI.UIAnimator.SetBool("MatchEnded", true);
         internalUI.SetMatchEndMessage(winnerName + " Won the match!");
         //StartCoroutine(QuitEveryPlayer(3f));
