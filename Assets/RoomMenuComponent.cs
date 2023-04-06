@@ -15,25 +15,25 @@ public class RoomMenuComponent : MonoBehaviour
     }
     public void SetMapView(MapPreviewInfo mpi)
     {
-        mapIcon.sprite = mpi.mapIcon;
-        mapText.text = mpi.mapName;
+        if (mapIcon != null) mapIcon.sprite = mpi.mapIcon;
+        if (mapText != null) mapText.text = mpi.mapName;
     }
     public void SetStatisticsView(StatisticsPreviewInfo spi)
     {
-        gamemodeText.text = spi.gamemode;
-        maxPlayersText.text = spi.maxPlayers.ToString() + " Players Maximum";
-        roomCodeText.text = "Room Code " + spi.roomCode.ToString();
-        visibilityText.text = spi.visibility ? "Public" : "Private";
-        downedStateText.text = spi.allowPlayerDownedState ? "Allows Downed Players" : "Disabled Downed Players";
+        if (gamemodeText != null) gamemodeText.text = spi.gamemode;
+        if (maxPlayersText != null) maxPlayersText.text = spi.maxPlayers.ToString() + " Players Maximum";
+        if (roomCodeText != null) roomCodeText.text = "Room Code " + spi.roomCode.ToString();
+        if (visibilityText != null) visibilityText.text = spi.visibility ? "Public" : "Private";
+        if (downedStateText != null) downedStateText.text = spi.allowPlayerDownedState ? "Allows Downed Players" : "Disabled Downed Players";
     }
     public void SetLoadoutView(LoadoutPreviewInfo lpi)
     {
-        primaryText.text = lpi.w_Name1;
-        secondaryText.text = lpi.w_Name2;
-        primaryIcon.sprite = lpi.w_Icon1;
-        secondaryIcon.sprite = lpi.w_Icon2;
-        EquipmentIcon1.sprite = lpi.e_Icon1;
-        EquipmentIcon2.sprite = lpi.e_Icon2;
+        if (primaryText != null) primaryText.text = lpi.w_Name1;
+        if (secondaryText != null) secondaryText.text = lpi.w_Name2;
+        if (primaryIcon != null) primaryIcon.sprite = lpi.w_Icon1;
+        if (secondaryIcon != null) secondaryIcon.sprite = lpi.w_Icon2;
+        if (EquipmentIcon1 != null) EquipmentIcon1.sprite = lpi.e_Icon1;
+        if (EquipmentIcon2 != null) EquipmentIcon2.sprite = lpi.e_Icon2;
     }
     public void SetRoomInfoPreview(string roomName, MapPreviewInfo mpi, StatisticsPreviewInfo spi, LoadoutPreviewInfo lpi)
     {
