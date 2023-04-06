@@ -8,7 +8,7 @@ using PrototypeLib.Modules.FileOperations.IO;
 public class RoomMenuComponent : MonoBehaviour
 {
     [SerializeField] Image mapIcon, primaryIcon, secondaryIcon, EquipmentIcon1, EquipmentIcon2;
-    [SerializeField] Text roomName, mapText, gamemodeText, maxPlayersText, roomCodeText, visibilityText, primaryText, secondaryText;
+    [SerializeField] Text roomName, mapText, gamemodeText, maxPlayersText, roomCodeText, visibilityText, primaryText, secondaryText, downedStateText;
     void Start()
     {
         FileOps<UserDataJSON>.OperatedFile += DetectIfLoadoutModified;
@@ -24,6 +24,7 @@ public class RoomMenuComponent : MonoBehaviour
         maxPlayersText.text = spi.maxPlayers.ToString() + " Players Maximum";
         roomCodeText.text = "Room Code " + spi.roomCode.ToString();
         visibilityText.text = spi.visibility ? "Public" : "Private";
+        downedStateText.text = spi.allowPlayerDownedState ? "Allows Downed Players" : "Disabled Downed Players";
     }
     public void SetLoadoutView(LoadoutPreviewInfo lpi)
     {

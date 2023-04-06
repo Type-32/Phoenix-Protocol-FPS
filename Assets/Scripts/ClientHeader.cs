@@ -26,7 +26,8 @@ namespace InfoTypes
             public int maxPlayers;
             public int roomCode;
             public bool visibility;
-            internal StatisticsPreviewInfo(MenuManager.Gamemodes gm, int mp, int rc, bool v)
+            public bool allowPlayerDownedState;
+            internal StatisticsPreviewInfo(MenuManager.Gamemodes gm, int mp, int rc, bool v, bool apds)
             {
                 gamemode = "";
                 switch (gm)
@@ -47,13 +48,15 @@ namespace InfoTypes
                 maxPlayers = mp;
                 roomCode = rc;
                 visibility = v;
+                allowPlayerDownedState = apds;
             }
-            internal StatisticsPreviewInfo(string gm, int mp, int rc, bool v)
+            internal StatisticsPreviewInfo(string gm, int mp, int rc, bool v, bool apds)
             {
                 gamemode = gm;
                 maxPlayers = mp;
                 roomCode = rc;
                 visibility = v;
+                allowPlayerDownedState = apds;
             }
         }
         public struct LoadoutPreviewInfo

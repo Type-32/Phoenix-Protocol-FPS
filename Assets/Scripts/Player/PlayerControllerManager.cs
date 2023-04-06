@@ -51,7 +51,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     public GameObject playerCritBloodSplatter;
     public GameObject playerDeathEffect;
     //public Camera cameraView;
-    [HideInInspector] public List<PlayerHitboxPart> playerPartHitboxes = new();
+    public List<PlayerHitboxPart> playerPartHitboxes = new();
 
     [Space]
     [Header("Ground Masks")]
@@ -88,8 +88,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     private void Start()
     {
-        PlayerHitboxPart[] tb = GetComponentsInChildren<PlayerHitboxPart>();
-        foreach (PlayerHitboxPart g in tb) playerPartHitboxes.Add(g);
+        //PlayerHitboxPart[] tb = GetComponentsInChildren<PlayerHitboxPart>();
+        //foreach (PlayerHitboxPart g in tb) playerPartHitboxes.Add(g);
         if (pv.IsMine)
         {
             //if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
@@ -403,7 +403,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     }
     public void TogglePlayerPartsHitboxes(bool value)
     {
-        foreach (PlayerHitboxPart t in gameObject.GetComponentsInChildren<PlayerHitboxPart>()) t.enabled = value;
+        foreach (PlayerHitboxPart t in playerPartHitboxes) t.enabled = value;
         capsuleCollider.enabled = value;
         body.enabled = value;
     }

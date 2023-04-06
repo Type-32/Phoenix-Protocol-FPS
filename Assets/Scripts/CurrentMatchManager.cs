@@ -41,6 +41,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         Instance = this;
+        allowDownedState = (bool)PhotonNetwork.CurrentRoom.CustomProperties["allowDownedState"];
         maxKillLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"];
         internalUI = FindObjectOfType<InGameUI>();
         scoreboard = FindObjectOfType<Scoreboard>();
@@ -69,7 +70,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
                 internalUI.ToggleCTF_UI(false);
                 internalUI.ToggleDZ_UI(false);
                 break;
-            case "Capture the Flag":
+            case "Capture The Flag":
                 roomMode = MenuManager.Gamemodes.CTF;
                 internalUI.ToggleFFA_UI(false);
                 internalUI.ToggleTDM_UI(false);

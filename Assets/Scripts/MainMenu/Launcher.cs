@@ -262,7 +262,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         MenuManager.Instance.RoomMenuComp.SetRoomInfoPreview(
             PhotonNetwork.CurrentRoom.Name,
             new MapPreviewInfo(mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapName, mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapIcon),
-            new StatisticsPreviewInfo((string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"], PhotonNetwork.CurrentRoom.MaxPlayers, (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"]),
+            new StatisticsPreviewInfo((string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"], PhotonNetwork.CurrentRoom.MaxPlayers, (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["allowDownedState"]),
             new LoadoutPreviewInfo(GlobalDatabase.Instance.allWeaponDatas[tp.Slots[tp.SelectedSlot].Weapon1], GlobalDatabase.Instance.allWeaponDatas[tp.Slots[tp.SelectedSlot].Weapon2], GlobalDatabase.Instance.allEquipmentDatas[tp.Slots[tp.SelectedSlot].Equipment1], GlobalDatabase.Instance.allEquipmentDatas[tp.Slots[tp.SelectedSlot].Equipment2])
         );
         startGameButton.SetActive(CheckIfStartAllowed());

@@ -73,6 +73,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private int maxPlayerCount = 10;
     [SerializeField] private int maxKillLimitNumber = 30;
     [SerializeField] private bool roomVisibility = true;
+    [SerializeField] private bool allowDownedState = false;
     [SerializeField] private Transform popupHolder;
     [SerializeField] private Transform notificationHolder;
 
@@ -81,6 +82,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Text gamemodes;
     [SerializeField] Text visibility;
     [SerializeField] Text maxKillLimit;
+    [SerializeField] Text downedState;
 
     [Header("Top Navi-Bar UI")]
     [SerializeField] GameObject quitButton;
@@ -183,19 +185,19 @@ public class MenuManager : MonoBehaviour
         switch (nm)
         {
             case "main":
-                openedMainMenu = val;
+                if (!roomMenu.activeSelf) { openedMainMenu = val; }
+                else { openedRoomMenu = val; }
+                if (roomMenu.activeSelf) openedMainMenu = false;
+                if (!roomMenu.activeSelf) openedRoomMenu = false;
                 break;
             case "multiplayer":
                 openedMultiplayerMenu = val;
                 break;
-            case "findroom":
+            case "findRoom":
                 openedFindRoomMenu = val;
                 break;
-            case "createroom":
+            case "createRoom":
                 openedCreateRoomMenu = val;
-                break;
-            case "room":
-                openedRoomMenu = val;
                 break;
             case "loadout":
                 openedLoadoutSelectionMenu = val;
@@ -391,12 +393,12 @@ public class MenuManager : MonoBehaviour
         return roomInputField.text;
     }
 
-    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomModes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit, bool randomRespawn = true)
+    public RoomOptions GenerateRoomOptionsFromData(string roomName, string roomHostName, int mapInfoIndex, Gamemodes roomModes, int maxPlayer, int mapIndex, bool roomVisibility, int maxKillLimit, bool allowDownedState = false, bool randomRespawn = true)
     {
         Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
         int roomCode = UnityEngine.Random.Range(10000000, 99999999);
-        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "randomRespawn", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit" }; //Expose values to main lobby
+        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "randomRespawn", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit", "allowDownedState" }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();
         roomOptions.CustomRoomProperties.Add("roomName", roomName);
@@ -424,6 +426,7 @@ public class MenuManager : MonoBehaviour
         roomOptions.CustomRoomProperties.Add("roomVisibility", roomVisibility);
         roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
         roomOptions.CustomRoomProperties.Add("maxKillLimit", maxKillLimit);
+        roomOptions.CustomRoomProperties.Add("allowDownedState", allowDownedState);
         roomOptions.MaxPlayers = (byte)maxPlayer;
         return roomOptions;
     }
@@ -433,13 +436,18 @@ public class MenuManager : MonoBehaviour
         roomOptionsTemp.CustomRoomProperties = new Hashtable();
 
         //Force Gamemode to FFA
-        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, Gamemodes.FFA, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility, maxKillLimitNumber);
+        roomOptionsTemp = GenerateRoomOptionsFromData(GetRoomInputFieldText(), PhotonNetwork.NickName, roomMapSelectionIndex, selectedGamemodes, maxPlayerCount, MapListItemHolder.Instance.selectedMapIndex, roomVisibility, maxKillLimitNumber, allowDownedState);
         return roomOptionsTemp;
     }
     public void OnChangedVisibility(bool visible)
     {
         if (visible) visibility.text = "Public";
         else visibility.text = "Private";
+    }
+    public void OnChangedAllowDownedState(bool allow)
+    {
+        if (allow) downedState.text = "On";
+        else downedState.text = "Off";
     }
     public void DecreasePlayerCount()
     {
@@ -521,6 +529,12 @@ public class MenuManager : MonoBehaviour
         if (roomVisibility) roomVisibility = false;
         else roomVisibility = true;
         OnChangedVisibility(roomVisibility);
+    }
+    public void ToggleAllowDownedStateSelect()
+    {
+        if (allowDownedState) allowDownedState = false;
+        else allowDownedState = true;
+        OnChangedAllowDownedState(allowDownedState);
     }
 
     public void ToggleShopMenu(bool value)

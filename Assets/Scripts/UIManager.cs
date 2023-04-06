@@ -210,10 +210,12 @@ public class UIManager : MonoBehaviour
             crosshairGroup.alpha = Mathf.Lerp(crosshairGroup.alpha, 1f, Time.deltaTime * 5f);
         }
     }
+    float timer = 0f;
     private void UISway()
     {
         if (!player.stats.mouseMovementEnabled) return;
-        Vector3 finalPos = new Vector3(Mathf.Clamp((-player.fpsCam.mouseX) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), Mathf.Clamp((-Input.GetAxis("Mouse Y") + player.body.velocity.y - (player.stats.isJumping ? 3f : 0f)) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), 0f);
+        timer += Time.deltaTime * (player.stats.isSprinting ? 22f : 0f);
+        Vector3 finalPos = new Vector3(Mathf.Clamp((-player.fpsCam.mouseX - (player.stats.onGround & player.stats.isSprinting ? (Mathf.Cos(timer / 2) * 0.8f) : 0f)) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), Mathf.Clamp((-Input.GetAxis("Mouse Y") + player.body.velocity.y - (player.stats.isJumping & player.stats.onGround ? 3f : 0f) - (player.stats.onGround & player.stats.isSprinting ? Mathf.Sin(timer) : 0f)) * swayIntensity, -maxSwayIntensity, maxSwayIntensity), 0f);
         ui_base.transform.localPosition = Vector3.Lerp(ui_base.transform.localPosition, finalPos + initPos, Time.deltaTime * smoothness);
     }
     private void UpdatePosition()
