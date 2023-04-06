@@ -130,7 +130,7 @@ public class GunManager : Gun
     {
         DeterminatesFunction();
         ui.UIFunctions();
-        if (!stats.gunInteractionEnabled) return;
+        if (!player.stats.gunInteractionEnabled) return;
         animate.CoreAnimations();
         logic.GunGeneralLogic();
         if (!core.enableGunCoreFunc) return;

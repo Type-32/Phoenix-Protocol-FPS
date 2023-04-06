@@ -386,17 +386,17 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         gameStarted = false;
         gameEnded = true;
-        localClientPlayer.controller.GetComponent<PlayerControllerManager>()?.SetPlayerControlState(false);
         Cursor.lockState = CursorLockMode.None;
-        internalUI.ToggleMatchEndUI(true);
-        internalUI.UIAnimator.SetBool("MatchEnded", true);
-        internalUI.SetMatchEndMessage(winnerName + " Won the match!");
-        //StartCoroutine(QuitEveryPlayer(3f));
         PlayerControllerManager[] pcm = FindObjectsOfType<PlayerControllerManager>();
         foreach (PlayerControllerManager i in pcm)
         {
             i.SetPlayerControlState(false);
         }
+        internalUI.ToggleMatchEndUI(true);
+        internalUI.ToggleMatchEndStats(true, 0);
+        internalUI.UIAnimator.SetBool("MatchEnded", true);
+        internalUI.SetMatchEndMessage(winnerName + " Won the match!");
+        //StartCoroutine(QuitEveryPlayer(3f));
         localClientPlayer.CloseMenu();
         int gainedCoins = (int)(localClientPlayer.totalGainedXP * (5f / 6f));
         internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
