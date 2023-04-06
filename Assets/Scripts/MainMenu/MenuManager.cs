@@ -185,6 +185,7 @@ public class MenuManager : MonoBehaviour
         switch (nm)
         {
             case "main":
+                if (roomMenu == null) break;
                 if (!roomMenu.activeSelf) { openedMainMenu = val; }
                 else { openedRoomMenu = val; }
                 if (roomMenu.activeSelf) openedMainMenu = false;

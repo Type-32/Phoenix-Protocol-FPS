@@ -54,6 +54,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         temp.Add("userLevel", UserConfiguration.UserSystem.LocalUserLevel);
         PhotonNetwork.LocalPlayer.SetCustomProperties(temp);
         MenuManager.Instance.multiplayerMenuButton.interactable = true;
+        RoomManager.Instance.loadEnterAnim = false;
     }
     public void CreateRoom()
     {
