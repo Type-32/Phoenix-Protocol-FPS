@@ -209,6 +209,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             if (stats.health < stats.healthLimit) stats.health += 1f;
         }
 
+        /*
+        * stats.playerMovementEnabled and stats.mouseMovementEnabled are both managed by the conditions below.
+        ! Not dynamic, as it is setted in a static way, SetPlayerControlState() would be useless for modifying these two values.
+        */
         if (playerManager.openedLoadoutMenu)
         {
             stats.playerMovementEnabled = false;

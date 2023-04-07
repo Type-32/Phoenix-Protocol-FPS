@@ -33,19 +33,19 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 public class PunCallbackSingleton<T> : MonoBehaviourPunCallbacks where T : PunCallbackSingleton<T>
 {
     private static T instance;
-    public static int AuthorityNumber = 0;
+    public int AuthorityNumber = 0;
     public static T Instance { get { return instance; } }
     protected virtual void Awake()
     {
         if (instance != null)
         {
-            if (AuthorityNumber == 0)
+            if (this.AuthorityNumber == 0)
             {
                 Destroy(gameObject);
                 return;
             }
-            //DontDestroyOnLoad(gameObject);
-            //instance = (T)this;
+            DontDestroyOnLoad(gameObject);
+            instance = (T)this;
         }
         else
         {
