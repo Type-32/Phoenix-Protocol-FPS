@@ -387,20 +387,16 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         gameStarted = false;
         gameEnded = true;
-        Cursor.lockState = CursorLockMode.None;
-        PlayerControllerManager[] pcm = FindObjectsOfType<PlayerControllerManager>();
-        foreach (PlayerControllerManager i in pcm)
+        localClientPlayer.CloseMenu();
+        if (localClientPlayer.controller != null)
         {
-            i.stats.isDead = i.stats.isDowned = true;
-            i.Die(true, pv.ViewID, pv.Owner.NickName);
-            Cursor.lockState = CursorLockMode.None;
+            localClientPlayer.controller.GetComponent<PlayerControllerManager>().SetPlayerControlState(false);
         }
         Cursor.lockState = CursorLockMode.None;
         internalUI.ToggleMatchEndUI(true);
         internalUI.UIAnimator.SetBool("MatchEnded", true);
         internalUI.SetMatchEndMessage(winnerName + " Won the match!");
         //StartCoroutine(QuitEveryPlayer(3f));
-        localClientPlayer.CloseMenu();
         int gainedCoins = (int)(localClientPlayer.totalGainedXP * (5f / 6f));
         internalUI.SetMatchEndStats(localClientPlayer.pv.Owner.NickName, (int)localClientPlayer.pv.Owner.CustomProperties["kills"], (int)localClientPlayer.pv.Owner.CustomProperties["deaths"], localClientPlayer.totalGainedXP, gainedCoins, UserDatabase.Instance.GetUserXPLevelValue(), UserDatabase.Instance.GetUserXPValue());
         UserDatabase.Instance.AddUserLevelXP(localClientPlayer.totalGainedXP);

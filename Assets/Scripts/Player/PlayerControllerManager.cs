@@ -219,6 +219,16 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             stats.playerMovementEnabled = false;
             stats.mouseMovementEnabled = false;
         }
+        else if (CurrentMatchManager.Instance.gameEnded)
+        {
+            stats.playerMovementEnabled = false;
+            stats.mouseMovementEnabled = false;
+        }
+        else if (stats.isDowned || stats.isDead)
+        {
+            stats.playerMovementEnabled = false;
+            stats.mouseMovementEnabled = false;
+        }
         else
         {
             stats.playerMovementEnabled = true;

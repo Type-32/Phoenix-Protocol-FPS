@@ -44,8 +44,8 @@ public class PunCallbackSingleton<T> : MonoBehaviourPunCallbacks where T : PunCa
                 Destroy(gameObject);
                 return;
             }
-            DontDestroyOnLoad(gameObject);
-            instance = (T)this;
+            //DontDestroyOnLoad(gameObject);
+            //instance = (T)this;
         }
         else
         {
@@ -56,5 +56,6 @@ public class PunCallbackSingleton<T> : MonoBehaviourPunCallbacks where T : PunCa
     protected virtual void Start()
     {
         AuthorityNumber++;
+        Debug.Log($"{gameObject.name} PunCallbackSingleton has Authority of {AuthorityNumber}");
     }
 }
