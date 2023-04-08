@@ -36,6 +36,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [SerializeField] Material global_bodyMaterial;
     [SerializeField] Material global_feetMaterial;
     public Material global_handMaterial;
+    [SerializeField] Material team_headMaterial;
+    [SerializeField] Material team_bodyMaterial;
+    [SerializeField] Material team_feetMaterial;
+    public Material team_handMaterial;
 
 
     [Space]
@@ -142,10 +146,6 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         {
             body.enabled = false;
             capsuleCollider.enabled = false;
-            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = playerManager.IsTeam;
-            weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
-            weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
-            Destroy(ui.gameObject);
             playerHead.SetActive(true);
             playerBody.SetActive(true);
             playerFeet1.SetActive(true);
@@ -154,12 +154,30 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             if (global_bodyMaterial != null) playerBody.GetComponent<MeshRenderer>().material = global_bodyMaterial;
             if (global_feetMaterial != null) playerFeet1.GetComponent<MeshRenderer>().material = global_feetMaterial;
             if (global_feetMaterial != null) playerFeet2.GetComponent<MeshRenderer>().material = global_feetMaterial;
-            nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
-            playerMinimapDot.SetActive(false);
             SetGlobalBodyMaterialColor(Color.red.r, Color.red.g, Color.red.b);
             SetGlobalFeetMaterialColor(Color.red.r, Color.red.g, Color.red.b);
             SetGlobalHeadMaterialColor(Color.red.r, Color.red.g, Color.red.b);
             SetGlobalHandMaterialColor(Color.red.r, Color.red.g, Color.red.b);
+            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
+            {
+                IsTeam = playerManager.IsTeam;
+                if (IsTeam == CurrentMatchManager.Instance.localClientPlayer.IsTeam)
+                {
+                    if (team_headMaterial != null) playerHead.GetComponent<MeshRenderer>().material = team_headMaterial;
+                    if (team_bodyMaterial != null) playerBody.GetComponent<MeshRenderer>().material = team_bodyMaterial;
+                    if (team_feetMaterial != null) playerFeet1.GetComponent<MeshRenderer>().material = team_feetMaterial;
+                    if (team_feetMaterial != null) playerFeet2.GetComponent<MeshRenderer>().material = team_feetMaterial;
+                    SetTeamBodyMaterialColor(Color.blue.r, Color.blue.g, Color.blue.b);
+                    SetTeamFeetMaterialColor(Color.blue.r, Color.blue.g, Color.blue.b);
+                    SetTeamHeadMaterialColor(Color.blue.r, Color.blue.g, Color.blue.b);
+                    SetTeamHandMaterialColor(Color.blue.r, Color.blue.g, Color.blue.b);
+                }
+            }
+            weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
+            weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
+            Destroy(ui.gameObject);
+            nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
+            playerMinimapDot.SetActive(false);
         }
     }
     void FixedUpdate()
@@ -333,6 +351,30 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         if (global_handMaterial == null) return;
         Color color = new Color(r, g, b, 1);
         global_handMaterial.color = color;
+    }
+    public void SetTeamBodyMaterialColor(float r, float g, float b)
+    {
+        if (team_bodyMaterial == null) return;
+        Color color = new Color(r, g, b, 1);
+        team_bodyMaterial.color = color;
+    }
+    public void SetTeamFeetMaterialColor(float r, float g, float b)
+    {
+        if (team_feetMaterial == null) return;
+        Color color = new Color(r, g, b, 1);
+        team_feetMaterial.color = color;
+    }
+    public void SetTeamHeadMaterialColor(float r, float g, float b)
+    {
+        if (team_headMaterial == null) return;
+        Color color = new Color(r, g, b, 1);
+        team_headMaterial.color = color;
+    }
+    public void SetTeamHandMaterialColor(float r, float g, float b)
+    {
+        if (team_handMaterial == null) return;
+        Color color = new Color(r, g, b, 1);
+        team_handMaterial.color = color;
     }
     #endregion
     public IEnumerator UseStreakGift(float duration, int cost)
