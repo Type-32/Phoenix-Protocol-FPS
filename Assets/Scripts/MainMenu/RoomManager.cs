@@ -8,6 +8,7 @@ using System.IO;
 using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class RoomManager : PunCallbackSingleton<RoomManager>
 {
@@ -43,7 +44,7 @@ public class RoomManager : PunCallbackSingleton<RoomManager>
         SetLoadingScreenState(showScreen, 0);
         mapPreviewImage.sprite = itemInfo.mapIcon;
         mapNameText.text = itemInfo.mapName;
-        gamemodeText.text = $"{(string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"]}  -  {((int)PhotonNetwork.CurrentRoom.MaxPlayers).ToString()} Players Maximum";
+        gamemodeText.text = $"{(string)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode]}  -  {((int)PhotonNetwork.CurrentRoom.MaxPlayers).ToString()} Players Maximum";
     }
     public void SetLoadingPreviewRPC(int itemInfoIndex, bool showScreen)
     {

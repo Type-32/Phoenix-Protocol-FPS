@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class SpawnpointListItem : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class SpawnpointListItem : MonoBehaviour
     private void Start()
     {
         selectedVisual.gameObject.SetActive(false);
-        canvasGroup.alpha = (bool)PhotonNetwork.CurrentRoom.CustomProperties["randomRespawn"] ? 0f : 1f;
+        canvasGroup.alpha = (bool)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RandomRespawn] ? 0f : 1f;
     }
 
     public void OnClickSpawnpoint()

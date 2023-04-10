@@ -1,8 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum AttachmentTypes
+{
+    Sight,
+    Underbarrel,
+    Barrel,
+    Leftbarrel,
+    Rightbarrel,
+    Upbarrel,
+    None
+}
 public class GunAttachments : MonoBehaviour
 {
     public GunManager gun;
@@ -18,16 +29,6 @@ public class GunAttachments : MonoBehaviour
     //private List<GameObject> rightbarrelAttachments = new List<GameObject>();
     //private List<GameObject> sightAttachments = new List<GameObject>();
 
-    public enum AttachmentTypes
-    {
-        Sight,
-        Underbarrel,
-        Barrel,
-        Sidebarrel_Left,
-        Sidebarrel_Right,
-        Sidebarrel_Up,
-        None
-    }
 
     void Start()
     {
@@ -49,7 +50,7 @@ public class GunAttachments : MonoBehaviour
         {
             for (int i = 0; i < attachmentsArray.Length; i++)
             {
-                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_SightIndex1"])
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 1)])
                 {
                     gun.animate.animate.SetFloat("Blend", attachmentsArray[i].dataGlobalIndex == -1f ? 0f : attachmentsArray[i].dataGlobalIndex);
                     //gun.animate.animate.SetInteger("Blend", attachmentsArray[i].dataGlobalIndex == -1 ? 0 : attachmentsArray[i].dataGlobalIndex);
@@ -60,7 +61,7 @@ public class GunAttachments : MonoBehaviour
         {
             for (int i = 0; i < attachmentsArray.Length; i++)
             {
-                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties["SMWA_SightIndex2"])
+                if (attachmentsArray[i].dataGlobalIndex == (int)gun.player.pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 2)])
                 {
                     gun.animate.animate.SetFloat("Blend", attachmentsArray[i].dataGlobalIndex == -1f ? 0f : attachmentsArray[i].dataGlobalIndex);
                     //gun.animate.animate.SetInteger("Blend", attachmentsArray[i].dataGlobalIndex == -1 ? 0 : attachmentsArray[i].dataGlobalIndex);
@@ -70,7 +71,7 @@ public class GunAttachments : MonoBehaviour
     }
     public void EnableGunCustomizations(int selectedWeaponSlot)
     {
-        int[] attachments = new int[] { (int)gun.player.pv.Owner.CustomProperties[$"SMWA_BarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_SightIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_UnderbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_LeftbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_LeftbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_AppearanceIndex{selectedWeaponSlot + 1}"] };
+        int[] attachments = new int[] { (int)gun.player.pv.Owner.CustomProperties[$"SMWA_BarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_SightIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_UnderbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_LeftbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_RightbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_AppearanceIndex{selectedWeaponSlot + 1}"] };
         SetCustomization(attachments[0], attachments[1], attachments[2], attachments[3], attachments[4], attachments[5]);
     }
     public void SetCustomization(int barrel, int sight, int underbarrel, int leftbarrel, int rightbarrel, int appearance)

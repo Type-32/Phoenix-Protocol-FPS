@@ -42,19 +42,11 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
     }
     public Sprite FindIconFromAttachmentIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
-        {
-            if (index == i) return GlobalDatabase.Instance.allWeaponAttachmentDatas[i].attachmentIcon;
-        }
-        return nullIcon;
+        try { return GlobalDatabase.Instance.allWeaponAttachmentDatas[index].attachmentIcon; } catch { return nullIcon; }
     }
     public Sprite FindIconFromAppearanceIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
-        {
-            if (index == i) return GlobalDatabase.Instance.allWeaponAppearanceDatas[i].itemIcon;
-        }
-        return nullIcon;
+        try { return GlobalDatabase.Instance.allWeaponAppearanceDatas[index].itemIcon; } catch { return nullIcon; }
     }
     private void Start()
     {
@@ -84,12 +76,12 @@ public class LoadoutCustomButtonsHolder : MonoBehaviour
         SetIcon(3, nullIcon);
         SetIcon(4, nullIcon);
         SetIcon(5, nullIcon);
-        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sight, loadoutSelection.forSelectedSlot);
-        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Barrel, loadoutSelection.forSelectedSlot);
-        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Right, loadoutSelection.forSelectedSlot);
-        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Left, loadoutSelection.forSelectedSlot);
-        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Sidebarrel_Up, loadoutSelection.forSelectedSlot);
-        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(GunAttachments.AttachmentTypes.Underbarrel, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(AttachmentTypes.Sight, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(AttachmentTypes.Barrel, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(AttachmentTypes.Rightbarrel, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(AttachmentTypes.Leftbarrel, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(AttachmentTypes.Upbarrel, loadoutSelection.forSelectedSlot);
+        loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAttachment(AttachmentTypes.Underbarrel, loadoutSelection.forSelectedSlot);
         loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].SetNullAppearance(loadoutSelection.forSelectedSlot);
         OnClearCustomization(loadoutSelection.forSelectedSlot);
         OnClearAppearance(loadoutSelection.forSelectedSlot);

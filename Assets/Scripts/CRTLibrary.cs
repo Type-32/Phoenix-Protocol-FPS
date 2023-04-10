@@ -12,10 +12,35 @@ namespace PrototypeLib
         using System.Text.Json;
         using System.Text.Json.Nodes;
         using Hashtable = ExitGames.Client.Photon.Hashtable;
-        using System.Net.Http;
         using UnityEngine;
         namespace PUNMultiplayer
         {
+            namespace ConfigurationKeys
+            {
+                public static class LoadoutKeys
+                {
+                    public static string SelectedWeaponIndex(int slot) => $"selectedWeaponIndex{slot}";
+                    public static string SelectedEquipmentIndex(int slot) => $"selectedEquipmentIndex{slot}";
+                    public static string SelectedWeaponCustomization(AttachmentTypes type, int slot) => $"SMWA_{type.ToString()}Index{slot}";
+                    public static string SelectedWeaponAppearance(int slot) => $"SMWA_AppearanceIndex{slot}";
+                }
+                public static class RoomKeys
+                {
+                    //"roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "randomRespawn", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit", "allowDownedState"
+                    public static string RoomName => "roomName";
+                    public static string RoomHostName => "roomHostName";
+                    public static string MapInfoIndex => "mapInfoIndex";
+                    public static string MaxPlayer => "maxPlayer";
+                    public static string GameStarted => "gameStarted";
+                    public static string RandomRespawn => "randomRespawn";
+                    public static string RoomMode => "roomMode";
+                    public static string RoomMapIndex => "roomMapIndex";
+                    public static string RoomVisibility => "roomVisibility";
+                    public static string RoomCode => "roomCode";
+                    public static string MaxKillLimit => "maxKillLimit";
+                    public static string AllowDownedState => "allowDownedState";
+                }
+            }
             public static class PlayerManipulaton
             {
                 public static bool Save(Hashtable h)

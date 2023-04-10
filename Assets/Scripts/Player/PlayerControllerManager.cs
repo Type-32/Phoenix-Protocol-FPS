@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Threading.Tasks;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 {
@@ -96,10 +97,10 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         //foreach (PlayerHitboxPart g in tb) playerPartHitboxes.Add(g);
         if (pv.IsMine)
         {
-            //if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
+            //if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() == "Team Deathmatch") IsTeam = (bool)pv.Owner.CustomProperties["team"];
             ui.hostileTIGroup.alpha = 0;
-            weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
-            weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
+            weaponIndex1 = (int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)];
+            weaponIndex2 = (int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)];
             recoilScript = FindObjectOfType<Recoil>();
             DerivePlayerStatsToHUDInitialize();
             playerHead.SetActive(false);
@@ -158,7 +159,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             SetGlobalFeetMaterialColor(Color.red.r, Color.red.g, Color.red.b);
             SetGlobalHeadMaterialColor(Color.red.r, Color.red.g, Color.red.b);
             SetGlobalHandMaterialColor(Color.red.r, Color.red.g, Color.red.b);
-            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
+            if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() == "Team Deathmatch")
             {
                 IsTeam = playerManager.IsTeam;
                 if (IsTeam == CurrentMatchManager.Instance.localClientPlayer.IsTeam)
@@ -173,8 +174,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                     SetTeamHandMaterialColor(Color.blue.r, Color.blue.g, Color.blue.b);
                 }
             }
-            weaponIndex1 = (int)pv.Owner.CustomProperties["selectedMainWeaponIndex"];
-            weaponIndex2 = (int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"];
+            weaponIndex1 = (int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)];
+            weaponIndex2 = (int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)];
             Destroy(ui.gameObject);
             nightVisionEffect.gameObject.SetActive(stats.enableNightVision);
             playerMinimapDot.SetActive(false);
@@ -598,7 +599,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         stats.totalAbsorbedDamage += amount;
         if (stats.health <= 0f)
         {
-            int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties["selectedMainWeaponIndex"] : (int)info.Sender.CustomProperties["selectedSecondWeaponIndex"];
+            int tm = (int)info.Sender.CustomProperties["weaponIndex"] == 0 ? (int)info.Sender.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)] : (int)info.Sender.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)];
             if (info.Sender != pv.Owner)
             {
                 if (CurrentMatchManager.Instance.allowDownedState)
@@ -682,12 +683,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             {
                 if (holder.weaponIndex == 0)
                 {
-                    if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+                    if ((int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 1)] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
                     else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
                 }
                 else
                 {
-                    if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
+                    if ((int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 2)] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(false);
                     else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayGunSound(true);
                 }
             }
@@ -695,12 +696,12 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             {
                 if (holder.weaponIndex == 0)
                 {
-                    if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(false);
+                    if ((int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 1)] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(false);
                     else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(true);
                 }
                 else
                 {
-                    if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(false);
+                    if ((int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 2)] == -1) holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(false);
                     else holder.weaponSlots[holder.weaponIndex].gun.audio.PlayNPCGunSound(true);
                 }
             }
@@ -708,7 +709,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 
         if (holder.weaponIndex == 0)
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex1"] == -1)
+            if ((int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 1)] == -1)
             {
                 if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.Shotgun)
                 {
@@ -784,7 +785,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         else
         {
-            if ((int)pv.Owner.CustomProperties["SMWA_BarrelIndex2"] == -1)
+            if ((int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 2)] == -1)
             {
                 if (holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType == WeaponType.Shotgun)
                 {

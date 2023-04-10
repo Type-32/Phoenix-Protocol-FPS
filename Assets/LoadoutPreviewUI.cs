@@ -42,11 +42,11 @@ public class LoadoutPreviewUI : MonoBehaviour
             {
                 if (index == 0)
                 {
-                    loadoutSelection.selectedMainWeaponIndex = Database.FindWeaponDataIndex(weaponData);
+                    loadoutSelection.selectedWeaponIndex1 = weaponData.GlobalWeaponIndex;
                 }
                 else
                 {
-                    loadoutSelection.selectedSecondWeaponIndex = Database.FindWeaponDataIndex(weaponData);
+                    loadoutSelection.selectedWeaponIndex2 = weaponData.GlobalWeaponIndex;
                 }
             }
             statDisplays[index <= 1 ? index : 0].SetInfo(weaponData);
@@ -84,11 +84,11 @@ public class LoadoutPreviewUI : MonoBehaviour
             {
                 if (index == 0)
                 {
-                    loadoutSelection.selectedEquipmentIndex1 = Database.FindEquipmentDataIndex(equipmentData);
+                    loadoutSelection.selectedEquipmentIndex1 = equipmentData.GlobalEquipmentIndex;
                 }
                 else
                 {
-                    loadoutSelection.selectedEquipmentIndex2 = Database.FindEquipmentDataIndex(equipmentData);
+                    loadoutSelection.selectedEquipmentIndex2 = equipmentData.GlobalEquipmentIndex;
                 }
             }
         }

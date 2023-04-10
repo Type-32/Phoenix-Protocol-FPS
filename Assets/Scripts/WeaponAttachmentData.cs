@@ -9,6 +9,6 @@ public class WeaponAttachmentData : ScriptableObject
     public GameObject attachmentPrefab;
     public string attachmentName;
     public Sprite attachmentIcon;
-    public GunAttachments.AttachmentTypes attachmentType;
+    public AttachmentTypes attachmentType;
     [HideInInspector] public int attachmentIndex;
 }

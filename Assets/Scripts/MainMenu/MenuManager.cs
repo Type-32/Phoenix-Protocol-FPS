@@ -15,6 +15,7 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using PrototypeLib.Modules.FileOperations.IO;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 using UserConfiguration;
 
 public class MenuManager : MonoBehaviour
@@ -399,35 +400,35 @@ public class MenuManager : MonoBehaviour
         Hashtable hash = new();
         RoomOptions roomOptions = new RoomOptions();
         int roomCode = UnityEngine.Random.Range(10000000, 99999999);
-        string[] tempValues = { "roomName", "roomHostName", "mapInfoIndex", "maxPlayer", "gameStarted", "randomRespawn", "roomMode", "roomMapIndex", "roomVisibility", "roomCode", "maxKillLimit", "allowDownedState" }; //Expose values to main lobby
+        string[] tempValues = { RoomKeys.RoomName, RoomKeys.RoomHostName, RoomKeys.MapInfoIndex, RoomKeys.MaxPlayer, RoomKeys.GameStarted, RoomKeys.RandomRespawn, RoomKeys.RoomMode, RoomKeys.RoomMapIndex, RoomKeys.RoomVisibility, RoomKeys.RoomCode, RoomKeys.MaxKillLimit, RoomKeys.AllowDownedState }; //Expose values to main lobby
         roomOptions.CustomRoomPropertiesForLobby = tempValues;
         roomOptions.CustomRoomProperties = new Hashtable();
-        roomOptions.CustomRoomProperties.Add("roomName", roomName);
-        roomOptions.CustomRoomProperties.Add("roomHostName", roomHostName);
-        roomOptions.CustomRoomProperties.Add("mapInfoIndex", mapInfoIndex);
-        roomOptions.CustomRoomProperties.Add("maxPlayer", maxPlayer);
-        roomOptions.CustomRoomProperties.Add("gameStarted", false);
-        roomOptions.CustomRoomProperties.Add("randomRespawn", randomRespawn);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.RoomName, roomName);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.RoomHostName, roomHostName);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.MapInfoIndex, mapInfoIndex);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.MaxPlayer, maxPlayer);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.GameStarted, false);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.RandomRespawn, randomRespawn);
         switch (roomModes)
         {
             case Gamemodes.FFA:
-                roomOptions.CustomRoomProperties.Add("roomMode", "Free For All");
+                roomOptions.CustomRoomProperties.Add(RoomKeys.RoomMode, "Free For All");
                 break;
             case Gamemodes.TDM:
-                roomOptions.CustomRoomProperties.Add("roomMode", "Team Deathmatch");
+                roomOptions.CustomRoomProperties.Add(RoomKeys.RoomMode, "Team Deathmatch");
                 break;
             case Gamemodes.CTF:
-                roomOptions.CustomRoomProperties.Add("roomMode", "Capture The Flag");
+                roomOptions.CustomRoomProperties.Add(RoomKeys.RoomMode, "Capture The Flag");
                 break;
             case Gamemodes.DZ:
-                roomOptions.CustomRoomProperties.Add("roomMode", "Drop Zones");
+                roomOptions.CustomRoomProperties.Add(RoomKeys.RoomMode, "Drop Zones");
                 break;
         }
-        roomOptions.CustomRoomProperties.Add("roomMapIndex", mapIndex);
-        roomOptions.CustomRoomProperties.Add("roomVisibility", roomVisibility);
-        roomOptions.CustomRoomProperties.Add("roomCode", roomCode);
-        roomOptions.CustomRoomProperties.Add("maxKillLimit", maxKillLimit);
-        roomOptions.CustomRoomProperties.Add("allowDownedState", allowDownedState);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.RoomMapIndex, mapIndex);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.RoomVisibility, roomVisibility);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.RoomCode, roomCode);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.MaxKillLimit, maxKillLimit);
+        roomOptions.CustomRoomProperties.Add(RoomKeys.AllowDownedState, allowDownedState);
         roomOptions.MaxPlayers = (byte)maxPlayer;
         return roomOptions;
     }

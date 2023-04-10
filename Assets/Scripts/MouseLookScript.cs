@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class MouseLookScript : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class MouseLookScript : MonoBehaviour
     }
     void CameraInput()
     {
-        int sightIndex = player.holder.weaponIndex == 0 ? (int)player.pv.Owner.CustomProperties["SMWA_SightIndex1"] : player.holder.weaponIndex == 1 ? (int)player.pv.Owner.CustomProperties["SMWA_SightIndex2"] : -1;
+        int sightIndex = player.holder.weaponIndex == 0 ? (int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 1)] : player.holder.weaponIndex == 1 ? (int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 2)] : -1;
         float multiplier = 1f;
         if (sightIndex != -1)
         {

@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class BotEquipmentHolder : MonoBehaviour
 {
@@ -20,11 +21,11 @@ public class BotEquipmentHolder : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            InstantiateWeapon(GlobalDatabase.Instance.allWeaponDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedMainWeaponIndex"]) : ((int)player.pv.Owner.CustomProperties["selectedSecondWeaponIndex"])], i);
+            InstantiateWeapon(GlobalDatabase.Instance.allWeaponDatas[(int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(i + 1)]], i);
         }
         for (int i = 0; i < 2; i++)
         {
-            InstantiateEquipment(GlobalDatabase.Instance.allEquipmentDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex1"]) : ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex2"])], i);
+            InstantiateEquipment(GlobalDatabase.Instance.allEquipmentDatas[(int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(i + 1)]], i);
         }
         Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
         Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();

@@ -6,6 +6,7 @@ using Photon.Realtime;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UserConfiguration;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class EquipmentHolder : MonoBehaviourPunCallbacks
 {
@@ -15,8 +16,8 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     public int previousIndex = 0;
     [SerializeField] private UIManager uiManager;
     public bool inversedScrollWheel = true;
-    public Gun[] weaponSlots = new Gun[2];
-    public Equipment[] equipmentSlots = new Equipment[2];
+    public Gun[] weaponSlots = new Gun[] { };
+    public Equipment[] equipmentSlots = new Equipment[] { };
     // Start is called before the first frame update
     private void Awake()
     {
@@ -28,13 +29,11 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         {
             for (int i = 0; i < 2; i++)
             {
-                InstantiateWeapon(GlobalDatabase.Instance.allWeaponDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedMainWeaponIndex"]) : ((int)player.pv.Owner.CustomProperties["selectedSecondWeaponIndex"])], i);
-                //weaponSlots[i].InitializeAwake();
-                //weaponSlots[i].InitializeStart();
+                InstantiateWeapon(GlobalDatabase.Instance.allWeaponDatas[(int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(i + 1)]], i);
             }
             for (int i = 0; i < 2; i++)
             {
-                InstantiateEquipment(GlobalDatabase.Instance.allEquipmentDatas[i == 0 ? ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex1"]) : ((int)player.pv.Owner.CustomProperties["selectedEquipmentIndex2"])], i);
+                InstantiateEquipment(GlobalDatabase.Instance.allEquipmentDatas[(int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(i + 1)]], i);
             }
             Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
@@ -108,18 +107,18 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         {
             for (int i = 0; i < 2; i++)
             {
-                if (player.playerManager.slotHolderScript.slotWeaponData[i] != null)
+                if (player.playerManager.matchLoadoutManager.slotWeaponData[i] != null)
                 {
-                    InstantiateWeapon(player.playerManager.slotHolderScript.slotWeaponData[i], i);
+                    InstantiateWeapon(player.playerManager.matchLoadoutManager.slotWeaponData[i], i);
                     weaponSlots[i].InitializeAwake();
                     weaponSlots[i].InitializeStart();
                 }
             }
             for (int i = 0; i < 2; i++)
             {
-                if (player.playerManager.slotHolderScript.slotEquipmentData[i] != null)
+                if (player.playerManager.matchLoadoutManager.slotEquipmentData[i] != null)
                 {
-                    InstantiateEquipment(player.playerManager.slotHolderScript.slotEquipmentData[i], i);
+                    InstantiateEquipment(player.playerManager.matchLoadoutManager.slotEquipmentData[i], i);
                     equipmentSlots[i].InitializeAwake();
                     equipmentSlots[i].InitializeStart();
                 }
@@ -299,7 +298,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         if (!player.pv.IsMine && targetPlayer == player.pv.Owner && changedProps.ContainsKey("weaponIndex"))
         {
             EquipItem((int)changedProps["weaponIndex"]);
-            //player.playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+            //player.playerManager.matchLoadoutManager.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
         }
     }
     public void WeaponFunction()

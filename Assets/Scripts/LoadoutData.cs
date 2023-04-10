@@ -160,49 +160,49 @@ public class LoadoutData : ScriptableObject
     {
         weaponData[slotIndex] = data;
     }
-    public void SetAttachment(WeaponAttachmentData data, GunAttachments.AttachmentTypes type, int slotIndex)
+    public void SetAttachment(WeaponAttachmentData data, AttachmentTypes type, int slotIndex)
     {
         switch (type)
         {
-            case GunAttachments.AttachmentTypes.Sight:
+            case AttachmentTypes.Sight:
                 selectedSight[slotIndex] = data;
                 selectedSightIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
-            case GunAttachments.AttachmentTypes.Barrel:
+            case AttachmentTypes.Barrel:
                 selectedBarrel[slotIndex] = data;
                 selectedBarrelIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
-            case GunAttachments.AttachmentTypes.Underbarrel:
+            case AttachmentTypes.Underbarrel:
                 selectedUnderbarrel[slotIndex] = data;
                 selectedUnderbarrelIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
-            case GunAttachments.AttachmentTypes.Sidebarrel_Right:
+            case AttachmentTypes.Rightbarrel:
                 selectedSidebarrelRight[slotIndex] = data;
                 selectedSidebarrelRightIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
-            case GunAttachments.AttachmentTypes.Sidebarrel_Left:
+            case AttachmentTypes.Leftbarrel:
                 selectedSidebarrelLeft[slotIndex] = data;
                 selectedSidebarrelLeftIndex[slotIndex] = FindAttachmentGlobalIndex(data);
                 break;
         }
     }
-    public void SetNullAttachment(GunAttachments.AttachmentTypes type, int slotIndex)
+    public void SetNullAttachment(AttachmentTypes type, int slotIndex)
     {
         switch (type)
         {
-            case GunAttachments.AttachmentTypes.Sight:
+            case AttachmentTypes.Sight:
                 selectedSightIndex[slotIndex] = -1;
                 break;
-            case GunAttachments.AttachmentTypes.Barrel:
+            case AttachmentTypes.Barrel:
                 selectedBarrelIndex[slotIndex] = -1;
                 break;
-            case GunAttachments.AttachmentTypes.Underbarrel:
+            case AttachmentTypes.Underbarrel:
                 selectedUnderbarrelIndex[slotIndex] = -1;
                 break;
-            case GunAttachments.AttachmentTypes.Sidebarrel_Right:
+            case AttachmentTypes.Rightbarrel:
                 selectedSidebarrelRightIndex[slotIndex] = -1;
                 break;
-            case GunAttachments.AttachmentTypes.Sidebarrel_Left:
+            case AttachmentTypes.Leftbarrel:
                 selectedSidebarrelLeftIndex[slotIndex] = -1;
                 break;
         }

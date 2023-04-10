@@ -21,14 +21,6 @@ public class LoadoutAttachUIItem : MonoBehaviour
         text.text = data.attachmentName;
         //attachmentGlobalIndex = FindIndexFromData(data);
     }
-    public int FindIndexFromData(WeaponAttachmentData data)
-    {
-        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
-        {
-            if (GlobalDatabase.Instance.allWeaponAttachmentDatas[i] == data) return i;
-        }
-        return -1;
-    }
     public void OnButtonClick()
     {
         script.loadoutCustomization.ToggleAllAttachmentUI(false);

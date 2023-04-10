@@ -5,9 +5,9 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
-
-public class LoadoutSlotHolder : MonoBehaviourPunCallbacks
+public class MatchLoadoutManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] LoadoutMenu loadoutMenu;
     [SerializeField] PlayerManager playerManager;
@@ -23,19 +23,19 @@ public class LoadoutSlotHolder : MonoBehaviourPunCallbacks
             {
                 if ((int)changedProps["weaponDataChangedMode"] < 2)
                 {
-                    playerManager.slotHolderScript.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+                    playerManager.matchLoadoutManager.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
                 }
                 else
                 {
-                    playerManager.slotHolderScript.slotEquipmentData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps["weaponDataChanged"]];
+                    playerManager.matchLoadoutManager.slotEquipmentData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps["weaponDataChanged"]];
                 }
             }
-            else if (changedProps.ContainsKey("selectedMainWeaponIndex") || changedProps.ContainsKey("selectedSecondWeaponIndex") || changedProps.ContainsKey("selectedEquipmentIndex1") || changedProps.ContainsKey("selectedEquipmentIndex2"))
+            else if (changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(1)) || changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(2)) || changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(1)) || changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(2)))
             {
-                slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["selectedMainWeaponIndex"]];
-                slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["selectedSecondWeaponIndex"]];
-                slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps["selectedEquipmentIndex1"]];
-                slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps["selectedEquipmentIndex2"]];
+                slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[LoadoutKeys.SelectedWeaponIndex(1)]];
+                slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[LoadoutKeys.SelectedWeaponIndex(2)]];
+                slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(1)]];
+                slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(2)]];
             }
         }
     }

@@ -37,8 +37,8 @@ public class LoadoutSelectionScript : MonoBehaviour
 
     [Space]
     public int selectedLoadoutIndex;
-    public int selectedMainWeaponIndex;
-    public int selectedSecondWeaponIndex;
+    public int selectedWeaponIndex1;
+    public int selectedWeaponIndex2;
     public int selectedEquipmentIndex1;
     public int selectedEquipmentIndex2;
 
@@ -94,10 +94,10 @@ public class LoadoutSelectionScript : MonoBehaviour
 
         for (int i = 0; i < loadoutDataList.Count; i++)
         {
-            data.LoadoutData.Slots[i].Weapon1 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[0]);
-            data.LoadoutData.Slots[i].Weapon2 = FindGlobalWeaponIndex(loadoutDataList[i].weaponData[1]);
-            data.LoadoutData.Slots[i].Equipment1 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[0]);
-            data.LoadoutData.Slots[i].Equipment2 = Database.FindEquipmentDataIndex(loadoutDataList[i].equipmentData[1]);
+            data.LoadoutData.Slots[i].Weapon1 = loadoutDataList[i].weaponData[0].GlobalWeaponIndex;
+            data.LoadoutData.Slots[i].Weapon2 = loadoutDataList[i].weaponData[1].GlobalWeaponIndex;
+            data.LoadoutData.Slots[i].Equipment1 = loadoutDataList[i].equipmentData[0].GlobalEquipmentIndex;
+            data.LoadoutData.Slots[i].Equipment2 = loadoutDataList[i].equipmentData[1].GlobalEquipmentIndex;
             data.LoadoutData.Slots[i].WA_Sight1 = loadoutDataList[i].selectedSightIndex[0];
             data.LoadoutData.Slots[i].WA_Sight2 = loadoutDataList[i].selectedSightIndex[1];
             data.LoadoutData.Slots[i].WA_Barrel1 = loadoutDataList[i].selectedBarrelIndex[0];
@@ -118,8 +118,8 @@ public class LoadoutSelectionScript : MonoBehaviour
     {
         UserDataJSON jsonUserData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         selectedLoadoutIndex = jsonUserData.LoadoutData.SelectedSlot;
-        selectedMainWeaponIndex = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Weapon1;
-        selectedSecondWeaponIndex = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Weapon2;
+        selectedWeaponIndex1 = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Weapon1;
+        selectedWeaponIndex2 = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Weapon2;
         selectedEquipmentIndex1 = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Equipment1;
         selectedEquipmentIndex2 = jsonUserData.LoadoutData.Slots[selectedLoadoutIndex].Equipment2;
         bool checkChange = false;
@@ -177,19 +177,11 @@ public class LoadoutSelectionScript : MonoBehaviour
 
     public WeaponData FindWeaponDataFromIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
-        {
-            if (i == index) return GlobalDatabase.Instance.allWeaponDatas[i];
-        }
-        return null;
+        try { return GlobalDatabase.Instance.allWeaponDatas[index]; } catch { return null; }
     }
     public WeaponAttachmentData FindAttachmentDataFromIndex(int index)
     {
-        for (int i = 0; i < GlobalDatabase.Instance.allWeaponAttachmentDatas.Count; i++)
-        {
-            if (i == index) return GlobalDatabase.Instance.allWeaponAttachmentDatas[i];
-        }
-        return null;
+        try { return GlobalDatabase.Instance.allWeaponAttachmentDatas[index]; } catch { return null; }
     }
 
     public void InstantiateLoadoutSelections()
@@ -257,8 +249,8 @@ public class LoadoutSelectionScript : MonoBehaviour
     public void OnSelectLoadoutCallback(int selectedIndex, int selectedWeaponIndex1, int selectedWeaponIndex2, int selectedEquipment1, int selectedEquipment2)
     {
         selectedLoadoutIndex = selectedIndex;
-        selectedMainWeaponIndex = selectedWeaponIndex1;
-        selectedSecondWeaponIndex = selectedWeaponIndex2;
+        this.selectedWeaponIndex1 = selectedWeaponIndex1;
+        this.selectedWeaponIndex2 = selectedWeaponIndex2;
         selectedEquipmentIndex1 = selectedEquipment1;
         selectedEquipmentIndex2 = selectedEquipment2;
         loadoutPreviewUI.SetPreviewInfo(loadoutDataList[selectedLoadoutIndex]);

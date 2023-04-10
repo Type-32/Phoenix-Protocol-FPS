@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class GunCoreFunc : MonoBehaviour
 {
@@ -257,7 +258,7 @@ public class GunCoreFunc : MonoBehaviour
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
             if (damageable != null)
             {
-                if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
+                if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() == "Team Deathmatch")
                 {
                     if (part.player.IsTeam != gun.player.IsTeam)
                         damageable?.TakeDamage(damage, false, gun.player.transform.position, gun.player.transform.rotation, gun.stats.weaponData.GlobalWeaponIndex, true);
@@ -324,7 +325,7 @@ public class GunCoreFunc : MonoBehaviour
             //IDamagable player = hit.transform.GetComponent<IDamagable>();
             if (damageable != null)
             {
-                if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch")
+                if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() == "Team Deathmatch")
                 {
                     if (part.player.IsTeam != gun.player.IsTeam)
                     {
@@ -378,7 +379,7 @@ public class GunCoreFunc : MonoBehaviour
         }
         if (gun.player.holder.weaponIndex == 0)
         {
-            if ((int)PhotonNetwork.LocalPlayer.CustomProperties["SMWA_UnderbarrelIndex1"] != -1)
+            if ((int)PhotonNetwork.LocalPlayer.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 1)] != -1)
             {
                 float temp = stats.kickBackZ;
                 decreasedKickback = temp - (temp * 0.4f);
@@ -388,7 +389,7 @@ public class GunCoreFunc : MonoBehaviour
         }
         else
         {
-            if ((int)PhotonNetwork.LocalPlayer.CustomProperties["SMWA_UnderbarrelIndex2"] != -1)
+            if ((int)PhotonNetwork.LocalPlayer.CustomProperties[LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 2)] != -1)
             {
                 float temp = stats.kickBackZ;
                 decreasedKickback = temp - (temp * 0.4f);

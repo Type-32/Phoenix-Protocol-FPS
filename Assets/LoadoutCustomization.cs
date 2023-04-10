@@ -87,23 +87,23 @@ public class LoadoutCustomization : MonoBehaviour
             //GameObject temp = Instantiate(attachmentSelectionItemPrefab,);
             switch (loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableAttachments[i].attachmentType)
             {
-                case GunAttachments.AttachmentTypes.Sight:
+                case AttachmentTypes.Sight:
                     temp = Instantiate(attachmentSelectionItemPrefab, sightUIHolder);
                     sightObjects.Add(temp);
                     break;
-                case GunAttachments.AttachmentTypes.Barrel:
+                case AttachmentTypes.Barrel:
                     temp = Instantiate(attachmentSelectionItemPrefab, barrelUIHolder);
                     barrelObjects.Add(temp);
                     break;
-                case GunAttachments.AttachmentTypes.Underbarrel:
+                case AttachmentTypes.Underbarrel:
                     temp = Instantiate(attachmentSelectionItemPrefab, underbarrelUIHolder);
                     underbarrelObjects.Add(temp);
                     break;
-                case GunAttachments.AttachmentTypes.Sidebarrel_Left:
+                case AttachmentTypes.Leftbarrel:
                     temp = Instantiate(attachmentSelectionItemPrefab, leftbarrelUIHolder);
                     leftbarrelObjects.Add(temp);
                     break;
-                case GunAttachments.AttachmentTypes.Sidebarrel_Right:
+                case AttachmentTypes.Rightbarrel:
                     temp = Instantiate(attachmentSelectionItemPrefab, rightbarrelUIHolder);
                     rightbarrelObjects.Add(temp);
                     break;

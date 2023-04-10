@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System.Threading.Tasks;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class CurrentMatchManager : MonoBehaviourPunCallbacks
 {
@@ -41,8 +42,8 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         Instance = this;
-        allowDownedState = (bool)PhotonNetwork.CurrentRoom.CustomProperties["allowDownedState"];
-        maxKillLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"];
+        allowDownedState = (bool)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.AllowDownedState];
+        maxKillLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.MaxKillLimit];
         internalUI = FindObjectOfType<InGameUI>();
         scoreboard = FindObjectOfType<Scoreboard>();
         //pv = GetComponent<PhotonView>();
@@ -54,7 +55,7 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
         internalUI.TDM_ToggleMatchEndUI(false, false, false);
         internalUI.ToggleMatchEndStats(false, 0f);
         gameEnded = false;
-        switch (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"])
+        switch (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode])
         {
             case "Free For All":
                 roomMode = MenuManager.Gamemodes.FFA;
@@ -259,11 +260,11 @@ public class CurrentMatchManager : MonoBehaviourPunCallbacks
     {
         if (localClientPlayer.IsTeam)
         {
-            internalUI.UpdateTDMData(blueAmount, redAmount, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
+            internalUI.UpdateTDMData(blueAmount, redAmount, (int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.MaxKillLimit]);
         }
         else
         {
-            internalUI.UpdateTDMData(redAmount, blueAmount, (int)PhotonNetwork.CurrentRoom.CustomProperties["maxKillLimit"]);
+            internalUI.UpdateTDMData(redAmount, blueAmount, (int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.MaxKillLimit]);
         }
     }
     private void FixedUpdate()

@@ -10,6 +10,8 @@ using UserConfiguration;
 using System.Threading.Tasks;
 using InfoTypes.InRoomPreview;
 using PrototypeLib.Modules.FileOperations.IO;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
+
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public List<RoomInfo> rl = new();
@@ -73,8 +75,8 @@ public class Launcher : MonoBehaviourPunCallbacks
             return;
         }
         //roomInfo.CustomProperties.Add("roomIcon", roomIcon.sprite);
-        //roomInfo.CustomProperties.Add("roomMode", roomMode.text);
-        //roomInfo.CustomProperties.Add("roomHostName", roomHostName.text);
+        //roomInfo.CustomProperties.Add(RoomKeys.RoomMode, roomMode.text);
+        //roomInfo.CustomProperties.Add(RoomKeys.RoomHostName, roomHostName.text);
         PhotonNetwork.CreateRoom(MenuManager.Instance.GetRoomInputFieldText(), MenuManager.Instance.GetGeneratedRoomOptions());
         Debug.Log("Trying to create a room with the name " + MenuManager.Instance.GetRoomInputFieldText());
         //MenuManager.Instance.SetInvalidInputFieldText("Creating Room...", Color.black);
@@ -150,32 +152,32 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             if (tp.MaxPlayers > tp.PlayerCount)
             {
-                Debug.Log($"Room Counts {rl.Count}, Room Mode {(string)tp.CustomProperties["roomMode"]}");
+                Debug.Log($"Room Counts {rl.Count}, Room Mode {(string)tp.CustomProperties[RoomKeys.RoomMode]}");
                 switch (gamemodes)
                 {
                     case MenuManager.Gamemodes.FFA:
-                        if ((string)tp.CustomProperties["roomMode"] == "Free For All")
+                        if ((string)tp.CustomProperties[RoomKeys.RoomMode] == "Free For All")
                         {
                             stashedSelectedRoomInfo = tp;
                             return tp.Name;
                         }
                         break;
                     case MenuManager.Gamemodes.TDM:
-                        if ((string)tp.CustomProperties["roomMode"] == "Team Deathmatch")
+                        if ((string)tp.CustomProperties[RoomKeys.RoomMode] == "Team Deathmatch")
                         {
                             stashedSelectedRoomInfo = tp;
                             return tp.Name;
                         }
                         break;
                     case MenuManager.Gamemodes.DZ:
-                        if ((string)tp.CustomProperties["roomMode"] == "Drop Zones")
+                        if ((string)tp.CustomProperties[RoomKeys.RoomMode] == "Drop Zones")
                         {
                             stashedSelectedRoomInfo = tp;
                             return tp.Name;
                         }
                         break;
                     case MenuManager.Gamemodes.CTF:
-                        if ((string)tp.CustomProperties["roomMode"] == "Capture The Flag")
+                        if ((string)tp.CustomProperties[RoomKeys.RoomMode] == "Capture The Flag")
                         {
                             stashedSelectedRoomInfo = tp;
                             return tp.Name;
@@ -232,7 +234,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         PhotonNetwork.CurrentRoom.SetCustomProperties(MenuManager.Instance.GetGeneratedRoomOptions().CustomRoomProperties);
-        if ((bool)MenuManager.Instance.GetGeneratedRoomOptions().CustomRoomProperties["roomVisibility"])
+        if ((bool)MenuManager.Instance.GetGeneratedRoomOptions().CustomRoomProperties[RoomKeys.RoomVisibility])
         {
             PhotonNetwork.CurrentRoom.IsVisible = true;
         }
@@ -262,8 +264,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         LoadoutDataJSON tp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).LoadoutData;
         MenuManager.Instance.RoomMenuComp.SetRoomInfoPreview(
             PhotonNetwork.CurrentRoom.Name,
-            new MapPreviewInfo(mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapName, mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1].mapIcon),
-            new StatisticsPreviewInfo((string)PhotonNetwork.CurrentRoom.CustomProperties["roomMode"], PhotonNetwork.CurrentRoom.MaxPlayers, (int)PhotonNetwork.CurrentRoom.CustomProperties["roomCode"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["roomVisibility"], (bool)PhotonNetwork.CurrentRoom.CustomProperties["allowDownedState"]),
+            new MapPreviewInfo(mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMapIndex] - 1].mapName, mapItemInfo[(int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMapIndex] - 1].mapIcon),
+            new StatisticsPreviewInfo((string)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode], PhotonNetwork.CurrentRoom.MaxPlayers, (int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomCode], (bool)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomVisibility], (bool)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.AllowDownedState]),
             new LoadoutPreviewInfo(GlobalDatabase.Instance.allWeaponDatas[tp.Slots[tp.SelectedSlot].Weapon1], GlobalDatabase.Instance.allWeaponDatas[tp.Slots[tp.SelectedSlot].Weapon2], GlobalDatabase.Instance.allEquipmentDatas[tp.Slots[tp.SelectedSlot].Equipment1], GlobalDatabase.Instance.allEquipmentDatas[tp.Slots[tp.SelectedSlot].Equipment2])
         );
         startGameButton.SetActive(CheckIfStartAllowed());
@@ -304,7 +306,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         int code = MenuManager.Instance.GetRoomCodeInputField();
         for (int i = 0; i < rl.Count; i++)
         {
-            if ((int)rl[i].CustomProperties["roomCode"] == code)
+            if ((int)rl[i].CustomProperties[RoomKeys.RoomCode] == code)
             {
                 JoinRoom(rl[i]);
                 return;
@@ -356,17 +358,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Hashtable temp = new Hashtable();
         //PhotonNetwork.LocalPlayer.CustomProperties = new Hashtable();
-        int selectedMainWeaponIndex = Database.FindWeaponDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[0]);
-        int selectedSecondWeaponIndex = Database.FindWeaponDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1]);
-        int selectedEquipmentIndex1 = Database.FindEquipmentDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[0]);
-        int selectedEquipmentIndex2 = Database.FindEquipmentDataIndex(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[1]);
+        int selectedWeaponIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[0].GlobalWeaponIndex;
+        int selectedWeaponIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1].GlobalWeaponIndex;
+        int selectedEquipmentIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[0].GlobalEquipmentIndex;
+        int selectedEquipmentIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[1].GlobalEquipmentIndex;
         Debug.Log("EQ 1: " + selectedEquipmentIndex1 + "    EQ 2: " + selectedEquipmentIndex2);
-        //Debug.LogWarning(selectedMainWeaponIndex);
-        //Debug.LogWarning(selectedSecondWeaponIndex);
-        temp.Add("selectedMainWeaponIndex", selectedMainWeaponIndex);
-        temp.Add("selectedSecondWeaponIndex", selectedSecondWeaponIndex);
-        temp.Add("selectedEquipmentIndex1", selectedEquipmentIndex1);
-        temp.Add("selectedEquipmentIndex2", selectedEquipmentIndex2);
+        //Debug.LogWarning(selectedWeaponIndex1);
+        //Debug.LogWarning(selectedWeaponIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponIndex(1), selectedWeaponIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponIndex(2), selectedWeaponIndex2);
+        temp.Add(LoadoutKeys.SelectedEquipmentIndex(1), selectedEquipmentIndex1);
+        temp.Add(LoadoutKeys.SelectedEquipmentIndex(2), selectedEquipmentIndex2);
 
         int SMWA_SightIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[0];
         int SMWA_SightIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[1];
@@ -380,16 +382,16 @@ public class Launcher : MonoBehaviourPunCallbacks
         int SMWA_RightbarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[1];
         int SMWA_AppearanceIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[0];
         int SMWA_AppearanceIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[1];
-        temp.Add("SMWA_SightIndex1", SMWA_SightIndex1);
-        temp.Add("SMWA_SightIndex2", SMWA_SightIndex2);
-        temp.Add("SMWA_BarrelIndex1", SMWA_BarrelIndex1);
-        temp.Add("SMWA_BarrelIndex2", SMWA_BarrelIndex2);
-        temp.Add("SMWA_UnderbarrelIndex1", SMWA_UnderbarrelIndex1);
-        temp.Add("SMWA_UnderbarrelIndex2", SMWA_UnderbarrelIndex2);
-        temp.Add("SMWA_LeftbarrelIndex1", SMWA_LeftbarrelIndex1);
-        temp.Add("SMWA_LeftbarrelIndex2", SMWA_LeftbarrelIndex2);
-        temp.Add("SMWA_RightbarrelIndex1", SMWA_RightbarrelIndex1);
-        temp.Add("SMWA_RightbarrelIndex2", SMWA_RightbarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 1), SMWA_SightIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 2), SMWA_SightIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 1), SMWA_BarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 2), SMWA_BarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 1), SMWA_UnderbarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 2), SMWA_UnderbarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Leftbarrel, 1), SMWA_LeftbarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Leftbarrel, 2), SMWA_LeftbarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Rightbarrel, 1), SMWA_RightbarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Rightbarrel, 2), SMWA_RightbarrelIndex2);
         temp.Add("SMWA_AppearanceIndex1", SMWA_AppearanceIndex1);
         temp.Add("SMWA_AppearanceIndex2", SMWA_AppearanceIndex2);
 
@@ -398,10 +400,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     public async void StartGame()
     {
         SetLoadoutValuesToPlayer();
-        RoomManager.Instance.SetLoadingPreviewRPC((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"] - 1, true);
-        PhotonNetwork.CurrentRoom.CustomProperties["gameStarted"] = true;
+        RoomManager.Instance.SetLoadingPreviewRPC((int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMapIndex] - 1, true);
+        PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.GameStarted] = true;
         await Task.Delay(3000);
-        PhotonNetwork.LoadLevel((int)PhotonNetwork.CurrentRoom.CustomProperties["roomMapIndex"]);
+        PhotonNetwork.LoadLevel((int)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMapIndex]);
     }
     public void QuitApplication()
     {

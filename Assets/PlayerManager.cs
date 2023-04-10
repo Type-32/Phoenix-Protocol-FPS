@@ -11,8 +11,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UserConfiguration;
 using UnityEngine.Rendering;
 using PrototypeLib.Modules.FileOperations.IO;
-using UserConfiguration;
 using UnityEngine.Rendering.Universal;
+using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -29,8 +29,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject skipCountdownIndicator;
     [SerializeField] GameObject spawnpointUISelection;
     [SerializeField] Button respawnButton;
-    public LoadoutSlotHolder slotHolderScript;
-    public ChoiceHolderScript choiceHolderScript;
+    public MatchLoadoutManager matchLoadoutManager;
     public AudioListener audioListener;
     bool hasRespawned = false;
     bool respawning = false;
@@ -44,7 +43,6 @@ public class PlayerManager : MonoBehaviour
     [Space]
     [Header("UI")]
     public GameObject loadout;
-    public LoadoutMenu loadoutMenu;
     [SerializeField] CanvasGroup deathGUICanvas;
     [SerializeField] CanvasGroup deathInfoCanvas;
     [SerializeField] Text killStatus, killerUsername;
@@ -152,7 +150,7 @@ public class PlayerManager : MonoBehaviour
         {
             //cmm.AddPlayer(this);
             cmm.localClientPlayer = this;
-            if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["gameStarted"]) cmm.UpdatePlayerKillOnClient();
+            if ((bool)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.GameStarted]) cmm.UpdatePlayerKillOnClient();
         }
         else
         {
@@ -168,14 +166,13 @@ public class PlayerManager : MonoBehaviour
     {
         if (!pv.IsMine)
         {
-            slotHolderScript.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]];
-            slotHolderScript.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]];
-            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
-            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
+            matchLoadoutManager.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]];
+            matchLoadoutManager.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]];
+            matchLoadoutManager.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]];
+            matchLoadoutManager.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]];
             deathUI.SetActive(false);
             hasRespawned = true;
             CloseMenu();
-            CloseLoadoutMenu();
             randomPlayerColor = Color.red;
             deathInfoCanvas.alpha = 0f;
             deathInfoCanvas.gameObject.SetActive(false);
@@ -202,27 +199,26 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Team Deathmatch" && pv.Owner.IsMasterClient)
+            if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() == "Team Deathmatch" && pv.Owner.IsMasterClient)
             {
                 StartCoroutine(DelayedInit(0.2f));
             }
             StartCoroutine(DelayedSyncIsTeam(0.25f));
             settingsMenu.SettingsMenuAwakeFunction();
-            slotHolderScript.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedMainWeaponIndex"]];
-            slotHolderScript.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties["selectedSecondWeaponIndex"]];
-            slotHolderScript.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]];
-            slotHolderScript.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]];
-            prevIcon1.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedMainWeaponIndex"]].itemIcon;
-            prevIcon2.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties["selectedSecondWeaponIndex"]].itemIcon;
-            prevIcon3.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex1"]].itemIcon;
-            prevIcon4.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties["selectedEquipmentIndex2"]].itemIcon;
+            matchLoadoutManager.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]];
+            matchLoadoutManager.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]];
+            matchLoadoutManager.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]];
+            matchLoadoutManager.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]];
+            prevIcon1.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]].itemIcon;
+            prevIcon2.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]].itemIcon;
+            prevIcon3.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]].itemIcon;
+            prevIcon4.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]].itemIcon;
             OnJoiningOngoingRoom();
             deathInfoCanvas.alpha = 0f;
             randomPlayerColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255), 1);
         }
         openedInventory = false;
         CloseMenu();
-        CloseLoadoutMenu();
     }
     IEnumerator DelayedInit(float amount)
     {
@@ -338,13 +334,12 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Instantiating Player Controller");
 
         if (spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
-        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["randomRespawn"]) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RandomRespawn]) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
 
         controller = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { pv.ViewID });
         controller.GetComponent<PlayerControllerManager>().playerManager = this;
         playerUI = controller.GetComponent<UIManager>();
         player = controller.GetComponent<PlayerControllerManager>();
-        loadoutMenu.ui = controller.GetComponent<UIManager>();
         returnTemp = 2;
         if (!openedOptions && player.pv.IsMine) Cursor.lockState = CursorLockMode.Locked;
         deathGUICanvas.alpha = 0f;
@@ -385,7 +380,7 @@ public class PlayerManager : MonoBehaviour
         {
             killStatus.text = "You have";
             killerUsername.text = "Suicided";
-            //if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
+            //if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() != "Team Deathmatch") InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
             //else TDM_InstantiateKillMSG(pv.Owner.NickName, pv.Owner.NickName, -1, (bool)pv.Owner.CustomProperties["team"], ((int)pv.Owner.CustomProperties["weaponIndex"] < 2 ? true : false));
         }
     }
@@ -478,7 +473,6 @@ public class PlayerManager : MonoBehaviour
         respawning = false;
         deathCountdown.text = "Waiting for Respawn";
         skipCountdownIndicator.SetActive(false);
-        CloseLoadoutMenu();
         yield return new WaitForSeconds(duration);
         CompleteCountdown();
     }
@@ -544,15 +538,7 @@ public class PlayerManager : MonoBehaviour
         }
         if ((Input.GetKeyDown(KeyCode.Escape) && !cmm.gameEnded))
         {
-            if (loadoutMenu.openedSelectionMenu)
-            {
-                loadoutMenu.CloseSelectionMenu();
-            }
-            else if (openedLoadoutMenu)
-            {
-                CloseLoadoutMenu();
-            }
-            else if (openedSettingsSection)
+            if (openedSettingsSection)
             {
                 ToggleSettingsMenu(false);
                 ToggleButtonHolder(true);
@@ -564,21 +550,6 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 OpenMenu();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Return) && !openedOptions)
-        {
-            if (openedLoadoutMenu)
-            {
-                CloseLoadoutMenu();
-            }
-            else if (loadoutMenu.openedSelectionMenu)
-            {
-                loadoutMenu.CloseSelectionMenu();
-            }
-            else
-            {
-                OpenLoadoutMenu();
             }
         }
         if (returnTemp <= 0f && hasRespawned && !respawning)
@@ -666,27 +637,9 @@ public class PlayerManager : MonoBehaviour
         respawning = false;
         deathCountdown.text = "Waiting for Respawn";
         skipCountdownIndicator.SetActive(false);
-        CloseLoadoutMenu();
         CreateController();
     }
     #region Menus
-    public void OpenLoadoutMenu()
-    {
-        //if (!pv.IsMine) return;
-        //Debug.Log("Opened Loadout UI ");
-        openedLoadoutMenu = true;
-        loadoutMenu.gameObject.SetActive(true);
-        slotHolderScript.RefreshLoadoutSlotInfo();
-        Cursor.lockState = CursorLockMode.None;
-    }
-    public void CloseLoadoutMenu()
-    {
-        //if (!pv.IsMine) return;
-        //Debug.Log("Closed Loadout UI ");
-        openedLoadoutMenu = false;
-        loadoutMenu.gameObject.SetActive(false);
-        if (controller != null) Cursor.lockState = CursorLockMode.Locked;
-    }
     public void ToggleButtonHolder(bool value)
     {
         // (!pv.IsMine) return;
@@ -767,7 +720,6 @@ public class PlayerManager : MonoBehaviour
     {
         Die(true, -1);
         player.playerManager.CloseMenu();
-        player.playerManager.CloseLoadoutMenu();
         player.playerManager.ToggleButtonHolder(true);
         player.playerManager.ToggleSettingsMenu(false);
         //SceneManager.LoadScene(0);
@@ -799,7 +751,7 @@ public class PlayerManager : MonoBehaviour
         player.sfx.InvokeHitmarkerAudio(UIManager.HitmarkerType.Killmarker);
         InstantiateKillIcon(false, killedPlayerName, 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0));
         totalGainedXP += 150 + (streakKills > 1 ? 150 * (streakKills - 1) / 4 : 0);
-        if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() != "Team Deathmatch") InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex, isWeapon);
+        if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() != "Team Deathmatch") InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex, isWeapon);
         else TDM_InstantiateKillMSG(killedPlayerName, pv.Owner.NickName, withWeaponIndex, (bool)pv.Owner.CustomProperties["team"], isWeapon);
         MinimapDotIdentifier[] tempget;
         tempget = FindObjectsOfType<MinimapDotIdentifier>();
@@ -834,7 +786,7 @@ public class PlayerManager : MonoBehaviour
         GameObject temp = Instantiate(InGameUI.instance.killMSGPrefab, InGameUI.instance.killMSGHolder);
         KillMessageItem msg = temp.GetComponent<KillMessageItem>();
         msg.SetInfo(killedName, killerName, (weaponIndex != -1 ? (isWeapon ? InGameUI.instance.FindWeaponIcon(weaponIndex) : InGameUI.instance.FindEquipmentIcon(weaponIndex)) : skullIcon));
-        if (PhotonNetwork.CurrentRoom.CustomProperties["roomMode"].ToString() == "Free For All")
+        if (PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.RoomMode].ToString() == "Free For All")
         {
             if (PhotonNetwork.LocalPlayer == info.Sender && PhotonNetwork.LocalPlayer == pv.Owner)
             {

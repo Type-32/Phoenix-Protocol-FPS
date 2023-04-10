@@ -519,11 +519,7 @@ namespace UserConfiguration
         }
         public static EquipmentData FindEquipmentData(int index)
         {
-            if (index < GlobalDatabase.Instance.allWeaponDatas.Count)
-            {
-                return GlobalDatabase.Instance.allEquipmentDatas[index];
-            }
-            return null;
+            try { return GlobalDatabase.Instance.allEquipmentDatas[index]; } catch { return null; }
         }
         public static int FindEquipmentDataIndex(EquipmentData data)
         {
@@ -686,10 +682,7 @@ namespace UserConfiguration
         }
         public static WeaponAppearanceMeshData FindWeaponAppearanceMeshData(int appearanceIndex, int weaponIndex)
         {
-            for (int i = 0; i < GlobalDatabase.Instance.allWeaponAppearanceDatas.Count; i++)
-            {
-                if (i == appearanceIndex && GlobalDatabase.Instance.allWeaponAppearanceDatas[i].weaponData.GlobalWeaponIndex == weaponIndex) return GlobalDatabase.Instance.allWeaponAppearanceDatas[i];
-            }
+            if (GlobalDatabase.Instance.allWeaponAppearanceDatas[appearanceIndex].weaponData.GlobalWeaponIndex == weaponIndex) return GlobalDatabase.Instance.allWeaponAppearanceDatas[appearanceIndex];
             return null;
         }
     }
