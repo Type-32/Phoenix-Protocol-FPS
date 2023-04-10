@@ -42,7 +42,6 @@ public class PlayerManager : MonoBehaviour
 
     [Space]
     [Header("UI")]
-    public GameObject loadout;
     [SerializeField] CanvasGroup deathGUICanvas;
     [SerializeField] CanvasGroup deathInfoCanvas;
     [SerializeField] Text killStatus, killerUsername;
@@ -151,6 +150,7 @@ public class PlayerManager : MonoBehaviour
             //cmm.AddPlayer(this);
             cmm.localClientPlayer = this;
             if ((bool)PhotonNetwork.CurrentRoom.CustomProperties[RoomKeys.GameStarted]) cmm.UpdatePlayerKillOnClient();
+            matchLoadoutManager = GetComponent<MatchLoadoutManager>();
         }
         else
         {
@@ -271,7 +271,6 @@ public class PlayerManager : MonoBehaviour
         deathGUICanvas.gameObject.SetActive(true);
 
         respawnButton.interactable = true;
-        respawnUI.redeployButton.interactable = false;
         respawnCountdown = 4;
         hasRespawned = false;
         temp = 0;
@@ -328,7 +327,6 @@ public class PlayerManager : MonoBehaviour
         audioListener.enabled = false;
         respawning = true;
         respawnButton.interactable = false;
-        respawnUI.redeployButton.interactable = true;
         deathUI.SetActive(false);
 
         Debug.Log("Instantiating Player Controller");
@@ -440,7 +438,6 @@ public class PlayerManager : MonoBehaviour
         StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
         //PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
-        respawnUI.redeployButton.interactable = false;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
         respawnCountdown = 5;
         hasRespawned = false;
@@ -479,7 +476,6 @@ public class PlayerManager : MonoBehaviour
     public void RedeployPlayer()
     {
         if (!pv.IsMine) return;
-        respawnUI.redeployButton.interactable = false;
         Die(true, -1);
     }
     public void RespawnPlayer()

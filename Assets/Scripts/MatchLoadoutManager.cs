@@ -9,7 +9,6 @@ using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 
 public class MatchLoadoutManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] LoadoutMenu loadoutMenu;
     [SerializeField] PlayerManager playerManager;
     public WeaponData[] slotWeaponData = new WeaponData[2];
     public EquipmentData[] slotEquipmentData = new EquipmentData[2];

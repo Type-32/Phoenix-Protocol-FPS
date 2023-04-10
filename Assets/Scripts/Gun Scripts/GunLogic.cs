@@ -21,6 +21,7 @@ public class GunLogic : MonoBehaviour
             AttachmentLogic();
         }
         HipfireSpreadConstantLogic();
+        gun.player.stats.isFiring = Input.GetMouseButton(0) && !gun.stats.isSprinting && !gun.stats.isAttaching && !gun.stats.isReloading ? true : false;
     }
     void HipfireSpreadConstantLogic()
     {

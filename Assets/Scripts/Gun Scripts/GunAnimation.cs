@@ -57,6 +57,8 @@ public class GunAnimation : MonoBehaviour
     Vector3 rotationalRecoil;
     Vector3 positionalRecoil;
     Vector3 Rot;
+    float effectLayerValue = 0f;
+    float targetEffectLayerValue = 0f;
     #endregion
 
     public float aimBobAmount = 0.015f;
@@ -142,6 +144,8 @@ public class GunAnimation : MonoBehaviour
             animate.SetFloat(movementVerticalValueKey, Input.GetAxis("Vertical"), 0.15f, Time.deltaTime);
         }
         if (gun.stats.isAiming) gun.attachment.CheckEnabledSightAimingPosition(gun.player.holder.weaponIndex);
+        targetEffectLayerValue = Mathf.Lerp(targetEffectLayerValue, 0f, Time.deltaTime * 22f);
+        effectLayerValue = Mathf.Lerp(effectLayerValue, targetEffectLayerValue, Time.deltaTime * 16f);
         //animate.SetBool("isSliding", gun.player.stats.isSliding);
         //animate.SetBool("isAttaching", gun.stats.isAttaching);
     }
@@ -187,6 +191,8 @@ public class GunAnimation : MonoBehaviour
 
     public void TriggerWeaponRecoil(float recoilX, float recoilY, float recoilZ, float kickBackZ)
     {
+        targetEffectLayerValue += kickBackZ;
+        gun.player.playerGunLayerEffect.weight = Mathf.Clamp(effectLayerValue, 0f, 1f);
         gunTargetPosition -= new Vector3(0, 0, kickBackZ);
         gunTargetRotation += new Vector3(recoilX, UnityEngine.Random.Range(-recoilY, recoilY), UnityEngine.Random.Range(-recoilZ, recoilZ));
     }
@@ -199,7 +205,7 @@ public class GunAnimation : MonoBehaviour
     public void UpdateWeaponPositionRecoil()
     {
         gunTargetPosition = Vector3.Lerp(gunTargetPosition, gunInitialPosition, Time.deltaTime * stats.gunReturnAmount);
-        gunCurrentPosition = Vector3.Lerp(gunCurrentPosition, gunTargetPosition, Time.fixedDeltaTime * stats.gunSnappiness);
+        gunCurrentPosition = Vector3.Lerp(gunCurrentPosition, gunTargetPosition, Time.fixedDeltaTime * stats.gunSnappiness * 2);
         gunRecoilModel.transform.localPosition = gunCurrentPosition;
     }
     public void WeaponBob()

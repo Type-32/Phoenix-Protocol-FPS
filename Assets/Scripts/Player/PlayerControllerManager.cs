@@ -65,6 +65,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [Space]
     [Header("Volume Effects")]
     [SerializeField] Volume playerVolumeEffect, playerHurtEffect, armorHurtEffect, nightVisionEffect;
+    public Volume playerGunLayerEffect;
 
     [Space]
     [Header("Multiplayer")]

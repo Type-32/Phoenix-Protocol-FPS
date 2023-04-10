@@ -214,6 +214,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     }
     public void EquipItem(int _index)
     {
+        player.stats.isFiring = false;
         if (_index <= 1)
         {
             Debug.Log("Using Weapon " + _index);

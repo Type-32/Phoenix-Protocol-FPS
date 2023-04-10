@@ -872,8 +872,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 4852457880753245286}
-  isAiming: 0
-  isSprinting: 0
   spreadConstant: 1
 --- !u!114 &4852457880753245286
 MonoBehaviour:
@@ -892,6 +890,8 @@ MonoBehaviour:
   gun: {fileID: 4852457880753245286}
   bulletImpactPrefab: {fileID: 4867200395551333757, guid: a621f7e3952136e44a4fe8f1d344ee0c,
     type: 3}
+  ModelMode: 0
+  ModelFire: 0
   player: {fileID: 0}
   holder: {fileID: 0}
   core: {fileID: 5573869017911023091}
@@ -997,7 +997,7 @@ MonoBehaviour:
   ui: {fileID: 0}
 --- !u!95 &5183655109247484720
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1014,7 +1014,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &6173563475319394978
 MonoBehaviour:
   m_ObjectHideFlags: 0

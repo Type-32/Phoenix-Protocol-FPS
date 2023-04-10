@@ -45,6 +45,8 @@ public class PlayerStats : MonoBehaviour
     public bool isBreathing = false;
     public bool isDowned = false;
     public bool isDead = false;
+    public bool isFiring = false;
+    public bool isShooting = false;
     public bool onGround = false;
     public bool enableGravity = true;
 
