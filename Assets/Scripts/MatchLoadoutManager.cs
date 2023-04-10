@@ -13,8 +13,6 @@ public class MatchLoadoutManager : MonoBehaviourPunCallbacks
     [SerializeField] PlayerManager playerManager;
     public WeaponData[] slotWeaponData = new WeaponData[2];
     public EquipmentData[] slotEquipmentData = new EquipmentData[2];
-    public Image[] slotIcons;
-    public Text[] slotNames;
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (!playerManager.pv.IsMine && targetPlayer == playerManager.pv.Owner)
@@ -37,20 +35,6 @@ public class MatchLoadoutManager : MonoBehaviourPunCallbacks
                 slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(1)]];
                 slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(2)]];
             }
-        }
-    }
-
-    public void SetLoadoutSlotInfo(WeaponData data, int index)
-    {
-        slotWeaponData[index] = data;
-        slotIcons[index].sprite = data.itemIcon;
-        slotNames[index].text = (index == 0 ? "PRIMARY - " : "SECONDARY - ") + data.itemName;
-    }
-    public void RefreshLoadoutSlotInfo()
-    {
-        for (int i = 0; i < slotWeaponData.Length; i++)
-        {
-            SetLoadoutSlotInfo(slotWeaponData[i], i);
         }
     }
 
