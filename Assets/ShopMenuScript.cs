@@ -55,17 +55,19 @@ public class ShopMenuScript : MonoBehaviour
         TogglePreviewUI(false);
         MenuManager.Instance.ToggleShopMenu(false);
     }
-    public void InitializeCosmeticsMenu(AppearancesDataJSON jsonData)
+
+    private void InitializeCosmeticsMenu(AppearancesDataJSON jsonData)
     {
         return;
         for (int i = 0; i < jsonData.availableWeaponAppearances.Count; i++)
         {
             WeaponCosmeticListItem temp = Instantiate(weaponCosmeticListItem, weaponCosmeticListItemHolder).GetComponent<WeaponCosmeticListItem>();
             weaponCosmeticList.Add(temp);
-            temp.SetInfo(CosmeticSystem.FindWeaponAppearanceMeshData(jsonData.availableWeaponAppearances[i]));
+            temp.SetInfo(CosmeticSystem.FindWeaponAppearanceMeshData(jsonData.availableWeaponAppearances[i]), this);
         }
     }
-    public void InitializeWeaponsMenu(UserDataJSON jsonData)
+
+    private void InitializeWeaponsMenu(UserDataJSON jsonData)
     {
         bool informPopupNeeded = false;
         string content = "You have unlocked the following content(s) in your last session: \n";
@@ -97,7 +99,7 @@ public class ShopMenuScript : MonoBehaviour
                 {
                     un = pur = true;
                 }
-                item.SetItemData(GlobalDatabase.Instance.allWeaponDatas[i], un, pur);
+                item.SetItemData(GlobalDatabase.Instance.allWeaponDatas[i], un, pur, this);
                 shopWeaponList.Add(item);
             }
             else
@@ -114,7 +116,7 @@ public class ShopMenuScript : MonoBehaviour
                 {
                     jsonData.ShopData.availableWeaponIndexes.Add(i);
                 }
-                item.SetItemData(GlobalDatabase.Instance.allWeaponDatas[i], un, pur);
+                item.SetItemData(GlobalDatabase.Instance.allWeaponDatas[i], un, pur, this);
                 shopWeaponList.Add(item);
             }
         }
@@ -143,7 +145,7 @@ public class ShopMenuScript : MonoBehaviour
         {
             ShopAttachPreviewItem item = Instantiate(previewAttachItemPrefab, previewAttachItemHolder).GetComponent<ShopAttachPreviewItem>();
             attachList.Add(item);
-            item.SetInfo(data.applicableAttachments[i].attachmentIcon);
+            item.SetInfo(data.applicableAttachments[i].attachmentIcon, this);
         }
         purchasePreview.interactable = showPurchaseButton;
     }
@@ -183,21 +185,17 @@ public class ShopMenuScript : MonoBehaviour
     {
         if (data != null)
         {
-            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, UserSystem.UserDataConfigKey));
-            //Debug.LogWarning("Reading User Data To Files...");
             UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             if (jsonData.userCoins >= data.purchasePrice)
             {
                 MenuManager.Instance.AddNotification("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
-                FindForWeaponDataInList(data).SetItemData(data, true, true);
+                FindForWeaponDataInList(data).SetItemData(data, true, true, this);
                 UserDatabase.Instance.AddUserCurrency(data.purchasePrice);
-                //jsonData.ShopData.unlockedWeaponIndexes.Remove(Launcher.Instance.FindGlobalWeaponIndex(data));
                 jsonData.ShopData.ownedWeaponIndexes.Add(Database.FindWeaponDataIndex(data));
                 purchasePreview.interactable = false;
 
                 FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                 MenuManager.Instance.loadoutSelectionMenu.GetComponent<LoadoutSelectionScript>().InstantiateLoadoutItemSelections();
-                //Debug.LogWarning("Writing User Data To Files...");
             }
             else
             {

@@ -357,43 +357,39 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void SetLoadoutValuesToPlayer()
     {
         Hashtable temp = new Hashtable();
-        //PhotonNetwork.LocalPlayer.CustomProperties = new Hashtable();
         int selectedWeaponIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[0].GlobalWeaponIndex;
         int selectedWeaponIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[1].GlobalWeaponIndex;
         int selectedEquipmentIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[0].GlobalEquipmentIndex;
         int selectedEquipmentIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].equipmentData[1].GlobalEquipmentIndex;
-        Debug.Log("EQ 1: " + selectedEquipmentIndex1 + "    EQ 2: " + selectedEquipmentIndex2);
-        //Debug.LogWarning(selectedWeaponIndex1);
-        //Debug.LogWarning(selectedWeaponIndex2);
         temp.Add(LoadoutKeys.SelectedWeaponIndex(1), selectedWeaponIndex1);
         temp.Add(LoadoutKeys.SelectedWeaponIndex(2), selectedWeaponIndex2);
         temp.Add(LoadoutKeys.SelectedEquipmentIndex(1), selectedEquipmentIndex1);
         temp.Add(LoadoutKeys.SelectedEquipmentIndex(2), selectedEquipmentIndex2);
 
-        int SMWA_SightIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[0];
-        int SMWA_SightIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[1];
-        int SMWA_BarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedBarrelIndex[0];
-        int SMWA_BarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedBarrelIndex[1];
-        int SMWA_UnderbarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[0];
-        int SMWA_UnderbarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[1];
-        int SMWA_LeftbarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[0];
-        int SMWA_LeftbarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[1];
-        int SMWA_RightbarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[0];
-        int SMWA_RightbarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[1];
-        int SMWA_AppearanceIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[0];
-        int SMWA_AppearanceIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[1];
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 1), SMWA_SightIndex1);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 2), SMWA_SightIndex2);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 1), SMWA_BarrelIndex1);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 2), SMWA_BarrelIndex2);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 1), SMWA_UnderbarrelIndex1);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 2), SMWA_UnderbarrelIndex2);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Leftbarrel, 1), SMWA_LeftbarrelIndex1);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Leftbarrel, 2), SMWA_LeftbarrelIndex2);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Rightbarrel, 1), SMWA_RightbarrelIndex1);
-        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Rightbarrel, 2), SMWA_RightbarrelIndex2);
-        temp.Add("SMWA_AppearanceIndex1", SMWA_AppearanceIndex1);
-        temp.Add("SMWA_AppearanceIndex2", SMWA_AppearanceIndex2);
+        int smwaSightIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[0];
+        int smwaSightIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSightIndex[1];
+        int smwaBarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedBarrelIndex[0];
+        int smwaBarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedBarrelIndex[1];
+        int smwaUnderbarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[0];
+        int smwaUnderbarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedUnderbarrelIndex[1];
+        int smwaLeftbarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[0];
+        int smwaLeftbarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelLeftIndex[1];
+        int smwaRightbarrelIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[0];
+        int smwaRightbarrelIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedSidebarrelRightIndex[1];
+        int smwaAppearanceIndex1 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[0];
+        int smwaAppearanceIndex2 = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].selectedAppearanceDataIndex[1];
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 1), smwaSightIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Sight, 2), smwaSightIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 1), smwaBarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Barrel, 2), smwaBarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 1), smwaUnderbarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Underbarrel, 2), smwaUnderbarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Leftbarrel, 1), smwaLeftbarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Leftbarrel, 2), smwaLeftbarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Rightbarrel, 1), smwaRightbarrelIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponCustomization(AttachmentTypes.Rightbarrel, 2), smwaRightbarrelIndex2);
+        temp.Add(LoadoutKeys.SelectedWeaponAppearance(1), smwaAppearanceIndex1);
+        temp.Add(LoadoutKeys.SelectedWeaponAppearance(2), smwaAppearanceIndex2);
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(temp);
     }

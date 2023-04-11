@@ -249,10 +249,7 @@ public class MenuManager : MonoBehaviour
     }
     public void CloseCurrentMenu()
     {
-        foreach (MenuIdentifier ip in MenuIdentifiers)
-        {
-            CloseMenu(ip);
-        }
+        OnMenuToggled?.Invoke(false,"command.CloseAllMenus",-1);
     }
     public void RefreshMenu()
     {

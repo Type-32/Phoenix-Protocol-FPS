@@ -25,34 +25,33 @@ public class MenuIdentifier : MonoBehaviour
     public void ReceiveInstruction(bool state, string name, int id)
     {
         //if (selfManagable) return;
+        bool nullOrNot = false;
         if (menuObject != null)
         {
+            nullOrNot = true;
+            if (name == "command.CloseAllMenus")
+            {
+                if (!state && !menuObject.activeInHierarchy)
+                    return;
+                else
+                    menuObject.SetActive(false);
+            }
             if (id != -1 && id == menuID)
             {
                 if (!state && !menuObject.activeInHierarchy)
                     return;
                 else
-                {
                     menuObject.SetActive(state);
-                    //Debug.Log($"MenuIdentifier {menuID} is Invoked.");
-                }
             }
             if (name != "null" && menuName == name)
             {
                 if (!state && !menuObject.activeInHierarchy)
                     return;
                 else
-                {
                     menuObject.SetActive(state);
-                    //Debug.Log($"MenuIdentifier {menuName} is Invoked.");
-                }
             }
         }
-        else
-        {
-            Debug.LogWarning($"There is no menuObject reference under the MenuIdentifier: {menuName}");
-        }
-        OnReceivedInstruction?.Invoke(menuObject != null ? menuObject.activeInHierarchy : false, menuName);
+        OnReceivedInstruction?.Invoke(nullOrNot && menuObject.activeInHierarchy, menuName);
         if (state && name == "main") MenuManager.Instance.SetQuitButtonState(true);
         else MenuManager.Instance.SetQuitButtonState(false);
 

@@ -14,6 +14,8 @@ public class MatchLoadoutManager : MonoBehaviourPunCallbacks
     public List<EquipmentData> slotEquipmentData = new();
     void Awake()
     {
+        slotWeaponData.Clear();
+        slotEquipmentData.Clear();
         slotWeaponData.Add(GlobalDatabase.Instance.allWeaponDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]]);
         slotWeaponData.Add(GlobalDatabase.Instance.allWeaponDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]]);
         slotEquipmentData.Add(GlobalDatabase.Instance.allEquipmentDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]]);

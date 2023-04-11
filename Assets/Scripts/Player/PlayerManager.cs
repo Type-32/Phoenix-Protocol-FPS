@@ -13,6 +13,7 @@ using UnityEngine.Rendering;
 using PrototypeLib.Modules.FileOperations.IO;
 using UnityEngine.Rendering.Universal;
 using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
+using Unity.VisualScripting;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class PlayerManager : MonoBehaviour
     public bool openedLoadoutMenu = false;
     public bool openedOptions = false;
     public bool openedSettingsSection = false;
+    public bool openedLoadoutSwapMenu = false;
     public bool enabledButtonHolder = false;
     public bool openedInventory = false;
 
@@ -63,7 +65,10 @@ public class PlayerManager : MonoBehaviour
     public SpawnpointUI spawnpointUI;
     public KillStatsHUD killStatsHUD;
     public KillMessagesHUD killMessagesHUD;
-
+    public GameObject loadoutSwapMenu;
+    public GameObject loadoutSwapPrefab;
+    public Transform loadoutSwapPrefabHolder;
+    
     [Space]
     [Header("Settings Related")]
     public SettingsMenu settingsMenu;
@@ -201,23 +206,35 @@ public class PlayerManager : MonoBehaviour
             }
             StartCoroutine(DelayedSyncIsTeam(0.25f));
             settingsMenu.SettingsMenuAwakeFunction();
-            prevIcon1.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]].itemIcon;
-            prevIcon2.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]].itemIcon;
-            prevIcon3.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]].itemIcon;
-            prevIcon4.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]].itemIcon;
+            SetWeaponPreview(GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]].itemIcon, GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]].itemIcon, GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]].itemIcon,GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]].itemIcon);
             OnJoiningOngoingRoom();
             deathInfoCanvas.alpha = 0f;
             randomPlayerColor = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255), 1);
+            LoadoutDataJSON temp = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).LoadoutData;
+            for (int i = 0; i < temp.Slots.Count; i++)
+            {
+                RespawnLoadoutItemScript item = Instantiate(loadoutSwapPrefab, loadoutSwapPrefabHolder).GetComponent<RespawnLoadoutItemScript>();
+                item.SetInfo(temp.Slots[i], this);
+            }
         }
         openedInventory = false;
         CloseMenu();
+        ToggleLoadoutSwapMenu(false);
+    }
+
+    public void SetWeaponPreview(Sprite w1, Sprite w2, Sprite e1, Sprite e2)
+    {
+        prevIcon1.sprite = w1;
+        prevIcon2.sprite = w2;
+        prevIcon3.sprite = e1;
+        prevIcon4.sprite = e2;
     }
     IEnumerator DelayedInit(float amount)
     {
         yield return new WaitForSeconds(amount);
-        cmm.RefreshPlayerList();
-        cmm.DistributeTeams();
-        cmm.TeamDeathmatchKillLogic(0, IsTeam);
+        CurrentMatchManager.Instance.RefreshPlayerList();
+        CurrentMatchManager.Instance.DistributeTeams();
+        CurrentMatchManager.Instance.TeamDeathmatchKillLogic(0, IsTeam);
     }
     IEnumerator DelayedSyncIsTeam(float amount)
     {
@@ -535,6 +552,10 @@ public class PlayerManager : MonoBehaviour
             {
                 CloseMenu();
             }
+            else if (openedLoadoutSwapMenu)
+            {
+                ToggleLoadoutSwapMenu(false);
+            }
             else
             {
                 OpenMenu();
@@ -702,6 +723,12 @@ public class PlayerManager : MonoBehaviour
         ToggleButtonHolder(openedOptions);
         ToggleSettingsMenu(openedOptions);
         if (controller != null) Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void ToggleLoadoutSwapMenu(bool state)
+    {
+        openedLoadoutSwapMenu = state;
+        loadoutSwapMenu.SetActive(state);
     }
     #endregion
     public void LeaveGame()

@@ -10,17 +10,13 @@ public class ShopWeaponItem : MonoBehaviour
     public Text weaponName;
     public Text weaponState;
     public Image weaponIcon;
-    Button weaponButton;
+    [SerializeField] Button weaponButton;
     public bool isUnlocked = false;
     public bool isPurchased = false;
     // Start is called before the first frame update
-    private void Awake()
+    public void SetItemData(WeaponData data, bool unlocked, bool purchased, ShopMenuScript sms)
     {
-        weaponButton = GetComponent<Button>();
-        script = FindObjectOfType<ShopMenuScript>();
-    }
-    public void SetItemData(WeaponData data, bool unlocked, bool purchased)
-    {
+        script = sms;
         weaponData = data;
         weaponName.text = weaponData.name;
         weaponIcon.sprite = weaponData.itemIcon;
@@ -44,7 +40,7 @@ public class ShopWeaponItem : MonoBehaviour
     }
     public void SelectItem()
     {
-        script.SetPreviewInfo(weaponData, isUnlocked ? !isPurchased ? true : false : false);
+        script.SetPreviewInfo(weaponData, isUnlocked && (!isPurchased ? true : false));
         script.TogglePreviewUI(true);
     }
 }

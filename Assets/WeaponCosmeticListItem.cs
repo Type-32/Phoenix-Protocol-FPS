@@ -14,13 +14,9 @@ public class WeaponCosmeticListItem : MonoBehaviour
     [SerializeField] Text rarityText;
     [SerializeField] Color common, uncommon, rare, epic, legendary;
     [HideInInspector] public WeaponAppearanceMeshData data;
-    // Start is called before the first frame update
-    void Awake()
+    public void SetInfo(WeaponAppearanceMeshData data, ShopMenuScript sms)
     {
-        script = FindObjectOfType<ShopMenuScript>();
-    }
-    public void SetInfo(WeaponAppearanceMeshData data)
-    {
+        script = sms;
         weaponIcon.sprite = data.itemIcon;
         weaponSkinText.text = data.weaponData.itemName + " - " + data.itemName;
         weaponSkinPrice.text = "$" + data.purchasePrice.ToString();

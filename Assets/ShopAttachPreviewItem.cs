@@ -7,12 +7,9 @@ public class ShopAttachPreviewItem : MonoBehaviour
 {
     ShopMenuScript script;
     [SerializeField] Image icon;
-    void Start()
+    public void SetInfo(Sprite icon, ShopMenuScript sms)
     {
-        script = FindObjectOfType<ShopMenuScript>();
-    }
-    public void SetInfo(Sprite icon)
-    {
+        script = sms;
         this.icon.sprite = icon;
     }
 }
