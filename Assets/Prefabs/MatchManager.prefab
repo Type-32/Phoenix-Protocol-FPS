@@ -54,12 +54,15 @@ MonoBehaviour:
   totalTime: 0
   maxKillLimit: 0
   scoreboard: {fileID: 0}
+  allowDownedState: 0
   topPlayer: {fileID: 0}
   localClientPlayer: {fileID: 0}
+  masterClientPlayer: {fileID: 0}
   teamBlue: []
   teamRed: []
   teamBluePoints: 0
   teamRedPoints: 0
+  dropTimes: 1
 --- !u!114 &2501908592190297539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,5 +118,9 @@ MonoBehaviour:
     size: 300
   - tag: BulletImpactEffect
     prefab: {fileID: 4867200395551333757, guid: a621f7e3952136e44a4fe8f1d344ee0c,
+      type: 3}
+    size: 300
+  - tag: BulletTrailEffect
+    prefab: {fileID: 8094478819801842890, guid: 4d24d8f003e2e87469a06ea3a0cc7c72,
       type: 3}
     size: 300
