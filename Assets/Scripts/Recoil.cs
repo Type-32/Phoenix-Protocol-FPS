@@ -21,8 +21,8 @@ public class Recoil : MonoBehaviour
         if (!player.pv.IsMine) return;
         targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, returnSpeed * Time.deltaTime);
         currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.fixedDeltaTime);
-        targetPosition = Vector3.Lerp(targetPosition, Vector3.zero, positionReturnSpeed * 4 * Time.deltaTime);
-        currentPosition = Vector3.Slerp(currentPosition, targetPosition, positionSnappiness * 2 * Time.fixedDeltaTime);
+        targetPosition = Vector3.Lerp(targetPosition, Vector3.zero, positionReturnSpeed * Time.deltaTime);
+        currentPosition = Vector3.Slerp(currentPosition, targetPosition, positionSnappiness * Time.fixedDeltaTime);
         transform.localRotation = Quaternion.Euler(currentRotation);
         transform.localPosition = currentPosition;
     }
@@ -34,8 +34,7 @@ public class Recoil : MonoBehaviour
         positionSnappiness = positionTransitionalSnappiness;
         positionReturnSpeed = positionRecoilReturnSpeed;
         targetRotation += new Vector3(-verticalRecoil, Random.Range(-horizontalRecoil, horizontalRecoil), Random.Range(-sphericalShake, sphericalShake));
-        //targetRotation += new Vector3(-verticalRecoil * 0.2f, Random.Range(-horizontalRecoil * 0.5f, horizontalRecoil * 0.5f), Random.Range(-sphericalShake * 0.1f, sphericalShake * 0.1f));
         targetPosition += new Vector3(0f, 0f, -positionRecoilRetaliation);
-        player.ui.AddReticleSize((verticalRecoil * positionRecoilRetaliation) * 3f);
+        player.ui.AddReticleSize((verticalRecoil * positionRecoilRetaliation) * 20f);
     }
 }

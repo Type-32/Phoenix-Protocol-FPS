@@ -205,7 +205,7 @@ public class GunAnimation : MonoBehaviour
     public void UpdateWeaponPositionRecoil()
     {
         gunTargetPosition = Vector3.Lerp(gunTargetPosition, gunInitialPosition, Time.deltaTime * stats.gunReturnAmount);
-        gunCurrentPosition = Vector3.Lerp(gunCurrentPosition, gunTargetPosition, Time.fixedDeltaTime * stats.gunSnappiness * 2);
+        gunCurrentPosition = Vector3.Lerp(gunCurrentPosition, gunTargetPosition, Time.fixedDeltaTime * stats.gunSnappiness);
         gunRecoilModel.transform.localPosition = gunCurrentPosition;
     }
     public void WeaponBob()

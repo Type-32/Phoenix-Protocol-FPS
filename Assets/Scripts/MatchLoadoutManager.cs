@@ -25,23 +25,66 @@ public class MatchLoadoutManager : MonoBehaviourPunCallbacks
     {
         if (!playerManager.pv.IsMine && targetPlayer == playerManager.pv.Owner)
         {
-            if (changedProps.ContainsKey(SynchronizationKeys.WeaponDataChangedMode) && changedProps.ContainsKey(SynchronizationKeys.WeaponDataChanged))
+            if (changedProps.ContainsKey(SynchronizationKeys.WeaponDataChangedMode) &&
+                changedProps.ContainsKey(SynchronizationKeys.WeaponDataChanged))
             {
                 if ((int)changedProps[SynchronizationKeys.WeaponDataChangedMode] < 2)
                 {
-                    slotWeaponData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[SynchronizationKeys.WeaponDataChanged]];
+                    slotWeaponData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] =
+                        GlobalDatabase.Instance.allWeaponDatas
+                            [(int)changedProps[SynchronizationKeys.WeaponDataChanged]];
                 }
                 else
                 {
-                    slotEquipmentData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[SynchronizationKeys.WeaponDataChanged]];
+                    slotEquipmentData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] =
+                        GlobalDatabase.Instance.allEquipmentDatas[
+                            (int)changedProps[SynchronizationKeys.WeaponDataChanged]];
                 }
             }
-            else if (changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(1)) || changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(2)) || changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(1)) || changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(2)))
+            else if (changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(1)) ||
+                     changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(2)) ||
+                     changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(1)) ||
+                     changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(2)))
             {
-                slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[LoadoutKeys.SelectedWeaponIndex(1)]];
-                slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[LoadoutKeys.SelectedWeaponIndex(2)]];
-                slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(1)]];
-                slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(2)]];
+                slotWeaponData[0] =
+                    GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[LoadoutKeys.SelectedWeaponIndex(1)]];
+                slotWeaponData[1] =
+                    GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[LoadoutKeys.SelectedWeaponIndex(2)]];
+                slotEquipmentData[0] =
+                    GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(1)]];
+                slotEquipmentData[1] =
+                    GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[LoadoutKeys.SelectedEquipmentIndex(2)]];
+            }
+        }
+        else if (playerManager.pv.IsMine && targetPlayer == playerManager.pv.Owner)
+        {
+            if (changedProps.ContainsKey(SynchronizationKeys.WeaponDataChangedMode) &&
+                changedProps.ContainsKey(SynchronizationKeys.WeaponDataChanged))
+            {
+                if ((int)changedProps[SynchronizationKeys.WeaponDataChangedMode] < 2)
+                {
+                    slotWeaponData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] =
+                        GlobalDatabase.Instance.allWeaponDatas
+                            [(int)changedProps[SynchronizationKeys.WeaponDataChanged]];
+                }
+                else
+                {
+                    slotEquipmentData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] =
+                        GlobalDatabase.Instance.allEquipmentDatas[
+                            (int)changedProps[SynchronizationKeys.WeaponDataChanged]];
+                }
+            }
+            else if (changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(1)) ||
+                     changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(2)) ||
+                     changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(1)) ||
+                     changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(2)))
+            {
+                slotWeaponData.Clear();
+                slotEquipmentData.Clear();
+                slotWeaponData.Add(GlobalDatabase.Instance.allWeaponDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]]);
+                slotWeaponData.Add(GlobalDatabase.Instance.allWeaponDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]]);
+                slotEquipmentData.Add(GlobalDatabase.Instance.allEquipmentDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]]);
+                slotEquipmentData.Add(GlobalDatabase.Instance.allEquipmentDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]]);
             }
         }
     }
