@@ -15,6 +15,7 @@ public class RespawnLoadoutItemScript : MonoBehaviour
     public void SetInfo(LoadoutSlotDataJSON lsd, PlayerManager pm)
     {
         player = pm;
+        localLoadoutDataSlot = lsd;
         loadoutTitle.text = lsd.SlotName;
         primaryText.text = GlobalDatabase.Instance.allWeaponDatas[lsd.Weapon1].itemName;
         secondaryText.text = GlobalDatabase.Instance.allWeaponDatas[lsd.Weapon2].itemName;
