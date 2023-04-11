@@ -431,12 +431,12 @@ public class PlayerManager : MonoBehaviour
         //PhotonNetwork.Destroy(controller);
         respawnButton.interactable = true;
         Debug.Log("Player " + player.pv.Owner.NickName + " was Killed");
-        respawnCountdown = 5;
+        respawnCountdown = 7;
         hasRespawned = false;
         temp = 0;
         returnTemp = 0f;
         deathUI.SetActive(true);
-        deathCountdown.text = "Waiting for Respawn";
+        deathCountdown.text = "Waiting For Deployment";
         Cursor.lockState = CursorLockMode.None;
         if (randomSpawnpoint || spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
         spawnpointUI.ChooseSpawnpoint(selectedSPIndex);
@@ -460,7 +460,7 @@ public class PlayerManager : MonoBehaviour
         secondCount = 0;
         hasRespawned = true;
         respawning = false;
-        deathCountdown.text = "Waiting for Respawn";
+        deathCountdown.text = "Waiting For Deployment";
         skipCountdownIndicator.SetActive(false);
         yield return new WaitForSeconds(duration);
         CompleteCountdown();
@@ -501,8 +501,8 @@ public class PlayerManager : MonoBehaviour
         //cmm.RemovePlayer(this);
         SceneManager.LoadScene(0);
         //roomManager.SelfDestruction();
-        Debug.Log("Self Destruction Occured");
-        Debug.Log("Loaded Scene from Player Manager");
+        //Debug.Log("Self Destruction Occured");
+        //Debug.Log("Loaded Scene from Player Manager");
     }
     private void Update()
     {
@@ -603,7 +603,7 @@ public class PlayerManager : MonoBehaviour
                 }
 
                 //CompleteCountdown();
-                deathCountdown.text = "Respawn";
+                deathCountdown.text = "Deploy";
                 //respawnButton.interactable = true;
                 return;
             }
@@ -611,7 +611,7 @@ public class PlayerManager : MonoBehaviour
             {
                 respawnButton.interactable = false;
             }
-            deathCountdown.text = "Respawn Available in " + respawnCountdown.ToString();
+            deathCountdown.text = "Deploy in " + respawnCountdown.ToString();
             respawnCountdown--;
             temp = 0;
         }
@@ -623,7 +623,7 @@ public class PlayerManager : MonoBehaviour
         secondCount = 0;
         hasRespawned = true;
         respawning = false;
-        deathCountdown.text = "Waiting for Respawn";
+        deathCountdown.text = "Waiting For Deployment";
         skipCountdownIndicator.SetActive(false);
         CreateController();
     }
