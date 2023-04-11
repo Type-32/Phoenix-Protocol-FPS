@@ -40,6 +40,11 @@ namespace PrototypeLib
                     public static string MaxKillLimit => "maxKillLimit";
                     public static string AllowDownedState => "allowDownedState";
                 }
+                public static class SynchronizationKeys
+                {
+                    public static string WeaponDataChangedMode => "weaponDataChangedMode";
+                    public static string WeaponDataChanged => "weaponDataChanged";
+                }
             }
             public static class PlayerManipulaton
             {

@@ -29,11 +29,11 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         {
             for (int i = 0; i < 2; i++)
             {
-                InstantiateWeapon(GlobalDatabase.Instance.allWeaponDatas[(int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(i + 1)]], i);
+                InstantiateWeapon(player.matchLoadoutManager.slotWeaponData[i], i);
             }
             for (int i = 0; i < 2; i++)
             {
-                InstantiateEquipment(GlobalDatabase.Instance.allEquipmentDatas[(int)player.pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(i + 1)]], i);
+                InstantiateEquipment(player.matchLoadoutManager.slotEquipmentData[i], i);
             }
             Transform[] muzzle1 = weaponSlots[0].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
             Transform[] muzzle2 = weaponSlots[1].gun.muzzleFire.gameObject.GetComponentsInChildren<Transform>();
@@ -299,7 +299,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
         if (!player.pv.IsMine && targetPlayer == player.pv.Owner && changedProps.ContainsKey("weaponIndex"))
         {
             EquipItem((int)changedProps["weaponIndex"]);
-            //player.playerManager.matchLoadoutManager.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+            //player.playerManager.matchLoadoutManager.slotWeaponData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[SynchronizationKeys.WeaponDataChanged]];
         }
     }
     public void WeaponFunction()

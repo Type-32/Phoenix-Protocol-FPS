@@ -10,21 +10,28 @@ using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
 public class MatchLoadoutManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] PlayerManager playerManager;
-    public WeaponData[] slotWeaponData = new WeaponData[2];
-    public EquipmentData[] slotEquipmentData = new EquipmentData[2];
+    public List<WeaponData> slotWeaponData = new();
+    public List<EquipmentData> slotEquipmentData = new();
+    void Awake()
+    {
+        slotWeaponData.Add(GlobalDatabase.Instance.allWeaponDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]]);
+        slotWeaponData.Add(GlobalDatabase.Instance.allWeaponDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]]);
+        slotEquipmentData.Add(GlobalDatabase.Instance.allEquipmentDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]]);
+        slotEquipmentData.Add(GlobalDatabase.Instance.allEquipmentDatas[(int)photonView.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]]);
+    }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (!playerManager.pv.IsMine && targetPlayer == playerManager.pv.Owner)
         {
-            if (changedProps.ContainsKey("weaponDataChangedMode") && changedProps.ContainsKey("weaponDataChanged"))
+            if (changedProps.ContainsKey(SynchronizationKeys.WeaponDataChangedMode) && changedProps.ContainsKey(SynchronizationKeys.WeaponDataChanged))
             {
-                if ((int)changedProps["weaponDataChangedMode"] < 2)
+                if ((int)changedProps[SynchronizationKeys.WeaponDataChangedMode] < 2)
                 {
-                    playerManager.matchLoadoutManager.slotWeaponData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps["weaponDataChanged"]];
+                    slotWeaponData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] = GlobalDatabase.Instance.allWeaponDatas[(int)changedProps[SynchronizationKeys.WeaponDataChanged]];
                 }
                 else
                 {
-                    playerManager.matchLoadoutManager.slotEquipmentData[(int)changedProps["weaponDataChangedMode"]] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps["weaponDataChanged"]];
+                    slotEquipmentData[(int)changedProps[SynchronizationKeys.WeaponDataChangedMode]] = GlobalDatabase.Instance.allEquipmentDatas[(int)changedProps[SynchronizationKeys.WeaponDataChanged]];
                 }
             }
             else if (changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(1)) || changedProps.ContainsKey(LoadoutKeys.SelectedWeaponIndex(2)) || changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(1)) || changedProps.ContainsKey(LoadoutKeys.SelectedEquipmentIndex(2)))

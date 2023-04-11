@@ -166,10 +166,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (!pv.IsMine)
         {
-            matchLoadoutManager.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]];
-            matchLoadoutManager.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]];
-            matchLoadoutManager.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]];
-            matchLoadoutManager.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]];
             deathUI.SetActive(false);
             hasRespawned = true;
             CloseMenu();
@@ -205,10 +201,6 @@ public class PlayerManager : MonoBehaviour
             }
             StartCoroutine(DelayedSyncIsTeam(0.25f));
             settingsMenu.SettingsMenuAwakeFunction();
-            matchLoadoutManager.slotWeaponData[0] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]];
-            matchLoadoutManager.slotWeaponData[1] = GlobalDatabase.Instance.allWeaponDatas[(int)PhotonNetwork.LocalPlayer.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]];
-            matchLoadoutManager.slotEquipmentData[0] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]];
-            matchLoadoutManager.slotEquipmentData[1] = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(2)]];
             prevIcon1.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(1)]].itemIcon;
             prevIcon2.sprite = GlobalDatabase.Instance.allWeaponDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedWeaponIndex(2)]].itemIcon;
             prevIcon3.sprite = GlobalDatabase.Instance.allEquipmentDatas[(int)pv.Owner.CustomProperties[LoadoutKeys.SelectedEquipmentIndex(1)]].itemIcon;
