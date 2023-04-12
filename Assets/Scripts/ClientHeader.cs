@@ -617,6 +617,12 @@ namespace UserConfiguration
                     }
                 }
             }
+
+            for (int i = 0; i < jsonData.AppearancesData.availableWeaponAppearances.Count; i++)
+            {
+                WeaponAppearance temp = jsonData.AppearancesData.availableWeaponAppearances[i];
+                Debug.Log($"UNPASSED WAMDs: WI - {temp.weaponIndex}, AI - {temp.appearanceIndex}");
+            }
             if (correctValidation) FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
         public static bool ValidateLoadoutCosmetics(bool correctValidation = true)
