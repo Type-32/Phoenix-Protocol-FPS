@@ -587,37 +587,36 @@ namespace UserConfiguration
     }
     public static class CosmeticSystem
     {
-        public static bool VerifyWeaponAppearanceData(WeaponAppearanceMeshData data, bool correctValidation = true)
+        public static void VerifyWeaponAppearanceData(bool correctValidation = true)
         {
-            WeaponAppearance temp = new WeaponAppearance(data);
             UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-            bool isValid = false;
-            if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp))
+            foreach (WeaponAppearanceMeshData data in GlobalDatabase.Instance.allWeaponAppearanceDatas)
             {
-                Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
-                isValid = true;
-                if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
+                WeaponAppearance temp = new WeaponAppearance(data);
+                if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp))
                 {
-                    jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
-                    isValid = false;
-                    Debug.LogWarning("Detecting Yes WAMD in Unlocked and Yes in Available");
-                }
-            }
-            else
-            {
-                if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
-                {
-                    Debug.LogWarning("Detecting No WAMD in Unlocked and Yes in Available");
-                    isValid = true;
+                    Debug.LogWarning($"Unlocked WAMDs: {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.unlockedWeaponAppearances.Count}");Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
+                    Debug.Log($"WAMDs: WI - {temp.weaponIndex}, AI - {temp.appearanceIndex}");
+                    if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
+                    {
+                        jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
+                        Debug.LogWarning("Detecting Yes WAMD in Unlocked and Yes in Available");
+                    }
                 }
                 else
                 {
-                    Debug.LogWarning("Detecting No WAMD in Unlocked and No in Available");
-                    jsonData.AppearancesData.availableWeaponAppearances.Add(temp);
-                    if (correctValidation) FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
+                    if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
+                    {
+                        Debug.LogWarning("Detecting No WAMD in Unlocked and Yes in Available");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Detecting No WAMD in Unlocked and No in Available");
+                        jsonData.AppearancesData.availableWeaponAppearances.Add(temp);
+                    }
                 }
             }
-            return isValid;
+            if (correctValidation) FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
         }
         public static bool ValidateLoadoutCosmetics(bool correctValidation = true)
         {

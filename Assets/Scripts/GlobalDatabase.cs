@@ -30,10 +30,7 @@ public class GlobalDatabase : MonoBehaviour
         {
             WeaponSystem.ValidateWeapon(i, true);
         }
-        foreach (WeaponAppearanceMeshData tp in allWeaponAppearanceDatas)
-        {
-            CosmeticSystem.VerifyWeaponAppearanceData(tp, true);
-        }
+        CosmeticSystem.VerifyWeaponAppearanceData(true);
         UserDataJSON gmt = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         for (int i = 0; i < gmt.WeaponSmithings.Count; i++)
         {
