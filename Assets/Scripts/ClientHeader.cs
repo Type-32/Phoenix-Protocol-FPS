@@ -593,10 +593,11 @@ namespace UserConfiguration
             foreach (WeaponAppearanceMeshData data in GlobalDatabase.Instance.allWeaponAppearanceDatas)
             {
                 WeaponAppearance temp = new WeaponAppearance(data);
+                Debug.LogWarning($"Unlocked WAMDs: {jsonData.AppearancesData.unlockedWeaponAppearances.Count}");
+                Debug.Log($"WAMDs: WI - {temp.weaponIndex}, AI - {temp.appearanceIndex}");
                 if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp))
                 {
-                    Debug.LogWarning($"Unlocked WAMDs: {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.unlockedWeaponAppearances.Count}");Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
-                    Debug.Log($"WAMDs: WI - {temp.weaponIndex}, AI - {temp.appearanceIndex}");
+                    Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
                     if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                     {
                         jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
