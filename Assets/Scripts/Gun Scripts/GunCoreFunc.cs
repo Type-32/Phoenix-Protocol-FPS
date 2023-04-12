@@ -278,10 +278,10 @@ public class GunCoreFunc : MonoBehaviour
                 tempPoint = hit.point;
                 tempNormal = hit.normal;
             }
-            gun.player.InvokeGunEffects(tempPoint, tempNormal);
+            gun.player.InvokeGunEffects(gun.muzzleFire.transform.position, tempPoint, tempNormal);
         }
         else
-            gun.player.InvokeGunEffects(new Vector3(), new Vector3());
+            gun.player.InvokeGunEffects(gun.muzzleFire.transform.position, new Vector3(), new Vector3());
         anim.TriggerWeaponRecoil(stats.isAiming ? stats.aimingRecoilX : stats.recoilX, stats.recoilY, stats.recoilZ, stats.kickBackZ);
         TriggerCameraRecoil(stats.verticalRecoil, stats.horizontalRecoil, stats.sphericalShake, stats.positionRecoilRetaliation, stats.positionRecoilVertical, stats.positionTransitionalSnappiness, stats.positionRecoilReturnSpeed, stats.transitionalSnappiness, stats.recoilReturnSpeed);
     }
@@ -371,11 +371,11 @@ public class GunCoreFunc : MonoBehaviour
                 tempPoint = hit.point;
                 tempNormal = hit.normal;
             }
-            gun.player.InvokeGunEffects(tempPoint, tempNormal);
+            gun.player.InvokeGunEffects(gun.muzzleFire.transform.position, tempPoint, tempNormal);
         }
         else
         {
-            gun.player.InvokeGunEffects(new Vector3(), new Vector3());
+            gun.player.InvokeGunEffects(gun.muzzleFire.transform.position, new Vector3(), new Vector3());
         }
         if (gun.player.holder.weaponIndex == 0)
         {

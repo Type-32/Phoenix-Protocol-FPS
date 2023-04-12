@@ -23,19 +23,19 @@ public class WeaponCosmeticListItem : MonoBehaviour
         rarityText.text = data.rarity.ToString();
         switch (data.rarity)
         {
-            case WeaponAppearanceMeshData.Rarity.Common:
+            case Rarity.Common:
                 rarityText.color = common;
                 break;
-            case WeaponAppearanceMeshData.Rarity.Uncommon:
+            case Rarity.Uncommon:
                 rarityText.color = uncommon;
                 break;
-            case WeaponAppearanceMeshData.Rarity.Rare:
+            case Rarity.Rare:
                 rarityText.color = rare;
                 break;
-            case WeaponAppearanceMeshData.Rarity.Epic:
+            case Rarity.Epic:
                 rarityText.color = epic;
                 break;
-            case WeaponAppearanceMeshData.Rarity.Legendary:
+            case Rarity.Legendary:
                 rarityText.color = legendary;
                 break;
         }

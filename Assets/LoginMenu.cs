@@ -12,7 +12,6 @@ public class LoginMenu : MonoBehaviour
     public Animator loginMenuAnimator;
     [SerializeField] InputField username, password;
     [SerializeField] Text passwordDisplay, exceptionText;
-    private int lastCount = 0;
     // Start is called before the first frame update
     async void Start()
     {

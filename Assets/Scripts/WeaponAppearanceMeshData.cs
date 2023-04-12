@@ -17,13 +17,15 @@ public class WeaponAppearanceMeshData : ItemData
             return -1;
         }
     }
-    public enum Rarity
-    {
-        Common,
-        Uncommon,
-        Rare,
-        Epic,
-        Legendary
-    }
     public Rarity rarity;
+    public Color trailColor = Color.yellow;
 }
+public enum Rarity
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
+}
+

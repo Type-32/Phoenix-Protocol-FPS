@@ -7,6 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Threading.Tasks;
 using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
+using UnityEngine.Serialization;
 
 public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
 {
@@ -41,7 +42,8 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
     [SerializeField] Material team_bodyMaterial;
     [SerializeField] Material team_feetMaterial;
     public Material team_handMaterial;
-
+    public Material local_trailMaterial;
+    [FormerlySerializedAs("universal_trailMaterial")] public Material global_trailMaterial;
 
     [Space]
     [Header("References")]
@@ -621,9 +623,9 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         }
         return;
     }
-    public void InvokeGunEffects(Vector3 point = new Vector3(), Vector3 normal = new Vector3(), bool playSound = true)
+    public void InvokeGunEffects(Vector3 origin, Vector3 point = new Vector3(), Vector3 normal = new Vector3(), bool playSound = true)
     {
-        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, point, normal, playSound);
+        pv.RPC(nameof(RPC_InvokeGunEffects), RpcTarget.All, origin, point, normal, playSound);
     }
     public void InvokePlayerDeathEffects()
     {
@@ -676,7 +678,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
         Destroy(obj, 5f);
     }
     [PunRPC]
-    public void RPC_InvokeGunEffects(Vector3 point = new Vector3(), Vector3 normal = new Vector3(), bool playSound = true)
+    public void RPC_InvokeGunEffects(Vector3 origin, Vector3 point = new Vector3(), Vector3 normal = new Vector3(), bool playSound = true)
     {
         if (playSound)
         {
@@ -878,7 +880,18 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                 bulletImpactObject.transform.SetParent(colliders[0].transform);
                 //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
             }
+            StartCoroutine(UseTrailEffect(0.002f, origin, point));
         }
+    }
+    IEnumerator UseTrailEffect(float miliseconds, Vector3 from, Vector3 to)
+    {
+        LineRenderer temp = ObjectPooler.Instance.SpawnFromPool("BulletTrailEffect", from, Quaternion.identity).GetComponent<LineRenderer>();
+        
+        temp.material = pv.IsMine ? local_trailMaterial : global_trailMaterial;
+        temp.SetPosition(0, from);
+        temp.SetPosition(1, to);
+        yield return new WaitForSeconds(miliseconds);
+        temp.gameObject.SetActive(false);
     }
     public void SetPlayerControlState(bool state)
     {

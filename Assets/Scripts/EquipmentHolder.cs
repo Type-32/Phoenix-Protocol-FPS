@@ -18,6 +18,22 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     public bool inversedScrollWheel = true;
     public Gun[] weaponSlots = new Gun[] { };
     public Equipment[] equipmentSlots = new Equipment[] { };
+
+    public Gun CurrentEquippedWeapon
+    {
+        get
+        {
+            return weaponSlots[weaponIndex] != null ? weaponSlots[weaponIndex] : null;
+        }
+    }
+
+    public Equipment CurrentEquippedEquipment
+    {
+        get
+        {
+            return equipmentSlots[weaponIndex] != null ? equipmentSlots[weaponIndex] : null;
+        }
+    }
     // Start is called before the first frame update
     private void Awake()
     {
