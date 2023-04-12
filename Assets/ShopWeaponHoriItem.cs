@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class ShopWeaponHoriItem : MonoBehaviour
 {
+    [SerializeField] private GameObject Toggler;
     [SerializeField] private Text WeaponName;
     [SerializeField] private Text UnlockingLevel;
     [SerializeField] private Text PurchasePrice;
     [SerializeField] private Image WeaponIcon;
-    public Toggle ItemToggle;
-    [HideInInspector] public ToggleGroup CachedToggleGroup;
     [HideInInspector] public ShopMenuScript shop;
     [HideInInspector] public WeaponData CachedWeaponData;
     
@@ -22,11 +21,17 @@ public class ShopWeaponHoriItem : MonoBehaviour
         UnlockingLevel.text = $"Unlock at Lv.{data.unlockingLevel}";
         PurchasePrice.text = $"${data.purchasePrice}";
         WeaponIcon.sprite = data.itemIcon;
-        CachedToggleGroup = shop.weaponAvailableToggleGroup;
     }
 
     public void OnPress()
     {
         shop.SetPreviewInfo(CachedWeaponData);
+        shop.TogglePreviewUI(true);
+        ToggleSelection(true);
+    }
+
+    public void ToggleSelection(bool state)
+    {
+        Toggler.SetActive(state);
     }
 }

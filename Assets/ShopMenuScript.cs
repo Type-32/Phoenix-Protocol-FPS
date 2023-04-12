@@ -14,7 +14,6 @@ public class ShopMenuScript : MonoBehaviour
     public GameObject lootCratesMenu;
 
     [Space, Header("Weapons Menu Refs")]
-    public ToggleGroup weaponAvailableToggleGroup;
     public GameObject shopWeaponItemPrefab;
     public Transform shopWeaponItemHolder;
 
@@ -40,16 +39,15 @@ public class ShopMenuScript : MonoBehaviour
     void Start()
     {
         InitializeWeaponsMenu();
-        InitializeCosmeticsMenu();
-        weaponsMenu.SetActive(false);
-        cosmeticsMenu.SetActive(false);
+        //InitializeCosmeticsMenu();
+        weaponsMenu.SetActive(true);
+        //cosmeticsMenu.SetActive(false);
         TogglePreviewUI(false);
         //MenuManager.Instance.ToggleShopMenu(false);
     }
 
     private void InitializeCosmeticsMenu()
     {
-        return;
         AppearancesDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData;
         for (int i = 0; i < jsonData.availableWeaponAppearances.Count; i++)
         {
@@ -68,6 +66,7 @@ public class ShopMenuScript : MonoBehaviour
         for (int i = 0; i < GlobalDatabase.Instance.allWeaponDatas.Count; i++)
         {
             ShopWeaponHoriItem item = Instantiate(shopWeaponItemPrefab, shopWeaponItemHolder).GetComponent<ShopWeaponHoriItem>();
+            item.ToggleSelection(false);
             if (jsonData.ShopData.availableWeaponIndexes.Contains(i) || jsonData.ShopData.unlockedWeaponIndexes.Contains(i) || jsonData.ShopData.ownedWeaponIndexes.Contains(i))
             {
                 if (jsonData.ShopData.availableWeaponIndexes.Contains(i))
@@ -104,6 +103,11 @@ public class ShopMenuScript : MonoBehaviour
     }
     public void SetPreviewInfo(WeaponData data)
     {
+        foreach (ShopWeaponHoriItem i in shopWeaponList)
+        {
+            if (i.CachedWeaponData == data) continue;
+            i.ToggleSelection(false);
+        }
         CurrentPreviewWeaponData = data;
         previewIcon.sprite = data.itemIcon;
         previewWeaponName.text = data.itemName;
@@ -130,7 +134,12 @@ public class ShopMenuScript : MonoBehaviour
     }
     public void OnClickPurchaseButton()
     {
+        foreach (ShopWeaponHoriItem i in shopWeaponList)
+        {
+            i.ToggleSelection(false);
+        }
         PurchaseWeapon(CurrentPreviewWeaponData);
+        TogglePreviewUI(false);
     }
     public void PurchaseWeapon(WeaponData data)
     {
@@ -139,6 +148,11 @@ public class ShopMenuScript : MonoBehaviour
             UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
             if (jsonData.userCoins >= data.purchasePrice && jsonData.userLevel >= data.unlockingLevel)
             {
+                if (jsonData.ShopData.ownedWeaponIndexes.Contains(data.GlobalWeaponIndex))
+                {
+                    MenuManager.Instance.AddModalWindow("Error", "You have already purchased the weapon " + data.itemName + ".");
+                    return;
+                }
                 MenuManager.Instance.AddModalWindow("Purchase Result", "You have purchased the weapon " + data.itemName + " successfully!\nYou can equip this weapon in your loadouts now.");
                 //FindForWeaponDataInList(data).SetInfo(data, true, true, this);
                 UserDatabase.Instance.AddUserCurrency(data.purchasePrice);

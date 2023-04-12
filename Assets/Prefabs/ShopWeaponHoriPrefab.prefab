@@ -403,8 +403,8 @@ GameObject:
   - component: {fileID: 7985534418045856199}
   - component: {fileID: 7985534418045856195}
   - component: {fileID: 7985534418045856192}
-  - component: {fileID: 7985534418045856193}
   - component: {fileID: 7985534418045856198}
+  - component: {fileID: 5717231187321514851}
   m_Layer: 5
   m_Name: ShopWeaponHoriPrefab
   m_TagString: Untagged
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7985534418045856193
+--- !u!114 &7985534418045856198
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,7 +484,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 7985534418045856196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c44ce597fe10d9449e4a087c8057e9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Toggler: {fileID: 7985534416861875697}
+  WeaponName: {fileID: 7985534417030917429}
+  UnlockingLevel: {fileID: 7985534417479701054}
+  PurchasePrice: {fileID: 7985534418006702327}
+  WeaponIcon: {fileID: 7985534416106850286}
+  shop: {fileID: 0}
+  CachedWeaponData: {fileID: 0}
+--- !u!114 &5717231187321514851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7985534418045856196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -516,25 +535,9 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7985534418045856192}
-  toggleTransition: 1
-  graphic: {fileID: 7985534416861875699}
-  m_Group: {fileID: 0}
-  onValueChanged:
+  m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 2ec14d07946c7fe429f08fc058e5b2f8,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 7985534418045856198}
         m_TargetAssemblyTypeName: ShopWeaponHoriItem, Assembly-CSharp
         m_MethodName: OnPress
@@ -547,24 +550,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 0
---- !u!114 &7985534418045856198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7985534418045856196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c44ce597fe10d9449e4a087c8057e9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponName: {fileID: 7985534417030917429}
-  UnlockingLevel: {fileID: 7985534417479701054}
-  PurchasePrice: {fileID: 7985534418006702327}
-  WeaponIcon: {fileID: 7985534416106850286}
-  ItemToggle: {fileID: 7985534418045856193}
-  CachedToggleGroup: {fileID: 0}
-  shop: {fileID: 0}
-  CachedWeaponData: {fileID: 0}
