@@ -24,8 +24,8 @@ public class GlobalDatabase : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         Instance = this;
-        CosmeticSystem.ValidateLoadoutCosmetics();
         loadoutSelectionScript.ReadLoadoutDataFromJSON();
+        Debug.LogError($"Unlocked WAMDs: {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.unlockedWeaponAppearances.Count}");
         for (int i = 0; i < allWeaponDatas.Count; i++)
         {
             WeaponSystem.ValidateWeapon(i, true);
@@ -39,6 +39,7 @@ public class GlobalDatabase : MonoBehaviour
         {
             GunsmithSystem.VerifyWeaponSmithingData(gmt.WeaponSmithings[i]);
         }
+        CosmeticSystem.ValidateLoadoutCosmetics();
     }
     public int FindIndexFromWeaponData(WeaponData data)
     {

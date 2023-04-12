@@ -497,15 +497,11 @@ namespace UserConfiguration
     {
         public static int LocalUserLevel { get { return FileOps<UserDataJSON>.ReadFile(UserDataPath).userLevel; } }
         public static string UserDataConfigKey { get { return "UserDataConfig.json"; } }
-        public static string LoadoutDataConfigKey { get { return "LoadoutDataConfig.json"; } }
         public static string RewardDataConfigKey { get { return "RewardConfig.json"; } }
         public static string SettingsOptionsKey { get { return "SettingsOptions.json"; } }
-        public static string AppearancesConfigKey { get { return "AppearancesConfig.json"; } }
         public static string UserDataPath { get { return Path.Combine(Application.persistentDataPath, UserDataConfigKey); } }
-        //public static string LoadoutDataPath { get { return Path.Combine(Application.persistentDataPath, LoadoutDataConfigKey); } }
         public static string RewardDataPath { get { return Path.Combine(Application.persistentDataPath, RewardDataConfigKey); } }
         public static string SettingsOptionsPath { get { return Path.Combine(Application.persistentDataPath, SettingsOptionsKey); } }
-        public static string AppearancesConfigPath { get { return Path.Combine(Application.persistentDataPath, AppearancesConfigKey); } }
     }
     public static class Database
     {
@@ -598,19 +594,25 @@ namespace UserConfiguration
             bool isValid = false;
             if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp))
             {
+                Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
                 isValid = true;
                 if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                 {
                     jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
                     isValid = false;
+                    Debug.LogWarning("Detecting Yes WAMD in Unlocked and Yes in Available");
                 }
             }
             else
             {
                 if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
+                {
+                    Debug.LogWarning("Detecting No WAMD in Unlocked and Yes in Available");
                     isValid = true;
+                }
                 else
                 {
+                    Debug.LogWarning("Detecting No WAMD in Unlocked and No in Available");
                     jsonData.AppearancesData.availableWeaponAppearances.Add(temp);
                     if (correctValidation) FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
                 }
