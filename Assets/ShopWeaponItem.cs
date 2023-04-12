@@ -40,7 +40,7 @@ public class ShopWeaponItem : MonoBehaviour
     }
     public void SelectItem()
     {
-        script.SetPreviewInfo(weaponData, isUnlocked && (!isPurchased ? true : false));
+        script.SetPreviewInfo(weaponData);
         script.TogglePreviewUI(true);
     }
 }

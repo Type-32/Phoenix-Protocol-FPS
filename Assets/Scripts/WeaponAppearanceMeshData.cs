@@ -18,7 +18,7 @@ public class WeaponAppearanceMeshData : ItemData
         }
     }
     public Rarity rarity;
-    public Color trailColor = Color.yellow; //Default to Color.Yellow
+    [ColorUsage(true, true)] public Color trailColor = Color.yellow; //Default to Color.Yellow
 }
 public enum Rarity
 {

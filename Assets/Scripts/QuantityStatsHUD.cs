@@ -86,13 +86,12 @@ public enum FireMode
 public enum WeaponType
 {
     AssaultRifle,
+    SubmachineGun,
     MarksmanRifle,
     Pistol,
     Shotgun,
-    Equipment,
     Melee,
-    GrenadeLauncher,
+    ProjectileLauncher,
     SniperRifle,
-    Projectile,
     None
 }

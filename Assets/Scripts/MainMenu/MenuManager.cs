@@ -540,11 +540,6 @@ public class MenuManager : MonoBehaviour
     {
         openedShopMenu = value;
         shopMenu.SetActive(value);
-        if (value)
-        {
-            shopMenu.GetComponent<ShopMenuScript>().ToggleWeaponsMenu(value);
-            shopMenu.GetComponent<ShopMenuScript>().TogglePreviewUI(value);
-        }
     }
     public void TogglePopupMenu(bool value)
     {

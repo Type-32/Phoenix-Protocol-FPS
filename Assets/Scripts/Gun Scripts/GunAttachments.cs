@@ -93,8 +93,8 @@ public class GunAttachments : MonoBehaviour
         {
             if (gun != null)
             {
-                gun.player.local_trailMaterial.color =
-                    GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].trailColor;
+                gun.player.local_trailMaterial.SetColor("_Color", GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].trailColor);
+                gun.player.local_trailMaterial.SetColor("_EmissionColor", GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].trailColor);
                 gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].mesh;
             }
         }

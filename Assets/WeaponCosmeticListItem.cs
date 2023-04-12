@@ -19,7 +19,7 @@ public class WeaponCosmeticListItem : MonoBehaviour
         script = sms;
         weaponIcon.sprite = data.itemIcon;
         weaponSkinText.text = data.weaponData.itemName + " - " + data.itemName;
-        weaponSkinPrice.text = "$" + data.purchasePrice.ToString();
+        weaponSkinPrice.text = $"${data.purchasePrice}";
         rarityText.text = data.rarity.ToString();
         switch (data.rarity)
         {
@@ -53,7 +53,7 @@ public class WeaponCosmeticListItem : MonoBehaviour
             jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
 
             FileOps<UserDataJSON>.WriteFile(jsonData, UserSystem.UserDataPath);
-            script.RemoveWeaponCosmeticListItem(this);
+            //script.RemoveWeaponCosmeticListItem(this);
         }
         else
         {
