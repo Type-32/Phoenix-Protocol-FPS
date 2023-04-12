@@ -1,5 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+using PrototypeLib.Modules.FileOperations.IO;
+using UserConfiguration;
+
 [System.Serializable]
 public class UserDataJSON
 {
@@ -17,7 +21,7 @@ public class UserDataJSON
     public List<WeaponSmithingData> WeaponSmithings = new();
     public UserDataJSON()
     {
-        username = $"User {Random.Range(1000, 9999)}";
+        username = $"User {UnityEngine.Random.Range(1000, 9999)}";
         hasInitialized = false;
         userLevel = 1;
         userLevelXP = 0;
@@ -131,6 +135,7 @@ public class WeaponAppearance
     {
         weaponIndex = data.weaponData.GlobalWeaponIndex;
         appearanceIndex = data.WeaponAppearanceMeshDataIndex;
+        Debug.LogWarning($"Initialized WeaponAppearance {weaponIndex}, {appearanceIndex}, {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.unlockedWeaponAppearances.Contains(this)}, {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.availableWeaponAppearances.Contains(this)}");
     }
 }
 [System.Serializable]
