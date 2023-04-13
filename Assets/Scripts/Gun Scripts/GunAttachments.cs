@@ -77,10 +77,10 @@ public class GunAttachments : MonoBehaviour
     }
     public void EnableGunCustomizations(int selectedWeaponSlot)
     {
-        int[] attachments = new int[] { (int)gun.player.pv.Owner.CustomProperties[$"SMWA_BarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_SightIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_UnderbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_LeftbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_RightbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_AppearanceIndex{selectedWeaponSlot + 1}"] };
-        SetCustomization(attachments[0], attachments[1], attachments[2], attachments[3], attachments[4], attachments[5]);
+        int[] attachments = new int[6] { (int)gun.player.pv.Owner.CustomProperties[$"SMWA_BarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_SightIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_UnderbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_LeftbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_RightbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_AppearanceIndex{selectedWeaponSlot + 1}"] };
+        SetCustomization(attachments[0], attachments[1], attachments[2], attachments[3], attachments[4], attachments[5], selectedWeaponSlot);
     }
-    public void SetCustomization(int barrel, int sight, int underbarrel, int leftbarrel, int rightbarrel, int appearance)
+    public void SetCustomization(int barrel, int sight, int underbarrel, int leftbarrel, int rightbarrel, int appearance, int selectedSlot)
     {
         for (int i = 0; i < attachmentsArray.Length; i++)
         {
@@ -95,7 +95,7 @@ public class GunAttachments : MonoBehaviour
             if (attachmentsArray[i].dataGlobalIndex == leftbarrel) attachmentsArray[i].gameObject.SetActive(true);
             if (attachmentsArray[i].dataGlobalIndex == rightbarrel) attachmentsArray[i].gameObject.SetActive(true);
         }
-        SetTrail(appearance);
+        SetTrail(selectedSlot);
     }
 
     private void SetTrail(int weaponIndex)
@@ -105,6 +105,7 @@ public class GunAttachments : MonoBehaviour
         {
             if (gun != null)
             {
+                Debug.LogWarning("On Set Trail Color -----------");
                 if (GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].overrideDefaultTrailerColor)
                 {
                     gun.player.local_trailMaterial.SetColor("_Color",

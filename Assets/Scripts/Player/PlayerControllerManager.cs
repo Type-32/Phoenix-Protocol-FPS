@@ -881,7 +881,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
                 //bulletImpactObject.transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.x,transform.rotation.y, Random.Range(0f, 90f)));
             }
             StartCoroutine(UseTrailEffect(holder.weaponIndex < 2 ? holder.weaponSlots[holder.weaponIndex].gun.stats.weaponData.weaponType !=
-                                                                   (WeaponType.SniperRifle | WeaponType.MarksmanRifle) ? 0.002f : 0.006f : 0.002f, origin, point));
+                                                                   (WeaponType.SniperRifle | WeaponType.MarksmanRifle) ? 0.002f : 0.01f : 0.002f, origin, point));
         }
     }
     IEnumerator UseTrailEffect(float miliseconds, Vector3 from, Vector3 to)
