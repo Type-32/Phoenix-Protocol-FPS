@@ -131,6 +131,12 @@ public class WeaponAppearance : IEquatable<WeaponAppearance>
         this.weaponIndex = weaponIndex;
         this.appearanceIndex = appearanceIndex;
     }
+
+    public WeaponAppearance(WeaponAppearanceMeshData data)
+    {
+        weaponIndex = data.weaponData.GlobalWeaponIndex;
+        appearanceIndex = data.WeaponAppearanceMeshDataIndex;
+    }
     public bool Equals(WeaponAppearance other)
     {
         if (other.appearanceIndex == appearanceIndex && other.weaponIndex == weaponIndex) return true;
