@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,5 +21,4 @@ public class ItemData : ScriptableObject
     public bool requiresPurchase = false;
     public bool overrideUnlockingLevel = false;
     public int purchasePrice = 100;
-
 }

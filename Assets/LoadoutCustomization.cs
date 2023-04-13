@@ -118,8 +118,12 @@ public class LoadoutCustomization : MonoBehaviour
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
         for (int i = 0; i < loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants.Count; i++)
         {
-            if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(new WeaponAppearance(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i])))
+            WeaponAppearance tempWA = loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex]
+                .weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i].AppearanceContent;
+            Debug.LogWarning($"Using Instantiation Function with Prebuilt data WI {tempWA.weaponIndex} and AI {tempWA.appearanceIndex}");
+            if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(tempWA))
             {
+                Debug.LogWarning($"Instantiating Appearance Item of data WI {tempWA.weaponIndex} and AI {tempWA.appearanceIndex}");
                 temp = Instantiate(appearanceSelectionItemPrefab, skinUIHolder);
                 temp.GetComponent<LoadoutAppearanceUIItem>().SetInfo(loadoutSelection.loadoutDataList[loadoutSelection.selectedLoadoutIndex].weaponData[loadoutSelection.forSelectedSlot].applicableVariants[i]);
                 skinObjects.Add(temp);

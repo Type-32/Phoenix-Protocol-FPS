@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UserConfiguration;
 using LauncherManifest;
 using PrototypeLib.Modules.FileOperations.IO;
+using UnityEditor.Build.Content;
+
 public class WeaponCosmeticListItem : MonoBehaviour
 {
     ShopMenuScript script;
@@ -44,7 +46,7 @@ public class WeaponCosmeticListItem : MonoBehaviour
     public void PurchaseItem()
     {
         UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-        WeaponAppearance temp = new WeaponAppearance(data);
+        WeaponAppearance temp = new WeaponAppearance(data.weaponData.GlobalWeaponIndex, data.WeaponAppearanceMeshDataIndex);
         if (data.purchasePrice <= jsonData.userCoins && (!jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp) && jsonData.AppearancesData.availableWeaponAppearances.Contains(temp)) && jsonData.ShopData.ownedWeaponIndexes.Contains(data.weaponData.GlobalWeaponIndex))
         {
             MenuManager.Instance.AddNotification("Success Purchase", "You have successfully purchased the " + data.itemName + " Weapon Skin for " + data.weaponData.itemName + "!");

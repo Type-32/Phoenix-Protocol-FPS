@@ -590,38 +590,15 @@ namespace UserConfiguration
         public static void VerifyWeaponAppearanceData(bool correctValidation = true)
         {
             UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
-            bool ContainedInUWA(WeaponAppearance aj)
-            {
-                foreach (WeaponAppearance tpa in jsonData.AppearancesData.unlockedWeaponAppearances)
-                {
-                    if (tpa.weaponIndex == aj.weaponIndex && tpa.appearanceIndex == aj.appearanceIndex)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }bool ContainedInAWA(WeaponAppearance aj)
-            {
-                foreach (WeaponAppearance tpa in jsonData.AppearancesData.availableWeaponAppearances)
-                {
-                    if (tpa.weaponIndex == aj.weaponIndex && tpa.appearanceIndex == aj.appearanceIndex)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
             foreach (WeaponAppearanceMeshData data in GlobalDatabase.Instance.allWeaponAppearanceDatas)
             {
-                WeaponAppearance temp = new(data);
-                temp.appearanceIndex = data.WeaponAppearanceMeshDataIndex;
-                temp.weaponIndex = data.weaponData.GlobalWeaponIndex;
+                WeaponAppearance temp = data.AppearanceContent;
                 Debug.LogWarning($"Unlocked WAMDs: {jsonData.AppearancesData.unlockedWeaponAppearances.Count}");
                 //Debug.Log($"WAMDs: WI - {temp.weaponIndex}, AI - {temp.appearanceIndex}");
-                if (ContainedInUWA(temp))
+                if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp))
                 {
                     Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
-                    if (ContainedInAWA(temp))
+                    if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                     {
                         jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
                         Debug.LogWarning("Detecting Yes WAMD in Unlocked and Yes in Available");
@@ -629,7 +606,7 @@ namespace UserConfiguration
                 }
                 else
                 {
-                    if (ContainedInAWA(temp))
+                    if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                     {
                         Debug.LogWarning("Detecting No WAMD in Unlocked and Yes in Available");
                     }
@@ -651,8 +628,8 @@ namespace UserConfiguration
                 WeaponAppearance t1 = new();
                 WeaponAppearance t2 = new();
                 //Debug.LogWarning("Slots Length: " + jsonData.LoadoutData.Slots.Length);
-                if (jsonData.LoadoutData.Slots[i].WeaponSkin1 != -1) t1 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.LoadoutData.Slots[i].WeaponSkin1]);
-                if (jsonData.LoadoutData.Slots[i].WeaponSkin2 != -1) t2 = new(GlobalDatabase.Instance.allWeaponAppearanceDatas[jsonData.LoadoutData.Slots[i].WeaponSkin2]);
+                if (jsonData.LoadoutData.Slots[i].WeaponSkin1 != -1) t1 = new(jsonData.LoadoutData.Slots[i].Weapon1, jsonData.LoadoutData.Slots[i].WeaponSkin1);
+                if (jsonData.LoadoutData.Slots[i].WeaponSkin2 != -1) t2 = new(jsonData.LoadoutData.Slots[i].Weapon2, jsonData.LoadoutData.Slots[i].WeaponSkin2);
                 if (jsonData.LoadoutData.Slots[i].WeaponSkin1 != -1)
                 {
                     if (!jsonData.AppearancesData.unlockedWeaponAppearances.Contains(t1))

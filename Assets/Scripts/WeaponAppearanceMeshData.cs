@@ -17,6 +17,13 @@ public class WeaponAppearanceMeshData : ItemData
             return -1;
         }
     }
+    public WeaponAppearance AppearanceContent
+    {
+        get
+        {
+            return new WeaponAppearance(weaponData.GlobalWeaponIndex, WeaponAppearanceMeshDataIndex);
+        }
+    }
     public Rarity rarity;
     [ColorUsage(true, true)] public Color trailColor = Color.yellow; //Default to Color.Yellow
 }

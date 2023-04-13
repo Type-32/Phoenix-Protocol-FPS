@@ -117,7 +117,7 @@ public class AppearancesDataJSON
 
 #region Backend Types
 [System.Serializable]
-public class WeaponAppearance
+public class WeaponAppearance : IEquatable<WeaponAppearance>
 {
     public int weaponIndex;
     public int appearanceIndex;
@@ -131,11 +131,10 @@ public class WeaponAppearance
         this.weaponIndex = weaponIndex;
         this.appearanceIndex = appearanceIndex;
     }
-    public WeaponAppearance(WeaponAppearanceMeshData data)
+    public bool Equals(WeaponAppearance other)
     {
-        weaponIndex = data.weaponData.GlobalWeaponIndex;
-        appearanceIndex = data.WeaponAppearanceMeshDataIndex;
-        Debug.LogWarning($"Initialized WeaponAppearance {weaponIndex}, {appearanceIndex}, {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.unlockedWeaponAppearances.Contains(this)}, {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.availableWeaponAppearances.Contains(this)}");
+        if (other.appearanceIndex == appearanceIndex && other.weaponIndex == weaponIndex) return true;
+        return false;
     }
 }
 [System.Serializable]
