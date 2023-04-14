@@ -19,6 +19,9 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
     public Gun[] weaponSlots = new Gun[] { };
     public Equipment[] equipmentSlots = new Equipment[] { };
 
+    public delegate void ItemSwitching(int index);
+    public event ItemSwitching OnItemSwitch;
+
     public Gun CurrentEquippedWeapon
     {
         get
@@ -47,7 +50,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                 InstantiateWeapon(player.playerManager.matchLoadoutManager.slotWeaponData[i], i);
             for (int i = 0; i < 2; i++)
                 InstantiateEquipment(player.playerManager.matchLoadoutManager.slotEquipmentData[i], i);
-            EquipItem(0);
+            //EquipItem(0);
             for (int ms = 0; ms < weaponSlots.Length; ms++)
             {
                 //* Retrieving Weapon parts under each parts' parent
@@ -243,6 +246,7 @@ public class EquipmentHolder : MonoBehaviourPunCallbacks
                 PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
             }
         }
+        OnItemSwitch?.Invoke(weaponIndex);
     }
     public bool InstantiateWeapon(WeaponData data, int index)
     {

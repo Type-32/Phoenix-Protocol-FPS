@@ -15,6 +15,8 @@ public class GlobalDatabase : MonoBehaviour
     public List<UpdateLogData> allLogDatas = new();
     public static GlobalDatabase Instance;
     public LoadoutSelectionScript loadoutSelectionScript;
+
+    [ColorUsage(true, true)] public Color DefaultTrailColor = Color.yellow;
     private void Awake()
     {
         if (Instance)
@@ -25,7 +27,7 @@ public class GlobalDatabase : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Instance = this;
         loadoutSelectionScript.ReadLoadoutDataFromJSON();
-        Debug.LogError($"Unlocked WAMDs: {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.unlockedWeaponAppearances.Count}");
+        //Debug.LogError($"Unlocked WAMDs: {FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath).AppearancesData.unlockedWeaponAppearances.Count}");
         for (int i = 0; i < allWeaponDatas.Count; i++)
         {
             WeaponSystem.ValidateWeapon(i, true);

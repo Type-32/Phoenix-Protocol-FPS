@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using PrototypeLib.OnlineServices.PUNMultiplayer.ConfigurationKeys;
@@ -29,6 +30,10 @@ public class GunAttachments : MonoBehaviour
     //private List<GameObject> rightbarrelAttachments = new List<GameObject>();
     //private List<GameObject> sightAttachments = new List<GameObject>();
 
+    private void SwitchedItem(int index)
+    {
+        if(gun.player.pv.IsMine && gameObject.activeInHierarchy && index < 2) SetTrail(index);
+    }
 
     void Start()
     {
@@ -43,6 +48,7 @@ public class GunAttachments : MonoBehaviour
         }
         for (int i = 0; i < attachmentsArray.Length; i++) attachmentsArray[i].gameObject.SetActive(false);
         EnableGunCustomizations(gun.player.holder.weaponIndex);
+        gun.player.holder.OnItemSwitch += SwitchedItem;
     }
     public void CheckEnabledSightAimingPosition(int index)
     {
@@ -71,10 +77,10 @@ public class GunAttachments : MonoBehaviour
     }
     public void EnableGunCustomizations(int selectedWeaponSlot)
     {
-        int[] attachments = new int[] { (int)gun.player.pv.Owner.CustomProperties[$"SMWA_BarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_SightIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_UnderbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_LeftbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_RightbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_AppearanceIndex{selectedWeaponSlot + 1}"] };
-        SetCustomization(attachments[0], attachments[1], attachments[2], attachments[3], attachments[4], attachments[5]);
+        int[] attachments = new int[6] { (int)gun.player.pv.Owner.CustomProperties[$"SMWA_BarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_SightIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_UnderbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_LeftbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_RightbarrelIndex{selectedWeaponSlot + 1}"], (int)gun.player.pv.Owner.CustomProperties[$"SMWA_AppearanceIndex{selectedWeaponSlot + 1}"] };
+        SetCustomization(attachments[0], attachments[1], attachments[2], attachments[3], attachments[4], attachments[5], selectedWeaponSlot);
     }
-    public void SetCustomization(int barrel, int sight, int underbarrel, int leftbarrel, int rightbarrel, int appearance)
+    public void SetCustomization(int barrel, int sight, int underbarrel, int leftbarrel, int rightbarrel, int appearance, int selectedSlot)
     {
         for (int i = 0; i < attachmentsArray.Length; i++)
         {
@@ -89,13 +95,41 @@ public class GunAttachments : MonoBehaviour
             if (attachmentsArray[i].dataGlobalIndex == leftbarrel) attachmentsArray[i].gameObject.SetActive(true);
             if (attachmentsArray[i].dataGlobalIndex == rightbarrel) attachmentsArray[i].gameObject.SetActive(true);
         }
+        SetTrail(selectedSlot);
+    }
+
+    private void SetTrail(int weaponIndex)
+    {
+        int appearance = (int)gun.player.pv.Owner.CustomProperties[$"SMWA_AppearanceIndex{weaponIndex + 1}"];
         if (appearance != -1)
         {
             if (gun != null)
             {
-                gun.player.local_trailMaterial.SetColor("_Color", GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].trailColor);
-                gun.player.local_trailMaterial.SetColor("_EmissionColor", GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].trailColor);
+                Debug.LogWarning("On Set Trail Color -----------");
+                if (GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].overrideDefaultTrailerColor)
+                {
+                    gun.player.local_trailMaterial.SetColor("_Color",
+                        GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].trailColor);
+                    gun.player.local_trailMaterial.SetColor("_EmissionColor",
+                        GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].trailColor);
+                }
+                else
+                {
+                    gun.player.local_trailMaterial.SetColor("_Color",
+                        GlobalDatabase.Instance.DefaultTrailColor);
+                    gun.player.local_trailMaterial.SetColor("_EmissionColor",
+                        GlobalDatabase.Instance.DefaultTrailColor);
+                }
                 gun.gunVisual.GetComponent<MeshFilter>().mesh = GlobalDatabase.Instance.allWeaponAppearanceDatas[appearance].mesh;
+            }
+        }
+        else
+        {
+            if (gun != null){
+                gun.player.local_trailMaterial.SetColor("_Color",
+                    GlobalDatabase.Instance.DefaultTrailColor);
+                gun.player.local_trailMaterial.SetColor("_EmissionColor",
+                    GlobalDatabase.Instance.DefaultTrailColor);
             }
         }
     }

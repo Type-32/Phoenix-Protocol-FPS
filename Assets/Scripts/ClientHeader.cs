@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Core;
 using System.IO;
+using System.Linq;
 using PrototypeLib.Modules.FileOperations.IO;
 namespace InfoTypes
 {
@@ -590,29 +591,31 @@ namespace UserConfiguration
         public static void VerifyWeaponAppearanceData(bool correctValidation = true)
         {
             UserDataJSON jsonData = FileOps<UserDataJSON>.ReadFile(UserSystem.UserDataPath);
+            jsonData.AppearancesData.availableWeaponAppearances = jsonData.AppearancesData.availableWeaponAppearances.Distinct().ToList();
+            jsonData.AppearancesData.unlockedWeaponAppearances = jsonData.AppearancesData.unlockedWeaponAppearances.Distinct().ToList();
             foreach (WeaponAppearanceMeshData data in GlobalDatabase.Instance.allWeaponAppearanceDatas)
             {
                 WeaponAppearance temp = data.AppearanceContent;
-                Debug.LogWarning($"Unlocked WAMDs: {jsonData.AppearancesData.unlockedWeaponAppearances.Count}");
+                //Debug.LogWarning($"Unlocked WAMDs: {jsonData.AppearancesData.unlockedWeaponAppearances.Count}");
                 //Debug.Log($"WAMDs: WI - {temp.weaponIndex}, AI - {temp.appearanceIndex}");
                 if (jsonData.AppearancesData.unlockedWeaponAppearances.Contains(temp))
                 {
-                    Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
+                    //Debug.LogWarning("Detecting Yes WAMD in Unlocked and No in Available");
                     if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                     {
                         jsonData.AppearancesData.availableWeaponAppearances.Remove(temp);
-                        Debug.LogWarning("Detecting Yes WAMD in Unlocked and Yes in Available");
+                        //Debug.LogWarning("Detecting Yes WAMD in Unlocked and Yes in Available");
                     }
                 }
                 else
                 {
                     if (jsonData.AppearancesData.availableWeaponAppearances.Contains(temp))
                     {
-                        Debug.LogWarning("Detecting No WAMD in Unlocked and Yes in Available");
+                        //Debug.LogWarning("Detecting No WAMD in Unlocked and Yes in Available");
                     }
                     else
                     {
-                        Debug.LogWarning("Detecting No WAMD in Unlocked and No in Available");
+                        //Debug.LogWarning("Detecting No WAMD in Unlocked and No in Available");
                         jsonData.AppearancesData.availableWeaponAppearances.Add(temp);
                     }
                 }
