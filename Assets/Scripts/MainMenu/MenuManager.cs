@@ -170,8 +170,6 @@ public class MenuManager : MonoBehaviour
         mainMenu.SetActive(state);
         roomMenu.SetActive(!state);
     }
-
-    public void CloseRoomMenu() => SetMainMenuState(true);
     public void CloseMenu(int id) { OnMenuToggled?.Invoke(false, "null", id); }
     public void CloseMenu(string id) { OnMenuToggled?.Invoke(false, id); }
     public void CloseMenu(MenuIdentifier id) { OnMenuToggled?.Invoke(false, id.menuName, id.menuID); }
