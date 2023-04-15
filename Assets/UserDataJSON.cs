@@ -35,6 +35,9 @@ public class UserDataJSON
         WeaponSmithings = new();
         ProfileData = new();
         AppearancesData = new();
+        ShopData = new();
+        LoadoutData = new LoadoutDataJSON(8);
+        AppearancesData = new();
     }
 }
 [System.Serializable]
