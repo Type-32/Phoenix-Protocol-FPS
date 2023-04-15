@@ -1,74 +1,206 @@
 fileFormatVersion: 2
 guid: ac8b88faccc1455498aedea1541b212e
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: Bush 1
-    100004: Bush 2
-    100006: Cube
-    100008: Object
-    100010: Bush 3
-    100012: Bush 4
-    100014: Dead Bush 1
-    100016: Dead Bush 2
-    100018: Red Bush
-    100020: Evergreen Bush
-    100022: Bush 5
-    100024: Herb Bush
-    400000: //RootNode
-    400002: Bush 1
-    400004: Bush 2
-    400006: Cube
-    400008: Object
-    400010: Bush 3
-    400012: Bush 4
-    400014: Dead Bush 1
-    400016: Dead Bush 2
-    400018: Red Bush
-    400020: Evergreen Bush
-    400022: Bush 5
-    400024: Herb Bush
-    2100000: Trunk
-    2100002: Leaf
-    2300000: //RootNode
-    2300002: Bush 1
-    2300004: Bush 2
-    2300006: Cube
-    2300008: Object
-    2300010: Bush 3
-    2300012: Bush 4
-    2300014: Dead Bush 1
-    2300016: Dead Bush 2
-    2300018: Red Bush
-    2300020: Evergreen Bush
-    2300022: Bush 5
-    2300024: Herb Bush
-    3300000: //RootNode
-    3300002: Bush 1
-    3300004: Bush 2
-    3300006: Cube
-    3300008: Object
-    3300010: Bush 3
-    3300012: Bush 4
-    3300014: Dead Bush 1
-    3300016: Dead Bush 2
-    3300018: Red Bush
-    3300020: Evergreen Bush
-    3300022: Bush 5
-    3300024: Herb Bush
-    4300000: Bush 1
-    4300002: Bush 2
-    4300004: Cube
-    4300006: Object
-    4300008: Bush 3
-    4300010: Bush 4
-    4300012: Dead Bush 1
-    4300014: Dead Bush 2
-    4300016: Red Bush
-    4300018: Evergreen Bush
-    4300020: Herb Bush
-    4300022: Bush 5
+  serializedVersion: 22103
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: Bush 1
+  - first:
+      1: 100004
+    second: Bush 2
+  - first:
+      1: 100006
+    second: Cube
+  - first:
+      1: 100008
+    second: Object
+  - first:
+      1: 100010
+    second: Bush 3
+  - first:
+      1: 100012
+    second: Bush 4
+  - first:
+      1: 100014
+    second: Dead Bush 1
+  - first:
+      1: 100016
+    second: Dead Bush 2
+  - first:
+      1: 100018
+    second: Red Bush
+  - first:
+      1: 100020
+    second: Evergreen Bush
+  - first:
+      1: 100022
+    second: Bush 5
+  - first:
+      1: 100024
+    second: Herb Bush
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: Bush 1
+  - first:
+      4: 400004
+    second: Bush 2
+  - first:
+      4: 400006
+    second: Cube
+  - first:
+      4: 400008
+    second: Object
+  - first:
+      4: 400010
+    second: Bush 3
+  - first:
+      4: 400012
+    second: Bush 4
+  - first:
+      4: 400014
+    second: Dead Bush 1
+  - first:
+      4: 400016
+    second: Dead Bush 2
+  - first:
+      4: 400018
+    second: Red Bush
+  - first:
+      4: 400020
+    second: Evergreen Bush
+  - first:
+      4: 400022
+    second: Bush 5
+  - first:
+      4: 400024
+    second: Herb Bush
+  - first:
+      21: 2100000
+    second: Trunk
+  - first:
+      21: 2100002
+    second: Leaf
+  - first:
+      23: 2300000
+    second: //RootNode
+  - first:
+      23: 2300002
+    second: Bush 1
+  - first:
+      23: 2300004
+    second: Bush 2
+  - first:
+      23: 2300006
+    second: Cube
+  - first:
+      23: 2300008
+    second: Object
+  - first:
+      23: 2300010
+    second: Bush 3
+  - first:
+      23: 2300012
+    second: Bush 4
+  - first:
+      23: 2300014
+    second: Dead Bush 1
+  - first:
+      23: 2300016
+    second: Dead Bush 2
+  - first:
+      23: 2300018
+    second: Red Bush
+  - first:
+      23: 2300020
+    second: Evergreen Bush
+  - first:
+      23: 2300022
+    second: Bush 5
+  - first:
+      23: 2300024
+    second: Herb Bush
+  - first:
+      33: 3300000
+    second: //RootNode
+  - first:
+      33: 3300002
+    second: Bush 1
+  - first:
+      33: 3300004
+    second: Bush 2
+  - first:
+      33: 3300006
+    second: Cube
+  - first:
+      33: 3300008
+    second: Object
+  - first:
+      33: 3300010
+    second: Bush 3
+  - first:
+      33: 3300012
+    second: Bush 4
+  - first:
+      33: 3300014
+    second: Dead Bush 1
+  - first:
+      33: 3300016
+    second: Dead Bush 2
+  - first:
+      33: 3300018
+    second: Red Bush
+  - first:
+      33: 3300020
+    second: Evergreen Bush
+  - first:
+      33: 3300022
+    second: Bush 5
+  - first:
+      33: 3300024
+    second: Herb Bush
+  - first:
+      43: 4300000
+    second: Bush 1
+  - first:
+      43: 4300002
+    second: Bush 2
+  - first:
+      43: 4300004
+    second: Cube
+  - first:
+      43: 4300006
+    second: Object
+  - first:
+      43: 4300008
+    second: Bush 3
+  - first:
+      43: 4300010
+    second: Bush 4
+  - first:
+      43: 4300012
+    second: Dead Bush 1
+  - first:
+      43: 4300014
+    second: Dead Bush 2
+  - first:
+      43: 4300016
+    second: Red Bush
+  - first:
+      43: 4300018
+    second: Evergreen Bush
+  - first:
+      43: 4300020
+    second: Herb Bush
+  - first:
+      43: 4300022
+    second: Bush 5
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -81,7 +213,7 @@ ModelImporter:
       name: Trunk
     second: {fileID: 2100000, guid: c65554616de659d4e88a136854f4710c, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -90,6 +222,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -114,25 +247,35 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -141,10 +284,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -154,13 +297,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.3
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

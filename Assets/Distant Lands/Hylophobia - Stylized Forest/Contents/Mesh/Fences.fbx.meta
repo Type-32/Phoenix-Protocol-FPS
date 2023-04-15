@@ -1,373 +1,1097 @@
 fileFormatVersion: 2
 guid: 81b5bc3529befe348b4e2e9e372cd686
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Bush 1
-    100002: //RootNode
-    100004: Rock 01
-    100006: Rock 02
-    100008: Rock 03
-    100010: Rock 04
-    100012: Rock 05
-    100014: Rock 06
-    100016: Rock 07
-    100018: Rock 08
-    100020: Rock 09
-    100022: Rock 10
-    100024: Rock 11
-    100026: Rock 12
-    100028: Rock 13
-    100030: Rock 14
-    100032: Rock 15
-    100034: Bush 2
-    100036: Bush 3
-    100038: Fence 1
-    100040: Trunk 1
-    100042: Trunk 2
-    100044: Trunk 3
-    100046: Trunk 4
-    100048: Fence 2
-    100050: Fence 2.001
-    100052: Boulder 01
-    100054: Boulder 02
-    100056: Boulder 03
-    100058: Boulder 04
-    100060: Boulder 05
-    100062: Boulder 06
-    100064: Boulder 07
-    100066: Boulder 08
-    100068: Boulder 09
-    100070: Boulder 10
-    100072: Boulder 11
-    100074: Boulder 12
-    100076: Boulder 13
-    100078: Boulder 14
-    100080: Boulder 15
-    100082: Fence 3
-    100084: Stone 01
-    100086: Stone 02
-    100088: Stone 03
-    100090: Stone 04
-    100092: Stone 05
-    100094: Stone 06
-    100096: Stone 07
-    100098: Stone 08
-    100100: Stone 09
-    100102: Stone 10
-    100104: Stone 11
-    100106: Stone 12
-    100108: Stone 13
-    100110: Stone 14
-    100112: Stone 15
-    100114: Pebble 1
-    100116: Pebble 2
-    100118: Pebble 3
-    100120: Pebble 4
-    100122: Pebble 5
-    100124: Fence 4
-    100126: Fence 5
-    100128: Leaf Pile 1
-    100130: Pile 1
-    100132: Flat Rock 1
-    100134: Flat Rock 2
-    100136: Flat Rock 3
-    100138: Flat Rock 4
-    100140: Flat Rock 5
-    100142: Pile 2
-    400000: Bush 1
-    400002: //RootNode
-    400004: Rock 01
-    400006: Rock 02
-    400008: Rock 03
-    400010: Rock 04
-    400012: Rock 05
-    400014: Rock 06
-    400016: Rock 07
-    400018: Rock 08
-    400020: Rock 09
-    400022: Rock 10
-    400024: Rock 11
-    400026: Rock 12
-    400028: Rock 13
-    400030: Rock 14
-    400032: Rock 15
-    400034: Bush 2
-    400036: Bush 3
-    400038: Fence 1
-    400040: Trunk 1
-    400042: Trunk 2
-    400044: Trunk 3
-    400046: Trunk 4
-    400048: Fence 2
-    400050: Fence 2.001
-    400052: Boulder 01
-    400054: Boulder 02
-    400056: Boulder 03
-    400058: Boulder 04
-    400060: Boulder 05
-    400062: Boulder 06
-    400064: Boulder 07
-    400066: Boulder 08
-    400068: Boulder 09
-    400070: Boulder 10
-    400072: Boulder 11
-    400074: Boulder 12
-    400076: Boulder 13
-    400078: Boulder 14
-    400080: Boulder 15
-    400082: Fence 3
-    400084: Stone 01
-    400086: Stone 02
-    400088: Stone 03
-    400090: Stone 04
-    400092: Stone 05
-    400094: Stone 06
-    400096: Stone 07
-    400098: Stone 08
-    400100: Stone 09
-    400102: Stone 10
-    400104: Stone 11
-    400106: Stone 12
-    400108: Stone 13
-    400110: Stone 14
-    400112: Stone 15
-    400114: Pebble 1
-    400116: Pebble 2
-    400118: Pebble 3
-    400120: Pebble 4
-    400122: Pebble 5
-    400124: Fence 4
-    400126: Fence 5
-    400128: Leaf Pile 1
-    400130: Pile 1
-    400132: Flat Rock 1
-    400134: Flat Rock 2
-    400136: Flat Rock 3
-    400138: Flat Rock 4
-    400140: Flat Rock 5
-    400142: Pile 2
-    2100000: No Name
-    2100002: Wood 2
-    2100004: Wood 1
-    2100006: Wood 3
-    2100008: Rock
-    2300000: Bush 1
-    2300002: Rock 01
-    2300004: Rock 02
-    2300006: Rock 03
-    2300008: Rock 04
-    2300010: Rock 05
-    2300012: Rock 06
-    2300014: Rock 07
-    2300016: Rock 08
-    2300018: Rock 09
-    2300020: Rock 10
-    2300022: Rock 11
-    2300024: Rock 12
-    2300026: Rock 13
-    2300028: Rock 14
-    2300030: Rock 15
-    2300032: Bush 2
-    2300034: Bush 3
-    2300036: Fence 1
-    2300038: Trunk 1
-    2300040: Trunk 2
-    2300042: Trunk 3
-    2300044: Trunk 4
-    2300046: Fence 2
-    2300048: Fence 2.001
-    2300050: Boulder 01
-    2300052: Boulder 02
-    2300054: Boulder 03
-    2300056: Boulder 04
-    2300058: Boulder 05
-    2300060: Boulder 06
-    2300062: Boulder 07
-    2300064: Boulder 08
-    2300066: Boulder 09
-    2300068: Boulder 10
-    2300070: Boulder 11
-    2300072: Boulder 12
-    2300074: Boulder 13
-    2300076: Boulder 14
-    2300078: Boulder 15
-    2300080: Fence 3
-    2300082: Stone 01
-    2300084: Stone 02
-    2300086: Stone 03
-    2300088: Stone 04
-    2300090: Stone 05
-    2300092: Stone 06
-    2300094: Stone 07
-    2300096: Stone 08
-    2300098: Stone 09
-    2300100: Stone 10
-    2300102: Stone 11
-    2300104: Stone 12
-    2300106: Stone 13
-    2300108: Stone 14
-    2300110: Stone 15
-    2300112: Pebble 1
-    2300114: Pebble 2
-    2300116: Pebble 3
-    2300118: Pebble 4
-    2300120: Pebble 5
-    2300122: Fence 4
-    2300124: Fence 5
-    2300126: Leaf Pile 1
-    2300128: Pile 1
-    2300130: Flat Rock 1
-    2300132: Flat Rock 2
-    2300134: Flat Rock 3
-    2300136: Flat Rock 4
-    2300138: Flat Rock 5
-    2300140: Pile 2
-    3300000: Bush 1
-    3300002: Rock 01
-    3300004: Rock 02
-    3300006: Rock 03
-    3300008: Rock 04
-    3300010: Rock 05
-    3300012: Rock 06
-    3300014: Rock 07
-    3300016: Rock 08
-    3300018: Rock 09
-    3300020: Rock 10
-    3300022: Rock 11
-    3300024: Rock 12
-    3300026: Rock 13
-    3300028: Rock 14
-    3300030: Rock 15
-    3300032: Bush 2
-    3300034: Bush 3
-    3300036: Fence 1
-    3300038: Trunk 1
-    3300040: Trunk 2
-    3300042: Trunk 3
-    3300044: Trunk 4
-    3300046: Fence 2
-    3300048: Fence 2.001
-    3300050: Boulder 01
-    3300052: Boulder 02
-    3300054: Boulder 03
-    3300056: Boulder 04
-    3300058: Boulder 05
-    3300060: Boulder 06
-    3300062: Boulder 07
-    3300064: Boulder 08
-    3300066: Boulder 09
-    3300068: Boulder 10
-    3300070: Boulder 11
-    3300072: Boulder 12
-    3300074: Boulder 13
-    3300076: Boulder 14
-    3300078: Boulder 15
-    3300080: Fence 3
-    3300082: Stone 01
-    3300084: Stone 02
-    3300086: Stone 03
-    3300088: Stone 04
-    3300090: Stone 05
-    3300092: Stone 06
-    3300094: Stone 07
-    3300096: Stone 08
-    3300098: Stone 09
-    3300100: Stone 10
-    3300102: Stone 11
-    3300104: Stone 12
-    3300106: Stone 13
-    3300108: Stone 14
-    3300110: Stone 15
-    3300112: Pebble 1
-    3300114: Pebble 2
-    3300116: Pebble 3
-    3300118: Pebble 4
-    3300120: Pebble 5
-    3300122: Fence 4
-    3300124: Fence 5
-    3300126: Leaf Pile 1
-    3300128: Pile 1
-    3300130: Flat Rock 1
-    3300132: Flat Rock 2
-    3300134: Flat Rock 3
-    3300136: Flat Rock 4
-    3300138: Flat Rock 5
-    3300140: Pile 2
-    4300000: Rock 15
-    4300002: Rock 01
-    4300004: Rock 02
-    4300006: Rock 03
-    4300008: Rock 04
-    4300010: Rock 05
-    4300012: Rock 06
-    4300014: Rock 07
-    4300016: Rock 08
-    4300018: Rock 09
-    4300020: Rock 10
-    4300022: Rock 11
-    4300024: Rock 12
-    4300026: Rock 13
-    4300028: Rock 14
-    4300030: Bush 1
-    4300032: Bush 2
-    4300034: Bush 3
-    4300036: Trunk 1
-    4300038: Trunk 2
-    4300040: Trunk 3
-    4300042: Trunk 4
-    4300044: Fence 1
-    4300046: Fence 2
-    4300048: Fence 2.001
-    4300050: Boulder 15
-    4300052: Boulder 01
-    4300054: Boulder 02
-    4300056: Boulder 03
-    4300058: Boulder 04
-    4300060: Boulder 05
-    4300062: Boulder 06
-    4300064: Boulder 07
-    4300066: Boulder 08
-    4300068: Boulder 09
-    4300070: Boulder 10
-    4300072: Boulder 11
-    4300074: Boulder 12
-    4300076: Boulder 13
-    4300078: Boulder 14
-    4300080: Fence 3
-    4300082: Stone 01
-    4300084: Stone 02
-    4300086: Stone 03
-    4300088: Stone 04
-    4300090: Stone 05
-    4300092: Stone 06
-    4300094: Stone 07
-    4300096: Stone 08
-    4300098: Stone 09
-    4300100: Stone 10
-    4300102: Stone 11
-    4300104: Stone 12
-    4300106: Stone 13
-    4300108: Stone 14
-    4300110: Stone 15
-    4300112: Pebble 1
-    4300114: Pebble 2
-    4300116: Pebble 3
-    4300118: Pebble 4
-    4300120: Pebble 5
-    4300122: Fence 4
-    4300124: Fence 5
-    4300126: Leaf Pile 1
-    4300128: Pile 1
-    4300130: Flat Rock 1
-    4300132: Flat Rock 2
-    4300134: Flat Rock 3
-    4300136: Flat Rock 4
-    4300138: Flat Rock 5
-    4300140: Pile 2
+  serializedVersion: 22103
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Bush 1
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      1: 100004
+    second: Rock 01
+  - first:
+      1: 100006
+    second: Rock 02
+  - first:
+      1: 100008
+    second: Rock 03
+  - first:
+      1: 100010
+    second: Rock 04
+  - first:
+      1: 100012
+    second: Rock 05
+  - first:
+      1: 100014
+    second: Rock 06
+  - first:
+      1: 100016
+    second: Rock 07
+  - first:
+      1: 100018
+    second: Rock 08
+  - first:
+      1: 100020
+    second: Rock 09
+  - first:
+      1: 100022
+    second: Rock 10
+  - first:
+      1: 100024
+    second: Rock 11
+  - first:
+      1: 100026
+    second: Rock 12
+  - first:
+      1: 100028
+    second: Rock 13
+  - first:
+      1: 100030
+    second: Rock 14
+  - first:
+      1: 100032
+    second: Rock 15
+  - first:
+      1: 100034
+    second: Bush 2
+  - first:
+      1: 100036
+    second: Bush 3
+  - first:
+      1: 100038
+    second: Fence 1
+  - first:
+      1: 100040
+    second: Trunk 1
+  - first:
+      1: 100042
+    second: Trunk 2
+  - first:
+      1: 100044
+    second: Trunk 3
+  - first:
+      1: 100046
+    second: Trunk 4
+  - first:
+      1: 100048
+    second: Fence 2
+  - first:
+      1: 100050
+    second: Fence 2.001
+  - first:
+      1: 100052
+    second: Boulder 01
+  - first:
+      1: 100054
+    second: Boulder 02
+  - first:
+      1: 100056
+    second: Boulder 03
+  - first:
+      1: 100058
+    second: Boulder 04
+  - first:
+      1: 100060
+    second: Boulder 05
+  - first:
+      1: 100062
+    second: Boulder 06
+  - first:
+      1: 100064
+    second: Boulder 07
+  - first:
+      1: 100066
+    second: Boulder 08
+  - first:
+      1: 100068
+    second: Boulder 09
+  - first:
+      1: 100070
+    second: Boulder 10
+  - first:
+      1: 100072
+    second: Boulder 11
+  - first:
+      1: 100074
+    second: Boulder 12
+  - first:
+      1: 100076
+    second: Boulder 13
+  - first:
+      1: 100078
+    second: Boulder 14
+  - first:
+      1: 100080
+    second: Boulder 15
+  - first:
+      1: 100082
+    second: Fence 3
+  - first:
+      1: 100084
+    second: Stone 01
+  - first:
+      1: 100086
+    second: Stone 02
+  - first:
+      1: 100088
+    second: Stone 03
+  - first:
+      1: 100090
+    second: Stone 04
+  - first:
+      1: 100092
+    second: Stone 05
+  - first:
+      1: 100094
+    second: Stone 06
+  - first:
+      1: 100096
+    second: Stone 07
+  - first:
+      1: 100098
+    second: Stone 08
+  - first:
+      1: 100100
+    second: Stone 09
+  - first:
+      1: 100102
+    second: Stone 10
+  - first:
+      1: 100104
+    second: Stone 11
+  - first:
+      1: 100106
+    second: Stone 12
+  - first:
+      1: 100108
+    second: Stone 13
+  - first:
+      1: 100110
+    second: Stone 14
+  - first:
+      1: 100112
+    second: Stone 15
+  - first:
+      1: 100114
+    second: Pebble 1
+  - first:
+      1: 100116
+    second: Pebble 2
+  - first:
+      1: 100118
+    second: Pebble 3
+  - first:
+      1: 100120
+    second: Pebble 4
+  - first:
+      1: 100122
+    second: Pebble 5
+  - first:
+      1: 100124
+    second: Fence 4
+  - first:
+      1: 100126
+    second: Fence 5
+  - first:
+      1: 100128
+    second: Leaf Pile 1
+  - first:
+      1: 100130
+    second: Pile 1
+  - first:
+      1: 100132
+    second: Flat Rock 1
+  - first:
+      1: 100134
+    second: Flat Rock 2
+  - first:
+      1: 100136
+    second: Flat Rock 3
+  - first:
+      1: 100138
+    second: Flat Rock 4
+  - first:
+      1: 100140
+    second: Flat Rock 5
+  - first:
+      1: 100142
+    second: Pile 2
+  - first:
+      4: 400000
+    second: Bush 1
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      4: 400004
+    second: Rock 01
+  - first:
+      4: 400006
+    second: Rock 02
+  - first:
+      4: 400008
+    second: Rock 03
+  - first:
+      4: 400010
+    second: Rock 04
+  - first:
+      4: 400012
+    second: Rock 05
+  - first:
+      4: 400014
+    second: Rock 06
+  - first:
+      4: 400016
+    second: Rock 07
+  - first:
+      4: 400018
+    second: Rock 08
+  - first:
+      4: 400020
+    second: Rock 09
+  - first:
+      4: 400022
+    second: Rock 10
+  - first:
+      4: 400024
+    second: Rock 11
+  - first:
+      4: 400026
+    second: Rock 12
+  - first:
+      4: 400028
+    second: Rock 13
+  - first:
+      4: 400030
+    second: Rock 14
+  - first:
+      4: 400032
+    second: Rock 15
+  - first:
+      4: 400034
+    second: Bush 2
+  - first:
+      4: 400036
+    second: Bush 3
+  - first:
+      4: 400038
+    second: Fence 1
+  - first:
+      4: 400040
+    second: Trunk 1
+  - first:
+      4: 400042
+    second: Trunk 2
+  - first:
+      4: 400044
+    second: Trunk 3
+  - first:
+      4: 400046
+    second: Trunk 4
+  - first:
+      4: 400048
+    second: Fence 2
+  - first:
+      4: 400050
+    second: Fence 2.001
+  - first:
+      4: 400052
+    second: Boulder 01
+  - first:
+      4: 400054
+    second: Boulder 02
+  - first:
+      4: 400056
+    second: Boulder 03
+  - first:
+      4: 400058
+    second: Boulder 04
+  - first:
+      4: 400060
+    second: Boulder 05
+  - first:
+      4: 400062
+    second: Boulder 06
+  - first:
+      4: 400064
+    second: Boulder 07
+  - first:
+      4: 400066
+    second: Boulder 08
+  - first:
+      4: 400068
+    second: Boulder 09
+  - first:
+      4: 400070
+    second: Boulder 10
+  - first:
+      4: 400072
+    second: Boulder 11
+  - first:
+      4: 400074
+    second: Boulder 12
+  - first:
+      4: 400076
+    second: Boulder 13
+  - first:
+      4: 400078
+    second: Boulder 14
+  - first:
+      4: 400080
+    second: Boulder 15
+  - first:
+      4: 400082
+    second: Fence 3
+  - first:
+      4: 400084
+    second: Stone 01
+  - first:
+      4: 400086
+    second: Stone 02
+  - first:
+      4: 400088
+    second: Stone 03
+  - first:
+      4: 400090
+    second: Stone 04
+  - first:
+      4: 400092
+    second: Stone 05
+  - first:
+      4: 400094
+    second: Stone 06
+  - first:
+      4: 400096
+    second: Stone 07
+  - first:
+      4: 400098
+    second: Stone 08
+  - first:
+      4: 400100
+    second: Stone 09
+  - first:
+      4: 400102
+    second: Stone 10
+  - first:
+      4: 400104
+    second: Stone 11
+  - first:
+      4: 400106
+    second: Stone 12
+  - first:
+      4: 400108
+    second: Stone 13
+  - first:
+      4: 400110
+    second: Stone 14
+  - first:
+      4: 400112
+    second: Stone 15
+  - first:
+      4: 400114
+    second: Pebble 1
+  - first:
+      4: 400116
+    second: Pebble 2
+  - first:
+      4: 400118
+    second: Pebble 3
+  - first:
+      4: 400120
+    second: Pebble 4
+  - first:
+      4: 400122
+    second: Pebble 5
+  - first:
+      4: 400124
+    second: Fence 4
+  - first:
+      4: 400126
+    second: Fence 5
+  - first:
+      4: 400128
+    second: Leaf Pile 1
+  - first:
+      4: 400130
+    second: Pile 1
+  - first:
+      4: 400132
+    second: Flat Rock 1
+  - first:
+      4: 400134
+    second: Flat Rock 2
+  - first:
+      4: 400136
+    second: Flat Rock 3
+  - first:
+      4: 400138
+    second: Flat Rock 4
+  - first:
+      4: 400140
+    second: Flat Rock 5
+  - first:
+      4: 400142
+    second: Pile 2
+  - first:
+      21: 2100000
+    second: No Name
+  - first:
+      21: 2100002
+    second: Wood 2
+  - first:
+      21: 2100004
+    second: Wood 1
+  - first:
+      21: 2100006
+    second: Wood 3
+  - first:
+      21: 2100008
+    second: Rock
+  - first:
+      23: 2300000
+    second: Bush 1
+  - first:
+      23: 2300002
+    second: Rock 01
+  - first:
+      23: 2300004
+    second: Rock 02
+  - first:
+      23: 2300006
+    second: Rock 03
+  - first:
+      23: 2300008
+    second: Rock 04
+  - first:
+      23: 2300010
+    second: Rock 05
+  - first:
+      23: 2300012
+    second: Rock 06
+  - first:
+      23: 2300014
+    second: Rock 07
+  - first:
+      23: 2300016
+    second: Rock 08
+  - first:
+      23: 2300018
+    second: Rock 09
+  - first:
+      23: 2300020
+    second: Rock 10
+  - first:
+      23: 2300022
+    second: Rock 11
+  - first:
+      23: 2300024
+    second: Rock 12
+  - first:
+      23: 2300026
+    second: Rock 13
+  - first:
+      23: 2300028
+    second: Rock 14
+  - first:
+      23: 2300030
+    second: Rock 15
+  - first:
+      23: 2300032
+    second: Bush 2
+  - first:
+      23: 2300034
+    second: Bush 3
+  - first:
+      23: 2300036
+    second: Fence 1
+  - first:
+      23: 2300038
+    second: Trunk 1
+  - first:
+      23: 2300040
+    second: Trunk 2
+  - first:
+      23: 2300042
+    second: Trunk 3
+  - first:
+      23: 2300044
+    second: Trunk 4
+  - first:
+      23: 2300046
+    second: Fence 2
+  - first:
+      23: 2300048
+    second: Fence 2.001
+  - first:
+      23: 2300050
+    second: Boulder 01
+  - first:
+      23: 2300052
+    second: Boulder 02
+  - first:
+      23: 2300054
+    second: Boulder 03
+  - first:
+      23: 2300056
+    second: Boulder 04
+  - first:
+      23: 2300058
+    second: Boulder 05
+  - first:
+      23: 2300060
+    second: Boulder 06
+  - first:
+      23: 2300062
+    second: Boulder 07
+  - first:
+      23: 2300064
+    second: Boulder 08
+  - first:
+      23: 2300066
+    second: Boulder 09
+  - first:
+      23: 2300068
+    second: Boulder 10
+  - first:
+      23: 2300070
+    second: Boulder 11
+  - first:
+      23: 2300072
+    second: Boulder 12
+  - first:
+      23: 2300074
+    second: Boulder 13
+  - first:
+      23: 2300076
+    second: Boulder 14
+  - first:
+      23: 2300078
+    second: Boulder 15
+  - first:
+      23: 2300080
+    second: Fence 3
+  - first:
+      23: 2300082
+    second: Stone 01
+  - first:
+      23: 2300084
+    second: Stone 02
+  - first:
+      23: 2300086
+    second: Stone 03
+  - first:
+      23: 2300088
+    second: Stone 04
+  - first:
+      23: 2300090
+    second: Stone 05
+  - first:
+      23: 2300092
+    second: Stone 06
+  - first:
+      23: 2300094
+    second: Stone 07
+  - first:
+      23: 2300096
+    second: Stone 08
+  - first:
+      23: 2300098
+    second: Stone 09
+  - first:
+      23: 2300100
+    second: Stone 10
+  - first:
+      23: 2300102
+    second: Stone 11
+  - first:
+      23: 2300104
+    second: Stone 12
+  - first:
+      23: 2300106
+    second: Stone 13
+  - first:
+      23: 2300108
+    second: Stone 14
+  - first:
+      23: 2300110
+    second: Stone 15
+  - first:
+      23: 2300112
+    second: Pebble 1
+  - first:
+      23: 2300114
+    second: Pebble 2
+  - first:
+      23: 2300116
+    second: Pebble 3
+  - first:
+      23: 2300118
+    second: Pebble 4
+  - first:
+      23: 2300120
+    second: Pebble 5
+  - first:
+      23: 2300122
+    second: Fence 4
+  - first:
+      23: 2300124
+    second: Fence 5
+  - first:
+      23: 2300126
+    second: Leaf Pile 1
+  - first:
+      23: 2300128
+    second: Pile 1
+  - first:
+      23: 2300130
+    second: Flat Rock 1
+  - first:
+      23: 2300132
+    second: Flat Rock 2
+  - first:
+      23: 2300134
+    second: Flat Rock 3
+  - first:
+      23: 2300136
+    second: Flat Rock 4
+  - first:
+      23: 2300138
+    second: Flat Rock 5
+  - first:
+      23: 2300140
+    second: Pile 2
+  - first:
+      33: 3300000
+    second: Bush 1
+  - first:
+      33: 3300002
+    second: Rock 01
+  - first:
+      33: 3300004
+    second: Rock 02
+  - first:
+      33: 3300006
+    second: Rock 03
+  - first:
+      33: 3300008
+    second: Rock 04
+  - first:
+      33: 3300010
+    second: Rock 05
+  - first:
+      33: 3300012
+    second: Rock 06
+  - first:
+      33: 3300014
+    second: Rock 07
+  - first:
+      33: 3300016
+    second: Rock 08
+  - first:
+      33: 3300018
+    second: Rock 09
+  - first:
+      33: 3300020
+    second: Rock 10
+  - first:
+      33: 3300022
+    second: Rock 11
+  - first:
+      33: 3300024
+    second: Rock 12
+  - first:
+      33: 3300026
+    second: Rock 13
+  - first:
+      33: 3300028
+    second: Rock 14
+  - first:
+      33: 3300030
+    second: Rock 15
+  - first:
+      33: 3300032
+    second: Bush 2
+  - first:
+      33: 3300034
+    second: Bush 3
+  - first:
+      33: 3300036
+    second: Fence 1
+  - first:
+      33: 3300038
+    second: Trunk 1
+  - first:
+      33: 3300040
+    second: Trunk 2
+  - first:
+      33: 3300042
+    second: Trunk 3
+  - first:
+      33: 3300044
+    second: Trunk 4
+  - first:
+      33: 3300046
+    second: Fence 2
+  - first:
+      33: 3300048
+    second: Fence 2.001
+  - first:
+      33: 3300050
+    second: Boulder 01
+  - first:
+      33: 3300052
+    second: Boulder 02
+  - first:
+      33: 3300054
+    second: Boulder 03
+  - first:
+      33: 3300056
+    second: Boulder 04
+  - first:
+      33: 3300058
+    second: Boulder 05
+  - first:
+      33: 3300060
+    second: Boulder 06
+  - first:
+      33: 3300062
+    second: Boulder 07
+  - first:
+      33: 3300064
+    second: Boulder 08
+  - first:
+      33: 3300066
+    second: Boulder 09
+  - first:
+      33: 3300068
+    second: Boulder 10
+  - first:
+      33: 3300070
+    second: Boulder 11
+  - first:
+      33: 3300072
+    second: Boulder 12
+  - first:
+      33: 3300074
+    second: Boulder 13
+  - first:
+      33: 3300076
+    second: Boulder 14
+  - first:
+      33: 3300078
+    second: Boulder 15
+  - first:
+      33: 3300080
+    second: Fence 3
+  - first:
+      33: 3300082
+    second: Stone 01
+  - first:
+      33: 3300084
+    second: Stone 02
+  - first:
+      33: 3300086
+    second: Stone 03
+  - first:
+      33: 3300088
+    second: Stone 04
+  - first:
+      33: 3300090
+    second: Stone 05
+  - first:
+      33: 3300092
+    second: Stone 06
+  - first:
+      33: 3300094
+    second: Stone 07
+  - first:
+      33: 3300096
+    second: Stone 08
+  - first:
+      33: 3300098
+    second: Stone 09
+  - first:
+      33: 3300100
+    second: Stone 10
+  - first:
+      33: 3300102
+    second: Stone 11
+  - first:
+      33: 3300104
+    second: Stone 12
+  - first:
+      33: 3300106
+    second: Stone 13
+  - first:
+      33: 3300108
+    second: Stone 14
+  - first:
+      33: 3300110
+    second: Stone 15
+  - first:
+      33: 3300112
+    second: Pebble 1
+  - first:
+      33: 3300114
+    second: Pebble 2
+  - first:
+      33: 3300116
+    second: Pebble 3
+  - first:
+      33: 3300118
+    second: Pebble 4
+  - first:
+      33: 3300120
+    second: Pebble 5
+  - first:
+      33: 3300122
+    second: Fence 4
+  - first:
+      33: 3300124
+    second: Fence 5
+  - first:
+      33: 3300126
+    second: Leaf Pile 1
+  - first:
+      33: 3300128
+    second: Pile 1
+  - first:
+      33: 3300130
+    second: Flat Rock 1
+  - first:
+      33: 3300132
+    second: Flat Rock 2
+  - first:
+      33: 3300134
+    second: Flat Rock 3
+  - first:
+      33: 3300136
+    second: Flat Rock 4
+  - first:
+      33: 3300138
+    second: Flat Rock 5
+  - first:
+      33: 3300140
+    second: Pile 2
+  - first:
+      43: 4300000
+    second: Rock 15
+  - first:
+      43: 4300002
+    second: Rock 01
+  - first:
+      43: 4300004
+    second: Rock 02
+  - first:
+      43: 4300006
+    second: Rock 03
+  - first:
+      43: 4300008
+    second: Rock 04
+  - first:
+      43: 4300010
+    second: Rock 05
+  - first:
+      43: 4300012
+    second: Rock 06
+  - first:
+      43: 4300014
+    second: Rock 07
+  - first:
+      43: 4300016
+    second: Rock 08
+  - first:
+      43: 4300018
+    second: Rock 09
+  - first:
+      43: 4300020
+    second: Rock 10
+  - first:
+      43: 4300022
+    second: Rock 11
+  - first:
+      43: 4300024
+    second: Rock 12
+  - first:
+      43: 4300026
+    second: Rock 13
+  - first:
+      43: 4300028
+    second: Rock 14
+  - first:
+      43: 4300030
+    second: Bush 1
+  - first:
+      43: 4300032
+    second: Bush 2
+  - first:
+      43: 4300034
+    second: Bush 3
+  - first:
+      43: 4300036
+    second: Trunk 1
+  - first:
+      43: 4300038
+    second: Trunk 2
+  - first:
+      43: 4300040
+    second: Trunk 3
+  - first:
+      43: 4300042
+    second: Trunk 4
+  - first:
+      43: 4300044
+    second: Fence 1
+  - first:
+      43: 4300046
+    second: Fence 2
+  - first:
+      43: 4300048
+    second: Fence 2.001
+  - first:
+      43: 4300050
+    second: Boulder 15
+  - first:
+      43: 4300052
+    second: Boulder 01
+  - first:
+      43: 4300054
+    second: Boulder 02
+  - first:
+      43: 4300056
+    second: Boulder 03
+  - first:
+      43: 4300058
+    second: Boulder 04
+  - first:
+      43: 4300060
+    second: Boulder 05
+  - first:
+      43: 4300062
+    second: Boulder 06
+  - first:
+      43: 4300064
+    second: Boulder 07
+  - first:
+      43: 4300066
+    second: Boulder 08
+  - first:
+      43: 4300068
+    second: Boulder 09
+  - first:
+      43: 4300070
+    second: Boulder 10
+  - first:
+      43: 4300072
+    second: Boulder 11
+  - first:
+      43: 4300074
+    second: Boulder 12
+  - first:
+      43: 4300076
+    second: Boulder 13
+  - first:
+      43: 4300078
+    second: Boulder 14
+  - first:
+      43: 4300080
+    second: Fence 3
+  - first:
+      43: 4300082
+    second: Stone 01
+  - first:
+      43: 4300084
+    second: Stone 02
+  - first:
+      43: 4300086
+    second: Stone 03
+  - first:
+      43: 4300088
+    second: Stone 04
+  - first:
+      43: 4300090
+    second: Stone 05
+  - first:
+      43: 4300092
+    second: Stone 06
+  - first:
+      43: 4300094
+    second: Stone 07
+  - first:
+      43: 4300096
+    second: Stone 08
+  - first:
+      43: 4300098
+    second: Stone 09
+  - first:
+      43: 4300100
+    second: Stone 10
+  - first:
+      43: 4300102
+    second: Stone 11
+  - first:
+      43: 4300104
+    second: Stone 12
+  - first:
+      43: 4300106
+    second: Stone 13
+  - first:
+      43: 4300108
+    second: Stone 14
+  - first:
+      43: 4300110
+    second: Stone 15
+  - first:
+      43: 4300112
+    second: Pebble 1
+  - first:
+      43: 4300114
+    second: Pebble 2
+  - first:
+      43: 4300116
+    second: Pebble 3
+  - first:
+      43: 4300118
+    second: Pebble 4
+  - first:
+      43: 4300120
+    second: Pebble 5
+  - first:
+      43: 4300122
+    second: Fence 4
+  - first:
+      43: 4300124
+    second: Fence 5
+  - first:
+      43: 4300126
+    second: Leaf Pile 1
+  - first:
+      43: 4300128
+    second: Pile 1
+  - first:
+      43: 4300130
+    second: Flat Rock 1
+  - first:
+      43: 4300132
+    second: Flat Rock 2
+  - first:
+      43: 4300134
+    second: Flat Rock 3
+  - first:
+      43: 4300136
+    second: Flat Rock 4
+  - first:
+      43: 4300138
+    second: Flat Rock 5
+  - first:
+      43: 4300140
+    second: Pile 2
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -376,6 +1100,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -400,25 +1125,35 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -427,10 +1162,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -440,13 +1175,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
