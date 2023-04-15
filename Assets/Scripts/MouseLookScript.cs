@@ -35,15 +35,14 @@ public class MouseLookScript : MonoBehaviour
             mouseSensitivityValve = player.stats.mouseSensitivity;
             mouseX = 0f;
             mouseY = 0f;
-            regularSensitivity = mouseSensitivityValve;
-            aimingSensitivity = mouseSensitivityValve / 1.3f;
+            ResetAimingSensitivity(mouseSensitivityValve);
             temp = new Vector3(transform.localPosition.x, 1.461f, transform.localPosition.z);
         }
     }
     public void ResetAimingSensitivity(float sensitivity)
     {
         regularSensitivity = sensitivity;
-        aimingSensitivity = sensitivity / 1.3f;
+        aimingSensitivity = sensitivity / 1.5f;
     }
     public void SetPlayerFOV(float fov)
     {
@@ -75,7 +74,7 @@ public class MouseLookScript : MonoBehaviour
         float multiplier = 1f;
         if (sightIndex != -1)
         {
-            multiplier = (sightIndex == 1 ? 0.8f : sightIndex == 2 ? 0.65f : sightIndex == 3 ? 0.5f : 1f);
+            multiplier = (sightIndex == 1 ? 0.65f : sightIndex == 2 ? 0.45f : sightIndex == 3 ? 0.25f : 1f);
         }
         //Debug.Log("Multiplier: " + multiplier);
         mouseSensitivityValve = (player.stats.isAiming ? (aimingSensitivity * multiplier) : regularSensitivity);

@@ -197,6 +197,8 @@ public class PlayerManager : MonoBehaviour
             {
                 DZ_UI.SetActive(true);
             }
+
+            cameraObject.enabled = true;
         }
         else
         {
@@ -292,6 +294,7 @@ public class PlayerManager : MonoBehaviour
 
         transform.position = spawnpoint.position;
         transform.rotation = spawnpoint.rotation;
+        cameraObject.enabled = true;
     }
     public void InstantiateExplosionEffect(Vector3 _pos, Quaternion _rot)
     {
@@ -337,7 +340,7 @@ public class PlayerManager : MonoBehaviour
         respawning = true;
         respawnButton.interactable = false;
         deathUI.SetActive(false);
-
+        cameraObject.enabled = true;
         Debug.Log("Instantiating Player Controller");
 
         if (spawnpoint == null) spawnpointUI.ChooseSpawnpoint(spawnpointUI.RandomSelectSpawnpoint());
@@ -443,6 +446,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void Die(bool isSuicide, int ViewID, string killer = null, float delayObjectDestroy = 3f)
     {
+        cameraObject.enabled = true;
         Downed(isSuicide, ViewID, killer, delayObjectDestroy);
         StartCoroutine(DelayedControllerDestroy(delayObjectDestroy));
         //PhotonNetwork.Destroy(controller);

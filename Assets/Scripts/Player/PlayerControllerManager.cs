@@ -145,6 +145,7 @@ public class PlayerControllerManager : MonoBehaviourPunCallbacks, IDamagable
             {
                 ui.DZ_UI.SetActive(true);
             }
+            playerManager.cameraObject.enabled = false;
         }
         else
         {

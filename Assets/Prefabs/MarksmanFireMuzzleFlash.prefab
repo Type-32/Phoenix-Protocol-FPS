@@ -35,7 +35,7 @@ Transform:
   - {fileID: 7491327774098744312}
   - {fileID: 4144513227606537799}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &5235388875673205712
 ParticleSystem:
@@ -9807,6 +9807,26 @@ PrefabInstance:
     - target: {fileID: 4669435644823772, guid: 141ff45035bc70740b0eb63bfc79d0b4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198381425572196190, guid: 141ff45035bc70740b0eb63bfc79d0b4,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 198381425572196190, guid: 141ff45035bc70740b0eb63bfc79d0b4,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198381425572196190, guid: 141ff45035bc70740b0eb63bfc79d0b4,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.minScalar
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 198381425572196190, guid: 141ff45035bc70740b0eb63bfc79d0b4,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 198381425572196190, guid: 141ff45035bc70740b0eb63bfc79d0b4,
         type: 3}
