@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UserConfiguration;
 using LauncherManifest;
 using PrototypeLib.Modules.FileOperations.IO;
-using UnityEditor.Build.Content;
 
 public class WeaponCosmeticListItem : MonoBehaviour
 {
