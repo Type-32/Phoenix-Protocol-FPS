@@ -1016,6 +1016,20 @@ MonoBehaviour:
   rotationX: 1
   rotationY: 1
   rotationZ: 1
+  enableAimValueInterpolation: 1
+  enableSprintValueInterpolation: 0
+  enableWalkValueInterpolation: 0
+  aimIntDurationMultiplier: 2
+  sprintIntDurationMultiplier: 2
+  walkIntDurationMultiplier: 2
+  aimValueKey: aimingValue
+  sprintValueKey: sprintValue
+  walkValueKey: walkValue
+  movementHorizontalValueKey: horizontalInput
+  movementVerticalValueKey: verticalInput
+  aimInterpolation: 0
+  sprintInterpolation: 0
+  walkInterpolation: 0
   aimBobAmount: 0.005
   walkBobAmount: 0.05
   crouchBobAmount: 0.02
@@ -1074,8 +1088,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 4852457880753245286}
-  isAiming: 0
-  isSprinting: 0
   spreadConstant: 1
 --- !u!114 &4852457880753245286
 MonoBehaviour:
@@ -1094,6 +1106,8 @@ MonoBehaviour:
   gun: {fileID: 4852457880753245286}
   bulletImpactPrefab: {fileID: 4867200395551333757, guid: a621f7e3952136e44a4fe8f1d344ee0c,
     type: 3}
+  ModelMode: 0
+  ModelFire: 0
   player: {fileID: 0}
   holder: {fileID: 0}
   core: {fileID: 5573869017911023091}
@@ -1106,16 +1120,10 @@ MonoBehaviour:
   fpsCam: {fileID: 0}
   muzzleFire: {fileID: 3807263965302419708}
   shellEject: {fileID: 4373295011416958526}
-  shellEjectPos: {fileID: 0}
-  bulletImpact: {fileID: 892586388580958297, guid: 8cd4861d98204f446a18bcae054a3878,
-    type: 3}
-  bulletImpactBlood: {fileID: 0}
   pickup: {fileID: 0}
   gunVisual: {fileID: 3723845048904894976}
   handsVisual: {fileID: 8600451682561240332}
   thirdPersonHandsVisual: {fileID: 8691884527111152555}
-  rightHandEnd: {fileID: 0}
-  leftHandEnd: {fileID: 0}
   camRecoil: {fileID: 0}
   swayModel: {fileID: 2849126101163745364}
   recoilModel: {fileID: 973158713076937611}
@@ -1205,7 +1213,7 @@ MonoBehaviour:
   ui: {fileID: 0}
 --- !u!95 &5183655109247484720
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1222,7 +1230,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &6173563475319394978
 MonoBehaviour:
   m_ObjectHideFlags: 0

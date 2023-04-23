@@ -21,7 +21,7 @@ public class GunAnimation : MonoBehaviour
     public bool enableAimValueInterpolation = false;
     public bool enableSprintValueInterpolation = false;
     public bool enableWalkValueInterpolation = false;
-    public float aimIntDurationMultiplier = 2f, sprintIntDurationMultiplier = 2f, walkIntDurationMultiplier = 2f;
+    public float aimIntDurationMultiplier = 2.5f, sprintIntDurationMultiplier = 2.5f, walkIntDurationMultiplier = 2f;
     public string aimValueKey = "aimingValue", sprintValueKey = "sprintValue", walkValueKey = "walkValue", movementHorizontalValueKey = "horizontalInput", movementVerticalValueKey = "verticalInput";
     [HideInInspector] public float aimInterpolation = 0f, sprintInterpolation = 0f, walkInterpolation = 0f;
 
@@ -128,13 +128,13 @@ public class GunAnimation : MonoBehaviour
         if (enableAimValueInterpolation)
         {
             //aimInterpolation = Mathf.Lerp(aimInterpolation, (stats.isAiming ? 1f : 0f), Time.deltaTime * aimIntDurationMultiplier);
-            animate.SetFloat(aimValueKey, Convert.ToSingle(gun.stats.isAiming), 0.3f, Time.deltaTime);
+            animate.SetFloat(aimValueKey, Convert.ToSingle(gun.stats.isAiming), 0.3f, Time.deltaTime * stats.weaponData.aimSpeed);
             aimInterpolation = animate.GetFloat(aimValueKey);
         }
         if (enableSprintValueInterpolation)
         {
             //sprintInterpolation = Mathf.Lerp(sprintInterpolation, (stats.isSprinting ? 1f : 0f), Time.deltaTime * sprintIntDurationMultiplier);
-            animate.SetFloat(sprintValueKey, Convert.ToSingle(gun.stats.isSprinting), 0.3f, Time.deltaTime);
+            animate.SetFloat(sprintValueKey, Convert.ToSingle(gun.stats.isSprinting), 0.3f, Time.deltaTime * sprintIntDurationMultiplier);
         }
         if (enableWalkValueInterpolation)
         {
