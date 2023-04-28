@@ -151,6 +151,7 @@ public class GunAnimation : MonoBehaviour
     }
     private void CalculateSway()
     {
+        if (!gun.player.stats.mouseMovementEnabled) return;
         mouseInputX = -Input.GetAxis("Mouse X") - (gun.stats.isAiming ? Input.GetAxis("Horizontal") * 0.8f : Input.GetAxis("Horizontal") * 2.5f);
         mouseInputY = -Input.GetAxis("Mouse Y") + (gun.player.body.velocity.y * 4f);
     }
