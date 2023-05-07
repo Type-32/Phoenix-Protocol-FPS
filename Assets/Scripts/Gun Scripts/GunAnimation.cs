@@ -125,12 +125,12 @@ public class GunAnimation : MonoBehaviour
         animate.SetBool("isAiming", gun.stats.isAiming);
         animate.SetBool("isReloading", gun.stats.isReloading);
         animate.SetBool("isSliding", gun.player.stats.isSliding);
-        if (enableAimValueInterpolation)
-        {
-            //aimInterpolation = Mathf.Lerp(aimInterpolation, (stats.isAiming ? 1f : 0f), Time.deltaTime * aimIntDurationMultiplier);
-            animate.SetFloat(aimValueKey, Convert.ToSingle(gun.stats.isAiming), 0.3f, Time.deltaTime * stats.weaponData.aimSpeed);
-            aimInterpolation = animate.GetFloat(aimValueKey);
-        }
+        
+        //Aim Interpolation
+        aimInterpolation = Mathf.SmoothStep(aimInterpolation, (stats.isAiming ? 1f : 0f), Time.deltaTime * stats.weaponData.aimSpeed * 2);
+        animate.SetFloat(aimValueKey, aimInterpolation);
+        aimInterpolation = animate.GetFloat(aimValueKey);
+        
         if (enableSprintValueInterpolation)
         {
             //sprintInterpolation = Mathf.Lerp(sprintInterpolation, (stats.isSprinting ? 1f : 0f), Time.deltaTime * sprintIntDurationMultiplier);
