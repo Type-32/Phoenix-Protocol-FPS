@@ -200,15 +200,15 @@ public class GunCoreFunc : MonoBehaviour
         if (gun.fpsCam.playerMainCamera == null) return;
         if (check)
         {
-            if (gun.stats.selectedSightIndex != 0) gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, sightFOV, Time.deltaTime * gun.stats.weaponData.aimSpeed);
-            else gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, originMultiplierFOV, Time.deltaTime * gun.stats.weaponData.aimSpeed);
-            if (gun.stats.selectedSightIndex != 0) gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_sightFOV, Time.deltaTime * gun.stats.weaponData.aimSpeed);
-            else gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_originMultiplierFOV, Time.deltaTime * gun.stats.weaponData.aimSpeed);
+            if (gun.stats.selectedSightIndex != 0) gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.SmoothStep(gun.player.fpsCam.playerMainCamera.fieldOfView, sightFOV, gun.stats.weaponData.aimSpeed * 2f * 0.025f);
+            else gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.SmoothStep(gun.player.fpsCam.playerMainCamera.fieldOfView, originMultiplierFOV, gun.stats.weaponData.aimSpeed * 2f * 0.025f);
+            if (gun.stats.selectedSightIndex != 0) gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.SmoothStep(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_sightFOV, gun.stats.weaponData.aimSpeed * 2f * 0.025f);
+            else gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.SmoothStep(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_originMultiplierFOV, gun.stats.weaponData.aimSpeed * 2f * 0.025f);
         }
         else
         {
-            gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.playerMainCamera.fieldOfView, originFOV, Time.deltaTime * gun.stats.weaponData.aimSpeed);
-            gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.Lerp(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_originFOV, Time.deltaTime * gun.stats.weaponData.aimSpeed);
+            gun.player.fpsCam.playerMainCamera.fieldOfView = Mathf.SmoothStep(gun.player.fpsCam.playerMainCamera.fieldOfView, originFOV, gun.stats.weaponData.aimSpeed * 2f * 0.025f);
+            gun.player.fpsCam.itemLayerCamera.fieldOfView = Mathf.SmoothStep(gun.player.fpsCam.itemLayerCamera.fieldOfView, il_originFOV, gun.stats.weaponData.aimSpeed * 2f * 0.025f);
         }
     }
     public void ChangeFiremode()
@@ -223,7 +223,7 @@ public class GunCoreFunc : MonoBehaviour
     }
     public void TriggerCameraRecoil(float verticalRecoil, float horizontalRecoil, float sphericalShake, float positionRecoilRetaliation, float positionRecoilVertical, float positionTransitionalSnappiness, float positionRecoilReturnSpeed, float transitionalSnappiness, float recoilReturnSpeed)
     {
-        gun.camRecoil.RecoilFire(verticalRecoil, horizontalRecoil, sphericalShake, positionRecoilRetaliation, positionRecoilVertical, positionTransitionalSnappiness, positionRecoilReturnSpeed, transitionalSnappiness, recoilReturnSpeed);
+        gun.camRecoil?.RecoilFire(verticalRecoil, horizontalRecoil, sphericalShake, positionRecoilRetaliation, positionRecoilVertical, positionTransitionalSnappiness, positionRecoilReturnSpeed, transitionalSnappiness, recoilReturnSpeed);
     }
     void BotShoot(float range, float damage)
     {

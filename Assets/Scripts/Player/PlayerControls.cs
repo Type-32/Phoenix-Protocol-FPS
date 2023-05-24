@@ -244,22 +244,23 @@ public class PlayerControls : MonoBehaviour
     }
     void SprintingLogic()
     {
-        if (Input.GetKey("left shift") && !player.stats.isAiming && !player.stats.isCrouching && Input.GetAxis("Vertical") > 0 && !player.stats.isSliding)
-        {
-            player.stats.isSprinting = true;
-        }
-        else
-        {
-            player.stats.isSprinting = false;
-        }
+        bool flag = true;
         if (Input.GetKeyDown("left shift"))
         {
-            player.SynchronizePlayerState(player.stats.isSprinting, 0);
+            if (player.stats.isSprinting)
+            {
+                player.stats.isSprinting = false;
+                flag = false;
+            }
+            else
+            {
+                player.stats.isSprinting = (!player.stats.isAiming && !player.stats.isCrouching && Input.GetAxis("Vertical") > 0 && !player.stats.isSliding) ? true : false;
+                flag = !player.stats.isSprinting;
+            }
         }
-        else if (Input.GetKeyUp("left shift"))
-        {
-            player.SynchronizePlayerState(player.stats.isSprinting, 0);
-        }
+
+        if (player.stats.isAiming || player.stats.isCrouching || Input.GetAxis("Vertical") <= 0 || player.stats.isSliding) player.stats.isSprinting = flag = false;
+        if(!flag) player.SynchronizePlayerState(player.stats.isSprinting, 0);
     }
     bool localVal = false;
     void WalkingLogic()

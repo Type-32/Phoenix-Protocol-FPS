@@ -102,7 +102,7 @@ public class PlayerStats : MonoBehaviour
         crouchRadius = 0.32f;
         crouchHeight = 1.05f;
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (!player.pv.IsMine) return;
         if (health < 0) health = 0f;
